@@ -62,6 +62,10 @@ void Bomba::actualizar(real deltaT)
 		explotar();
 		mundo.eliminar(this);
 	}
+	else
+	{
+		calcularFisicas(deltaT);
+	}
 }
 
 real Bomba::multiplicadorVelocidad() const

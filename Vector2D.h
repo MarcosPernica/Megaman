@@ -18,6 +18,7 @@ public:
 	Vector2D operator+(const Vector2D &operando) const;
 	Vector2D &operator+=(const Vector2D &operando);
 	Vector2D operator-(const Vector2D &operando) const;
+	Vector2D operator-() const;
 	Vector2D &operator-=(const Vector2D &operando);
 	real operator*(const Vector2D &operando) const;	
 	real &operator[](unsigned int coordenada);

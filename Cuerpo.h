@@ -11,7 +11,7 @@ class Cuerpo
 private:
 	real masaInversa;
 	Vector2D posicion, velocidad, orientacion;
-	Vector2D fuerzas;
+	Vector2D fuerzas, peso;
 	bool gravitacional;
 public:
 	Cuerpo(real masa, const Vector2D &posicion, bool gravitacional = true, const Vector2D &velocidad = Vector2D(), const Vector2D &orientacion = Vector2D(1,0));
@@ -23,6 +23,7 @@ public:
 	const Vector2D &obtenerPosicion() const;
 	const Vector2D &obtenerVelocidad() const;
 	const Vector2D &obtenerOrientacion() const; 
+	const Vector2D &obtenerPeso() const;
 
 	void modificarVelocidad(const Vector2D &velocidad);
 	void modificarPosicion(const Vector2D &posicion);

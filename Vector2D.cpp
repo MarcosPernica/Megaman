@@ -35,6 +35,11 @@ Vector2D Vector2D::operator-(const Vector2D & operando) const
 	return Vector2D(operando.x-x, operando.y-y);
 }
 
+Vector2D Vector2D::operator-() const
+{
+	return Vector2D(-x,-y);
+}
+
 Vector2D & Vector2D::operator-=(const Vector2D & operando)
 {
 	*this = *this - operando;

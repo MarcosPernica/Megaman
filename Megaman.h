@@ -31,16 +31,16 @@ public:
 	~Megaman();
 	void saltar();
 	void correr();
+	void dejarCorrer();
 	void disparar();
-
-	bool estaSaltando();
-	bool estaCorriendo();
 
 	void seleccionarArma(char slot);
 
 	void aumentarVida();
 	void recuperarPlasma(int cantidadPlasma);
 	char obtenerCantidadPlasma();
+
+	void actualizar(real deltaT);
 
 	void agregarArma(Disparo *disparo);
 };

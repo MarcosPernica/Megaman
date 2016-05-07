@@ -8,6 +8,8 @@ Cuerpo::Cuerpo(real masa, const Vector2D & posicion, bool gravitacional, const V
 		masaInversa = 1 / masa;
 	else
 		masaInversa = MASAINVERSAINFINITA;
+
+	peso = masa*gravedad;
 }
 
 void Cuerpo::gravitar()
@@ -30,7 +32,7 @@ void Cuerpo::calcularFisicas(real deltaT)
 	Vector2D aceleracion;
 
 	if (gravitacional)
-		fuerzas += gravedad;
+		fuerzas += peso;
 
 	aceleracion = masaInversa*fuerzas;
 
@@ -54,6 +56,11 @@ const Vector2D & Cuerpo::obtenerVelocidad() const
 const Vector2D & Cuerpo::obtenerOrientacion() const
 {
 	return orientacion;
+}
+
+const Vector2D &Cuerpo::obtenerPeso() const
+{
+	return peso;
 }
 
 void Cuerpo::modificarVelocidad(const Vector2D &velocidad)

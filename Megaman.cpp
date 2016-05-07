@@ -27,6 +27,12 @@ char Megaman::obtenerCantidadPlasma()
 	return armas.at(armaSeleccionada).plasma;
 }
 
+void Megaman::actualizar(real deltaT)
+{
+
+	calcularFisicas(deltaT);
+}
+
 void Megaman::agregarArma(Disparo * disparo)
 {
 	Arma arma;
@@ -72,8 +78,28 @@ Megaman::~Megaman()
 		delete armas.at(i).arma;
 }
 
+void Megaman::saltar()
+{
+	if (!saltando)
+	{
+		agregarFuerza(-obtenerPeso()*FACTORSALTOMEGAMAN);
+		saltando = true;
+	}
+}
+
+void Megaman::correr()
+{
+	corriendo = true;
+}
+
+void Megaman::dejarCorrer()
+{
+	corriendo = false;
+}
+
 void Megaman::disparar()
 {
+	/*Optimizar acceso a memoria.*/
 	/*Agregar tiempo de espera entre disparo y disparo.*/
 	if (armas.at(armaSeleccionada).plasma)
 	{
@@ -85,7 +111,8 @@ void Megaman::disparar()
 		if (armas.at(armaSeleccionada).arma->lanzable())
 		{
 			lanzando = true;
-			posicion -= Vector2D(0, obtenerAltoCajaColision());
+			/*Lo tira de mas arriba.*/
+			posicion -= Vector2D(0, obtenerAltoCajaColision()/2);
 		}
 		else
 		{
@@ -93,7 +120,5 @@ void Megaman::disparar()
 		}
 
 		obtenerMundo().agregar(armas.at(armaSeleccionada).arma->nuevo(posicion, velocidad));
-
-
 	}
 }
