@@ -7,7 +7,7 @@ private:
 
 
 public:
-
+	void simular();
 };
 
 #endif

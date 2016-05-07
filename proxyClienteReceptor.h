@@ -5,7 +5,6 @@ class ProxyClienteReceptor
 {
 private:
 
-
 public:
 };
 

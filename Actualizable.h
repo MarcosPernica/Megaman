@@ -1,0 +1,10 @@
+#ifndef ACTUALIZABLE
+#define ACTUALIZABLE
+
+class Actualizable
+{
+public:
+	virtual void actualizar(real deltaT) = 0;
+};
+
+#endif
