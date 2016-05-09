@@ -5,6 +5,10 @@
 #include "Definiciones.h"
 #include <vector>
 
+#define MEGAMANNOCORRE 0
+#define MEGAMANEMPEZANDOACORRRER 1
+#define MEGAMANCORRIENDO 2
+
 class Megaman : public Entidad
 {
 private:
@@ -16,19 +20,21 @@ private:
 	};
 
 	uint vida;
-	bool saltando, corriendo, disparando, lanzando;
+	bool puedeSaltar;
+	bool saltando, disparando, lanzando;
+	char corriendo;
 	std::vector<Arma> armas;
 	char armaSeleccionada;
 public:
 	Megaman(Mundo &mundo,
-			uint energiaMaxima,
-			real masa,
-			const Vector2D &posicion,
-			bool gravitacional = true,
-			const Vector2D &velocidad = Vector2D(),
-			const Vector2D &orientacion = Vector2D(1, 0));
+			const b2Vec2 &posicion,
+			const b2Vec2 &velocidad = b2Vec2_zero,
+			Orientaciones orientacion = derecha);
 
 	~Megaman();
+	void habilitarSalto();
+	void deshabilitarSalto();
+
 	void saltar();
 	void correr();
 	void dejarCorrer();
@@ -39,6 +45,8 @@ public:
 	void aumentarVida();
 	void recuperarPlasma(int cantidadPlasma);
 	char obtenerCantidadPlasma();
+
+	char tipoCuerpo() const;
 
 	void actualizar(real deltaT);
 

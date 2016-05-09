@@ -1,15 +1,12 @@
 #include "Disparo.h"
 #include "Mundo.h"
 #include <list>
+#include "Entidad.h"
+#include <Box2D\Box2D.h>
 
 void Disparo::actualizar(real DeltaT)
 {
-	calcularFisicas(DeltaT);
-}
 
-bool Disparo::soloEnemigos()
-{
-	return true;
 }
 
 bool Disparo::lanzable()
@@ -17,38 +14,62 @@ bool Disparo::lanzable()
 	return false;
 }
 
-Disparo::Disparo(real daño,
-				 real masa, 
-	             const Vector2D & posicion, 
-	             bool gravitacional, 
-	             const Vector2D & velocidad) : 
-	             daño(daño), 
-				 Cuerpo(masa, posicion, gravitacional, velocidad)
+char Disparo::tipoCuerpo() const
+{
+	return DISPAROS;
+}
+
+bool Disparo::megamanLoDisparo() const
+{
+	return disparoMegaman;
+}
+
+Disparo::Disparo(Mundo &mundo,
+				 uint daño,
+				 real ancho,
+				 real alto,
+				 real masa,
+				 const b2Vec2 &posicion,
+				 bool gravitacional,
+				 const b2Vec2 &velocidad,
+				 bool disparoMegaman) :
+				 dano(dano),
+				 disparoMegaman(disparoMegaman),
+			     Cuerpo(mundo,
+						ancho,
+						alto,
+						masa,
+						DISPAROS,
+						CONSTRUCCIONES | PERSONAJES | ENEMIGOS,
+						posicion,
+						false,
+						true,
+						velocidad)
 {
 }
 
 bool Disparo::interactuar(Entidad *entidad)
 {
-	entidad->atacado(daño);
+	entidad->atacado(dano);
 	return true;
 }
 
 Bomba::Bomba(Mundo & mundo, 
-	         const Vector2D & posicion,
-	         const Vector2D & velocidad) :
-			 mundo(mundo),
+	         const b2Vec2 & posicion,
+	         const b2Vec2 & velocidad) :
 		     tiempoTotal(TIEMPOEXPLOSIONBOMBA),
-			 Disparo(DANOBOMBA, MASABOMBA, posicion, true, velocidad),
-			 radio(obtenerPosicion(), RADIOEXPLOSION, RADIOEXPLOSION)
+			 Disparo(mundo,
+					 DANOBOMBA,
+					 ANCHOSPRITEBOMBA,
+					 ALTOSPRITEBOMBA,
+				     MASABOMBA,
+				     posicion,
+					 true,
+				     velocidad)
 {
 }
 
 bool Bomba::interactuar(Entidad * entidad)
-{
-	return false;
-}
-
-bool Bomba::soloEnemigos()
 {
 	return false;
 }
@@ -60,15 +81,11 @@ void Bomba::actualizar(real deltaT)
 	if (tiempoTotal <= 0)
 	{
 		explotar();
-		mundo.eliminar(this);
-	}
-	else
-	{
-		calcularFisicas(deltaT);
+		obtenerMundo().eliminar(this);
 	}
 }
 
-real Bomba::multiplicadorVelocidad() const
+uint Bomba::obtenerMultiplicadorVelocidad() const
 {
 	return MULTIPLICADORVELOCIDADBOMBA;
 }
@@ -78,40 +95,41 @@ bool Bomba::lanzable()
 	return true;
 }
 
-Disparo * Bomba::nuevo(const Vector2D & posicion, const Vector2D & velocidad)
+Disparo * Bomba::nuevo(const b2Vec2 & posicion, const b2Vec2 & velocidad)
 {
-	Bomba *aux = new Bomba(*this);
-	aux->modificarPosicion(posicion);
-	aux->modificarVelocidad(velocidad);
-
-	return aux;
+	return new Bomba(obtenerMundo(), posicion, velocidad);
 }
 
 void Bomba::explotar()
 {
-	/*Posible problema si el objeto i se destruyo porque murio mientras se itera.*/
-	std::list<Entidad *> ilusos = mundo.obtenerlistaColisiones(radio);
-	std::list<Entidad *>::iterator i = ilusos.begin();
+	b2AABB consulta;
+	consulta.upperBound = obtenerLeftTopCajaMagnificada(RADIOEXPLOSION);
+	consulta.lowerBound = obtenerRightBottomCajaMagnificada(RADIOEXPLOSION);
 
-	while (i != ilusos.end())
-		interactuar(*i);
+	obtenerMundo().danarZona(consulta, DANOBOMBA);
+	obtenerMundo().eliminar(this);
 }
 
-Plasma::Plasma(const Vector2D &posicion, const Vector2D &velocidad) : 
-		Disparo(DANOPLASMA, MASANULA, posicion, false, velocidad)
+Plasma::Plasma(Mundo & mundo,
+			   const b2Vec2 & posicion,
+			   const b2Vec2 & velocidad) :
+			   Disparo(mundo,
+					   DANOPLASMA,
+					   ANCHOSPRITEPLASMA,
+					   ALTOSPRITEPLASMA,
+					   MASAPLASMA,
+					   posicion,
+				       true,
+		               velocidad)
 {
 }
 
-real Plasma::multiplicadorVelocidad() const
+uint Plasma::obtenerMultiplicadorVelocidad() const
 {
 	return MULTIPLICADORVELOCIDADPLASMA;
 }
 
-Disparo * Plasma::nuevo(const Vector2D & posicion, const Vector2D & velocidad)
+Disparo * Plasma::nuevo(const b2Vec2 & posicion, const b2Vec2 & velocidad)
 {
-	Plasma *aux = new Plasma(*this);
-	aux->modificarPosicion(posicion);
-	aux->modificarVelocidad(velocidad);
-
-	return aux;
+	return new Plasma(obtenerMundo(), posicion, velocidad);
 }

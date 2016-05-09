@@ -1,28 +1,35 @@
 #include "Entidad.h"
 
-Entidad::Entidad(Mundo &mundo,
-				 real ancho,
-				 real alto,
-				 uint energiaMaxima,
-				 real masa,
-				 const Vector2D &posicion,
-				 bool gravitacional = true,
-				 const Vector2D &velocidad = Vector2D(),
-				 const Vector2D &orientacion = Vector2D(1, 0)) :
+Entidad::Entidad(Mundo & mundo, 
+	             real ancho,
+			     real alto,
+	             uint energiaMaxima,
+	             real masa, 
+			     ushort categoria,
+				 ushort colisionaCon,
+	             const b2Vec2 & posicion,
+				 bool rotable,
+	             bool gravitacional,
+	             const b2Vec2 & velocidad,
+	             Orientaciones orientacion) :
+				 energia(energiaMaxima),
 				 energiaMaxima(energiaMaxima),
-			     energia(energiaMaxima),
 				 mundo(mundo),
-				 Cuerpo(masa, posicion, gravitacional, velocidad, orientacion),
-				 CajaColision(posicion, alto, ancho)
+			     Cuerpo(mundo,
+						ancho,
+						alto,
+						masa,
+						categoria,
+						colisionaCon,
+						posicion,
+						rotable,
+						gravitacional,
+						velocidad,
+						orientacion)
 {
 }
 
-Mundo & Entidad::obtenerMundo()
-{
-	return mundo;
-}
-
-void Entidad::recuperarEnergia(int cantidadEnergia)
+void Entidad::recuperarEnergia(uint cantidadEnergia)
 {
 	if (energia + cantidadEnergia > energiaMaxima)
 		energia = energiaMaxima;
@@ -30,10 +37,10 @@ void Entidad::recuperarEnergia(int cantidadEnergia)
 		energia += cantidadEnergia;
 }
 
-void Entidad::atacado(real daño)
+void Entidad::atacado(uint daño)
 {
 	if (daño < energia)
 		energia -= daño;
 	else
-		eliminar();
+		/*Eliminar*/;
 }

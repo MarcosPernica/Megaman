@@ -3,23 +3,22 @@
 
 #include "Cuerpo.h"
 #include "Megaman.h"
-#include "Vector2D.h"
 #include "Mundo.h"
+#include <Box2D\Box2D.h>
 
 class PowerUp : public Cuerpo
 {
 private:
 	real probabilidadAparicion;
-	Mundo &mundo;
 public:
-	PowerUp(Mundo &mundo, real probabilidadAparicion, real masa, const Vector2D &posicion, const Vector2D &velocidad = PowerUp::velocidad, bool gravitacional = true);
+	PowerUp(Mundo &mundo,
+			real probabilidadAparicion,
+			const b2Vec2 &posicion);
 
 	real obtenerProbabilidadAparicion();
 	void eliminarPowerUp();
 
 	virtual void aumentar(Megaman &megaman) = 0;
-
-	static const Vector2D velocidad;
 };
 
 
@@ -27,7 +26,7 @@ public:
 class NuevaVida : public PowerUp
 {
 public:
-	NuevaVida(Mundo &mundo, const Vector2D &posicion);
+	NuevaVida(Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 };
 
@@ -36,7 +35,7 @@ public:
 class CapsulaEnergiaChica : public PowerUp
 {
 public:
-	CapsulaEnergiaChica(Mundo &mundo, const Vector2D &posicion);
+	CapsulaEnergiaChica(Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 };
 
@@ -45,7 +44,7 @@ public:
 class CapsulaEnergiaGrande : public PowerUp
 {
 public:
-	CapsulaEnergiaGrande(Mundo &mundo, const Vector2D &posicion);
+	CapsulaEnergiaGrande(Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 };
 
@@ -54,7 +53,7 @@ public:
 class CapsulaPlasmaChica : public PowerUp
 {
 public:
-	CapsulaPlasmaChica(Mundo &mundo, const Vector2D &posicion);
+	CapsulaPlasmaChica(Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 };
 
@@ -63,7 +62,7 @@ public:
 class CapsulaPlasmaGrande : public PowerUp
 {
 public:
-	CapsulaPlasmaGrande(Mundo &mundo, const Vector2D &posicion);
+	CapsulaPlasmaGrande(Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 };
 

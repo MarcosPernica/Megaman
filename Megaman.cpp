@@ -27,10 +27,47 @@ char Megaman::obtenerCantidadPlasma()
 	return armas.at(armaSeleccionada).plasma;
 }
 
+char Megaman::tipoCuerpo() const
+{
+	return PERSONAJES;
+}
+
 void Megaman::actualizar(real deltaT)
 {
+	if (corriendo)
+	{
+		b2Vec2 velocidad = obtenerVelocidad();
+		velocidad.x = 0;
+		velocidad += VELOCIDADMEGAMANCORRIENDO*Cuerpo::orientacionAVector(obtenerOrientacion());
+		modificarVelocidad(velocidad);
+	}
+	else if (saltando)
+	{
+		b2Vec2 impulso(0, MASAMEGAMAN*IMPULSOSALTOMEGAMAN);
+		aplicarImpulso(impulso);
+	}
+	else if (disparando || lanzando)
+	{
+		if (armas.at(armaSeleccionada).plasma)
+		{
+			b2Vec2 posicion, orientacion, velocidad;
 
-	calcularFisicas(deltaT);
+			orientacion = Cuerpo::orientacionAVector(obtenerOrientacion());
+
+			posicion = POSICIONDISPAROMEGAMAN*orientacion + obtenerPosicion();
+			velocidad = armas.at(armaSeleccionada).arma->obtenerMultiplicadorVelocidad()*orientacion;
+
+
+			if (armas.at(armaSeleccionada).arma->lanzable())
+				/*Lo tira de mas arriba.*/
+				posicion -= b2Vec2(0, POSICIONLANZAMIENTOMEGAMAN);
+			else
+				disparando = true;
+
+			armas.at(armaSeleccionada).plasma--;
+			obtenerMundo().agregar(armas.at(armaSeleccionada).arma->nuevo(posicion, velocidad));
+		}
+	}
 }
 
 void Megaman::agregarArma(Disparo * disparo)
@@ -43,30 +80,31 @@ void Megaman::agregarArma(Disparo * disparo)
 }
 
 Megaman::Megaman(Mundo & mundo,
-				 uint energiaMaxima, 
-				 real masa, 
-				 const Vector2D & posicion, 
-				 bool gravitacional, 
-				 const Vector2D & velocidad, 
-				 const Vector2D & orientacion) : 
+				 const b2Vec2 & posicion,
+				 const b2Vec2 & velocidad,
+				 Orientaciones orientacion) :
 				 Entidad(mundo,
 						 ANCHOSPRITEMEGAMAN,
 						 ALTOSPRITEMEGAMAN,
-						 energiaMaxima,
-						 masa,	
-					     posicion,
-					     gravitacional,
+					     ENERGIAMEGAMAN,
+						 MASAMEGAMAN,
+						 PERSONAJES,
+					     CONSTRUCCIONES | POWERUPS | ENEMIGOS | DISPAROS,
+						 posicion,
+					     false,
+					     true,
 					     velocidad,
 					     orientacion)
 {
 	vida = VIDASINICIALES;
 	saltando = false;
-	corriendo = false;
+	puedeSaltar = true;
+	corriendo = 0;
 	
 	Arma arma;
 
 	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Plasma();
+	arma.arma = new Plasma(obtenerMundo());
 
 	armas.push_back(arma);
 	armaSeleccionada = 0;
@@ -78,12 +116,23 @@ Megaman::~Megaman()
 		delete armas.at(i).arma;
 }
 
+void Megaman::habilitarSalto()
+{
+	puedeSaltar = true;
+}
+
+void Megaman::deshabilitarSalto()
+{
+	puedeSaltar = false;
+	saltando = false;
+}
+
 void Megaman::saltar()
 {
-	if (!saltando)
+	if (!saltando && puedeSaltar)
 	{
-		agregarFuerza(-obtenerPeso()*FACTORSALTOMEGAMAN);
 		saltando = true;
+		corriendo = false;
 	}
 }
 
@@ -99,26 +148,9 @@ void Megaman::dejarCorrer()
 
 void Megaman::disparar()
 {
-	/*Optimizar acceso a memoria.*/
-	/*Agregar tiempo de espera entre disparo y disparo.*/
 	if (armas.at(armaSeleccionada).plasma)
-	{
-		Vector2D posicion, orientacion, velocidad;
-		orientacion = obtenerOrientacion().normalizado();
-		velocidad = orientacion*armas.at(armaSeleccionada).arma->multiplicadorVelocidad();
-		posicion = obtenerAnchoCajaColision()*(orientacion + obtenerPosicion());
-
 		if (armas.at(armaSeleccionada).arma->lanzable())
-		{
 			lanzando = true;
-			/*Lo tira de mas arriba.*/
-			posicion -= Vector2D(0, obtenerAltoCajaColision()/2);
-		}
 		else
-		{
 			disparando = true;
-		}
-
-		obtenerMundo().agregar(armas.at(armaSeleccionada).arma->nuevo(posicion, velocidad));
-	}
 }

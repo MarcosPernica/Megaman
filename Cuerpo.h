@@ -1,34 +1,65 @@
 #ifndef CUERPO	
 #define CUERPO
 
-#include "Vector2D.h"
 #include "Definiciones.h"
+#include <Box2D/Box2D.h>
+#include "Mundo.h"
 
-#define MASAINVERSAINFINITA -1
+#define MASAINFINITA -1
+
+enum Orientaciones
+{
+	izquierda,
+	derecha
+};
+
+struct Datos
+{
+	Cuerpo *cuerpo;
+	const bool esDetectorSuelo;
+};
 
 class Cuerpo
 {
 private:
-	real masaInversa;
-	Vector2D posicion, velocidad, orientacion;
-	Vector2D fuerzas, peso;
-	bool gravitacional;
+	b2Body *cuerpo;
+	Orientaciones orientacion;
+	Mundo &mundo;
+	real ancho, alto;
+	bool detectorSuelo;
+	std::vector<Datos> datos;
 public:
-	Cuerpo(real masa, const Vector2D &posicion, bool gravitacional = true, const Vector2D &velocidad = Vector2D(), const Vector2D &orientacion = Vector2D(1,0));
-	void gravitar();
-	void ingravitar();
-	void agregarFuerza(const Vector2D &fuerza);
-	void calcularFisicas(real deltaT);
+	Cuerpo(Mundo &mundo, 
+		   real ancho,
+		   real alto,
+		   real masa,
+	       ushort categoria,
+		   ushort colisionaCon,
+		   const b2Vec2 &posicion, 
+		   bool rotable = false,
+		   bool gravitacional = true, 
+		   const b2Vec2 &velocidad = b2Vec2_zero ,
+		   Orientaciones orientacion = derecha);
 
-	const Vector2D &obtenerPosicion() const;
-	const Vector2D &obtenerVelocidad() const;
-	const Vector2D &obtenerOrientacion() const; 
-	const Vector2D &obtenerPeso() const;
+	virtual ~Cuerpo();
 
-	void modificarVelocidad(const Vector2D &velocidad);
-	void modificarPosicion(const Vector2D &posicion);
-	void modificarOrientacion(const Vector2D &orientacion);
+	Mundo &obtenerMundo();
+	const b2Vec2& obtenerPosicion() const;
+	const b2Vec2& obtenerVelocidad() const;
+	Orientaciones obtenerOrientacion() const;
 
-	static const Vector2D gravedad;
+
+	b2Vec2 obtenerLeftTopCajaMagnificada(uint magnificador) const;
+	b2Vec2 obtenerRightBottomCajaMagnificada(uint magnificador) const;
+
+	void modificarVelocidad(const b2Vec2 &velocidad);
+	void modificarOrientacion(Orientaciones orientacion);
+	void aplicarImpulso(const b2Vec2 &impulso);
+	void agregarDetectorSuelo();
+
+	virtual char tipoCuerpo() const = 0;
+
+	static const b2Vec2 versorIzquierda, versorDerecha;
+	static const b2Vec2 &orientacionAVector(Orientaciones orientacion);
 };
 #endif

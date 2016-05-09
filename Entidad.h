@@ -1,14 +1,13 @@
 #ifndef ENTIDAD
 #define ENTIDAD
 
-#include "Vector2D.h"
 #include "Definiciones.h"
 #include "Cuerpo.h"
 #include "Actualizable.h"
 #include "Mundo.h"
-#include "CajaColision.h"
+#include <Box2D\Box2D.h>
 
-class Entidad : public Cuerpo, public Actualizable, public CajaColision
+class Entidad : public Cuerpo, public Actualizable
 {
 private:
 	uint energia, energiaMaxima;
@@ -19,16 +18,17 @@ public:
 			real alto,
 			uint energiaMaxima, 
 			real masa,
-			const Vector2D &posicion,
+			ushort categoria,
+			ushort colisionaCon,
+			const b2Vec2 &posicion,
+			bool rotable = false,
 			bool gravitacional = true,
-			const Vector2D &velocidad = Vector2D(),
-			const Vector2D &orientacion = Vector2D(1, 0));
+			const b2Vec2 &velocidad = b2Vec2_zero,
+			Orientaciones orientacion = derecha);
 
-	Mundo &obtenerMundo();
-	void recuperarEnergia(int cantidadEnergia);
+	void recuperarEnergia(uint cantidadEnergia);
 
-	virtual void atacado(real daño);
-	virtual void eliminar() = 0;
+	virtual void atacado(uint daño);
 };
 
 #endif

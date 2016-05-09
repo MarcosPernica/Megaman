@@ -1,8 +1,6 @@
 #include "PowerUp.h"
 
-const Vector2D PowerUp::velocidad VELOCIDADPOWERUP;
-
-NuevaVida::NuevaVida(Mundo &mundo, const Vector2D &posicion) : PowerUp(mundo, PROBANUEVAVIDA, MASAPOWERUP, posicion)
+NuevaVida::NuevaVida(Mundo &mundo, const b2Vec2 &posicion) : PowerUp(mundo, PROBANUEVAVIDA, posicion)
 {
 }
 
@@ -12,7 +10,7 @@ void NuevaVida::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-CapsulaEnergiaChica::CapsulaEnergiaChica(Mundo &mundo, const Vector2D &posicion) : PowerUp(mundo, PROBAENERGIACHICA, MASAPOWERUP, posicion)
+CapsulaEnergiaChica::CapsulaEnergiaChica(Mundo &mundo, const b2Vec2 &posicion) : PowerUp(mundo, PROBAENERGIACHICA, posicion)
 {
 }
 
@@ -22,7 +20,7 @@ void CapsulaEnergiaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-CapsulaEnergiaGrande::CapsulaEnergiaGrande(Mundo &mundo, const Vector2D &posicion) : PowerUp(mundo, PROBAENERGIAGRANDE, MASAPOWERUP, posicion)
+CapsulaEnergiaGrande::CapsulaEnergiaGrande(Mundo &mundo, const b2Vec2 &posicion) : PowerUp(mundo, PROBAENERGIAGRANDE, posicion)
 {
 }
 
@@ -32,7 +30,7 @@ void CapsulaEnergiaGrande::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-CapsulaPlasmaChica::CapsulaPlasmaChica(Mundo &mundo, const Vector2D &posicion) : PowerUp(mundo, PROBAPLASMACHICA, MASAPOWERUP, posicion)
+CapsulaPlasmaChica::CapsulaPlasmaChica(Mundo &mundo, const b2Vec2 &posicion) : PowerUp(mundo, PROBAPLASMACHICA, posicion)
 {
 }
 
@@ -42,7 +40,7 @@ void CapsulaPlasmaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-CapsulaPlasmaGrande::CapsulaPlasmaGrande(Mundo &mundo, const Vector2D &posicion) : PowerUp(mundo, PROBAPLASMAGRANDE, MASAPOWERUP, posicion)
+CapsulaPlasmaGrande::CapsulaPlasmaGrande(Mundo &mundo, const b2Vec2 &posicion) : PowerUp(mundo, PROBAPLASMAGRANDE, posicion)
 {
 }
 
@@ -52,17 +50,24 @@ void CapsulaPlasmaGrande::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-PowerUp::PowerUp(Mundo &mundo, 
-	             real probabilidadAparicion,
-			     real masa, 
-			     const Vector2D &posicion, 
-				 const Vector2D &velocidad,
-			     bool gravitacional) :
-				 mundo(mundo),
-				 Cuerpo(masa, posicion, gravitacional, velocidad)
+PowerUp::PowerUp(Mundo &mundo,
+				 real probabilidadAparicion,
+				 const b2Vec2 &posicion) :
+				 probabilidadAparicion(probabilidadAparicion),
+				 Cuerpo(mundo,
+						ANCHOSPRITEPOWERUP,
+						ALTOSPRITEPOWERUP,
+						MASAPOWERUP,
+						POWERUPS,
+						CONSTRUCCIONES | PERSONAJES,
+						posicion,	
+						false,
+						true,	
+						b2Vec2 VELOCIDADPOWERUP)
+			     
 {
 	if (probabilidadAparicion < 0 || probabilidadAparicion > 1)
-		return;
+		probabilidadAparicion = 0;
 
 	this->probabilidadAparicion = probabilidadAparicion;
 }
@@ -74,5 +79,5 @@ real PowerUp::obtenerProbabilidadAparicion()
 
 void PowerUp::eliminarPowerUp()
 {
-	mundo.eliminar(this);
+	
 }
