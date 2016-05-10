@@ -5,6 +5,7 @@
 #include "Entidad.h"
 #include "Megaman.h"
 #include "Disparo.h"
+#include "Construccion.h"
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
