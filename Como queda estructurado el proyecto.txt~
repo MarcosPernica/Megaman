@@ -1,0 +1,9 @@
+Saqué el Makefile de acá, tiene ciertas modificaciones 
+http://hiltmon.com/blog/2013/07/03/a-simple-c-plus-plus-project-structure/
+Quedaría armado así:
+-la salida es holi, no hice carpeta bin porque no andaba. Algo con mi linux jodía. 
+-Si te chilla cuando hacés make, creá la carptea mundo en build
+-include tiene los header de Box2D y proximamente los de GTKmm o SDL
+-lib tiene las librerías. Compilé Box2D en linux, podemos hacer las 2 compilaciones y armar 2 carpetas lib y 2 makefiles
+-src tiene el codigo
+-lo de spike y test ni idea
