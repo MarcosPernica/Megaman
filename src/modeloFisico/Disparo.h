@@ -5,7 +5,7 @@
 #include "Interactuable.h"
 #include "Actualizable.h"
 #include "Entidad.h"
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 
 class Mundo;
 

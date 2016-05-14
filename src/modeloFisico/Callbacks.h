@@ -1,7 +1,7 @@
 #ifndef CALLBACKS
 #define CALLBACKS
 
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 #include "Definiciones.h"
 
 class DanarRadio : public b2QueryCallback

@@ -5,7 +5,7 @@
 #include "Cuerpo.h"
 #include "Actualizable.h"
 #include "Mundo.h"
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 
 class Entidad : public Cuerpo, public Actualizable
 {

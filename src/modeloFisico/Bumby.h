@@ -3,7 +3,7 @@
 
 #include "Entidad.h"
 #include "Definiciones.h"
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 
 class Bumby : public Entidad
 {

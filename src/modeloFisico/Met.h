@@ -2,7 +2,7 @@
 #define MET
 
 #include "Protegido.h"
-#include <Box2D\Box2D.h>
+#include <Box2D/Box2D.h>
 
 class Met : public Protegido
 {
