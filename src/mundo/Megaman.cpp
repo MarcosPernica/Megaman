@@ -1,5 +1,6 @@
 #include "Megaman.h"
 #include "Disparo.h"
+#include "Mundo.h"
 
 void Megaman::seleccionarArma(char slot)
 {

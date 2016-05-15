@@ -4,9 +4,9 @@
 #include "Definiciones.h"
 #include "Cuerpo.h"
 #include "Actualizable.h"
-#include "Mundo.h"
-#include <Box2D/Box2D.h>
 
+#include <Box2D/Box2D.h>
+class Mundo;
 class Entidad : public Cuerpo, public Actualizable
 {
 private:

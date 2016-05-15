@@ -1,5 +1,5 @@
 #include "Entidad.h"
-
+#include "Mundo.h"
 Entidad::Entidad(Mundo & mundo, 
 	             real ancho,
 			     real alto,

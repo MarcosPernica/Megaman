@@ -6,11 +6,18 @@
 #include "Definiciones.h"
 #include "Callbacks.h"
 
+#include "Megaman.h"
+#include "PowerUp.h"
+#include "Entidad.h"
+#include "Disparo.h"
+#include "Construccion.h"
+/*
 class Disparo;
-class PowerUp;
+
 class Entidad;
-class Megaman;
 class Construccion;
+*/
+class PowerUp;
 class Cuerpo;
 
 class Mundo
@@ -21,14 +28,16 @@ private:
 	DetectarTocarEnemigos detectorToqueEnemigos;
 
 	b2World mundo;
-	std::list<Megaman> jugadores;
+	std::list<Megaman*> jugadores;
 
 	std::list<Disparo*> disparos;
 	std::list<Entidad*> enemigos;
 	std::list<PowerUp*> powerUps;
 
-	std::list<Construccion> construcciones;
+	std::list<Construccion*> construcciones;
 	std::list<Cuerpo*> destrucciones;
+	
+	void crearNivel();
 public:
 	Mundo();
 	b2World &obtenerMundo();
@@ -41,6 +50,7 @@ public:
 	void agregar(Disparo *disparo);
 	void agregar(PowerUp *powerUp);
 	void agregar(Entidad *entidad);
+	std::list<Dibujable*> obtenerDibujables() const;/////////COPIA//// esa lista podría ser demasiado grande
 
 	void destruirCuerpos();
 

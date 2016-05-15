@@ -3,9 +3,10 @@
 
 #include "Definiciones.h"
 #include <Box2D/Box2D.h>
-#include "Mundo.h"
+class Mundo;
 
 #define MASAINFINITA -1
+#include "../graficos/ImagenRectangulo.h"
 
 enum Orientaciones
 {
@@ -13,28 +14,9 @@ enum Orientaciones
 	derecha
 };
 
-/**
- * Marcos leelo y borralo: la hice clase porque C++ se puso jodón con
- * el operador = y el const de esDetectorSuelo y la copia y no sé qué, 
- * parece que algún std::vector usa el = adentro (capaz los de Entidades?)
- * */
-class Datos
-{
-	private:
-	bool esDetectorSuelo;
-	
-	public:
-	Cuerpo *cuerpo;
-	bool getEsDetectorSuelo(){
-		return esDetectorSuelo;
-	}
-	Datos(Cuerpo* duenio,bool esDetSuelo){
-		this->cuerpo=duenio;
-		this->esDetectorSuelo=esDetSuelo;
-	}
-};
+class Datos;
 
-class Cuerpo
+class Cuerpo: public ImagenRectangulo
 {
 private:
 	b2Body *cuerpo;
@@ -76,5 +58,30 @@ public:
 
 	static const b2Vec2 versorIzquierda, versorDerecha;
 	static const b2Vec2 &orientacionAVector(Orientaciones orientacion);
+	
+	private:
+	//Dibujable (de esta forma nos aseguramos que todos los cuerpos estén en pantalla)
+	virtual const Rectangulo obtenerRepresentacion() const;
+};
+
+/**
+ * Marcos leelo y borralo: la hice clase porque C++ se puso jodón con
+ * el operador = y el const de esDetectorSuelo y la copia y no sé qué, 
+ * parece que algún std::vector usa el = adentro (capaz los de Entidades?)
+ * */
+class Datos
+{
+	private:
+	bool esDetectorSuelo;
+	
+	public:
+	Cuerpo *cuerpo;
+	bool getEsDetectorSuelo(){
+		return esDetectorSuelo;
+	}
+	Datos(Cuerpo* duenio,bool esDetSuelo){
+		this->cuerpo=duenio;
+		this->esDetectorSuelo=esDetSuelo;
+	}
 };
 #endif

@@ -4,6 +4,7 @@
 #include "Entidad.h"
 #include "Definiciones.h"
 #include <vector>
+#include "Disparo.h"
 
 #define MEGAMANNOCORRE 0
 #define MEGAMANEMPEZANDOACORRRER 1

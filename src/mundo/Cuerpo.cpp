@@ -138,3 +138,14 @@ const b2Vec2 & Cuerpo::orientacionAVector(Orientaciones orientacion)
 	else
 		return versorIzquierda;
 }
+
+const Rectangulo Cuerpo::obtenerRepresentacion() const{
+	Rectangulo r;
+	b2Vec2 top_left=obtenerLeftTopCajaMagnificada(1);
+	b2Vec2 bot_right=obtenerRightBottomCajaMagnificada(1);
+	r.x=top_left.x;
+	r.y=top_left.y;
+	r.w=bot_right.x-top_left.x;
+	r.h=bot_right.y-top_left.y;
+	return r;
+}
