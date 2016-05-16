@@ -58,8 +58,7 @@ public:
 
 	static const b2Vec2 gravedad;
 	
-	void actualizar(real segundosDesdeUltima);
-	
+	void actualizar(real segundosDesdeUltima);	
 };
 
 #endif

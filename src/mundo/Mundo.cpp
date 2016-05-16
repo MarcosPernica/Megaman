@@ -2,7 +2,6 @@
 #include "Callbacks.h"
 #include <algorithm>
 
-
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
 Mundo::Mundo() : mundo(gravedad)
@@ -128,7 +127,14 @@ std::list<Dibujable*> Mundo::obtenerDibujables() const{/////////COPIA//// esa li
 }
 
 void Mundo::actualizar(real segundosDesdeUltima){
-	mundo.Step(segundosDesdeUltima,8,3);
+	float32 timeStep = 1.0f / 60.0f;
+
+	int32 velocityIterations = 6;
+	int32 positionIterations = 2;
+
+	for (int32 i = 0; i < 60; ++i)
+		mundo.Step(timeStep, velocityIterations, positionIterations);
+
 	//megamans
 	std::list<Megaman*>::iterator jit;
 	for(jit=jugadores.begin(); jit!=jugadores.end(); ++jit){
