@@ -34,8 +34,9 @@ ticket:
 }
 */
 
-/*
+
 //-------------MAIN CON CLASE VENTANA (o 2 ventanas)-------------
+/*
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include <X11/Xlib.h>
@@ -56,15 +57,19 @@ int main(int argc, char *argv[])
 */
 
 //-------------MAIN CON VENTANA Y FISICAS-------------
+
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
+#include "net/ProxyJugador.h"
 int main(int argc, char *argv[])
 {
 	Mundo mundo;
 	VentanaJuego ventana(mundo,argc,argv,"1");
 	ventana.start();
 	Simulador simulador(mundo,40);
+	ProxyJugador proxy(mundo.getMegaman(), ventana);
 	
 	ventana.join();
 }
+

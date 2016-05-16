@@ -60,6 +60,8 @@ public:
 	
 	void actualizar(real segundosDesdeUltima);
 	
+	Megaman* getMegaman();
+	
 };
 
 #endif

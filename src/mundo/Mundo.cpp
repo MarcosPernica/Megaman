@@ -135,3 +135,6 @@ void Mundo::actualizar(real segundosDesdeUltima){
 		(*jit)->actualizar(segundosDesdeUltima);
 	}
 }
+Megaman* Mundo::getMegaman(){
+	return *jugadores.begin();
+}

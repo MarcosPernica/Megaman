@@ -1,7 +1,7 @@
 #include "Megaman.h"
 #include "Disparo.h"
 #include "Mundo.h"
-
+#include <iostream>
 void Megaman::seleccionarArma(char slot)
 {
 	if (slot < armas.size())
@@ -135,6 +135,7 @@ void Megaman::saltar()
 		saltando = true;
 		corriendo = false;
 	}
+	std::cout<<"Soy megaman y estoy saltando"<<std::endl;
 }
 
 void Megaman::correr()

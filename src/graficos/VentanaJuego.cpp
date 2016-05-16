@@ -7,8 +7,8 @@ void VentanaJuego::run(){
 	std::cout<<"VentanaJuego esta corriendo"<<std::endl;
 	
 	
-	Gtk::Window window;
-	window.set_default_size(800, 600);
+	
+	window->set_default_size(800, 600);
 	
 	Glib::signal_timeout().connect(
 			sigc::mem_fun(*this, &VentanaJuego::on_actualizar_dibujo)
@@ -19,19 +19,20 @@ void VentanaJuego::run(){
 	boton.show();
 	* */
 	
-	window.add(*darea);
+	window->add(*darea);
 	
 	darea->signal_draw().connect(sigc::mem_fun(*this, &VentanaJuego::on_draw));
 	darea->show();
 	
-	app->run(window);
+	app->run(*window);
 	
 }
 void VentanaJuego::end(){}
 
 VentanaJuego::VentanaJuego(const Mundo& mun, int argc, char * argv[], const std::string& id):mundo(mun),dibujador(mun){
 	app = Gtk::Application::create(argc, argv, "Megamarta.is.angry" + id);
-	darea=new Gtk::DrawingArea;
+	darea=new Gtk::DrawingArea;//tengo que hacer estos new después de crear la application porque sino gtkmm chilla
+	window= new Gtk::Window;
 }
 
 bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
@@ -59,4 +60,8 @@ bool VentanaJuego::on_actualizar_dibujo(){
 
 VentanaJuego::~VentanaJuego(){
 	delete darea;
+}
+
+Gtk::Window& VentanaJuego::getWindow(){
+	return *window;
 }

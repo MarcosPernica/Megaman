@@ -13,6 +13,7 @@ class VentanaJuego : public Thread{
 	const Mundo& mundo;
 	Glib::RefPtr<Gtk::Application> app;
 	Dibujador dibujador;
+	Gtk::Window* window;
 	public:
 	~VentanaJuego();
 	VentanaJuego(const Mundo& mundo, int argc, char *argv[],const std::string& id);
@@ -20,6 +21,7 @@ class VentanaJuego : public Thread{
 	virtual void end();
 	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
 	bool on_actualizar_dibujo();
+	Gtk::Window& getWindow();
 };
 
 
