@@ -58,14 +58,13 @@ int main(int argc, char *argv[])
 //-------------MAIN CON VENTANA Y FISICAS-------------
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
-#include <ctime>
+#include "mundo/Simulador.h"
 int main(int argc, char *argv[])
 {
 	Mundo mundo;
 	VentanaJuego ventana(mundo,argc,argv,"1");
 	ventana.start();
-	
-	
+	Simulador simulador(mundo,40);
 	
 	ventana.join();
 }

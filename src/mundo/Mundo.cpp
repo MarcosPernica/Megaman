@@ -129,4 +129,9 @@ std::list<Dibujable*> Mundo::obtenerDibujables() const{/////////COPIA//// esa li
 
 void Mundo::actualizar(real segundosDesdeUltima){
 	mundo.Step(segundosDesdeUltima,8,3);
+	//megamans
+	std::list<Megaman*>::iterator jit;
+	for(jit=jugadores.begin(); jit!=jugadores.end(); ++jit){
+		(*jit)->actualizar(segundosDesdeUltima);
+	}
 }

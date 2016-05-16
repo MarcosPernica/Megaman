@@ -3,6 +3,7 @@
 /**
  * Actualiza el Mundo periódicamente
  * */
+ #include "Mundo.h"
 class Simulador{
 	public:
 	Simulador(Mundo& mundo, uint milisPorActualizacion);
@@ -10,6 +11,6 @@ class Simulador{
 	private:
 	Mundo& mundo;
 	uint milisPorActualizacion;
-}
+};
 
 #endif
