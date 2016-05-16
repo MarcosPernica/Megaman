@@ -1,39 +1,41 @@
 #include "Snapshot.h"
 #include <sstream>
+#include "../common/exceptions.h"
+Snapshot::Snapshot(){}
 Snapshot::Snapshot(const SnapshotSerializada& serializada){
 	deserializar(serializada);
 }
 Snapshot::Snapshot(ID id){
 	agregarPropiedad("ID", id);
 }
-Snapshot::Snapshot(){}
 
-virtual SnapshotSerializada Snapshot::serializar(){
+
+SnapshotSerializada Snapshot::serializar(){
 	std::ostringstream ostream;
-	MapaPropiedades::iterable it;
+	MapaPropiedades::iterator it;
 	for(it=propiedades.begin(); it!=propiedades.end(); ++it){
 		ostream<< it->first <<" "<<it->second<<std::endl;
 	}
 	
-	return String(ostream.str());///////COPIA/////////////////////////////	
+	return ostream.str();///////COPIA/////////////////////////////	
 }
 
 void Snapshot::agregarPropiedad(const std::string& nombre, int valor){
 	propiedades[nombre]=valor;
 }
 
-int Snapshot::obtenerPropiedad(const std::string& nombre){
+int Snapshot::obtenerPropiedad(const std::string& nombre) const{
 	if(propiedades.count(nombre)==0){
-		throw new CustomException("La propiedad "+nombre+" no existe");
+		throw CustomException("La propiedad "+nombre+" no existe");
 	}
-	return propiedades[nombre];
+	return (propiedades.find(nombre)->second);
 }
 
-int Snapshot::getID(){
+int Snapshot::getID() const{
 	return obtenerPropiedad("ID");
 }
 
-void SnapshotSerializada::deserializar(const SnapshotSerializada& serializada){
+void Snapshot::deserializar(const SnapshotSerializada& serializada){
 	std::istringstream istream(serializada);
 	while(!istream.eof()){
 		std::string nombre;
