@@ -37,6 +37,8 @@ private:
 	std::list<Construccion*> construcciones;
 	std::list<Cuerpo*> destrucciones;
 	
+	std::list<Actualizable*> actualizables;
+	
 	void crearNivel();
 public:
 	Mundo();
@@ -55,6 +57,9 @@ public:
 	void destruirCuerpos();
 
 	static const b2Vec2 gravedad;
+	
+	void actualizar(real segundosDesdeUltima);
+	
 };
 
 #endif

@@ -126,3 +126,7 @@ std::list<Dibujable*> Mundo::obtenerDibujables() const{/////////COPIA//// esa li
 	
 	return ret;
 }
+
+void Mundo::actualizar(real segundosDesdeUltima){
+	mundo.Step(segundosDesdeUltima,8,3);
+}
