@@ -10,6 +10,8 @@
 #define POWERUPS 8
 #define DISPAROS 16
 
+#define FACTORCONVERSION (1)
+
 
 #define OK 0
 #define MSG_NOSIGNAL 0

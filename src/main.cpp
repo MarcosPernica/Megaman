@@ -67,7 +67,8 @@ int main(int argc, char *argv[])
 	Mundo mundo;
 	VentanaJuego ventana(mundo,argc,argv,"1");
 	ventana.start();
-	Simulador simulador(mundo,40);
+	Simulador simulador(mundo,33);
+	simulador.run();
 	ProxyJugador proxy(mundo.getMegaman(), ventana);
 	
 	ventana.join();

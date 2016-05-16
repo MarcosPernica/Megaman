@@ -41,10 +41,10 @@ Cuerpo::Cuerpo(Mundo &mundo,
 
 	cuerpo = mundo.obtenerMundo().CreateBody(&defCuerpo);
 	
-	cajaColision.SetAsBox(ancho / 2, alto / 2);
+	cajaColision.SetAsBox(ancho*FACTORCONVERSION / 2, alto*FACTORCONVERSION / 2);
 	
 	if(masa != MASAINFINITA)
-		unionCuerpo.density = masa / (ancho*alto);
+		unionCuerpo.density = masa / (ancho*FACTORCONVERSION*alto*FACTORCONVERSION);
 
 	unionCuerpo.shape = &cajaColision;
 	unionCuerpo.filter.categoryBits = categoria;

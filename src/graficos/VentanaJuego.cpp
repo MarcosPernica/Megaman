@@ -12,7 +12,7 @@ void VentanaJuego::run(){
 	
 	Glib::signal_timeout().connect(
 			sigc::mem_fun(*this, &VentanaJuego::on_actualizar_dibujo)
-			,1000);
+			,33);
 	/*
 	Gtk::Button boton;
 	window.add(boton);
@@ -37,7 +37,7 @@ VentanaJuego::VentanaJuego(const Mundo& mun, int argc, char * argv[], const std:
 
 bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	
-	std::cout<<"on draw!"<<std::endl;
+	//std::cout<<"on draw!"<<std::endl;
 	/*
 	cr->set_line_width(10.0);
 	cr->set_source_rgb(1,1,0);
@@ -53,7 +53,7 @@ bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	return true;
 }
 bool VentanaJuego::on_actualizar_dibujo(){
-	std::cout<<"actualizando dibujjo"<<std::endl;
+	//std::cout<<"actualizando dibujjo"<<std::endl;
 	darea->queue_draw();
 	return true;
 }

@@ -1,6 +1,7 @@
 #include "Mundo.h"
 #include "Callbacks.h"
 #include <algorithm>
+#include <iostream>
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
@@ -17,7 +18,7 @@ void Mundo::crearNivel(){
 	construcciones.push_back(piso);
 	Construccion *obstruccion = new Construccion(*this,b2Vec2(300,500), 80, 80);
 	construcciones.push_back(obstruccion);
-	Megaman *megaman = new Megaman(*this, b2Vec2(100,0));
+	Megaman *megaman = new Megaman(*this, b2Vec2(250,0));
 	jugadores.push_back(megaman);
 }
 
@@ -127,13 +128,10 @@ std::list<Dibujable*> Mundo::obtenerDibujables() const{/////////COPIA//// esa li
 }
 
 void Mundo::actualizar(real segundosDesdeUltima){
-	float32 timeStep = 1.0f / 60.0f;
-
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
-
-	for (int32 i = 0; i < 60; ++i)
-		mundo.Step(timeStep, velocityIterations, positionIterations);
+	
+	mundo.Step(segundosDesdeUltima, velocityIterations, positionIterations);
 
 	//megamans
 	std::list<Megaman*>::iterator jit;
