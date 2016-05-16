@@ -136,6 +136,7 @@ void Megaman::saltar()
 		corriendo = false;
 	}
 	std::cout<<"Soy megaman y estoy saltando"<<std::endl;
+	aplicarImpulso(b2Vec2(0,-2000));
 }
 
 void Megaman::correr()
