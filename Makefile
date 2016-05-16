@@ -3,6 +3,7 @@ CC := g++ # This is the main compiler
 SRCDIR := src
 BUILDDIR := build
 TARGET := holi
+COSOGTKMM := `pkg-config gtkmm-3.0 --cflags --libs`
  
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
@@ -13,11 +14,11 @@ INC := -I include
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
+	@echo " $(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)"; $(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)"; $(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)
 
 clean:
 	@echo " Cleaning..."; 
