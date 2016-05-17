@@ -17,27 +17,28 @@ class ServerProxy;
 
 typedef char CodigoEvento;
 #define CODIGO_EVENTO_SALTO 's'
-/*
+
 class ProxyJugador{
 	private:
 	Megaman* controlado;
-	ServerProxy& server_proxy;
+	//ServerProxy& server_proxy;
 	public:
 	/**
 	 * Usado del lado del cliente
 	 * */
-	/*ProxyJugador(Megaman* controlado, VentanaJuego& ventana, ServerProxy& server_proxy);
+	 ProxyJugador(Megaman* controlado, VentanaJuego& ventana);
+	//ProxyJugador(Megaman* controlado, VentanaJuego& ventana, ServerProxy& server_proxy);
 	/**
 	 * Usado por el server
 	 * */
-	/*ProxyJugador(Megaman* controlado);
+	//ProxyJugador(Megaman* controlado);
 	/*//*
 	 * Esta se uso del lado de cliente para detectar el teclado
-	 * 
-	/*bool detectarPresionTecla(GdkEventKey* evento);
+	 * */
+	bool detectarPresionTecla(GdkEventKey* evento);
 	/**
 	 * Esta se usa del lado del servidor para recibir los keystrokes remotos...
 	 * */
-	/*void recibirMensajeDeCliente(CodigoEvento evento);
-};*/
+	void recibirMensajeDeCliente(CodigoEvento evento);
+};
 #endif
