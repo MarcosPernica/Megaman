@@ -12,7 +12,7 @@ class ImagenRectangulo: public Dibujable{
 	/**
 	 * Pregunta qué rectángulo dibujar, las coordenadas son absolutas
 	 * */
-	virtual const Rectangulo obtenerRepresentacion() const = 0;
+	virtual const std::list<Rectangulo> obtenerRepresentacion() const = 0;
 };
 
 #endif
