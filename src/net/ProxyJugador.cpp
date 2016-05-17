@@ -3,10 +3,16 @@
 #include "../graficos/VentanaJuego.h"
 #include "ServerProxy.h"
 #include "../mundo/Megaman.h"
-
-/*ProxyJugador::ProxyJugador(Megaman *controlado, VentanaJuego& ventana, ServerProxy& serv):
+/*
+ProxyJugador::ProxyJugador(Megaman *controlado, VentanaJuego& ventana, ServerProxy& serv):
 					controlado(controlado),
 					server_proxy(serv){
+	ventana.getWindow().signal_key_press_event().connect(
+			sigc::mem_fun(*this, &ProxyJugador::detectarPresionTecla));
+}
+*/
+ProxyJugador::ProxyJugador(Megaman *controlado, VentanaJuego& ventana):
+					controlado(controlado){
 	ventana.getWindow().signal_key_press_event().connect(
 			sigc::mem_fun(*this, &ProxyJugador::detectarPresionTecla));
 }
@@ -14,15 +20,15 @@
 bool ProxyJugador::detectarPresionTecla(GdkEventKey* evento){
 	controlado->saltar();
 	std::cout<<"se apreto una tecla"<<std::endl;
-	server_proxy.enviarEvento(CODIGO_EVENTO_SALTO);
+	//server_proxy.enviarEvento(CODIGO_EVENTO_SALTO);
 	return false;
 }
 
 
-ProxyJugador::ProxyJugador(Megaman* controlado): controlado(controlado) { }
+//ProxyJugador::ProxyJugador(Megaman* controlado): controlado(controlado) { }
 
 void ProxyJugador::recibirMensajeDeCliente(CodigoEvento evento){
 	if(evento==CODIGO_EVENTO_SALTO){
 		controlado->saltar();
 	}
-}*/
+}
