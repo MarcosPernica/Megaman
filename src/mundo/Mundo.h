@@ -20,6 +20,17 @@ class Construccion;
 class PowerUp;
 class Cuerpo;
 
+/* Volar todas las listas, dejar 
+ * 
+ * -mapa (ID de usuario, Megaman*)
+ * -mapa (ID, snapshotable)
+ * -conjunto de Cuerpo* destruciones mantenerla
+ * 
+ * -conjunto de Dibujables
+ * -conjunto de Actualizables.
+ * 
+ * */
+
 class Mundo
 {
 private:
