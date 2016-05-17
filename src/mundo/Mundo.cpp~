@@ -6,8 +6,10 @@
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
 Mundo::Mundo() : mundo(gravedad)
-{
-	mundo.SetContactListener(&listenerColisiones);
+{	/*Box2D solo acepta un listener (el ultimo)*/
+	mundo.SetContactListener(&detectorBalistica);
+	mundo.SetContactListener(&detectorToqueEnemigos);
+	mundo.SetContactListener(&detectorSuelo);
 	crearNivel();	
 }
 

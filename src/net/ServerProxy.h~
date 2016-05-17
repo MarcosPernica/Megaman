@@ -10,7 +10,7 @@ Tiene referencias a todos los ProxyJugador y al mundo.
 #include "ProxyJugador.h"
 #include "Server.h"
 
-/*class ServerProxy{
+class ServerProxy{
 	private:
 	Mundo& mundo;
 	Server& server;//no va a estar!
@@ -20,5 +20,5 @@ Tiene referencias a todos los ProxyJugador y al mundo.
 	void enviarEvento(CodigoEvento evento);
 	void inyectarSnapshot();
 	
-};*/
+};
 #endif

@@ -4,7 +4,7 @@
 #include "ServerProxy.h"
 #include "../mundo/Megaman.h"
 
-/*ProxyJugador::ProxyJugador(Megaman *controlado, VentanaJuego& ventana, ServerProxy& serv):
+ProxyJugador::ProxyJugador(Megaman *controlado, VentanaJuego& ventana, ServerProxy& serv):
 					controlado(controlado),
 					server_proxy(serv){
 	ventana.getWindow().signal_key_press_event().connect(
@@ -25,4 +25,4 @@ void ProxyJugador::recibirMensajeDeCliente(CodigoEvento evento){
 	if(evento==CODIGO_EVENTO_SALTO){
 		controlado->saltar();
 	}
-}*/
+}

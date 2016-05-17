@@ -1,7 +1,8 @@
 #include "Server.h"
 #include "ProxyJugador.h"
-/*
-Server::Server():jugador(mundo.getMegaman()){}
+/*Borralos de aca abajo tambien*/
+
+Server::Server():jugador(mundo.getMegaman(),*ventana,*serverProxy){}
 
 void Server::inicializar(){
 	Simulador(mundo,100);
@@ -9,4 +10,4 @@ void Server::inicializar(){
 
 ProxyJugador& Server::getJugador(){
 	return jugador;
-}*/
+}

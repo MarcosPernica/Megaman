@@ -122,7 +122,7 @@ void Cuerpo::agregarCuerpoInmaterial(real ancho,
 
 		datos.push_back(DatosColisionCuerpo(this,identificador));
 
-		unionCajita.userData = new DatosColisionCuerpo(this,identificador);
+		unionCajita.userData = &datos.at(datos.size()-1);
 		unionCajita.shape = &cajita;
 
 		cuerpo->CreateFixture(&unionCajita);

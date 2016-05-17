@@ -23,7 +23,10 @@ class Cuerpo;
 class Mundo
 {
 private:
-	ListenerColisiones listenerColisiones;
+	DetectarBalistica detectorBalistica;
+	DetectarSuelo detectorSuelo;
+	DetectarTocarEnemigos detectorToqueEnemigos;
+
 	b2World mundo;
 	std::list<Megaman*> jugadores;
 

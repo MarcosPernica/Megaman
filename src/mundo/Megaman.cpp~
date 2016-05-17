@@ -110,7 +110,7 @@ Megaman::Megaman(Mundo & mundo,
 	armas.push_back(arma);
 	armaSeleccionada = 0;
 
-	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN/2,200,b2Vec2(0,ALTOSPRITEMEGAMAN/2),MEGAMANJUMPBOX);
+	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN/2,200,b2Vec2(0,-ALTOSPRITEMEGAMAN/2),MEGAMANJUMPBOX);
 }
 
 Megaman::~Megaman()

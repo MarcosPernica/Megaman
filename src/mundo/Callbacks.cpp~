@@ -124,17 +124,3 @@ void DetectarTocarEnemigos::BeginContact(b2Contact * contacto)
 		megaman->atacado(DANOPORCONTACTO);
 	}
 }
-
-void ListenerColisiones::BeginContact(b2Contact * contacto)
-{
-	detectorBalistica.BeginContact(contacto);
-	detectorSuelo.BeginContact(contacto);
-	detectorToqueEnemigos.BeginContact(contacto);
-}
-
-void ListenerColisiones::EndContact(b2Contact * contacto)
-{
-	detectorBalistica.EndContact(contacto);
-	detectorSuelo.EndContact(contacto);
-	detectorToqueEnemigos.EndContact(contacto);
-}

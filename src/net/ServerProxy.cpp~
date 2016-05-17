@@ -1,5 +1,5 @@
 #include "ServerProxy.h"
-/*ServerProxy::ServerProxy(Mundo& mun, Server& serv):
+ServerProxy::ServerProxy(Mundo& mun, Server& serv):
 					mundo(mun),
 					server(serv){}
 void ServerProxy::enviarEvento(CodigoEvento evento){
@@ -7,4 +7,4 @@ void ServerProxy::enviarEvento(CodigoEvento evento){
 }
 void ServerProxy::inyectarSnapshot(){
 	//mundo.inyectarSnapshot(server.mundo.obtenerSnapshot()); eeeeeeeeeeeeeeeeee
-}*/
+}
