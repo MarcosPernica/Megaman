@@ -11,7 +11,7 @@ class Servidor{
 	/**
 	 * Colección con todos los proxies, que tienen un par de Threads
 	 * */
-	std::set<ProxyJugador*> proxies;//talvez dupla (Proxy*,ChannelSocket*) para el borrado?
+	std::set<ProxyJugador*> proxies;//esto va a estar recontra protegido
 	/**
 	 * Socket aceptador
 	 * */
@@ -35,5 +35,7 @@ class Servidor{
 	/**Ejecuta todo
 	 * */
 	void correr();
+	
+	~Servidor();
 };
 #endif

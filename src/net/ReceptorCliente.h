@@ -1,7 +1,15 @@
 #ifndef RECEPTOR_CLIENTE
 #define RECEPTOR_CLIENTE
-class ReceptorCliente{
+
+#include "Receptor.h"
+#include <string>
+#include "Cliente.h"
+#include <iostream>
+class ReceptorCliente: public Receptor{
 	private:
-	const ChannelSocket& channel;
-}
+	Cliente& cliente;
+	public: 
+	ReceptorCliente(const ChannelSocket& channel, Cliente& cliente);
+	void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje);
+};
 #endif

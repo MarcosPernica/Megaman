@@ -1,7 +1,6 @@
 #include "Jugador.h"
 #include <iostream>
 #include "../graficos/VentanaJuego.h"
-#include "ServerProxy.h"
 #include "../mundo/Megaman.h"
 Jugador::Jugador(Megaman *controlado, VentanaJuego& ventana):
 					controlado(controlado){

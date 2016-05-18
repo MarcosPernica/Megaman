@@ -81,8 +81,8 @@ int Socket::connectS(Address* address, socklen_t length){
 	return connect(file_descriptor, address, length);
 }
 int Socket::recvS(char* into, unsigned size) const{
-	return recv(file_descriptor, into, size, 0);
+	return recv(file_descriptor, into, size, MSG_NOSIGNAL);
 }
 int Socket::sendS(char* from, unsigned size) const{
-	return send(file_descriptor, from, size, 0);
+	return send(file_descriptor, from, size, MSG_NOSIGNAL);
 }
