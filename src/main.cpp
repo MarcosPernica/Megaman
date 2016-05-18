@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
 
 
 //-------------MAIN CON VENTANA Y FISICAS-------------
+/*
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
@@ -72,16 +73,18 @@ int main(int argc, char *argv[])
 	ventana.start();
 	Simulador simulador(mundo,33);
 	simulador.run();
+	*/
 	/**
 	 * Marcos, qué te parece si hacemos
 	 * Megaman* Mundo::agregarMegaman(id_usuario)
 	 * y después se llama
 	 * mundo.iniciar() o lo que sea
 	 * */
+	 /*
 	Jugador jugador(mundo.getMegaman(), ventana);
 	ventana.join();
 }
-
+*/
 //-------------MAIN CLI/SERV HASTA LA PIJA-------------
 /*
 #include <string>
@@ -91,9 +94,8 @@ int main(int argc, char *argv[])
 #include <iostream>
 #ifndef compiling_server
 */
-
 /**
- * El cliente va a tener 2 etapas:
+ * El juego va a tener las sig. etapas:
  * 
  * Seteo de jugadores e ids, e inicio de partida por parte del primero
  * (si sos el primero, envías y recibís la señal "iniciar", si no sos el primero, sólo recibís la señal iniciar)
@@ -107,7 +109,7 @@ int main(int argc, char *argv[])
  * 
  * y así...
  * */
- /*
+/*
 int main(int argc, char *argv[])
 {
 	ChannelSocket channel;
@@ -152,3 +154,38 @@ int main(int argc, char *argv[])
 }
 #endif
 */
+
+//-------------MAIN CLI/SERV con complejidad-------------
+
+#include "net/Servidor.h"
+#include "net/Cliente.h"
+#ifndef compiling_server
+
+/**
+ * El juego va a tener las sig. etapas:
+ * 
+ * Seteo de jugadores e ids, e inicio de partida por parte del primero
+ * (si sos el primero, envías y recibís la señal "iniciar", si no sos el primero, sólo recibís la señal iniciar)
+ * (mientras, recibiste info de todos los jugadores)
+ * 
+ * selección de nivel
+ * lanzamiento de ventana
+ * 
+ * selección de nivel
+ * lanzamiento de ventana
+ * 
+ * y así...
+ * */
+
+int main(int argc, char *argv[])
+{
+	Cliente cli;
+	cli.correr();
+}
+#else
+int main(int argc, char *argv[])
+{
+	Servidor servidor;
+	servidor.correr();
+}
+#endif

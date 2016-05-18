@@ -1,45 +1,28 @@
 #ifndef PROXYJUGADOR
 #define PROXYJUGADOR
 /**
-Esta clase reresenta el proxy de cada jugador.
-Los playerProxy escuchan del teclado o de un Socket, 
-y actualizan al Megaman* que se les asigne. 
-De escuchar del teclado, envían una señal al servidor.
-En e3l futuro se separarán ambas funciones en 2 clases.
+ * Esta clase representa el Cliente visto desde el Servidor. 
+ * ProxyCliente hubiera sido otro nombre posible.
+ * Va a aptretar botones de Megaman*
 **/
-
-//#include "../graficos/VentanaJuego.h"
-class VentanaJuego;
-class ServerProxy;
-#include "../mundo/Megaman.h"
-class ServerProxy;
-#include <gdk/gdk.h>
-
-typedef char CodigoEvento;
-#define CODIGO_EVENTO_SALTO 's'
+#include <string>
+#include "ChannelSocket.h"
+#include <set>
 
 class ProxyJugador{
 	private:
-	Megaman* controlado;
-	//ServerProxy& server_proxy;
+	const std::string id_usuario;
+	ChannelSocket* channel;
 	public:
-	/**
-	 * Usado del lado del cliente
-	 * */
-	 ProxyJugador(Megaman* controlado, VentanaJuego& ventana);
-	//ProxyJugador(Megaman* controlado, VentanaJuego& ventana, ServerProxy& server_proxy);
-	/**
-	 * Usado por el server
-	 * */
-	//ProxyJugador(Megaman* controlado);
-	/*//*
-	 * Esta se uso del lado de cliente para detectar el teclado
-	 * */
-	bool detectarPresionTecla(GdkEventKey* evento);
-	bool detectarLiberacionTecla(GdkEventKey* evento);
+	ProxyJugador(const std::string& id_usuario, ChannelSocket* channel);
+	void enviarListaJugadores(const std::set<ProxyJugador*>& lista);
+	void notificarLlegada(ProxyJugador* jugador);
+	void notificarEstaba(ProxyJugador* jugador);
+	const std::string& getUsuario();
 	/**
 	 * Esta se usa del lado del servidor para recibir los keystrokes remotos...
 	 * */
-	void recibirMensajeDeCliente(CodigoEvento evento);
+	
+	//void recibirMensajeDeCliente(CodigoEvento evento);
 };
 #endif

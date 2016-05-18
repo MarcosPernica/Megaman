@@ -15,6 +15,7 @@ typedef char CodigoEvento;
  * Jugador detecta eventos del teclado, habla con la interfaz del objeto
  * Megaman enviándole los controles, y a la vez los envía al servidor.
  * Se ocupa sólo de la emisión de mensajes, no su recepción. 
+ * 
  * */
 class Jugador{
 	private:

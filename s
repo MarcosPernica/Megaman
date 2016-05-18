@@ -23,7 +23,10 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 clean:
 	@echo " Cleaning..."; 
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
-
+posta:
+	@echo " $(RM) -r $(BUILDDIR)/main.o "; $(RM) -r $(BUILDDIR)/main.o	
+	@echo "make -f s"; make -f s
+	
 # Tests
 tester:
 	$(CC) $(CFLAGS) test/tester.cpp $(INC) $(LIB) -o bin/tester
