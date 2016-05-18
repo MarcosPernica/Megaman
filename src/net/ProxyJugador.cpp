@@ -76,10 +76,12 @@ void ProxyJugador::informarEstaRota(){
 	//LOCK DE SANA--------------------------------------------
 	coneccion_sana = false;
 }
-/*
-void ProxyJugador::recibirMensajeDeCliente(CodigoEvento evento){
-	if(evento==CODIGO_EVENTO_SALTO){
-		controlado->saltar();
-	}
+
+void ProxyJugador::enviarSosPrimero(){
+	Buffer buf = Buffer::createString(std::string(MENSAJE_SOS_PRIMERO)+"\n");
+	channel->sendFixed(buf);
 }
-*/
+void ProxyJugador::enviarNoSosPrimero(){
+	Buffer buf = Buffer::createString(std::string(MENSAJE_NO_SOS_PRIMERO)+"\n");
+	channel->sendFixed(buf);
+}

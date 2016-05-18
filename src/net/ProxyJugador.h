@@ -27,6 +27,8 @@ class ProxyJugador: public Receptor{
 	void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje);
 	const std::string& getUsuario();
 	bool getEstaSana();
+	void enviarSosPrimero();
+	void enviarNoSosPrimero();
 	
 	~ProxyJugador();
 	/**

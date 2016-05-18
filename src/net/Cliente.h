@@ -3,10 +3,17 @@
 #include "ChannelSocket.h"
 #include <set>
 #include <string>
+enum Posicion{
+	Primero,
+	NoPrimero,
+	Desconocida
+};
+
 class Cliente{
 	private:
 	ChannelSocket socket;
-	bool es_primero;
+	Posicion posicion;
+	bool flag_iniciado;
 	
 	/**
 	 * Pide ip y port por cmd, y conecta el Socket
@@ -25,10 +32,15 @@ class Cliente{
 	public:
 	void correr();
 	
+	
 	//interfaz para ReceptorCliente
 	void agregarEstaba(const std::string& usuario);
 	void agregarLlega(const std::string& usuario);
-	
+	void definirSoyPrimero(bool soy_primero);
+	Posicion obtenerPosicion();
+	void enviarIniciar();
+	void iniciar();
+	bool iniciado();
 	//void enviarMensaje(const std::string& mensaje);
 	
 };

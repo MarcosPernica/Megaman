@@ -2,3 +2,5 @@
 #define MENSAJE_ESTABA "estaba"
 #define MENSAJE_INICIAR "iniciar"
 #define MENSAJE_ID "ID"
+#define MENSAJE_SOS_PRIMERO "sos_primero"
+#define MENSAJE_NO_SOS_PRIMERO "no_sos_primero"

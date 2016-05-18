@@ -9,10 +9,20 @@ ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 
 
 void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
+	std::cout<<"tipo de mensaje recibido: "<<tipo_mensaje<<std::endl;
 	if(tipo_mensaje==MENSAJE_ESTABA){
 		cliente.agregarEstaba(resto_mensaje);
 	}
 	if(tipo_mensaje==MENSAJE_LLEGA){
 		cliente.agregarLlega(resto_mensaje);
+	}
+	if(tipo_mensaje==MENSAJE_SOS_PRIMERO){
+		cliente.definirSoyPrimero(true);
+	}
+	if(tipo_mensaje==MENSAJE_NO_SOS_PRIMERO){
+		cliente.definirSoyPrimero(false);
+	}
+	if(tipo_mensaje==MENSAJE_INICIAR){
+		cliente.iniciar();
 	}
 }
