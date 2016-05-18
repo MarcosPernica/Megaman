@@ -5,7 +5,8 @@
 const b2Vec2 Cuerpo::versorIzquierda(-1, 0);
 const b2Vec2 Cuerpo::versorDerecha(1, 0);
 
-Cuerpo::Cuerpo(Mundo &mundo,
+Cuerpo::Cuerpo(uint ID,
+			   Mundo &mundo,
 			   real ancho, 
 			   real alto,
 			   real masa,
@@ -18,6 +19,7 @@ Cuerpo::Cuerpo(Mundo &mundo,
 			   Orientaciones orientacion) :
 			   orientacion(orientacion),
 			   mundo(mundo),
+			   Snapshotable(ID),
 			   ancho(ancho),
 			   alto(alto),
 			   detectorSuelo(false)

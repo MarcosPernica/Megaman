@@ -10,7 +10,11 @@
 #define POWERUPS 8
 #define DISPAROS 16
 
-#define MSG_NOSIGNAL 0
+#define IDCONSTRUCCIONES 0
+
+#ifdef WIN_32
+	#define MSG_NOSIGNAL 0
+#endif
 #define MAXIMALONGITUDBUFFER 1000
 
 #define GRAVEDAD 10

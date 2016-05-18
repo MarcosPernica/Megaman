@@ -11,8 +11,7 @@ private:
 	uint escudo;
 	bool cubierto;
 public:
-	Protegido(uint ID,
-			  Mundo &mundo,
+	Protegido(Mundo &mundo,
 			  real ancho,
 			  real alto,
 			  uint energiaMaxima,

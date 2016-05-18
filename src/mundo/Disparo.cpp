@@ -2,6 +2,7 @@
 #include "Mundo.h"
 #include <list>
 #include "Entidad.h"
+#include <iostream>
 #include <Box2D/Box2D.h>
 #include "../common/Rectangulo.h"
 
@@ -25,8 +26,8 @@ bool Disparo::megamanLoDisparo() const
 	return disparoMegaman;
 }
 
-Disparo::Disparo(Mundo &mundo,
-				 uint danio,
+Disparo::Disparo(uint ID, Mundo &mundo,
+				 uint dano,
 				 real ancho,
 				 real alto,
 				 real masa,
@@ -34,9 +35,8 @@ Disparo::Disparo(Mundo &mundo,
 				 bool gravitacional,
 				 const b2Vec2 &velocidad,
 				 bool disparoMegaman) :
-				 dano(dano),
-				 disparoMegaman(disparoMegaman),
-			     Cuerpo(mundo,
+			     	 Cuerpo(ID, 
+						mundo,
 						ancho,
 						alto,
 						masa,
@@ -45,7 +45,9 @@ Disparo::Disparo(Mundo &mundo,
 						posicion,
 						false,
 						gravitacional,
-						velocidad)
+						velocidad),
+				dano(dano),
+				 disparoMegaman(disparoMegaman)
 {
 }
 
@@ -60,18 +62,20 @@ bool Disparo::interactuar(Entidad *entidad)
 	return true;
 }
 
-Bomba::Bomba(Mundo & mundo, 
+Bomba::Bomba(uint ID, 
+		 Mundo & mundo, 
 	         const b2Vec2 & posicion,
 	         const b2Vec2 & velocidad) :
-		     tiempoTotal(TIEMPOEXPLOSIONBOMBA),
-			 Disparo(mundo,
-					 DANOBOMBA,
-					 ANCHOSPRITEBOMBA,
-					 ALTOSPRITEBOMBA,
-				     MASABOMBA,
+			 Disparo(ID, 
+				 mundo,
+				 DANOBOMBA,
+				ANCHOSPRITEBOMBA,
+				 ALTOSPRITEBOMBA,
+				    MASABOMBA,
 				     posicion,
 					 true,
-				     velocidad)
+				     velocidad),
+			tiempoTotal(TIEMPOEXPLOSIONBOMBA)
 {
 }
 
@@ -87,6 +91,7 @@ bool Bomba::perecedero()
 
 void Bomba::actualizar(real deltaT)
 {
+	std::cout << "Actualizando" << std::endl;
 	tiempoTotal -= deltaT;
 
 	if (tiempoTotal <= 0)
@@ -106,9 +111,9 @@ bool Bomba::lanzable()
 	return true;
 }
 
-Disparo * Bomba::nuevo(const b2Vec2 & posicion, const b2Vec2 & velocidad)
+Disparo * Bomba::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocidad)
 {
-	return new Bomba(obtenerMundo(), posicion, velocidad);
+	return new Bomba(ID, obtenerMundo(), posicion, velocidad);
 }
 
 void Bomba::explotar()
@@ -123,10 +128,12 @@ void Bomba::explotar()
 	obtenerMundo().eliminar(this);
 }
 
-Plasma::Plasma(Mundo & mundo,
+Plasma::Plasma(uint ID, 
+			   Mundo & mundo,
 			   const b2Vec2 & posicion,
 			   const b2Vec2 & velocidad) :
-			   Disparo(mundo,
+			   Disparo(ID,
+					   mundo,
 					   DANOPLASMA,
 					   ANCHOSPRITEPLASMA,
 					   ALTOSPRITEPLASMA,
@@ -142,7 +149,7 @@ uint Plasma::obtenerMultiplicadorVelocidad() const
 	return MULTIPLICADORVELOCIDADPLASMA;
 }
 
-Disparo * Plasma::nuevo(const b2Vec2 & posicion, const b2Vec2 & velocidad)
+Disparo * Plasma::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocidad)
 {
-	return new Plasma(obtenerMundo(), posicion, velocidad);
+	return new Plasma(ID, obtenerMundo(), posicion, velocidad);
 }

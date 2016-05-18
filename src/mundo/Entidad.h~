@@ -13,8 +13,7 @@ private:
 	uint energia, energiaMaxima;
 	Mundo &mundo;
 public:
-	Entidad(uint ID, 
-			Mundo &mundo,
+	Entidad(Mundo &mundo,
 			real ancho,
 			real alto,
 			uint energiaMaxima, 

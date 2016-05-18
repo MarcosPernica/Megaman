@@ -1,12 +1,10 @@
 #include "Construccion.h"
 
-Construccion::Construccion(uint ID,
-						   Mundo &mundo, 
+Construccion::Construccion(Mundo &mundo, 
 						   const b2Vec2 &posicion, 
 						   real ancho, 
 						   real alto) :
-						   Cuerpo(ID,
-								mundo,
+						   Cuerpo(mundo,
 								  ancho,
 								  alto,
 								  MASAINFINITA,	

@@ -5,7 +5,7 @@ class Actualizable
 {
 public:
 	virtual void actualizar(real deltaT) = 0;
-	virtual ~Actualizable(){};
+	virtual ~Actualizable();
 };
 
 #endif
