@@ -20,8 +20,9 @@ struct DatosColisionCuerpo
 {
 	Cuerpo *cuerpo;
 	uint ID;
+	Rectangulo caja;
 
-	DatosColisionCuerpo(Cuerpo *cuerpo, uint ID) : cuerpo(cuerpo), ID(ID){};
+	DatosColisionCuerpo(Cuerpo *cuerpo, uint ID, Rectangulo caja) : cuerpo(cuerpo), ID(ID), caja(caja){};
 };
 
 class Cuerpo: public ImagenRectangulo
@@ -32,7 +33,7 @@ private:
 	Mundo &mundo;
 	real ancho, alto;
 	bool detectorSuelo;
-	std::vector<DatosColisionCuerpo> datos;
+	std::vector<DatosColisionCuerpo*> datos;
 public:
 	Cuerpo(Mundo &mundo, 
 		   real ancho,
@@ -54,15 +55,14 @@ public:
 	Orientaciones obtenerOrientacion() const;
 
 
-	b2Vec2 obtenerLeftTopCajaMagnificada(uint magnificador) const;
-	b2Vec2 obtenerRightBottomCajaMagnificada(uint magnificador) const;
+	Rectangulo obtenerCajaMagnificada(uint magnificador) const;
 
 	void modificarVelocidad(const b2Vec2 &velocidad);
 	void modificarOrientacion(Orientaciones orientacion);
 	void aplicarImpulso(const b2Vec2 &impulso);
 
 	
-	void agregarCuerpoInmaterial(real ancho, real alto, b2Vec2 posicion, uint identificador);
+	void agregarCuerpoInmaterial(real ancho, real alto, b2Vec2 posicion, uint identificador, ushort categoria, ushort colisionaCon);
 
 	virtual char tipoCuerpo() const = 0;
 
@@ -71,7 +71,7 @@ public:
 	
 	private:
 	//Dibujable (de esta forma nos aseguramos que todos los cuerpos estén en pantalla)
-	virtual const Rectangulo obtenerRepresentacion() const;
+	virtual const std::list<Rectangulo> obtenerRepresentacion() const;
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include "Megaman.h"
 #include "Disparo.h"
 #include "Definiciones.h"
+#include "Mundo.h"
 #include <iostream>
 
 DanarRadio::DanarRadio(uint dano) : dano(dano)
@@ -25,23 +26,20 @@ bool DanarRadio::ReportFixture(b2Fixture * fixture)
 
 void DetectarSuelo::BeginContact(b2Contact * contacto)
 {
-	std::cout << "1" << std::endl;
 	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
-	std::cout << datos->ID << std::endl;
+
 	if (datos->ID == MEGAMANJUMPBOX)
 		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
-			std::cout << "1" << std::endl;
 			Megaman *megaman = (Megaman*)datos->cuerpo;
-			megaman->habilitarSalto();
+			megaman->habilitarSalto();			
 		}
 
 	datos = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
-	std::cout << datos->ID << std::endl;
+
 	if (datos->ID == MEGAMANJUMPBOX)
 		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
-			std::cout << "1" << std::endl;
 			Megaman *megaman = (Megaman*)datos->cuerpo;
 			megaman->habilitarSalto();
 		}
@@ -49,7 +47,6 @@ void DetectarSuelo::BeginContact(b2Contact * contacto)
 
 void DetectarSuelo::EndContact(b2Contact * contacto)
 {
-	std::cout << "2" << std::endl;
 	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 
 	if (datos->ID == MEGAMANJUMPBOX)
@@ -71,7 +68,6 @@ void DetectarSuelo::EndContact(b2Contact * contacto)
 
 void DetectarBalistica::BeginContact(b2Contact * contacto)
 {
-	std::cout << "3" << std::endl;
 	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
@@ -87,6 +83,9 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 		{
 			disparo->interactuar((Entidad*)datosB->cuerpo);
 		}
+
+		if(disparo->perecedero())
+			disparo->obtenerMundo().eliminar(disparo);
 	}
 
 	if (datosB->cuerpo->tipoCuerpo() == DISPAROS)
@@ -101,25 +100,26 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 		{
 			disparo->interactuar((Entidad*)datosA->cuerpo);
 		}
+
+		if(disparo->perecedero())
+			disparo->obtenerMundo().eliminar(disparo);
 	}
 }
 
 void DetectarTocarEnemigos::BeginContact(b2Contact * contacto)
 {
-	std::cout << "4-1" << std::endl;
 	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
 	if (datosA->cuerpo->tipoCuerpo() == PERSONAJES && datosB->cuerpo->tipoCuerpo() == ENEMIGOS)
 	{
-		std::cout << "4-2" << std::endl;
 		Megaman *megaman = (Megaman*)datosA->cuerpo;
 		megaman->atacado(DANOPORCONTACTO);
 	}
-	std::cout << "4-3" << datosA->cuerpo->tipoCuerpo() << std::endl;
+	
 	if (datosB->cuerpo->tipoCuerpo() == PERSONAJES && datosA->cuerpo->tipoCuerpo() == ENEMIGOS)
 	{
-		std::cout << "4-4" << std::endl;
+		
 		Megaman *megaman = (Megaman*)datosB->cuerpo;
 		megaman->atacado(DANOPORCONTACTO);
 	}

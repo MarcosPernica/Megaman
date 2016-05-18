@@ -21,7 +21,7 @@ private:
 	};
 
 	uint vida;
-	int puedeSaltar;
+	bool puedeSaltar;
 	bool saltando, disparando, lanzando;
 	char corriendo;
 	std::vector<Arma> armas;

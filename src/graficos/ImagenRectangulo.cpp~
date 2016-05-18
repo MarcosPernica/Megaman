@@ -4,11 +4,11 @@ void ImagenRectangulo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, const 
 	const std::list<Rectangulo> representacion = obtenerRepresentacion();
 	std::list<Rectangulo>::const_iterator it;
 	for(it = representacion.begin(); it != representacion.end(); ++it){
-		b2Vec2 aux = FACTORCONVERSIONMPX*it->topLeft();
+		b2Vec2 aux = it->topLeft();
 		cr->rectangle(aux.x-cam_x, 
 					  aux.y-cam_y, 
-					  it->obtenerAncho()*FACTORCONVERSIONMPX, 
-					  it->obtenerAlto()*FACTORCONVERSIONMPX);
+					  it->obtenerAncho(), 
+					  it->obtenerAlto());
 		cr->stroke();
 	}
 }

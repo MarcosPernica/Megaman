@@ -12,11 +12,18 @@ Mundo::Mundo() : mundo(gravedad)
 }
 
 void Mundo::crearNivel(){
-	Construccion *piso = new Construccion(*this,b2Vec2(300,500), 800, 30);
+	Construccion *piso = new Construccion(*this,b2Vec2(5,8), 10, 1);
 	construcciones.push_back(piso);
-	Construccion *obstruccion = new Construccion(*this,b2Vec2(300,500), 80, 80);
+
+	Construccion *paredIzquierda = new Construccion(*this,b2Vec2(0,3.5), 1, 10);
+	construcciones.push_back(paredIzquierda);
+
+	Construccion *paredDerecha = new Construccion(*this,b2Vec2(10,3.5), 1, 10);
+	construcciones.push_back(paredDerecha);
+
+	Construccion *obstruccion = new Construccion(*this,b2Vec2(5,7), 1, 1);
 	construcciones.push_back(obstruccion);
-	Megaman *megaman = new Megaman(*this, b2Vec2(250,0));
+	Megaman *megaman = new Megaman(*this, b2Vec2(2.5,0));
 	jugadores.push_back(megaman);
 }
 
@@ -135,7 +142,6 @@ void Mundo::actualizar(real segundosDesdeUltima){
 	std::list<Megaman*>::iterator jit;
 	for(jit=jugadores.begin(); jit!=jugadores.end(); ++jit){
 		(*jit)->actualizar(segundosDesdeUltima);
-		(*jit)->saltar();
 	}
 }
 Megaman* Mundo::getMegaman(){

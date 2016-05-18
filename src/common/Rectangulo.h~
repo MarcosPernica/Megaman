@@ -13,32 +13,32 @@ public: //Solo para debug
 public:
 	Rectangulo(real x, real y, real ancho, real alto) : x(x), y(y), w(ancho), h(alto){};
 
-	real obtenerAncho() const
+	real obtenerAncho()
 	{
 		return w;
 	};
 
-	real obtenerAlto() const
+	real obtenerAlto()
 	{
 		return h;
 	};
 
-	b2Vec2 topLeft() const
+	b2Vec2 topLeft()
 	{
 		return b2Vec2(x, y);
 	};
 
-	b2Vec2 topRight() const
+	b2Vec2 topRight()
 	{
 		return b2Vec2(x+w,y);	
 	};
 
-	b2Vec2 bottomLeft() const
+	b2Vec2 bottomLeft()
 	{
 		return b2Vec2(x,y+h);
 	};
 
-	b2Vec2 rightBottom() const
+	b2Vec2 rightBottom()
 	{
 		return b2Vec2(x+w, y+h);
 	};

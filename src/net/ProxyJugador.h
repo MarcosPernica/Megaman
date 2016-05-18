@@ -36,6 +36,7 @@ class ProxyJugador{
 	 * Esta se uso del lado de cliente para detectar el teclado
 	 * */
 	bool detectarPresionTecla(GdkEventKey* evento);
+	bool detectarLiberacionTecla(GdkEventKey* evento);
 	/**
 	 * Esta se usa del lado del servidor para recibir los keystrokes remotos...
 	 * */

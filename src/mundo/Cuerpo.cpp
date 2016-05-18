@@ -1,6 +1,7 @@
 #include "Cuerpo.h"
 #include "Mundo.h"
 #include <Box2D/Box2D.h>
+#include <iostream>
 const b2Vec2 Cuerpo::versorIzquierda(-1, 0);
 const b2Vec2 Cuerpo::versorDerecha(1, 0);
 
@@ -41,24 +42,29 @@ Cuerpo::Cuerpo(Mundo &mundo,
 
 	cuerpo = mundo.obtenerMundo().CreateBody(&defCuerpo);
 	
-	cajaColision.SetAsBox(ancho*FACTORCONVERSION / 2, alto*FACTORCONVERSION / 2);
+	cajaColision.SetAsBox(ancho / 2, alto / 2);
 	
 	if(masa != MASAINFINITA)
-		unionCuerpo.density = masa / (ancho*FACTORCONVERSION*alto*FACTORCONVERSION);
+		unionCuerpo.density = masa / (ancho*alto);
 
 	unionCuerpo.shape = &cajaColision;
 	unionCuerpo.filter.categoryBits = categoria;
 	unionCuerpo.filter.maskBits = colisionaCon;
 
-	datos.push_back(DatosColisionCuerpo(this,CUERPO));
+	datos.push_back(new DatosColisionCuerpo(this,CUERPO,Rectangulo(posicion.x,posicion.y,ancho,alto)));
 
-	unionCuerpo.userData = new DatosColisionCuerpo(this,CUERPO);
+	unionCuerpo.userData = datos.at(0);
 	cuerpo->CreateFixture(&unionCuerpo);
 }
 
 Cuerpo::~Cuerpo()
 {
 	mundo.obtenerMundo().DestroyBody(cuerpo);
+
+	std::vector<DatosColisionCuerpo*>::iterator i = datos.begin();
+
+	while(i != datos.end())
+		delete *i++;
 }
 
 Mundo &Cuerpo::obtenerMundo()
@@ -81,18 +87,14 @@ Orientaciones Cuerpo::obtenerOrientacion() const
 	return orientacion;
 }
 
-b2Vec2 Cuerpo::obtenerLeftTopCajaMagnificada(uint magnificador) const
+Rectangulo Cuerpo::obtenerCajaMagnificada(uint magnificador) const
 {
 	const b2Vec2 centro = obtenerPosicion();
 
-	return b2Vec2(centro.x - ancho / 2 * magnificador, centro.y - alto / 2 * magnificador);
-}
-
-b2Vec2 Cuerpo::obtenerRightBottomCajaMagnificada(uint magnificador) const
-{
-	const b2Vec2 centro = obtenerPosicion();
-
-	return b2Vec2(centro.x + ancho / 2 * magnificador, centro.y + alto / 2 * magnificador);
+	return Rectangulo(centro.x - ((ancho/2)*magnificador),
+		    centro.y - ((alto/2)*magnificador),
+ 		    ancho*magnificador,
+		    alto*magnificador);
 }
 
 void Cuerpo::modificarVelocidad(const b2Vec2 & velocidad)
@@ -107,22 +109,27 @@ void Cuerpo::modificarOrientacion(Orientaciones orientacion)
 
 void Cuerpo::aplicarImpulso(const b2Vec2 & impulso)
 {
-	cuerpo->ApplyLinearImpulse(impulso, cuerpo->GetPosition(), true);
+	cuerpo->ApplyLinearImpulse(impulso,cuerpo->GetWorldCenter(),false);
 }
 
 void Cuerpo::agregarCuerpoInmaterial(real ancho, 
 			     real alto,
 			     b2Vec2 posicion, 
-			     uint identificador)
+			     uint identificador,
+			     ushort categoria,
+			     ushort colisionaCon)
 {
 		b2PolygonShape cajita;
-		cajita.SetAsBox(ancho, alto, posicion, 0);
+		cajita.SetAsBox(ancho/2, alto/2, posicion, 0);
 		b2FixtureDef unionCajita;
 		unionCajita.isSensor = true;
 
-		datos.push_back(DatosColisionCuerpo(this,identificador));
+		unionCajita.filter.categoryBits = categoria;
+		unionCajita.filter.maskBits = colisionaCon;
 
-		unionCajita.userData = new DatosColisionCuerpo(this,identificador);
+		datos.push_back(new DatosColisionCuerpo(this,identificador,Rectangulo(posicion.x,posicion.y,ancho,alto)));
+
+		unionCajita.userData = datos.at(datos.size()-1);
 		unionCajita.shape = &cajita;
 
 		cuerpo->CreateFixture(&unionCajita);
@@ -139,13 +146,19 @@ const b2Vec2 & Cuerpo::orientacionAVector(Orientaciones orientacion)
 		return versorIzquierda;
 }
 
-const Rectangulo Cuerpo::obtenerRepresentacion() const{
-	Rectangulo r;
-	b2Vec2 top_left=obtenerLeftTopCajaMagnificada(1);
-	b2Vec2 bot_right=obtenerRightBottomCajaMagnificada(1);
-	r.x=top_left.x;
-	r.y=top_left.y;
-	r.w=bot_right.x-top_left.x;
-	r.h=bot_right.y-top_left.y;
-	return r;
+const std::list<Rectangulo> Cuerpo::obtenerRepresentacion() const{
+	std::list<Rectangulo> rectangulos;
+
+	rectangulos.push_back(obtenerCajaMagnificada(1));
+
+	for(uint i=1;i<datos.size();i++)
+	{
+		b2Vec2 topLeftCuerpo = datos.at(i)->caja.topLeft();
+		b2Vec2 topLeftMundo = topLeftCuerpo + obtenerPosicion();
+		
+		rectangulos.push_back(Rectangulo(topLeftMundo.x,topLeftMundo.y,datos.at(i)->caja.obtenerAncho(),datos.at(i)->caja.obtenerAlto()));		
+	}
+
+
+	return rectangulos;
 }

@@ -37,7 +37,6 @@ VentanaJuego::VentanaJuego(const Mundo& mun, int argc, char * argv[], const std:
 
 bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	
-	//std::cout<<"on draw!"<<std::endl;
 	/*
 	cr->set_line_width(10.0);
 	cr->set_source_rgb(1,1,0);
@@ -45,7 +44,7 @@ bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	cr->move_to(0.1,3);
 	cr->stroke();
 	* */
-	
+
 	Gtk::Allocation allocation = darea->get_allocation();
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();

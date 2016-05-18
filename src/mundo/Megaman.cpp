@@ -4,8 +4,8 @@
 #include <iostream>
 void Megaman::seleccionarArma(char slot)
 {
-	if (slot < armas.size())
-		armaSeleccionada = slot;
+	if (slot <= armas.size() && slot > 0)
+		armaSeleccionada = slot-1;
 }
 
 void Megaman::aumentarVida()
@@ -44,13 +44,18 @@ void Megaman::actualizar(real deltaT)
 	}
 	else if (saltando)
 	{
-		b2Vec2 impulso(0, MASAMEGAMAN*IMPULSOSALTOMEGAMAN);
-		aplicarImpulso(impulso);
+		b2Vec2 velocidad = obtenerVelocidad();
+		velocidad.y -= 6;
+		modificarVelocidad(velocidad);
+
+		saltando = false;
+		
 	}
 	else if (disparando || lanzando)
 	{
 		if (armas.at(armaSeleccionada).plasma)
 		{
+			std::cout << "Pium!" << std::endl;
 			b2Vec2 posicion, orientacion, velocidad;
 
 			orientacion = Cuerpo::orientacionAVector(obtenerOrientacion());
@@ -67,7 +72,11 @@ void Megaman::actualizar(real deltaT)
 
 			armas.at(armaSeleccionada).plasma--;
 			obtenerMundo().agregar(armas.at(armaSeleccionada).arma->nuevo(posicion, velocidad));
+
+			disparando = false;
+			lanzando = false;
 		}
+
 	}
 }
 
@@ -108,9 +117,19 @@ Megaman::Megaman(Mundo & mundo,
 	arma.arma = new Plasma(obtenerMundo());
 
 	armas.push_back(arma);
+
+	/*Bomba para probar nada ma'.*/
+	
+	arma;
+
+	arma.plasma = CANTIDADINFINITAPLASMA;
+	arma.arma = new Bomba(obtenerMundo());
+
+	armas.push_back(arma);
+
 	armaSeleccionada = 0;
 
-	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN/2,200,b2Vec2(0,ALTOSPRITEMEGAMAN/2),MEGAMANJUMPBOX);
+	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.25,0.3,b2Vec2(-ANCHOSPRITEMEGAMAN*0.25/2,ALTOSPRITEMEGAMAN*0.9/2),MEGAMANJUMPBOX, PERSONAJES,CONSTRUCCIONES | DISPAROS);
 }
 
 Megaman::~Megaman()
@@ -121,21 +140,19 @@ Megaman::~Megaman()
 
 void Megaman::habilitarSalto()
 {
-	puedeSaltar = true;
+	puedeSaltar++;
 }
 
 void Megaman::deshabilitarSalto()
 {
-	puedeSaltar = false;
-	saltando = false;
+	puedeSaltar--;
 }
 
 void Megaman::saltar()
 {
-	if (!saltando && puedeSaltar)
+	if (!saltando && puedeSaltar >= 1)
 	{
 		saltando = true;
-		puedeSaltar = false;
 		corriendo = false;
 	}
 }
@@ -148,6 +165,16 @@ void Megaman::correr()
 void Megaman::dejarCorrer()
 {
 	corriendo = false;
+}
+
+void Megaman::mirarDerecha()
+{
+	modificarOrientacion(derecha);
+}
+
+void Megaman::mirarIzquierda()
+{
+	modificarOrientacion(izquierda);
 }
 
 void Megaman::disparar()
