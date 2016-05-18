@@ -2,6 +2,7 @@
 #define CUERPO 97
 
 #include "Definiciones.h"
+#include "../net/Snapshotable.h"
 #include <Box2D/Box2D.h>
 class Mundo;
 
@@ -25,7 +26,7 @@ struct DatosColisionCuerpo
 	DatosColisionCuerpo(Cuerpo *cuerpo, uint ID, Rectangulo caja) : cuerpo(cuerpo), ID(ID), caja(caja){};
 };
 
-class Cuerpo: public ImagenRectangulo
+class Cuerpo: public ImagenRectangulo, public Snapshotable 
 {
 private:
 	b2Body *cuerpo;
@@ -35,7 +36,8 @@ private:
 	bool detectorSuelo;
 	std::vector<DatosColisionCuerpo*> datos;
 public:
-	Cuerpo(Mundo &mundo, 
+	Cuerpo(uint ID,
+		   Mundo &mundo, 
 		   real ancho,
 		   real alto,
 		   real masa,

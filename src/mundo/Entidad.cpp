@@ -1,7 +1,8 @@
 #include "Entidad.h"
 #include "Mundo.h"
 #include <iostream>
-Entidad::Entidad(Mundo & mundo, 
+Entidad::Entidad(uint ID, 
+		     Mundo & mundo, 
 	             real ancho,
 			     real alto,
 	             uint energiaMaxima,
@@ -16,7 +17,8 @@ Entidad::Entidad(Mundo & mundo,
 				 energia(energiaMaxima),
 				 energiaMaxima(energiaMaxima),
 				 mundo(mundo),
-			     Cuerpo(mundo,
+			     Cuerpo(ID,
+						mundo,
 						ancho,
 						alto,
 						masa,

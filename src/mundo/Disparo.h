@@ -15,7 +15,8 @@ private:
 	uint dano;
 	bool disparoMegaman;
 public:
-	Disparo(Mundo &mundo,
+	Disparo(uint ID,
+			Mundo &mundo,
 			uint danio, 
 			real ancho, 
 			real alto,
@@ -35,7 +36,7 @@ public:
 	char tipoCuerpo() const;
 	bool megamanLoDisparo() const;
 
-	virtual Disparo *nuevo(const b2Vec2 &posicion, const b2Vec2 &velocidad) = 0;
+	virtual Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad) = 0;
 };
 
 class Plasma : public Disparo
@@ -43,13 +44,14 @@ class Plasma : public Disparo
 private:
 	
 public:
-	Plasma(Mundo &mundo, 
+	Plasma(uint ID, 
+		   Mundo &mundo, 
 		   const b2Vec2 &posicion = b2Vec2(-1000,-1000),
 		   const b2Vec2 &velocidad = b2Vec2_zero);
 
 	uint obtenerMultiplicadorVelocidad() const;
 
-	Disparo *nuevo(const b2Vec2 &posicion, const b2Vec2 &velocidad);
+	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 };
 
 class Bomba : public Disparo
@@ -57,14 +59,14 @@ class Bomba : public Disparo
 private:
 	real tiempoTotal;
 public:
-	Bomba(Mundo &mundo, const b2Vec2 &posicion = b2Vec2(-1000,-1000), const b2Vec2 &velocidad = b2Vec2_zero);
+	Bomba(uint ID, Mundo &mundo, const b2Vec2 &posicion = b2Vec2(-1000,-1000), const b2Vec2 &velocidad = b2Vec2_zero);
 	bool interactuar(Entidad *entidad);
 	void actualizar(real deltaT);
 	bool perecedero();
 	uint obtenerMultiplicadorVelocidad() const;
 
 	bool lanzable();
-	Disparo *nuevo(const b2Vec2 &posicion, const b2Vec2 &velocidad);
+	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 private:
 	void explotar();
 };

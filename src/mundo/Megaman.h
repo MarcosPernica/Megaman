@@ -27,7 +27,8 @@ private:
 	std::vector<Arma> armas;
 	char armaSeleccionada;
 public:
-	Megaman(Mundo &mundo,
+	Megaman(uint ID,
+			Mundo &mundo,
 			const b2Vec2 &posicion,
 			const b2Vec2 &velocidad = b2Vec2_zero,
 			Orientaciones orientacion = derecha);

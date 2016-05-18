@@ -10,6 +10,7 @@
 class Dibujable{
 	public:
 	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, const int cam_x, const int cam_y) const = 0;
+	virtual ~Dibujable(){};
 };
 
 #endif

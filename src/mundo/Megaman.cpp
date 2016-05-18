@@ -71,7 +71,7 @@ void Megaman::actualizar(real deltaT)
 				disparando = true;
 
 			armas.at(armaSeleccionada).plasma--;
-			obtenerMundo().agregar(armas.at(armaSeleccionada).arma->nuevo(posicion, velocidad));
+			obtenerMundo().agregar(armas.at(armaSeleccionada).arma->nuevo(obtenerMundo().generarID(),posicion, velocidad));
 
 			disparando = false;
 			lanzando = false;
@@ -89,11 +89,13 @@ void Megaman::agregarArma(Disparo * disparo)
 	armas.push_back(arma);
 }
 
-Megaman::Megaman(Mundo & mundo,
+Megaman::Megaman(uint ID,
+				Mundo & mundo,
 				 const b2Vec2 & posicion,
 				 const b2Vec2 & velocidad,
 				 Orientaciones orientacion) :
-				 Entidad(mundo,
+				 Entidad(ID,
+						mundo,
 						 ANCHOSPRITEMEGAMAN,
 						 ALTOSPRITEMEGAMAN,
 					     ENERGIAMEGAMAN,
@@ -114,7 +116,7 @@ Megaman::Megaman(Mundo & mundo,
 	Arma arma;
 
 	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Plasma(obtenerMundo());
+	arma.arma = new Plasma(obtenerMundo().generarID(),obtenerMundo());
 
 	armas.push_back(arma);
 
@@ -123,7 +125,7 @@ Megaman::Megaman(Mundo & mundo,
 	arma;
 
 	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Bomba(obtenerMundo());
+	arma.arma = new Bomba(obtenerMundo().generarID(),obtenerMundo());
 
 	armas.push_back(arma);
 

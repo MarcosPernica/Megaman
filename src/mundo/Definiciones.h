@@ -10,6 +10,8 @@
 #define POWERUPS 8
 #define DISPAROS 16
 
+#define IDCONSTRUCCIONES 0
+
 #ifdef WIN_32
 	#define MSG_NOSIGNAL 0
 #endif

@@ -1,11 +1,9 @@
 #include "Met.h"
 
-Met::Met(uint ID,
-		 Mundo & mundo, 
+Met::Met(Mundo & mundo, 
 		 const b2Vec2 & posicion,
 		 const b2Vec2 & velocidad) : 
-		 Protegido(ID,
-				mundo,
+		 Protegido(mundo,
 				   ANCHOSPRITEENEMIGO,
 				   ALTOSPRITEENEMIGO,
 			       ENERGIAMAXIMAMET,

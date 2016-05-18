@@ -11,12 +11,9 @@
 #include "Entidad.h"
 #include "Disparo.h"
 #include "Construccion.h"
-/*
-class Disparo;
+#include "../graficos/Dibujable.h"
 
-class Entidad;
-class Construccion;
-*/
+
 class PowerUp;
 class Cuerpo;
 
@@ -41,30 +38,31 @@ class Mundo
 private:
 	ListenerColisiones listenerColisiones;
 	b2World mundo;
-	std::list<Megaman*> jugadores;
 
-	std::list<Disparo*> disparos;
-	std::list<Entidad*> enemigos;
-	std::list<PowerUp*> powerUps;
+	/*Distintas representaciones del mismo objeto en memoria (optimiza y ademas el polimorfismo no aplica aca).*/
+	std::map<uint, Megaman*> megamanes;
+	std::map<uint, Snapshotable*> snapshotables;
+	std::map<uint, Dibujable*> dibujables;
+	std::map<uint, Actualizable*> actualizables;
 
 	std::list<Construccion*> construcciones;
-	std::list<Cuerpo*> destrucciones;
-	
-	std::list<Actualizable*> actualizables;
+	std::list<uint> destrucciones;
 	
 	void crearNivel();
 public:
+	/*Paleativo del server*/
+	uint generarID(){static uint ID = 0; return ++ID;};
+
 	Mundo();
 	b2World &obtenerMundo();
 	void danarZona(b2AABB zona, uint dano);
 
-	void eliminar(Entidad *entidad);
-	void eliminar(Disparo *disparo);
-	void eliminar(PowerUp *powerUp);
+	void eliminar(Cuerpo *cuerpo);
 
-	void agregar(Disparo *disparo);
-	void agregar(PowerUp *powerUp);
-	void agregar(Entidad *entidad);
+	void agregar(Disparo * disparo);
+	void agregar(PowerUp * powerUp);
+	void agregar(Entidad * entidad);
+
 	std::list<Dibujable*> obtenerDibujables() const;/////////COPIA//// esa lista podría ser demasiado grande
 
 	void destruirCuerpos();
