@@ -30,7 +30,12 @@ class Cuerpo;
  * -conjunto de Actualizables.
  * 
  * */
-
+/**
+	 * Marcos, qué te parece si hacemos
+	 * Megaman* Mundo::agregarMegaman(id_usuario)
+	 * y después se llama
+	 * mundo.iniciar() o algo así
+	 * */
 class Mundo
 {
 private:

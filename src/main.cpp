@@ -56,12 +56,12 @@ int main(int argc, char *argv[])
 }
 */
 
-/*
+
 //-------------MAIN CON VENTANA Y FISICAS-------------
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
-#include "net/ProxyJugador.h"
+#include "net/Jugador.h"
 #include "net/Server.h"
 #include "net/ServerProxy.h"
 
@@ -72,19 +72,25 @@ int main(int argc, char *argv[])
 	ventana.start();
 	Simulador simulador(mundo,33);
 	simulador.run();
-	ProxyJugador proxy(mundo.getMegaman(), ventana);
-	
+	/**
+	 * Marcos, qué te parece si hacemos
+	 * Megaman* Mundo::agregarMegaman(id_usuario)
+	 * y después se llama
+	 * mundo.iniciar() o lo que sea
+	 * */
+	Jugador jugador(mundo.getMegaman(), ventana);
 	ventana.join();
 }
-*/
+
 //-------------MAIN CLI/SERV HASTA LA PIJA-------------
+/*
 #include <string>
 #include "net/ChannelSocket.h"
 #include "net/AccepterSocket.h"
 #include "net/Buffer.h"
 #include <iostream>
 #ifndef compiling_server
-
+*/
 
 /**
  * El cliente va a tener 2 etapas:
@@ -101,6 +107,7 @@ int main(int argc, char *argv[])
  * 
  * y así...
  * */
+ /*
 int main(int argc, char *argv[])
 {
 	ChannelSocket channel;
@@ -144,3 +151,4 @@ int main(int argc, char *argv[])
 	return 0;
 }
 #endif
+*/
