@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 */
 
 //-------------MAIN CON VENTANA Y FISICAS-------------
-
+#ifndef compiling_server
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
@@ -76,4 +76,12 @@ int main(int argc, char *argv[])
 	
 	ventana.join();
 }
+#else
+#include <iostream>
 
+int main(int argc, char *argv[])
+{
+	std::cout<<"estamos hasta la pija"<<std::endl;
+	return 0;
+}
+#endif
