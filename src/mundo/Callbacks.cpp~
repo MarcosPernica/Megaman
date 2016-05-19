@@ -13,16 +13,76 @@ DanarRadio::DanarRadio(uint dano) : dano(dano)
 
 bool DanarRadio::ReportFixture(b2Fixture * fixture)
 {
-	Cuerpo *cuerpo = (Cuerpo*)fixture->GetUserData();
-
-	if (cuerpo->tipoCuerpo() == PERSONAJES || cuerpo->tipoCuerpo() == ENEMIGOS)
+	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)fixture->GetUserData();
+	if (datos->cuerpo->tipoCuerpo() == PERSONAJES || datos->cuerpo->tipoCuerpo() == ENEMIGOS)
 	{
-		Entidad *entidad = (Entidad*)cuerpo;
-		entidad->atacado(dano);
+		if(datos->ID == CUERPOPRINCIPAL)
+		{
+			Entidad *entidad = (Entidad*)datos->cuerpo;
+			entidad->atacado(dano);
+		}
 	}
 
 	return true;
 }
+
+
+void DetectarEscalera::BeginContact(b2Contact * contacto)
+{
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
+
+
+	if(datosA->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosB->cuerpo;
+			
+			megaman->habilitarAgarre(datosA->cuerpo->obtenerPosicion().x);			
+		}
+	}
+
+	if(datosB->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosA->cuerpo;
+			
+			megaman->habilitarAgarre(datosB->cuerpo->obtenerPosicion().x);			
+		}
+	}
+}
+
+void DetectarEscalera::EndContact(b2Contact * contacto)
+{
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
+
+	if(datosA->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			std::cout << "Ya esta" << std::endl;
+			Megaman *megaman = (Megaman*)datosB->cuerpo;
+			
+			megaman->deshabilitarAgarre();			
+		}
+	}
+
+	if(datosB->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			std::cout << "Ya esta" << std::endl;
+			Megaman *megaman = (Megaman*)datosA->cuerpo;
+			
+			megaman->deshabilitarAgarre();			
+		}
+	}
+}
+
+
 
 void DetectarSuelo::BeginContact(b2Contact * contacto)
 {
@@ -52,7 +112,6 @@ void DetectarSuelo::EndContact(b2Contact * contacto)
 	if (datos->ID == MEGAMANJUMPBOX)
 		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
-			std::cout << "No Puede" << std::endl;
 			Megaman *megaman = (Megaman*)datos->cuerpo;
 			megaman->deshabilitarSalto();
 		}
@@ -62,7 +121,6 @@ void DetectarSuelo::EndContact(b2Contact * contacto)
 	if (datos->ID == MEGAMANJUMPBOX)
 		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
-			std::cout << "No Puede" << std::endl;
 			Megaman *megaman = (Megaman*)datos->cuerpo;
 			megaman->deshabilitarSalto();
 		}
@@ -70,8 +128,6 @@ void DetectarSuelo::EndContact(b2Contact * contacto)
 
 void DetectarBalistica::BeginContact(b2Contact * contacto)
 {
-	std::cout << "1" << std::endl;
-
 	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
@@ -88,11 +144,9 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 			disparo->interactuar((Entidad*)datosB->cuerpo);
 		}
 
-		/*if(disparo->perecedero())
-			disparo->obtenerMundo().eliminar(disparo);*/
+		if(disparo->perecedero())
+			disparo->obtenerMundo().eliminar(disparo);
 	}
-
-	std::cout << "2" << std::endl;
 
 	if (datosB->cuerpo->tipoCuerpo() == DISPAROS)
 	{
@@ -107,10 +161,9 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 			disparo->interactuar((Entidad*)datosA->cuerpo);
 		}
 
-		/*if(disparo->perecedero())
-			disparo->obtenerMundo().eliminar(disparo);*/
+		if(disparo->perecedero())
+			disparo->obtenerMundo().eliminar(disparo);
 	}
-	std::cout << "3" << std::endl;
 }
 
 void DetectarTocarEnemigos::BeginContact(b2Contact * contacto)
@@ -137,6 +190,7 @@ void ListenerColisiones::BeginContact(b2Contact * contacto)
 	detectorBalistica.BeginContact(contacto);
 	detectorSuelo.BeginContact(contacto);
 	detectorToqueEnemigos.BeginContact(contacto);
+	detectorEscalera.BeginContact(contacto);
 }
 
 void ListenerColisiones::EndContact(b2Contact * contacto)
@@ -144,4 +198,5 @@ void ListenerColisiones::EndContact(b2Contact * contacto)
 	detectorBalistica.EndContact(contacto);
 	detectorSuelo.EndContact(contacto);
 	detectorToqueEnemigos.EndContact(contacto);
+	detectorEscalera.EndContact(contacto);
 }

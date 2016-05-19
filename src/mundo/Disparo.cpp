@@ -91,14 +91,10 @@ bool Bomba::perecedero()
 
 void Bomba::actualizar(real deltaT)
 {
-	std::cout << "Actualizando" << std::endl;
 	tiempoTotal -= deltaT;
 
 	if (tiempoTotal <= 0)
-	{
 		explotar();
-		obtenerMundo().eliminar(this);
-	}
 }
 
 uint Bomba::obtenerMultiplicadorVelocidad() const
@@ -119,10 +115,10 @@ Disparo * Bomba::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocida
 void Bomba::explotar()
 {
 	b2AABB consulta;
-	Rectangulo rect = obtenerCajaMagnificada(RADIOEXPLOSION);
+	Rectangulo rect = obtenerCajaMagnificada(DANOBOMBA);
 
-	consulta.upperBound = rect.topLeft();
-	consulta.lowerBound = rect.rightBottom();
+	consulta.upperBound = rect.rightBottom();
+	consulta.lowerBound = rect.topLeft();
 
 	obtenerMundo().danarZona(consulta, DANOBOMBA);
 	obtenerMundo().eliminar(this);

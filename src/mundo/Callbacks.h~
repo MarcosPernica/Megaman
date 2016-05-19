@@ -20,6 +20,14 @@ public:
 	void EndContact(b2Contact *contacto);
 };
 
+class DetectarEscalera : public b2ContactListener
+{
+public:
+	void BeginContact(b2Contact *contacto);
+	void EndContact(b2Contact *contacto);
+};
+
+
 class DetectarBalistica : public b2ContactListener
 {
 public:
@@ -43,6 +51,6 @@ private:
 public:
 	void BeginContact(b2Contact *contacto);
 	void EndContact(b2Contact *contacto);
-}
+};
 
 #endif

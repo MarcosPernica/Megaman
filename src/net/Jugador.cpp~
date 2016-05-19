@@ -75,7 +75,7 @@ bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
 	{
 		case GDK_KEY_Up:
 		{
-			controlado->dejarSubirEscalera();
+			controlado->dejaSubirEscalera();
 			break;
 		}
 		case GDK_KEY_Right:

@@ -2,6 +2,7 @@
 #include "Callbacks.h"
 #include <algorithm>
 #include <iostream>
+#include "CajaSpawn.h"
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
@@ -21,11 +22,19 @@ void Mundo::crearNivel(){
 	Construccion *paredDerecha = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(10,3.5), 1, 10);
 	construcciones.push_back(paredDerecha);
 
+	Construccion *escalera = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(7,5), 1.1, 5, ESCALERA, true);
+	construcciones.push_back(escalera);
+
 	Construccion *obstruccion = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(5,7), 1, 1);
 	construcciones.push_back(obstruccion);
 	Megaman *megaman = new Megaman(generarID(),*this, b2Vec2(2.5,0));
+
+	uint ID = generarID();
+	controladores[ID] = new CajaSpawn(ID,*this,b2Vec2(5,2));
+	
 	megamanes[megaman->obtenerID()] = megaman;
 	dibujables[megaman->obtenerID()] = megaman;
+	actualizables[megaman->obtenerID()] = megaman;
 }
 
 b2World & Mundo::obtenerMundo()
@@ -36,14 +45,17 @@ b2World & Mundo::obtenerMundo()
 void Mundo::danarZona(b2AABB zona, uint dano)
 {
 	DanarRadio danoRadio(dano);
-
+	
 	mundo.QueryAABB(&danoRadio, zona);
 }
 
 void Mundo::eliminar(Cuerpo * cuerpo)
 {
-	if (snapshotables.find(cuerpo->obtenerID()) != snapshotables.end())
-		destrucciones.push_back(cuerpo->obtenerID());
+	if (snapshotables.find(cuerpo->obtenerID()) != snapshotables.end() || megamanes.find(cuerpo->obtenerID()) != megamanes.end())
+	{
+		std::cout << cuerpo->obtenerID() << std::endl;
+		destrucciones.push_back(cuerpo->obtenerID());		
+	}
 }
 
 void Mundo::agregar(Disparo * disparo)
@@ -81,7 +93,6 @@ void Mundo::destruirCuerpos()
 			actualizables.erase(*i);
 		}
 
-		
 		if(megamanes.find(*i) != megamanes.end())
 		{
 			if(!borrado)
@@ -116,11 +127,18 @@ void Mundo::destruirCuerpos()
 	destrucciones.clear();
 }
 
+bool Mundo::existeElemento(uint ID)
+{
+	if(snapshotables.find(ID) != snapshotables.end())
+		return true;
+	return false;
+}
+
 std::list<Dibujable*> Mundo::obtenerDibujables() const{/////////COPIA//// esa lista podría ser demasiado grande
 	std::list<Dibujable*> ret;
 	
 	std::map<uint, Dibujable*>::const_iterator i = dibujables.begin();
-	std::list<Construccion*>::iterator a = construcciones.begin();
+	std::list<Construccion*>::const_iterator a = construcciones.begin();
 
 	while(a != construcciones.end())
 		ret.push_back(*a++);
@@ -137,13 +155,17 @@ void Mundo::actualizar(real segundosDesdeUltima){
 	int32 positionIterations = 2;
 	
 	mundo.Step(segundosDesdeUltima, velocityIterations, positionIterations);
+	destruirCuerpos();
 
-	//megamans
-	std::map<uint, Megaman*>::const_iterator jit;
-	for(jit=megamanes.begin(); jit!=megamanes.end(); ++jit){
-		(jit->second)->actualizar(segundosDesdeUltima);
-	}
+	std::map<uint, Actualizable*>::const_iterator i = actualizables.begin();
+
+	while(i != actualizables.end())
+		(i++)->second->actualizar(segundosDesdeUltima);	
+
+	/*Hardcode*/
+	controladores.begin()->second->actualizar(segundosDesdeUltima);
 }
+
 Megaman* Mundo::getMegaman(){
 	return megamanes.begin()->second;
 }

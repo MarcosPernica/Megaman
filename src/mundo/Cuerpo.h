@@ -41,13 +41,14 @@ public:
 		   real ancho,
 		   real alto,
 		   real masa,
-	       ushort categoria,
+	       	   ushort categoria,
 		   ushort colisionaCon,
 		   const b2Vec2 &posicion, 
 		   bool rotable = false,
 		   bool gravitacional = true, 
 		   const b2Vec2 &velocidad = b2Vec2_zero ,
-		   Orientaciones orientacion = derecha);
+		   Orientaciones orientacion = derecha,
+		   bool fantasma = false);
 
 	virtual ~Cuerpo();
 
@@ -61,6 +62,7 @@ public:
 
 	void modificarVelocidad(const b2Vec2 &velocidad);
 	void modificarOrientacion(Orientaciones orientacion);
+	void modificarPosicion(const b2Vec2 &posicion);
 	void aplicarImpulso(const b2Vec2 &impulso);
 
 	

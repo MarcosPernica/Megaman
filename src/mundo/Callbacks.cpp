@@ -13,16 +13,74 @@ DanarRadio::DanarRadio(uint dano) : dano(dano)
 
 bool DanarRadio::ReportFixture(b2Fixture * fixture)
 {
-	Cuerpo *cuerpo = (Cuerpo*)fixture->GetUserData();
-
-	if (cuerpo->tipoCuerpo() == PERSONAJES || cuerpo->tipoCuerpo() == ENEMIGOS)
+	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)fixture->GetUserData();
+	if (datos->cuerpo->tipoCuerpo() == PERSONAJES || datos->cuerpo->tipoCuerpo() == ENEMIGOS)
 	{
-		Entidad *entidad = (Entidad*)cuerpo;
-		entidad->atacado(dano);
+		if(datos->ID == CUERPOPRINCIPAL)
+		{
+			Entidad *entidad = (Entidad*)datos->cuerpo;
+			entidad->atacado(dano);
+		}
 	}
 
 	return true;
 }
+
+
+void DetectarEscalera::BeginContact(b2Contact * contacto)
+{
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
+
+
+	if(datosA->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosB->cuerpo;
+			
+			megaman->habilitarAgarre(datosA->cuerpo->obtenerPosicion().x);			
+		}
+	}
+
+	if(datosB->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosA->cuerpo;
+			
+			megaman->habilitarAgarre(datosB->cuerpo->obtenerPosicion().x);			
+		}
+	}
+}
+
+void DetectarEscalera::EndContact(b2Contact * contacto)
+{
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
+
+	if(datosA->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosB->cuerpo;
+			
+			megaman->deshabilitarAgarre();			
+		}
+	}
+
+	if(datosB->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	{
+		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosA->cuerpo;
+			
+			megaman->deshabilitarAgarre();			
+		}
+	}
+}
+
+
 
 void DetectarSuelo::BeginContact(b2Contact * contacto)
 {
@@ -130,6 +188,7 @@ void ListenerColisiones::BeginContact(b2Contact * contacto)
 	detectorBalistica.BeginContact(contacto);
 	detectorSuelo.BeginContact(contacto);
 	detectorToqueEnemigos.BeginContact(contacto);
+	detectorEscalera.BeginContact(contacto);
 }
 
 void ListenerColisiones::EndContact(b2Contact * contacto)
@@ -137,4 +196,5 @@ void ListenerColisiones::EndContact(b2Contact * contacto)
 	detectorBalistica.EndContact(contacto);
 	detectorSuelo.EndContact(contacto);
 	detectorToqueEnemigos.EndContact(contacto);
+	detectorEscalera.EndContact(contacto);
 }

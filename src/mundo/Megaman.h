@@ -23,9 +23,12 @@ private:
 	uint vida;
 	int puedeSaltar;
 	bool saltando, disparando, lanzando;
+	bool subiendoEscalera, bajandoEscalera;
+	int puedeSubir;
 	char corriendo;
 	std::vector<Arma> armas;
 	char armaSeleccionada;
+	real agarreX;
 public:
 	Megaman(uint ID,
 			Mundo &mundo,
@@ -37,6 +40,13 @@ public:
 	void habilitarSalto();
 	void deshabilitarSalto();
 
+	void habilitarAgarre(real agarreX);
+	void deshabilitarAgarre();
+	void subirEscalera();
+	void dejarSubirEscalera();
+	void bajarEscalera();
+	void dejarBajarEscalera();
+	
 	void saltar();
 	void correr();
 	void dejarCorrer();

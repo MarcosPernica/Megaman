@@ -45,5 +45,6 @@ void Entidad::atacado(uint danio)
 	if (danio < energia)
 		energia -= danio;
 	else
-		std::cout << "Me mori" << std::endl;
+		obtenerMundo().eliminar(this);
+		
 }

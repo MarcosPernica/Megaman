@@ -26,6 +26,7 @@ public:
 			bool gravitacional = true,
 			const b2Vec2 &velocidad = b2Vec2_zero,
 			Orientaciones orientacion = derecha);
+	~Entidad(){};
 
 	void recuperarEnergia(uint cantidadEnergia);
 

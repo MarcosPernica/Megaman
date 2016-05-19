@@ -91,13 +91,12 @@ bool Bomba::perecedero()
 
 void Bomba::actualizar(real deltaT)
 {
-	std::cout << "Actualizando" << std::endl;
 	tiempoTotal -= deltaT;
 
 	if (tiempoTotal <= 0)
 	{
 		explotar();
-		obtenerMundo().eliminar(this);
+		/*obtenerMundo().eliminar(this);*/
 	}
 }
 
@@ -119,19 +118,21 @@ Disparo * Bomba::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocida
 void Bomba::explotar()
 {
 	b2AABB consulta;
-	Rectangulo rect = obtenerCajaMagnificada(RADIOEXPLOSION);
+	Rectangulo rect = obtenerCajaMagnificada(DANOBOMBA);
 
-	consulta.upperBound = rect.topLeft();
-	consulta.lowerBound = rect.rightBottom();
+	consulta.upperBound = rect.rightBottom();
+	consulta.lowerBound = rect.topLeft();
 
 	obtenerMundo().danarZona(consulta, DANOBOMBA);
 	obtenerMundo().eliminar(this);
 }
 
-Plasma::Plasma(Mundo & mundo,
+Plasma::Plasma(uint ID, 
+			   Mundo & mundo,
 			   const b2Vec2 & posicion,
 			   const b2Vec2 & velocidad) :
-			   Disparo(mundo,
+			   Disparo(ID,
+					   mundo,
 					   DANOPLASMA,
 					   ANCHOSPRITEPLASMA,
 					   ALTOSPRITEPLASMA,
@@ -147,7 +148,7 @@ uint Plasma::obtenerMultiplicadorVelocidad() const
 	return MULTIPLICADORVELOCIDADPLASMA;
 }
 
-Disparo * Plasma::nuevo(const b2Vec2 & posicion, const b2Vec2 & velocidad)
+Disparo * Plasma::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocidad)
 {
-	return new Plasma(obtenerMundo(), posicion, velocidad);
+	return new Plasma(ID, obtenerMundo(), posicion, velocidad);
 }

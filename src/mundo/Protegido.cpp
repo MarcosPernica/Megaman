@@ -1,4 +1,5 @@
 #include "Protegido.h"
+#include <iostream>
 
 Protegido::Protegido(uint ID,
 			         Mundo & mundo,
@@ -30,10 +31,12 @@ Protegido::Protegido(uint ID,
 {
 }
 
-void Protegido::atacado(uint danio)
+void Protegido::atacado(uint dano)
 {
-	if (!cubierto || escudo < danio)
-		Entidad::atacado(danio - escudo*cubierto);
+	if (!cubierto || escudo < dano)
+	{
+		Entidad::atacado(dano - escudo*cubierto);
+	}
 }
 
 void Protegido::cubrirse()

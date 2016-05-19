@@ -9,9 +9,13 @@ class Met : public Protegido
 private:
 
 public:
-	Met(Mundo &mundo,
+	Met(uint ID,
+		Mundo &mundo,
 		const b2Vec2 &posicion,
 		const b2Vec2 &velocidad = b2Vec2_zero);
+
+	void actualizar(real deltaT){};
+	char tipoCuerpo() const {return ENEMIGOS;};
 };
 
 #endif

@@ -16,6 +16,7 @@
 
 class PowerUp;
 class Cuerpo;
+class CajaSpawn;
 
 /* Volar todas las listas, dejar 
  * 
@@ -44,6 +45,7 @@ private:
 	std::map<uint, Snapshotable*> snapshotables;
 	std::map<uint, Dibujable*> dibujables;
 	std::map<uint, Actualizable*> actualizables;
+	std::map<uint, CajaSpawn*> controladores;
 
 	std::list<Construccion*> construcciones;
 	std::list<uint> destrucciones;
@@ -62,6 +64,8 @@ public:
 	void agregar(Disparo * disparo);
 	void agregar(PowerUp * powerUp);
 	void agregar(Entidad * entidad);
+
+	bool existeElemento(uint ID);
 
 	std::list<Dibujable*> obtenerDibujables() const;/////////COPIA//// esa lista podría ser demasiado grande
 

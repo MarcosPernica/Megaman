@@ -1,22 +1,27 @@
 #include "Construccion.h"
 
-Construccion::Construccion(Mundo &mundo, 
+Construccion::Construccion(uint ID,
+						   Mundo &mundo, 
 						   const b2Vec2 &posicion, 
 						   real ancho, 
-						   real alto) :
-						   Cuerpo(mundo,
+						   real alto,
+						   ushort tipo,
+						   bool fantasma) :
+						   Cuerpo(ID,
+								mundo,
 								  ancho,
 								  alto,
 								  MASAINFINITA,	
 								  CONSTRUCCIONES,
-								  PERSONAJES | POWERUPS | ENEMIGOS | DISPAROS,
+								  (!fantasma) ? (PERSONAJES | POWERUPS | ENEMIGOS | DISPAROS) : (PERSONAJES),
 							      posicion,
 								  false,
-							      false)
+							      false),
+					           tipo(tipo)
 {
 }
 
 char Construccion::tipoCuerpo() const
 {
-	return CONSTRUCCIONES;
+	return CONSTRUCCIONES | tipo;
 }

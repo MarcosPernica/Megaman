@@ -13,7 +13,8 @@ private:
 	uint energia, energiaMaxima;
 	Mundo &mundo;
 public:
-	Entidad(Mundo &mundo,
+	Entidad(uint ID, 
+			Mundo &mundo,
 			real ancho,
 			real alto,
 			uint energiaMaxima, 
@@ -25,6 +26,7 @@ public:
 			bool gravitacional = true,
 			const b2Vec2 &velocidad = b2Vec2_zero,
 			Orientaciones orientacion = derecha);
+	~Entidad();
 
 	void recuperarEnergia(uint cantidadEnergia);
 

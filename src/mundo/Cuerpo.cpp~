@@ -16,7 +16,8 @@ Cuerpo::Cuerpo(uint ID,
 		       bool rotable,
 			   bool gravitacional,
 		       const b2Vec2 & velocidad,
-			   Orientaciones orientacion) :
+			   Orientaciones orientacion,
+			   bool fantasma) :
 			   orientacion(orientacion),
 			   mundo(mundo),
 			   Snapshotable(ID),
@@ -52,8 +53,9 @@ Cuerpo::Cuerpo(uint ID,
 	unionCuerpo.shape = &cajaColision;
 	unionCuerpo.filter.categoryBits = categoria;
 	unionCuerpo.filter.maskBits = colisionaCon;
+	unionCuerpo.isSensor = fantasma;
 
-	datos.push_back(new DatosColisionCuerpo(this,CUERPO,Rectangulo(posicion.x,posicion.y,ancho,alto)));
+	datos.push_back(new DatosColisionCuerpo(this,CUERPOPRINCIPAL,Rectangulo(posicion.x,posicion.y,ancho,alto)));
 
 	unionCuerpo.userData = datos.at(0);
 	cuerpo->CreateFixture(&unionCuerpo);
@@ -102,6 +104,11 @@ Rectangulo Cuerpo::obtenerCajaMagnificada(uint magnificador) const
 void Cuerpo::modificarVelocidad(const b2Vec2 & velocidad)
 {
 	cuerpo->SetLinearVelocity(velocidad);
+}
+
+void Cuerpo::modificarPosicion(const b2Vec2 & posicion)
+{
+	cuerpo->SetTransform(posicion,0)
 }
 
 void Cuerpo::modificarOrientacion(Orientaciones orientacion)

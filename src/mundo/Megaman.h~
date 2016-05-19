@@ -23,11 +23,15 @@ private:
 	uint vida;
 	int puedeSaltar;
 	bool saltando, disparando, lanzando;
+	bool subiendoEscalera, bajandoEscalera;
+	int puedeSubir;
 	char corriendo;
 	std::vector<Arma> armas;
 	char armaSeleccionada;
+	real agarreX;
 public:
-	Megaman(Mundo &mundo,
+	Megaman(uint ID,
+			Mundo &mundo,
 			const b2Vec2 &posicion,
 			const b2Vec2 &velocidad = b2Vec2_zero,
 			Orientaciones orientacion = derecha);
@@ -36,6 +40,13 @@ public:
 	void habilitarSalto();
 	void deshabilitarSalto();
 
+	void habilitarAgarre(real agarreX);
+	void deshabilitasAgarre();
+	void subirEscalera();
+	void dejarSubirEscalera();
+	void bajarEscalera();
+	void dejarBajarEscalera();
+	
 	void saltar();
 	void correr();
 	void dejarCorrer();

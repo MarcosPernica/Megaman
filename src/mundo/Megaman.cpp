@@ -35,6 +35,23 @@ char Megaman::tipoCuerpo() const
 
 void Megaman::actualizar(real deltaT)
 {
+
+	if(subiendoEscalera)
+	{
+		b2Vec2 velocidad = obtenerVelocidad(), posicion = obtenerPosicion();
+		posicion.x = agarreX;
+		modificarPosicion(posicion);
+		velocidad.y = -VELOCIDADMEGAMANESCALERA;
+		modificarVelocidad(velocidad);
+	}else if(bajandoEscalera)
+	{
+		b2Vec2 velocidad = obtenerVelocidad(), posicion = obtenerPosicion();
+		posicion.x = agarreX;
+		modificarPosicion(posicion);
+		velocidad.y = +VELOCIDADMEGAMANESCALERA;
+		modificarVelocidad(velocidad);
+	}
+
 	if (corriendo)
 	{
 		b2Vec2 velocidad = obtenerVelocidad();
@@ -42,7 +59,8 @@ void Megaman::actualizar(real deltaT)
 		velocidad += VELOCIDADMEGAMANCORRIENDO*Cuerpo::orientacionAVector(obtenerOrientacion());
 		modificarVelocidad(velocidad);
 	}
-	else if (saltando)
+
+	if (saltando)
 	{
 		b2Vec2 velocidad = obtenerVelocidad();
 		velocidad.y -= 6;
@@ -51,11 +69,11 @@ void Megaman::actualizar(real deltaT)
 		saltando = false;
 		
 	}
-	else if (disparando || lanzando)
+	
+	if (disparando || lanzando)
 	{
 		if (armas.at(armaSeleccionada).plasma)
 		{
-			std::cout << "Pium!" << std::endl;
 			b2Vec2 posicion, orientacion, velocidad;
 
 			orientacion = Cuerpo::orientacionAVector(obtenerOrientacion());
@@ -110,8 +128,9 @@ Megaman::Megaman(uint ID,
 {
 	vida = VIDASINICIALES;
 	saltando = false;
-	puedeSaltar = false;
+	puedeSaltar = 0;
 	corriendo = 0;
+	puedeSubir = 0;
 	
 	Arma arma;
 
@@ -142,6 +161,7 @@ Megaman::~Megaman()
 
 void Megaman::habilitarSalto()
 {
+	bajandoEscalera = false;
 	puedeSaltar++;
 }
 
@@ -186,4 +206,49 @@ void Megaman::disparar()
 			lanzando = true;
 		else
 			disparando = true;
+}
+
+void Megaman::habilitarAgarre(real agarreX)
+{
+	this->agarreX = agarreX;
+	puedeSubir++;	
+}
+
+void Megaman::deshabilitarAgarre()
+{
+	puedeSubir--;	
+}
+
+void Megaman::subirEscalera()
+{
+	if(puedeSubir >= 1)
+	{
+		corriendo = false;
+		saltando = false;
+		puedeSaltar = 1;
+		subiendoEscalera = true;
+		bajandoEscalera = false;
+	}
+}
+
+void Megaman::dejarSubirEscalera()
+{
+	subiendoEscalera = false;
+}
+
+void Megaman::bajarEscalera()
+{
+	if(puedeSubir)
+	{
+		corriendo = false;
+		saltando = false;
+		puedeSaltar = 1;
+		subiendoEscalera = false;
+		bajandoEscalera = true;
+	}
+}
+
+void Megaman::dejarBajarEscalera()
+{
+	bajandoEscalera = false;
 }
