@@ -11,12 +11,19 @@
 
 class ProxyJugador: public Receptor{
 	private:
+	Mutex m_id;
+	Mutex m_conexion_sana;
+	Mutex m_quiero_iniciar;
+	
 	std::string id_usuario;
-	bool coneccion_sana;
-	//const std::string id_usuario;
+	bool conexion_sana;
+	bool quiero_iniciar;
+	
 	ChannelSocket* channel;
+	
 	bool tengoUsuario();
 	void informarEstaRota();
+	void setQuiereIniciarPartida();
 	public:
 	//ProxyJugador(const std::string& id_usuario, ChannelSocket* channel);
 	ProxyJugador(ChannelSocket* channel);
@@ -29,6 +36,9 @@ class ProxyJugador: public Receptor{
 	bool getEstaSana();
 	void enviarSosPrimero();
 	void enviarNoSosPrimero();
+	
+	bool quiereIniciarPartida();
+	void notificarInicio();
 	
 	~ProxyJugador();
 	/**

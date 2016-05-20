@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 
 //-------------MAIN CON VENTANA Y FISICAS-------------
-
+/*
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
@@ -71,18 +71,18 @@ int main(int argc, char *argv[])
 	ventana.start();
 	Simulador simulador(mundo,33);
 	simulador.run();
-	
+	*/
 	/**
 	 * Marcos, qué te parece si hacemos
 	 * Megaman* Mundo::agregarMegaman(id_usuario)
 	 * y después se llama
 	 * mundo.iniciar() o lo que sea
 	 * */
-	 
+	 /*
 	Jugador jugador(mundo.getMegaman(), ventana);
 	ventana.join();
 }
-
+*/
 //-------------MAIN CLI/SERV HASTA LA PIJA-------------
 /*
 #include <string>
@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
 #include "net/AccepterSocket.h"
 #include "net/Buffer.h"
 #include <iostream>
+#include "common/exceptions.h"
 #ifndef compiling_server
 */
 /**
@@ -116,18 +117,9 @@ int main(int argc, char *argv[])
 	//envias el ID tuyo, talvez en el futuro un username
 	std::cout<<"ingrese un ID de usuario"<<std::endl;
 	int id_usuario = 0;
-	std::cin>>id_usuario;
-	Buffer mensaje = Buffer::createNumber(id_usuario);
-	Buffer fin_mensaje = Buffer::createString("\n");
+	//std::cin>>id_usuario;
+	Buffer mensaje = Buffer::createString("usuario\n");
 	channel.sendFixed(mensaje);
-	channel.sendFixed(fin_mensaje);
-	//recibís si iniciás vos la partida o no
-	std::string inicio_partida = channel.receiveUntilNl();
-	if(inicio_partida=="inicia\n"){
-		std::cout<<"introduzca cualquier cosa para iniciar la partida"<<std::endl;
-		std::string respuesta;
-		std::cin>>respuesta
-	}
 }
 #else
 int main(int argc, char *argv[])
@@ -146,15 +138,32 @@ int main(int argc, char *argv[])
 	}
 	
 	std::cout<<"aceptado"<<std::endl;
-	std::string mensaje = channel->receiveUntilNl();
+	std::string mensaje;
+	while(mensaje.length()==0){
+		try{
+			mensaje = channel->receiveUntilNl();
+			std::cout<<mensaje<<std::endl;
+		}catch(RecvException& e){}
+	}
 	std::cout<<mensaje<<std::endl;
+	
+	sleep(3);//acá se va el cliente!
+	
+	mensaje ="";
+	while(mensaje.length()==0){
+		try{
+			mensaje = channel->receiveUntilNl();
+			std::cout<<mensaje<<std::endl;
+		}catch(RecvException& e){}
+	}
+	std::cout<<mensaje<<std::endl;
+	
 	return 0;
 }
 #endif
 */
-
 //-------------MAIN CLI/SERV con complejidad-------------
-/*
+
 #include "net/Servidor.h"
 #include "net/Cliente.h"
 #ifndef compiling_server
@@ -174,7 +183,7 @@ int main(int argc, char *argv[])
  * 
  * y así...
  * */
-/*
+
 int main(int argc, char *argv[])
 {
 	Cliente cli;
@@ -186,4 +195,5 @@ int main(int argc, char *argv[])
 	Servidor servidor;
 	servidor.correr();
 }
-#endif*/
+#endif
+

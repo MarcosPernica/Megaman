@@ -36,8 +36,12 @@ class ChannelSocket: public Socket{
 	/**
 	 * Recibe bytes hasta obtener el caracter \n.
 	 * No se admiten mensajes de más de MAX_TAM_MENSAJE caracteres.
+	 * Si del otro lado no se envió nada, arroja una excepción de tipo RecvException.
+	 * Si no se sabe si del otro lado se envió o no información, esperará tantos 
+	 * segundos como especificado y arrojará una RecvTimeOutException.
+	 * Nótese que no existe relación de herencia entre las dos excepciones.
 	 * */
-	std::string receiveUntilNl() const;
+	std::string receiveUntilNl(float seconds = 0.5) const;
 	
 	private:
 	/**

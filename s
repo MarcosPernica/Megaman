@@ -8,7 +8,7 @@ COSOGTKMM := `pkg-config gtkmm-3.0 --cflags --libs`
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g -Wall -Dcompiling_server
+CFLAGS := -g -Wall -Dcompiling_server -std=c++98
 LIB := -lpthread -pthread -L lib -lBox2D
 INC := -I include
 

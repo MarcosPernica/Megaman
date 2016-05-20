@@ -29,7 +29,6 @@ GaiException::GaiException(const std::string& custom_message, int code){
 }
 GaiException::~GaiException() throw() {}
 
-
 const char* CustomException::what() const throw(){
 	return message.c_str();
 }

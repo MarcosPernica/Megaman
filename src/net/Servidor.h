@@ -21,9 +21,19 @@ class Servidor{
 	 * */
 	void conectar();
 	/**
-	 * Etapa de preparación del juego/esperar jugadores/etc
+	 * Etapa de preparación del juego/esperar jugadores/etc.
+	 * Devuelve el primer jugador.
 	 * */
-	void agregarJugadores();
+	ProxyJugador* agregarJugadores();
+	/**
+	 * Esperar que el primer jugador desee iniciar la partida. 
+	 * Este método recibirá también del jugador el nivel que será jugado. 
+	 * */
+	 void esperarAlPrimero(ProxyJugador* primero);
+	 /**
+	  * Avisa del inicio del juego a todos los proxies que hay hasta ahora
+	  * */
+	  void notificarInicio();
 	/**
 	 * Avisa de la llegada de ese usuario a todos los proxies que 
 	 * hay hasta ahora

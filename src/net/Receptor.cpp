@@ -1,37 +1,35 @@
 #include "Receptor.h"
 #include <sstream>
 #include <iostream>
+#include "../common/Lock.h"
+#include "../common/exceptions.h"
+#include <ctime>
 Receptor::Receptor(const ChannelSocket& chan):
 								channel(chan),
-								recibir(true){}
+								recibiendo(true){
+	start();
+}
 
 void Receptor::run(){
 	while(seguirRecibiendo()){
 		try{
-			std::string recibido = channel.receiveUntilNl();
-			//std::cout<<"recibi algo!"<<std::endl;
+			std::string recibido = channel.receiveUntilNl(1);
 			decodificarMensaje(recibido);
-			//std::cout<<"decodifique"<<std::endl;
-			pararDeRecibir();
-		}catch(...){}
+		}catch(RecvException& e){}
 	}
 }
 
 void Receptor::end(){
-	pararDeRecibir();
+	Lock l(m_recibir);
+	recibiendo = false;
 }
 bool Receptor::seguirRecibiendo(){
-	//LOCKKKKK!!!!!!!!!!!!!!!!!!!!!!!!
-	return recibir;
-}
-
-void Receptor::pararDeRecibir(){
-	//LOCKKKKK!!!!!!!!!!!!!!!!!!!!!!!!
-	recibir = false;
+	Lock l(m_recibir);
+	return recibiendo;
 }
 
 void Receptor::decodificarMensaje(const std::string& mensaje){
-	std::cout<<mensaje<<std::endl;
+	//std::cout<<mensaje<<std::endl;
 	std::istringstream stream(mensaje);
 	std::string tipo_mensaje;
 	
@@ -39,12 +37,9 @@ void Receptor::decodificarMensaje(const std::string& mensaje){
 	std::string resto_mensaje(stream.str().substr(stream.tellg()));
 	
 	ejecutarMensaje(tipo_mensaje,resto_mensaje);
-	/*
-	if(tipo_mensaje==MENSAJE_LLEGA){
-		cliente.agregarLlega(resto_mensaje);
-	}else if(tipo_mensaje == MENSAJE_ESTABA){
-		cliente.agregarEstaba(resto_mensaje);
-	}
-	*/
 	//std::cout<<tipo_mensaje<<" - "<<resto_mensaje<<std::endl;
+}
+
+Receptor::~Receptor(){
+	join();
 }

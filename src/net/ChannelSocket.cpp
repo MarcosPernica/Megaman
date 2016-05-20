@@ -7,6 +7,11 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <iostream>
+#include <ctime>
+/*
+ * MARTIN: DEBERÍA USAR POLL() O PUEDO MEDIR EL TIEMPO A MANO COMO HICE?
+ * */
+ 
 /**
  * El llamado a Socket(file_descriptor) soluciona el leak de la primera entrega
  * Lo que pasaba era que se llamaba a Socket() (que SIEMPRE abre un nuevo 
@@ -57,29 +62,47 @@ void ChannelSocket::receiveFixed(Buffer& into) const{
 }
 
 
-std::string ChannelSocket::receiveUntilNl() const{
+std::string ChannelSocket::receiveUntilNl(float seconds) const{
+	if(seconds>10){
+		throw CustomException("No se permiten timeout de más de 10 segundos");
+	}
+	
+	
 	std::string result;
 	char received_datum = 0;
 	int total_received = 0;
 	int received = 0;
 	
+	time_t start_time=0, now_time=0;
+	start_time = clock();
+	now_time = start_time;
+	
 	while(received >= 0 
 		&& received_datum != '\n'
-		&& total_received < MAX_TAM_MENSAJE){
-		//se reciben bytes de a 1
+		&& total_received < MAX_TAM_MENSAJE
+		&& (now_time-start_time)<seconds*CLOCKS_PER_SEC){
+			
 		received = recvS(&received_datum, 1);
 		
 		total_received += received;
 		result += received_datum;
+		
+		now_time = clock();
 	}
-	
+	/*
 	if(received<0){
 		throw CException("hubo un error al recibir datos (receive until Nl)");
 	}
+	*/
 	
-	if(received==0){
-		throw CException("no hay datos que recibir (receive until Nl)");
+	if((now_time-start_time)>=seconds*CLOCKS_PER_SEC){
+		throw RecvTimeOutException();
 	}
+	
+	if(received<=0){
+		throw RecvException();//CException("no hay datos que recibir (receive until Nl)");
+	}
+	
 	
 	return result;
 }

@@ -21,10 +21,15 @@ void* Thread::runner(void *data) {
 }
         
 void Thread::join() {
+	std::cout<<"iniciando join en Thread"<<std::endl;
 	this->end();
 	int j_result = pthread_join(thread, NULL);
-	if(j_result != 0)
+	if(j_result != 0){
+		std::cerr<<"Error al joinear el thread."<<std::endl;
 		throw CException("Error al joinear el thread");
+		
+	}
+	std::cout<<"terminando join en Thread"<<std::endl;
 }
 
 Thread::~Thread(){}

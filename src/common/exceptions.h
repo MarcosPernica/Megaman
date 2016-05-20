@@ -32,6 +32,14 @@ class AcceptException : public CException {
 	public:
 	AcceptException():CException("Error al aceptar una conexion"){}
 };
+
+/**
+ * Lanzada sólo cuando receive() sobre un socket no obtiene nada
+ * */
+class RecvException : public CException {
+	public:
+	RecvException():CException("El buffer de lectura estaba vacio"){}
+};
 /**
  * Representa una excepción generada por los entes del modelo.
  * */
@@ -44,7 +52,10 @@ class CustomException : public std::exception {
 	~CustomException() throw();
 };
 
-
+class RecvTimeOutException: public CustomException{
+	public: 
+	RecvTimeOutException():CustomException("Timeout al hacer Recv"){};
+};
 
 
 #endif

@@ -14,6 +14,9 @@ public:
 	void desbloquear();
 
 	friend class VariableCondicional;
+    private:
+        Mutex(const Mutex&);
+        Mutex& operator=(const Mutex&);
 };
 
 

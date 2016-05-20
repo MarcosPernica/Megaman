@@ -3,14 +3,22 @@
 #include "ChannelSocket.h"
 #include <set>
 #include <string>
+#include "../common/Mutex.h"
 enum Posicion{
 	Primero,
 	NoPrimero,
 	Desconocida
 };
 
+/**
+ * "Singleton" que representa la aplicación cliente
+ * */
 class Cliente{
 	private:
+	Mutex m_pantalla;
+	Mutex m_posicion;
+	Mutex m_iniciado;
+	
 	ChannelSocket socket;
 	Posicion posicion;
 	bool flag_iniciado;
