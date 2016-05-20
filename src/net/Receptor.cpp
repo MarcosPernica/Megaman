@@ -11,11 +11,16 @@ Receptor::Receptor(const ChannelSocket& chan):
 }
 
 void Receptor::run(){
-	while(seguirRecibiendo()){
+	while(seguirRecibiendo() && getRecepcionSana()){
 		try{
 			std::string recibido = channel.receiveUntilNl(1);
 			decodificarMensaje(recibido);
 		}catch(RecvException& e){}
+		 catch(RecvTimeOutException &e){
+			 setRecepcionRota();
+			 throw e;////////////////////POR AHORA NO HAGO NINGUN MANEJO ESPECIAL DE ESTA SITUACION!!
+			 /////////////////////////-----------------
+		 }
 	}
 }
 
@@ -42,4 +47,12 @@ void Receptor::decodificarMensaje(const std::string& mensaje){
 
 Receptor::~Receptor(){
 	join();
+}
+bool Receptor::setRecepcionRota(){
+	Lock l(m_recepcion_sana);
+	recepcion_sana = false;
+}
+bool Receptor::getRecepcionSana(){
+	Lock l(m_recepcion_sana);
+	return recepcion_sana;
 }

@@ -2,6 +2,9 @@
 #include <iostream>
 #include "../common/exceptions.h"
 #include <ctime>
+#include "../mundo/Mundo.h"
+#include "../mundo/SimuladorSinVentana.h"
+
 void Servidor::conectar(){
 	accepter.open(5002,4);
 }
@@ -11,7 +14,16 @@ void Servidor::correr(){
 	esperarAlPrimero(primero);
 	notificarInicio();
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
+	
+	
+	Mundo mundo;
+	SimuladorSinVentana sim(mundo,50);
+	sim.start();
 	sleep(5);
+	sim.join();
+	
+	matarConexiones();
+	std::cout<<"chau servidor!!!"<<std::endl;
 }
 /**
  * Ideas para agregar robustez:
@@ -63,6 +75,9 @@ void Servidor::notificarLlegada(ProxyJugador* jugador){
 }
 
 Servidor::~Servidor(){
+	
+}
+void Servidor::matarConexiones(){
 	std::set<ProxyJugador*>::iterator it;
 	for(it=proxies.begin(); it!=proxies.end(); ++it){
 		ProxyJugador* a_borrar=*it;

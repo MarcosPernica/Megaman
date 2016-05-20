@@ -2,6 +2,7 @@
 #define SIMULADOR
 /**
  * Actualiza el Mundo periódicamente
+ * Hay que renombrarlo a SimuladorConVentana
  * */
  #include "Mundo.h"
 class Simulador{

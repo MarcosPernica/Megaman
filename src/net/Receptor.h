@@ -21,6 +21,9 @@ class Receptor: private Thread{
 	bool recibiendo;
 	Mutex m_recibir;
 	
+	bool recepcion_sana;
+	Mutex m_recepcion_sana;
+	
 	const ChannelSocket& channel;
 	
 	protected:
@@ -34,7 +37,9 @@ class Receptor: private Thread{
 	virtual void end();
 	void decodificarMensaje(const std::string& mensaje);
 	bool seguirRecibiendo();
+	bool setRecepcionRota();
 	public:
 	~Receptor();
+	bool getRecepcionSana();
 };
 #endif

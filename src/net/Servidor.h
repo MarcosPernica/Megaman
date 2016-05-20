@@ -40,6 +40,11 @@ class Servidor{
 	 * */
 	void notificarLlegada(ProxyJugador* jugador);
 	
+	/**
+	 * Borra todas las conexiones. 
+	 * */
+	void matarConexiones();
+	
 	public:
 	
 	/**Ejecuta todo
@@ -47,5 +52,7 @@ class Servidor{
 	void correr();
 	
 	~Servidor();
+	
+	
 };
 #endif

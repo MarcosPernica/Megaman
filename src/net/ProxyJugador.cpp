@@ -69,7 +69,7 @@ ProxyJugador::~ProxyJugador(){
 }
 bool ProxyJugador::getEstaSana(){
 	Lock l(m_conexion_sana);
-	return conexion_sana;
+	return conexion_sana && getRecepcionSana();
 }
 
 void ProxyJugador::informarEstaRota(){
