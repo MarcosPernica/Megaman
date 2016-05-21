@@ -29,7 +29,6 @@ Cuerpo::Cuerpo(uint ID,
 	b2PolygonShape cajaColision;
 	b2FixtureDef unionCuerpo;
 
-
 	/*Si la masa es infinita se crea de manera que no se calculen las fisicas.*/
 	if (masa != MASAINFINITA)
 		defCuerpo.type = b2_dynamicBody;
@@ -44,7 +43,7 @@ Cuerpo::Cuerpo(uint ID,
 		defCuerpo.gravityScale = 0;
 
 	cuerpo = mundo.obtenerMundo().CreateBody(&defCuerpo);
-	
+
 	cajaColision.SetAsBox(ancho / 2, alto / 2);
 	
 	if(masa != MASAINFINITA)
@@ -58,17 +57,21 @@ Cuerpo::Cuerpo(uint ID,
 	datos.push_back(new DatosColisionCuerpo(this,CUERPOPRINCIPAL,Rectangulo(posicion.x,posicion.y,ancho,alto)));
 
 	unionCuerpo.userData = datos.at(0);
+
 	cuerpo->CreateFixture(&unionCuerpo);
 }
 
 Cuerpo::~Cuerpo()
 {
+	for (b2Fixture* f = cuerpo->GetFixtureList(); f; f = f->GetNext()) 
+	{
+		delete f->GetUserData();	
+		f->SetUserData(NULL);
+	}
+
 	mundo.obtenerMundo().DestroyBody(cuerpo);
 
-	std::vector<DatosColisionCuerpo*>::iterator i = datos.begin();
-
-	while(i != datos.end())
-		delete *i++;
+	datos.clear();
 }
 
 Mundo &Cuerpo::obtenerMundo()
@@ -121,6 +124,16 @@ void Cuerpo::aplicarImpulso(const b2Vec2 & impulso)
 	cuerpo->ApplyLinearImpulse(impulso,cuerpo->GetWorldCenter(),false);
 }
 
+void Cuerpo::gravitar()
+{
+	cuerpo->SetGravityScale(1);
+}
+
+void Cuerpo::ingravitar()
+{
+	cuerpo->SetGravityScale(0);
+}
+
 void Cuerpo::agregarCuerpoInmaterial(real ancho, 
 			     real alto,
 			     b2Vec2 posicion, 
@@ -141,10 +154,7 @@ void Cuerpo::agregarCuerpoInmaterial(real ancho,
 		unionCajita.userData = datos.at(datos.size()-1);
 		unionCajita.shape = &cajita;
 
-		cuerpo->CreateFixture(&unionCajita);
-
-		detectorSuelo = true;
-	
+		cuerpo->CreateFixture(&unionCajita);	
 }
 
 const b2Vec2 & Cuerpo::orientacionAVector(Orientaciones orientacion)

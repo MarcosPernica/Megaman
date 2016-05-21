@@ -29,14 +29,13 @@ void VentanaJuego::run(){
 }
 void VentanaJuego::end(){}
 
-VentanaJuego::VentanaJuego(const Mundo& mun, int argc, char * argv[], const std::string& id):mundo(mun),dibujador(mun){
+VentanaJuego::VentanaJuego(const Mundo& mun,int argc, char * argv[], const std::string& id):mundo(mun),dibujador(mun){
 	app = Gtk::Application::create(argc, argv, "Megamarta.is.angry" + id);
 	darea=new Gtk::DrawingArea;//tengo que hacer estos new después de crear la application porque sino gtkmm chilla
 	window= new Gtk::Window;
 }
 
 bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
-	
 	/*
 	cr->set_line_width(10.0);
 	cr->set_source_rgb(1,1,0);

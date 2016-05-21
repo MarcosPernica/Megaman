@@ -4,10 +4,11 @@
 #include "Definiciones.h"
 #include "Cuerpo.h"
 #include "Actualizable.h"
+#include "Enemigo.h"
 
 #include <Box2D/Box2D.h>
 class Mundo;
-class Entidad : public Cuerpo, public Actualizable
+class Entidad : public Cuerpo, public Actualizable, public Enemigo
 {
 private:
 	uint energia, energiaMaxima;
@@ -29,7 +30,8 @@ public:
 	~Entidad(){};
 
 	void recuperarEnergia(uint cantidadEnergia);
-
+	uint obtenerEnergiaMaxima();
+	uint obtenerEnergiaActual();
 	virtual void atacado(uint danio);
 };
 

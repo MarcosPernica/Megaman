@@ -7,9 +7,11 @@
 #include "../mundo/Mundo.h"
 #include <string>
 #include "Dibujador.h"
+#include "../mundo/Mutex.h"
 
 class VentanaJuego : public Thread{
 	private:
+	Mutex &mutexDibujo;
 	Gtk::DrawingArea *darea;
 	const Mundo& mundo;
 	Glib::RefPtr<Gtk::Application> app;
@@ -17,7 +19,7 @@ class VentanaJuego : public Thread{
 	Gtk::Window* window;
 	public:
 	~VentanaJuego();
-	VentanaJuego(const Mundo& mundo, int argc, char *argv[],const std::string& id);
+	VentanaJuego(const Mundo& mundo, Mutex &mutexDibujo, int argc, char *argv[],const std::string& id);
 	virtual void run();
 	virtual void end();
 	bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);

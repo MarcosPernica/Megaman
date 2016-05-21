@@ -2,7 +2,9 @@
 #include "Callbacks.h"
 #include <algorithm>
 #include <iostream>
-#include "CajaSpawn.h"
+#include "CajaAccion.h"
+#include "Cuerpo.h"
+#include "Escalera.h"
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
@@ -13,28 +15,35 @@ Mundo::Mundo() : mundo(gravedad)
 }
 
 void Mundo::crearNivel(){
-	Construccion *piso = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(5,8), 10, 1);
-	construcciones.push_back(piso);
+	agregarConstruccion(18,1,b2Vec2(9,6.5));
+	agregarConstruccion(1,6,b2Vec2(0.5,3));
+	agregarConstruccion(22,1,b2Vec2(11,0.5));
+	agregarConstruccion(1,11,b2Vec2(22.5,5.5));
+	agregarConstruccion(8,1,b2Vec2(19,11.5));
+	agregarConstruccion(1,3,b2Vec2(14.5,10.5));
+	agregarConstruccion(2,1,b2Vec2(13,9.5));
+	agregarConstruccion(1,2,b2Vec2(12.5,11));
+	agregarConstruccion(3,1,b2Vec2(10.5,11.5));
+	agregarConstruccion(1,2,b2Vec2(9.5,10));
+	agregarConstruccion(1,5,b2Vec2(7.5,9.5));
 
-	Construccion *paredIzquierda = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(0,3.5), 1, 10);
-	construcciones.push_back(paredIzquierda);
+	agregarConstruccion(6,1,b2Vec2(8,5.5));
+	agregarConstruccion(5,1,b2Vec2(8.5,4.5));
+	agregarConstruccion(4,1,b2Vec2(9,3.5));
 
-	Construccion *paredDerecha = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(10,3.5), 1, 10);
-	construcciones.push_back(paredDerecha);
+	agregarConstruccion(6,1,b2Vec2(18,3.5));
 
-	Construccion *escalera = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(7,5), 1.1, 5, ESCALERA, true);
-	construcciones.push_back(escalera);
+	agregarEscalera(4,b2Vec2(14.5,4));
+	agregarEscalera(3,b2Vec2(15.5,9.5));
 
-	Construccion *obstruccion = new Construccion(IDCONSTRUCCIONES,*this,b2Vec2(5,7), 1, 1);
-	construcciones.push_back(obstruccion);
-	Megaman *megaman = new Megaman(generarID(),*this, b2Vec2(2.5,0));
+	agregarMegaman(b2Vec2(3,2));
 
-	uint ID = generarID();
-	controladores[ID] = new CajaSpawn(ID,*this,b2Vec2(5,2));
+	agregarZonaTransporte(1,1,b2Vec2(8.5,12.5), b2Vec2(3,2));
+
+	agregar(new HabilitadorBomba(generarID(),*this,b2Vec2(17.5,5.5)));
 	
-	megamanes[megaman->obtenerID()] = megaman;
-	dibujables[megaman->obtenerID()] = megaman;
-	actualizables[megaman->obtenerID()] = megaman;
+	controladores.push_back(new CajaSpawnMet(generarID(),*this, b2Vec2(16,5)));
+	
 }
 
 b2World & Mundo::obtenerMundo()
@@ -52,10 +61,7 @@ void Mundo::danarZona(b2AABB zona, uint dano)
 void Mundo::eliminar(Cuerpo * cuerpo)
 {
 	if (snapshotables.find(cuerpo->obtenerID()) != snapshotables.end() || megamanes.find(cuerpo->obtenerID()) != megamanes.end())
-	{
-		std::cout << cuerpo->obtenerID() << std::endl;
 		destrucciones.push_back(cuerpo->obtenerID());		
-	}
 }
 
 void Mundo::agregar(Disparo * disparo)
@@ -77,6 +83,37 @@ void Mundo::agregar(Entidad * entidad)
 	snapshotables[entidad->obtenerID()] = entidad;
 	dibujables[entidad->obtenerID()] = entidad;
 	actualizables[entidad->obtenerID()] = entidad;
+}
+
+void Mundo::agregarConstruccion(real ancho, real alto, b2Vec2 posicion)
+{
+	construcciones.push_back(new Construccion(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
+}
+
+void Mundo::agregarEscalera(real alto, b2Vec2 posicion)
+{
+	construcciones.push_back(new Escalera(IDCONSTRUCCIONES,*this,posicion, alto));
+}
+
+Megaman *Mundo::agregarMegaman(b2Vec2 posicion)
+{
+	Megaman *megaman = new Megaman(generarID(),*this, posicion);
+	
+	megamanes[megaman->obtenerID()] = megaman;
+	dibujables[megaman->obtenerID()] = megaman;
+	actualizables[megaman->obtenerID()] = megaman;
+
+	return megaman;
+}
+
+void Mundo::agregarZonaMortal(real ancho, real alto, b2Vec2 posicion)
+{
+	controladores.push_back(new ZonaMortal(*this, ancho, alto, posicion));
+}
+
+void Mundo::agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino)
+{
+	controladores.push_back(new ZonaTransporte(*this, ancho, alto, posicion, posicionDestino));
 }
 
 void Mundo::destruirCuerpos()
@@ -127,6 +164,25 @@ void Mundo::destruirCuerpos()
 	destrucciones.clear();
 }
 
+void Mundo::agregarTareaDiferida(Callback *callback)
+{
+	tareasDiferidas.push_back(callback);
+}
+
+void Mundo::ejecutarTareasDiferidas()
+{
+	std::list<Callback*>::iterator a = tareasDiferidas.begin();
+
+	while(a != tareasDiferidas.end())
+	{
+		(*a)->ejecutar();
+		delete *a;
+		a++;
+	}
+
+	tareasDiferidas.clear();
+}
+
 bool Mundo::existeElemento(uint ID)
 {
 	if(snapshotables.find(ID) != snapshotables.end())
@@ -142,10 +198,11 @@ std::list<Dibujable*> Mundo::obtenerDibujables() const{/////////COPIA//// esa li
 
 	while(a != construcciones.end())
 		ret.push_back(*a++);
-	
+
 	
 	while(i != dibujables.end())
 		ret.push_back(i++->second);
+
 	
 	return ret;
 }
@@ -155,6 +212,7 @@ void Mundo::actualizar(real segundosDesdeUltima){
 	int32 positionIterations = 2;
 	
 	mundo.Step(segundosDesdeUltima, velocityIterations, positionIterations);
+	ejecutarTareasDiferidas();
 	destruirCuerpos();
 
 	std::map<uint, Actualizable*>::const_iterator i = actualizables.begin();
@@ -162,8 +220,10 @@ void Mundo::actualizar(real segundosDesdeUltima){
 	while(i != actualizables.end())
 		(i++)->second->actualizar(segundosDesdeUltima);	
 
-	/*Hardcode*/
-	controladores.begin()->second->actualizar(segundosDesdeUltima);
+	std::list<CajaAccion*>::const_iterator a = controladores.begin();
+
+	while(a != controladores.end())
+		(*a++)->actualizar(segundosDesdeUltima);
 }
 
 Megaman* Mundo::getMegaman(){

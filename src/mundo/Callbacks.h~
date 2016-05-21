@@ -4,6 +4,13 @@
 #include <Box2D/Box2D.h>
 #include "Definiciones.h"
 
+class Callback
+{	
+public:
+	virtual void ejecutar() = 0;
+	~Callback(){};
+};
+
 class DanarRadio : public b2QueryCallback
 {
 private:
@@ -42,12 +49,29 @@ public:
 	void EndContact(b2Contact *contacto){};
 };
 
+class DetectarTocarPowerUp : public b2ContactListener
+{
+public:
+	void BeginContact(b2Contact *contacto);
+	void EndContact(b2Contact *contacto){};
+};
+
+class DetectarTocarCajaAccion : public b2ContactListener
+{
+public:
+	void BeginContact(b2Contact *contacto);
+	void EndContact(b2Contact *contacto){};
+};
+
 class ListenerColisiones : public b2ContactListener
 {
 private:
+	DetectarTocarPowerUp detectorPowerUp;
+	DetectarEscalera detectorEscalera;
 	DetectarBalistica detectorBalistica;
 	DetectarSuelo detectorSuelo;
 	DetectarTocarEnemigos detectorToqueEnemigos;
+	DetectarTocarCajaAccion;
 public:
 	void BeginContact(b2Contact *contacto);
 	void EndContact(b2Contact *contacto);

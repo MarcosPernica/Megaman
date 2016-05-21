@@ -28,29 +28,13 @@ char Megaman::obtenerCantidadPlasma()
 	return armas.at(armaSeleccionada).plasma;
 }
 
-char Megaman::tipoCuerpo() const
+ushort Megaman::tipoCuerpo() const
 {
 	return PERSONAJES;
 }
 
 void Megaman::actualizar(real deltaT)
 {
-
-	if(subiendoEscalera)
-	{
-		b2Vec2 velocidad = obtenerVelocidad(), posicion = obtenerPosicion();
-		posicion.x = agarreX;
-		modificarPosicion(posicion);
-		velocidad.y = -VELOCIDADMEGAMANESCALERA;
-		modificarVelocidad(velocidad);
-	}else if(bajandoEscalera)
-	{
-		b2Vec2 velocidad = obtenerVelocidad(), posicion = obtenerPosicion();
-		posicion.x = agarreX;
-		modificarPosicion(posicion);
-		velocidad.y = +VELOCIDADMEGAMANESCALERA;
-		modificarVelocidad(velocidad);
-	}
 
 	if (corriendo)
 	{
@@ -64,10 +48,27 @@ void Megaman::actualizar(real deltaT)
 	{
 		b2Vec2 velocidad = obtenerVelocidad();
 		velocidad.y -= 6;
+
 		modificarVelocidad(velocidad);
 
 		saltando = false;
-		
+	}
+
+	if(agarrado)
+	{
+		if(puedeSubir >= 1)
+		{
+			b2Vec2 velocidad = b2Vec2_zero, posicion = obtenerPosicion();
+			posicion.x = agarreX;
+			modificarPosicion(posicion);
+
+			if(subiendoEscalera)
+				velocidad.y = -VELOCIDADMEGAMANESCALERA;
+			else if(bajandoEscalera)
+				velocidad.y = +VELOCIDADMEGAMANESCALERA;
+
+			modificarVelocidad(velocidad);
+		}
 	}
 	
 	if (disparando || lanzando)
@@ -98,11 +99,11 @@ void Megaman::actualizar(real deltaT)
 	}
 }
 
-void Megaman::agregarArma(Disparo * disparo)
+void Megaman::agregarArma(Disparo * disparo, uint cantidadPlasma)
 {
 	Arma arma;
 	arma.arma = disparo;
-	arma.plasma = MAXIMACANTIDADPLASMA;
+	arma.plasma = cantidadPlasma;
 
 	armas.push_back(arma);
 }
@@ -119,7 +120,7 @@ Megaman::Megaman(uint ID,
 					     ENERGIAMEGAMAN,
 						 MASAMEGAMAN,
 						 PERSONAJES,
-					     CONSTRUCCIONES | POWERUPS | ENEMIGOS | DISPAROS,
+					     CONSTRUCCIONES | POWERUPS | ENEMIGOS | DISPAROS | CAJASACCION,
 						 posicion,
 					     false,
 					     true,
@@ -128,8 +129,9 @@ Megaman::Megaman(uint ID,
 {
 	vida = VIDASINICIALES;
 	saltando = false;
+	agarrado = false;
 	puedeSaltar = 0;
-	corriendo = 0;
+	corriendo = false;
 	puedeSubir = 0;
 	
 	Arma arma;
@@ -138,19 +140,9 @@ Megaman::Megaman(uint ID,
 	arma.arma = new Plasma(obtenerMundo().generarID(),obtenerMundo());
 
 	armas.push_back(arma);
-
-	/*Bomba para probar nada ma'.*/
-	
-	arma;
-
-	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Bomba(obtenerMundo().generarID(),obtenerMundo());
-
-	armas.push_back(arma);
-
 	armaSeleccionada = 0;
 
-	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.25,0.3,b2Vec2(-ANCHOSPRITEMEGAMAN*0.25/2,ALTOSPRITEMEGAMAN*0.9/2),MEGAMANJUMPBOX, PERSONAJES,CONSTRUCCIONES | DISPAROS);
+	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.25,0.3,b2Vec2(-ANCHOSPRITEMEGAMAN*0.25/2,ALTOSPRITEMEGAMAN*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
 }
 
 Megaman::~Megaman()
@@ -175,7 +167,8 @@ void Megaman::saltar()
 	if (!saltando && puedeSaltar >= 1)
 	{
 		saltando = true;
-		corriendo = false;
+		agarrado = false;
+		gravitar();
 	}
 }
 
@@ -223,8 +216,8 @@ void Megaman::subirEscalera()
 {
 	if(puedeSubir >= 1)
 	{
-		corriendo = false;
-		saltando = false;
+		ingravitar();
+		agarrado = true;
 		puedeSaltar = 1;
 		subiendoEscalera = true;
 		bajandoEscalera = false;
@@ -240,8 +233,8 @@ void Megaman::bajarEscalera()
 {
 	if(puedeSubir)
 	{
-		corriendo = false;
-		saltando = false;
+		ingravitar();
+		agarrado = true;
 		puedeSaltar = 1;
 		subiendoEscalera = false;
 		bajandoEscalera = true;

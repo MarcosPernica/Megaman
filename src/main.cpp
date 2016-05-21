@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 
 //-------------MAIN CON VENTANA Y FISICAS-------------
-/*
+
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
@@ -69,20 +69,21 @@ int main(int argc, char *argv[])
 	Mundo mundo;
 	VentanaJuego ventana(mundo,argc,argv,"1");
 	ventana.start();
+	
 	Simulador simulador(mundo,33);
-	simulador.run();
-	*/
+	
+
 	/**
 	 * Marcos, qué te parece si hacemos
 	 * Megaman* Mundo::agregarMegaman(id_usuario)
 	 * y después se llama
 	 * mundo.iniciar() o lo que sea
 	 * */
-	 /*
+	 
 	Jugador jugador(mundo.getMegaman(), ventana);
 	ventana.join();
 }
-*/
+
 //-------------MAIN CLI/SERV HASTA LA PIJA-------------
 /*
 #include <string>
@@ -163,11 +164,11 @@ int main(int argc, char *argv[])
 #endif
 */
 //-------------MAIN CLI/SERV con complejidad-------------
-
+/*
 #include "net/Servidor.h"
 #include "net/Cliente.h"
 #ifndef compiling_server
-
+*/
 /**
  * El juego va a tener las sig. etapas:
  * 
@@ -183,7 +184,7 @@ int main(int argc, char *argv[])
  * 
  * y así...
  * */
-
+/*
 int main(int argc, char *argv[])
 {
 	Cliente cli;
@@ -195,5 +196,5 @@ int main(int argc, char *argv[])
 	Servidor servidor;
 	servidor.correr();
 }
-#endif
+#endif*/
 

@@ -3,8 +3,6 @@
 
 #include "Entidad.h"
 
-class Megaman;
-
 class Interactuable
 {
 public:

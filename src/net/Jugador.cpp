@@ -45,6 +45,11 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 			controlado->subirEscalera();
 			break;
 		}
+		case GDK_KEY_Down:
+		{
+			controlado->bajarEscalera();
+			break;
+		}
 		case GDK_KEY_Right:
 		{
 			controlado->mirarDerecha();
@@ -76,6 +81,11 @@ bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
 		case GDK_KEY_Up:
 		{
 			controlado->dejarSubirEscalera();
+			break;
+		}
+		case GDK_KEY_Down:
+		{
+			controlado->dejarBajarEscalera();
 			break;
 		}
 		case GDK_KEY_Right:

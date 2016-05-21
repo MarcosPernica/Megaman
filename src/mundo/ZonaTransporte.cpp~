@@ -1,0 +1,37 @@
+#include "ZonaTransporte.h"
+
+ZonaTransporte::ZonaTransporte(uint ID, 
+		 Mundo &mundo,
+		 real ancho,
+		 real alto,
+		 const b2Vec2 &posicion,
+		 const b2Vec2 &posicionDestino) :
+		 Cuerpo(ID, 
+			mundo,
+			ancho,
+			alto,
+			MASAINFINITA,
+			CONSTRUCCIONES | POWERUPS,
+			PERSONAJES,
+			posicion,	
+			false,
+			false,	
+			b2Vec2_zero,
+			derecha,
+			true),
+		 posicionDestino(posicionDestino)
+			     
+{
+}
+
+char ZonaTransporte::tipoCuerpo() const
+{
+	return CONSTRUCCIONES | POWERUPS;
+}
+
+bool ZonaTransporte::interactuar(Entidad *entidad)
+{
+	entidad->modificarPosicion(posicionDestino);
+}
+
+

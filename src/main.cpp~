@@ -63,16 +63,18 @@ int main(int argc, char *argv[])
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
 #include "net/Jugador.h"
-#include "net/ServerProxy.h"
+#include "mundo/Mutex.h"
 
 int main(int argc, char *argv[])
 {
+	Mutex mutexAcciones;
 	Mundo mundo;
-	VentanaJuego ventana(mundo,argc,argv,"1");
+	VentanaJuego ventana(mundo,mutexAcciones,argc,argv,"1");
 	ventana.start();
-	Simulador simulador(mundo,33);
-	simulador.run();
 	
+	Simulador simulador(mundo,mutexAcciones,33);
+	
+
 	/**
 	 * Marcos, qué te parece si hacemos
 	 * Megaman* Mundo::agregarMegaman(id_usuario)
@@ -91,6 +93,7 @@ int main(int argc, char *argv[])
 #include "net/AccepterSocket.h"
 #include "net/Buffer.h"
 #include <iostream>
+#include "common/exceptions.h"
 #ifndef compiling_server
 */
 /**
@@ -117,18 +120,9 @@ int main(int argc, char *argv[])
 	//envias el ID tuyo, talvez en el futuro un username
 	std::cout<<"ingrese un ID de usuario"<<std::endl;
 	int id_usuario = 0;
-	std::cin>>id_usuario;
-	Buffer mensaje = Buffer::createNumber(id_usuario);
-	Buffer fin_mensaje = Buffer::createString("\n");
+	//std::cin>>id_usuario;
+	Buffer mensaje = Buffer::createString("usuario\n");
 	channel.sendFixed(mensaje);
-	channel.sendFixed(fin_mensaje);
-	//recibís si iniciás vos la partida o no
-	std::string inicio_partida = channel.receiveUntilNl();
-	if(inicio_partida=="inicia\n"){
-		std::cout<<"introduzca cualquier cosa para iniciar la partida"<<std::endl;
-		std::string respuesta;
-		std::cin>>respuesta
-	}
 }
 #else
 int main(int argc, char *argv[])
@@ -147,19 +141,36 @@ int main(int argc, char *argv[])
 	}
 	
 	std::cout<<"aceptado"<<std::endl;
-	std::string mensaje = channel->receiveUntilNl();
+	std::string mensaje;
+	while(mensaje.length()==0){
+		try{
+			mensaje = channel->receiveUntilNl();
+			std::cout<<mensaje<<std::endl;
+		}catch(RecvException& e){}
+	}
 	std::cout<<mensaje<<std::endl;
+	
+	sleep(3);//acá se va el cliente!
+	
+	mensaje ="";
+	while(mensaje.length()==0){
+		try{
+			mensaje = channel->receiveUntilNl();
+			std::cout<<mensaje<<std::endl;
+		}catch(RecvException& e){}
+	}
+	std::cout<<mensaje<<std::endl;
+	
 	return 0;
 }
 #endif
 */
-
 //-------------MAIN CLI/SERV con complejidad-------------
 /*
 #include "net/Servidor.h"
 #include "net/Cliente.h"
 #ifndef compiling_server
-
+*/
 /**
  * El juego va a tener las sig. etapas:
  * 
@@ -188,3 +199,4 @@ int main(int argc, char *argv[])
 	servidor.correr();
 }
 #endif*/
+

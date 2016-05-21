@@ -1,0 +1,35 @@
+#include "ZonaMortal.h"
+
+ZonaMortal::ZonaMortal(uint ID, 
+		 Mundo &mundo,
+		 real ancho,
+		 real alto,
+		 const b2Vec2 &posicion) :
+		 Cuerpo(ID, 
+			mundo,
+			ancho,
+			alto,
+			MASAINFINITA,
+			CONSTRUCCIONES | DISPAROS,
+			ENEMIGOS | PERSONAJES,
+			posicion,	
+			false,
+			false,	
+			b2Vec2_zero,
+			derecha,
+			true)
+			     
+{
+}
+
+char ZonaMortal::tipoCuerpo() const
+{
+	return CONSTRUCCIONES | DISPAROS;
+}
+
+bool ZonaMortal::interactuar(Entidad *entidad)
+{
+	entidad->atacado(entidad->obtenerEnergiaMaxima());
+}
+
+

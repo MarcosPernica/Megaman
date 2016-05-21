@@ -57,18 +57,20 @@ public:
 	const b2Vec2& obtenerVelocidad() const;
 	Orientaciones obtenerOrientacion() const;
 
-
+	void finalizarCreacion();
 	Rectangulo obtenerCajaMagnificada(uint magnificador) const;
 
 	void modificarVelocidad(const b2Vec2 &velocidad);
 	void modificarOrientacion(Orientaciones orientacion);
 	void modificarPosicion(const b2Vec2 &posicion);
 	void aplicarImpulso(const b2Vec2 &impulso);
+	void gravitar();
+	void ingravitar();
 
 	
 	void agregarCuerpoInmaterial(real ancho, real alto, b2Vec2 posicion, uint identificador, ushort categoria, ushort colisionaCon);
 
-	virtual char tipoCuerpo() const = 0;
+	virtual ushort tipoCuerpo() const = 0;
 
 	static const b2Vec2 versorIzquierda, versorDerecha;
 	static const b2Vec2 &orientacionAVector(Orientaciones orientacion);

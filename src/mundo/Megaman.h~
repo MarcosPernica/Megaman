@@ -22,10 +22,10 @@ private:
 
 	uint vida;
 	int puedeSaltar;
-	bool saltando, disparando, lanzando;
+	bool saltando, disparando, lanzando, agarrado;
 	bool subiendoEscalera, bajandoEscalera;
 	int puedeSubir;
-	char corriendo;
+	bool corriendo;
 	std::vector<Arma> armas;
 	char armaSeleccionada;
 	real agarreX;
@@ -41,7 +41,7 @@ public:
 	void deshabilitarSalto();
 
 	void habilitarAgarre(real agarreX);
-	void deshabilitasAgarre();
+	void deshabilitarAgarre();
 	void subirEscalera();
 	void dejarSubirEscalera();
 	void bajarEscalera();
@@ -64,7 +64,7 @@ public:
 
 	void actualizar(real deltaT);
 
-	void agregarArma(Disparo *disparo);
+	void agregarArma(Disparo *disparom, uint cantidadPlasma);
 };
 
 #endif

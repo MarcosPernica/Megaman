@@ -56,7 +56,7 @@ bool Disparo::perecedero()
 	return true;
 }
 
-bool Disparo::interactuar(Entidad *entidad)
+bool Disparo::danar(Entidad *entidad)
 {
 	entidad->atacado(dano);
 	return true;
@@ -79,7 +79,7 @@ Bomba::Bomba(uint ID,
 {
 }
 
-bool Bomba::interactuar(Entidad * entidad)
+bool Bomba::danar(Entidad * entidad)
 {
 	return false;
 }
@@ -94,10 +94,7 @@ void Bomba::actualizar(real deltaT)
 	tiempoTotal -= deltaT;
 
 	if (tiempoTotal <= 0)
-	{
 		explotar();
-		/*obtenerMundo().eliminar(this);*/
-	}
 }
 
 uint Bomba::obtenerMultiplicadorVelocidad() const

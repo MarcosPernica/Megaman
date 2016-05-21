@@ -16,7 +16,7 @@ bool Disparo::lanzable()
 	return false;
 }
 
-char Disparo::tipoCuerpo() const
+ushort Disparo::tipoCuerpo() const
 {
 	return DISPAROS;
 }
@@ -56,7 +56,7 @@ bool Disparo::perecedero()
 	return true;
 }
 
-bool Disparo::interactuar(Entidad *entidad)
+bool Disparo::danar(Entidad *entidad)
 {
 	entidad->atacado(dano);
 	return true;
@@ -79,7 +79,7 @@ Bomba::Bomba(uint ID,
 {
 }
 
-bool Bomba::interactuar(Entidad * entidad)
+bool Bomba::danar(Entidad * entidad)
 {
 	return false;
 }

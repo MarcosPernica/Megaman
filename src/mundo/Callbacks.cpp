@@ -3,7 +3,9 @@
 #include "Entidad.h"
 #include "Megaman.h"
 #include "Disparo.h"
+#include "PowerUp.h"
 #include "Definiciones.h"
+#include "CajaAccion.h"
 #include "Mundo.h"
 #include <iostream>
 
@@ -33,7 +35,7 @@ void DetectarEscalera::BeginContact(b2Contact * contacto)
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
 
-	if(datosA->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	if(datosA->cuerpo->tipoCuerpo() == ESCALERAS)
 	{
 		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
@@ -43,7 +45,7 @@ void DetectarEscalera::BeginContact(b2Contact * contacto)
 		}
 	}
 
-	if(datosB->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	if(datosB->cuerpo->tipoCuerpo() == ESCALERAS)
 	{
 		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
@@ -59,7 +61,7 @@ void DetectarEscalera::EndContact(b2Contact * contacto)
 	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
-	if(datosA->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	if(datosA->cuerpo->tipoCuerpo() == ESCALERAS)
 	{
 		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
@@ -69,7 +71,7 @@ void DetectarEscalera::EndContact(b2Contact * contacto)
 		}
 	}
 
-	if(datosB->cuerpo->tipoCuerpo() == (CONSTRUCCIONES | ESCALERA))
+	if(datosB->cuerpo->tipoCuerpo() == ESCALERAS)
 	{
 		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
@@ -84,44 +86,40 @@ void DetectarEscalera::EndContact(b2Contact * contacto)
 
 void DetectarSuelo::BeginContact(b2Contact * contacto)
 {
-	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
-	if (datos->ID == MEGAMANJUMPBOX)
-		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
-		{
-			Megaman *megaman = (Megaman*)datos->cuerpo;
-			megaman->habilitarSalto();			
-		}
+	if (datosA->ID == JUMPBOX)
+	{
+		Megaman *megaman = (Megaman*)datosA->cuerpo;
+		megaman->habilitarSalto();			
+	}
 
-	datos = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
-	if (datos->ID == MEGAMANJUMPBOX)
-		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
-		{
-			Megaman *megaman = (Megaman*)datos->cuerpo;
-			megaman->habilitarSalto();
-		}
+	if (datosB->ID == JUMPBOX)
+	{
+		Megaman *megaman = (Megaman*)datosB->cuerpo;
+		megaman->habilitarSalto();			
+	}
 }
 
 void DetectarSuelo::EndContact(b2Contact * contacto)
 {
-	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
-	if (datos->ID == MEGAMANJUMPBOX)
-		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
-		{
-			Megaman *megaman = (Megaman*)datos->cuerpo;
-			megaman->deshabilitarSalto();
-		}
+	if (datosA->ID == JUMPBOX)
+	{
+		Megaman *megaman = (Megaman*)datosA->cuerpo;
+		megaman->deshabilitarSalto();			
+	}
 
-	datos = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
-	if (datos->ID == MEGAMANJUMPBOX)
-		if (datos->cuerpo->tipoCuerpo() == PERSONAJES)
-		{
-			Megaman *megaman = (Megaman*)datos->cuerpo;
-			megaman->deshabilitarSalto();
-		}
+	if (datosB->ID == JUMPBOX)
+	{
+		Megaman *megaman = (Megaman*)datosB->cuerpo;
+		megaman->deshabilitarSalto();			
+	}
 }
 
 void DetectarBalistica::BeginContact(b2Contact * contacto)
@@ -135,11 +133,11 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 		if (disparo->megamanLoDisparo())
 		{
 			if (datosB->cuerpo->tipoCuerpo() == ENEMIGOS)
-				disparo->interactuar((Entidad*)datosB->cuerpo);
+				disparo->danar((Entidad*)datosB->cuerpo);
 		}
 		else if(datosB->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
-			disparo->interactuar((Entidad*)datosB->cuerpo);
+			disparo->danar((Entidad*)datosB->cuerpo);
 		}
 
 		if(disparo->perecedero())
@@ -152,15 +150,60 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 		if (disparo->megamanLoDisparo())
 		{
 			if (datosA->cuerpo->tipoCuerpo() == ENEMIGOS)
-				disparo->interactuar((Entidad*)datosA->cuerpo);
+				disparo->danar((Entidad*)datosA->cuerpo);
 		}
 		else if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
-			disparo->interactuar((Entidad*)datosA->cuerpo);
+			disparo->danar((Entidad*)datosA->cuerpo);
 		}
 
 		if(disparo->perecedero())
 			disparo->obtenerMundo().eliminar(disparo);
+	}
+}
+
+void DetectarTocarPowerUp::BeginContact(b2Contact * contacto)
+{
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
+
+	if (datosA->cuerpo->tipoCuerpo() == POWERUPS && datosB->cuerpo->tipoCuerpo() == PERSONAJES)
+	{
+		Megaman *megaman = (Megaman*)datosB->cuerpo;
+		PowerUp *powerUp = (PowerUp*)datosA->cuerpo;
+		
+		megaman->obtenerMundo().agregarTareaDiferida(new CallbackAumentador(powerUp,megaman));
+	}
+	
+	if (datosB->cuerpo->tipoCuerpo() == POWERUPS && datosA->cuerpo->tipoCuerpo() == PERSONAJES)
+	{
+		Megaman *megaman = (Megaman*)datosA->cuerpo;
+		PowerUp *powerUp = (PowerUp*)datosB->cuerpo;
+
+		megaman->obtenerMundo().agregarTareaDiferida(new CallbackAumentador(powerUp,megaman));
+	}
+}
+
+void DetectarTocarCajaAccion::BeginContact(b2Contact * contacto)
+{
+
+	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
+	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
+
+	if (datosA->cuerpo->tipoCuerpo() == CAJASACCION)
+	{
+		CajaAccion *caja = (CajaAccion*)datosA->cuerpo;
+		Megaman *megaman = (Megaman*)datosB->cuerpo;
+		
+		megaman->obtenerMundo().agregarTareaDiferida(new CallbackInteraccionCajaAccion(megaman,caja));
+	}
+	
+	if (datosB->cuerpo->tipoCuerpo() == CAJASACCION)
+	{	
+		CajaAccion *caja = (CajaAccion*)datosB->cuerpo;
+		Megaman *megaman = (Megaman*)datosA->cuerpo;
+		
+		megaman->obtenerMundo().agregarTareaDiferida(new CallbackInteraccionCajaAccion(megaman,caja));
 	}
 }
 
@@ -189,12 +232,19 @@ void ListenerColisiones::BeginContact(b2Contact * contacto)
 	detectorSuelo.BeginContact(contacto);
 	detectorToqueEnemigos.BeginContact(contacto);
 	detectorEscalera.BeginContact(contacto);
+	detectorPowerUp.BeginContact(contacto);
+	detectorCajaAccion.BeginContact(contacto);
 }
 
 void ListenerColisiones::EndContact(b2Contact * contacto)
 {
+	if(!contacto->GetFixtureA()->GetUserData() || !contacto->GetFixtureB()->GetUserData())
+		return;
+
 	detectorBalistica.EndContact(contacto);
+	detectorEscalera.EndContact(contacto);	
 	detectorSuelo.EndContact(contacto);
 	detectorToqueEnemigos.EndContact(contacto);
-	detectorEscalera.EndContact(contacto);
+	detectorPowerUp.EndContact(contacto);
+	detectorCajaAccion.EndContact(contacto);
 }

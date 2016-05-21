@@ -2,14 +2,13 @@
 #define DISPARO
 
 #include "Cuerpo.h"
-#include "Interactuable.h"
 #include "Actualizable.h"
 #include "Entidad.h"
 #include <Box2D/Box2D.h>
 
 class Mundo;
 
-class Disparo : public Interactuable, public Actualizable, public Cuerpo
+class Disparo : public Actualizable, public Cuerpo
 {
 private:
 	uint dano;
@@ -26,14 +25,15 @@ public:
 			const b2Vec2 &velocidad,
 			bool disparoMegaman = true);
 
-	virtual bool interactuar(Entidad *entidad);
+	virtual bool danar(Entidad *entidad);
 	virtual void actualizar(real deltaT);
+	~Disparo(){};
 
 	/*Un disparo puede lanzarse (Bomba o bumerang) o dispararse (Plasma)*/
 	virtual bool lanzable();
 	virtual bool perecedero();
 	virtual uint obtenerMultiplicadorVelocidad() const = 0;
-	char tipoCuerpo() const;
+	ushort tipoCuerpo() const;
 	bool megamanLoDisparo() const;
 
 	virtual Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad) = 0;
@@ -48,6 +48,7 @@ public:
 		   Mundo &mundo, 
 		   const b2Vec2 &posicion = b2Vec2(-1000,-1000),
 		   const b2Vec2 &velocidad = b2Vec2_zero);
+	~Plasma(){};
 
 	uint obtenerMultiplicadorVelocidad() const;
 
@@ -60,7 +61,8 @@ private:
 	real tiempoTotal;
 public:
 	Bomba(uint ID, Mundo &mundo, const b2Vec2 &posicion = b2Vec2(-1000,-1000), const b2Vec2 &velocidad = b2Vec2_zero);
-	bool interactuar(Entidad *entidad);
+	~Bomba(){};
+	bool danar(Entidad *entidad);
 	void actualizar(real deltaT);
 	bool perecedero();
 	uint obtenerMultiplicadorVelocidad() const;

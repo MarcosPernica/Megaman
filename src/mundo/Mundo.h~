@@ -10,25 +10,16 @@
 #include "PowerUp.h"
 #include "Entidad.h"
 #include "Disparo.h"
-#include "CajaSpawn.h"
 #include "Construccion.h"
 #include "../graficos/Dibujable.h"
 
 
 class PowerUp;
 class Cuerpo;
+class CajaSpawn;
+class Interactuable;
 
-/* Volar todas las listas, dejar 
- * 
- * -mapa (ID de usuario, Megaman*)
- * -mapa (ID, snapshotable)
- * -conjunto de Cuerpo* destruciones mantenerla
- * 
- * -conjunto de Dibujables
- * -conjunto de Actualizables.
- * 
- * */
-/**
+	/*
 	 * Marcos, qué te parece si hacemos
 	 * Megaman* Mundo::agregarMegaman(id_usuario)
 	 * y después se llama
@@ -45,9 +36,11 @@ private:
 	std::map<uint, Snapshotable*> snapshotables;
 	std::map<uint, Dibujable*> dibujables;
 	std::map<uint, Actualizable*> actualizables;
-	std::map<uint, CajaSpawn*> controladores;
+	std::list<CajaAccion*> controladores;
 
+	std::list<Interactuable*> zonas;
 	std::list<Construccion*> construcciones;
+	std::list<Callback*> tareasDiferidas;
 	std::list<uint> destrucciones;
 	
 	void crearNivel();
@@ -65,11 +58,19 @@ public:
 	void agregar(PowerUp * powerUp);
 	void agregar(Entidad * entidad);
 
+	void agregarConstruccion(real ancho, real alto, b2Vec2 posicion);
+	void agregarEscalera(real alto, b2Vec2 posicion);
+	Megaman *agregarMegaman(b2Vec2 posicion);
+	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
+	void agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino);
+
 	bool existeElemento(uint ID);
 
 	std::list<Dibujable*> obtenerDibujables() const;/////////COPIA//// esa lista podría ser demasiado grande
 
 	void destruirCuerpos();
+	void agregarTareaDiferida(Callback *callback);
+	void ejecutarTareasDiferidas();
 
 	static const b2Vec2 gravedad;
 	

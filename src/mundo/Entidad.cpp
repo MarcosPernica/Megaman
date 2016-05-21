@@ -1,4 +1,5 @@
 #include "Entidad.h"
+#include "PowerUp.h"
 #include "Mundo.h"
 #include <iostream>
 Entidad::Entidad(uint ID, 
@@ -32,6 +33,16 @@ Entidad::Entidad(uint ID,
 {
 }
 
+uint Entidad::obtenerEnergiaMaxima()
+{
+	return energiaMaxima;
+}
+
+uint Entidad::obtenerEnergiaActual()
+{
+	return energia;
+}
+
 void Entidad::recuperarEnergia(uint cantidadEnergia)
 {
 	if (energia + cantidadEnergia > energiaMaxima)
@@ -42,9 +53,14 @@ void Entidad::recuperarEnergia(uint cantidadEnergia)
 
 void Entidad::atacado(uint danio)
 {
+	PowerUp *powerUp;
+
 	if (danio < energia)
 		energia -= danio;
 	else
+	{
+		ruletaPowerUp(obtenerMundo().generarID(),obtenerMundo(),obtenerPosicion());
 		obtenerMundo().eliminar(this);
+	}
 		
 }

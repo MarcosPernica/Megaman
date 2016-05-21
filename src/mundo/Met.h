@@ -16,7 +16,7 @@ public:
 	~Met(){};
 
 	void actualizar(real deltaT){};
-	char tipoCuerpo() const {return ENEMIGOS;};
+	ushort tipoCuerpo() const {return ENEMIGOS;};
 };
 
 #endif

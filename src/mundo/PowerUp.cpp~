@@ -1,4 +1,15 @@
 #include "PowerUp.h"
+#include "Disparo.h"
+#include "Definiciones.h"
+
+CallbackAumentador::CallbackAumentador(PowerUp *powerUp, Megaman *megaman) : powerUp(powerUp), megaman(megaman)
+{
+}
+
+void CallbackAumentador::ejecutar()
+{
+	powerUp->aumentar(*megaman);
+}
 
 NuevaVida::NuevaVida(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
@@ -7,6 +18,17 @@ NuevaVida::NuevaVida(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID
 void NuevaVida::aumentar(Megaman & megaman)
 {
 	megaman.aumentarVida();
+	eliminarPowerUp();
+}
+
+
+HabilitadorBomba::HabilitadorBomba(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
+{
+}
+
+void HabilitadorBomba::aumentar(Megaman & megaman)
+{
+	megaman.agregarArma(new Bomba(obtenerMundo().generarID(),obtenerMundo()), CANTIDADINFINITAPLASMA);
 	eliminarPowerUp();
 }
 
@@ -73,6 +95,11 @@ PowerUp::PowerUp(uint ID, Mundo &mundo,
 	this->probabilidadAparicion = probabilidadAparicion;
 }
 
+char PowerUp::tipoCuerpo() const
+{
+	return POWERUPS;
+}
+
 real PowerUp::obtenerProbabilidadAparicion()
 {
 	return probabilidadAparicion;
@@ -80,5 +107,5 @@ real PowerUp::obtenerProbabilidadAparicion()
 
 void PowerUp::eliminarPowerUp()
 {
-	
+	obtenerMundo().eliminar(this);
 }

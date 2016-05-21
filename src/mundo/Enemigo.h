@@ -1,0 +1,31 @@
+#ifndef ENEMIGO
+#define ENEMIGO
+
+#include "Definiciones.h"
+#include <Box2D/Box2D.h>
+#include "Callbacks.h"
+
+class Mundo;
+class PowerUp;
+
+class CallbackCreadorPowerUp : public Callback
+{
+private:
+	uint ID;
+	Mundo &mundo;
+	const b2Vec2 &posicion;
+public:
+	CallbackCreadorPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion);
+	void ejecutar();
+};
+
+class Enemigo
+{
+private:
+	uint valorPrevio;
+public:
+	Enemigo();
+	void ruletaPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion);
+};
+
+#endif
