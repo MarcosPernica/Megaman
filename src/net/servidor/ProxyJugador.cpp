@@ -1,11 +1,11 @@
 #include "ProxyJugador.h"
 #include <iostream>
-#include "../graficos/VentanaJuego.h"
-#include "../mundo/Megaman.h"
-#include "Buffer.h"
-#include "defines_protocolo.h"
-#include "../common/exceptions.h"
-#include "../common/Lock.h"
+#include "../../graficos/VentanaJuego.h"
+#include "../../mundo/Megaman.h"
+#include "../sockets/Buffer.h"
+#include "../defines_protocolo.h"
+#include "../../common/exceptions.h"
+#include "../../common/Lock.h"
 /*
 ProxyJugador::ProxyJugador(const std::string& id, ChannelSocket* chan)
 							:channel(chan),

@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "../mundo/Definiciones.h"
+#include "../../mundo/Definiciones.h"
 
 typedef uint ID;
 typedef std::string SnapshotSerializada;

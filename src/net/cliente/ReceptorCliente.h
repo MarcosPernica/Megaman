@@ -1,7 +1,7 @@
 #ifndef RECEPTOR_CLIENTE
 #define RECEPTOR_CLIENTE
 
-#include "Receptor.h"
+#include "../sockets/Receptor.h"
 #include <string>
 #include "Cliente.h"
 #include <iostream>

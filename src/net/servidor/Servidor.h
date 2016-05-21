@@ -1,7 +1,7 @@
 #ifndef SERVIDOR
 #define SERVIDOR
 #include <set>
-#include "AccepterSocket.h"
+#include "../sockets/AccepterSocket.h"
 #include "ProxyJugador.h"
 class Servidor{
 	/**

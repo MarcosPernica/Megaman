@@ -1,8 +1,8 @@
 #include "Receptor.h"
 #include <sstream>
 #include <iostream>
-#include "../common/Lock.h"
-#include "../common/exceptions.h"
+#include "../../common/Lock.h"
+#include "../../common/exceptions.h"
 #include <ctime>
 Receptor::Receptor(const ChannelSocket& chan):
 								channel(chan),

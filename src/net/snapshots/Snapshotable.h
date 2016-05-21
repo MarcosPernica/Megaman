@@ -1,7 +1,7 @@
 #ifndef SNAPSHOTABLE
 #define SNAPSHOTABLE
 #include "Snapshot.h"
-#include "../mundo/Definiciones.h"
+#include "../../mundo/Definiciones.h"
 /**
 14/5 Defino lo de snapshotable ahora, voy a hacer que vayan y vengan x e y nada más,
 después podemos meter la librería que decías

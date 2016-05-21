@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 #include "Buffer.h"
-#include "../common/exceptions.h"
+#include "../../common/exceptions.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>

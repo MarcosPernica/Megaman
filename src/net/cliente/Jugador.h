@@ -4,7 +4,7 @@
 //#include "../graficos/VentanaJuego.h"
 class VentanaJuego;
 class ServerProxy;
-#include "../mundo/Megaman.h"
+#include "../../mundo/Megaman.h"
 class ServerProxy;
 #include <gdk/gdk.h>
 

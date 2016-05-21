@@ -1,7 +1,7 @@
 #ifndef CAJAACCION
 #define CAJAACCION
 
-#include "../net/Snapshotable.h"
+#include "../net/snapshots/Snapshotable.h"
 #include "Actualizable.h"
 #include "Met.h"
 

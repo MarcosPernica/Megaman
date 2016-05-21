@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 #include "graficos/VentanaJuego.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
-#include "net/Jugador.h"
+#include "net/cliente/Jugador.h"
 
 int main(int argc, char *argv[])
 {
@@ -165,8 +165,8 @@ int main(int argc, char *argv[])
 */
 //-------------MAIN CLI/SERV con complejidad-------------
 /*
-#include "net/Servidor.h"
-#include "net/Cliente.h"
+#include "net/servidor/Servidor.h"
+#include "net/cliente/Cliente.h"
 #ifndef compiling_server
 */
 /**

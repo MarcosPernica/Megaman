@@ -1,6 +1,6 @@
 #include "Socket.h"
 #include <sstream>
-#include "../common/exceptions.h"
+#include "../../common/exceptions.h"
 #include <string>
 #include <string.h>
 #include <iostream>

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "defines_protocolo.h"
+#include "../defines_protocolo.h"
 ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 								Receptor(chan),
 								cliente(cli){}

@@ -1,5 +1,5 @@
 #include "FullSnapshot.h"
-#include "../common/exceptions.h"
+#include "../../common/exceptions.h"
 #include <map>
 #include <vector>
 

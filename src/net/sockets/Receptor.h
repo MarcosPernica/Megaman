@@ -1,10 +1,10 @@
 #ifndef RECEPTOR
 #define RECEPTOR
-#include "../common/Thread.h"
+#include "../../common/Thread.h"
 #include <string>
 #include "ChannelSocket.h"
 #include <map>
-#include "../common/Mutex.h"
+#include "../../common/Mutex.h"
 class EventoReceptor{
 	public:
 	virtual void operator()(const std::string& mensaje){};

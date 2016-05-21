@@ -1,9 +1,9 @@
 #include "Servidor.h"
 #include <iostream>
-#include "../common/exceptions.h"
+#include "../../common/exceptions.h"
 #include <ctime>
-#include "../mundo/Mundo.h"
-#include "../mundo/SimuladorSinVentana.h"
+#include "../../mundo/Mundo.h"
+#include "../../mundo/SimuladorSinVentana.h"
 
 void Servidor::conectar(){
 	accepter.open(5002,4);

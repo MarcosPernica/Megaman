@@ -1,10 +1,10 @@
 #include "Cliente.h"
 #include <iostream>
-#include "Buffer.h"
+#include "../sockets/Buffer.h"
 #include "ReceptorCliente.h"
 #include <cstdlib>
-#include "defines_protocolo.h"
-#include "../common/Lock.h"
+#include "../defines_protocolo.h"
+#include "../../common/Lock.h"
 //Cliente::Cliente(){}
 void Cliente::correr(){
 	posicion=Desconocida;

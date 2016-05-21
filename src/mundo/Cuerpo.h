@@ -2,7 +2,7 @@
 #define CUERPO 97
 
 #include "Definiciones.h"
-#include "../net/Snapshotable.h"
+#include "../net/snapshots/Snapshotable.h"
 #include <Box2D/Box2D.h>
 class Mundo;
 

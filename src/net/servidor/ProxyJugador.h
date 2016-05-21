@@ -6,7 +6,7 @@
  * Va a aptretar botones de Megaman*
 **/
 #include <string>
-#include "Receptor.h"
+#include "../sockets/Receptor.h"
 #include <set>
 
 class ProxyJugador: public Receptor{

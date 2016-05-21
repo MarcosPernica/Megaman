@@ -1,9 +1,9 @@
 #ifndef CLIENTE
 #define CLIENTE
-#include "ChannelSocket.h"
+#include "../sockets/ChannelSocket.h"
 #include <set>
 #include <string>
-#include "../common/Mutex.h"
+#include "../../common/Mutex.h"
 enum Posicion{
 	Primero,
 	NoPrimero,
