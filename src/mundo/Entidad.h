@@ -5,7 +5,7 @@
 #include "Cuerpo.h"
 #include "Actualizable.h"
 #include "Enemigo.h"
-
+#include "../net/snapshots/Snapshotable.h"
 #include <Box2D/Box2D.h>
 class Mundo;
 class Entidad : public Cuerpo, public Actualizable, public Enemigo
@@ -33,6 +33,10 @@ public:
 	uint obtenerEnergiaMaxima();
 	uint obtenerEnergiaActual();
 	virtual void atacado(uint danio);
+	/*
+	virtual Snapshot getSnapshot();
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	*/
 };
 
 #endif

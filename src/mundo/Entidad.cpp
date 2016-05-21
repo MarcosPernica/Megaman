@@ -64,3 +64,10 @@ void Entidad::atacado(uint danio)
 	}
 		
 }
+/*
+Snapshot Entidad::getSnapshot(){
+}
+void Entidad::setStateFromSnapshot(const Snapshot& snapshot)}
+
+}
+*/

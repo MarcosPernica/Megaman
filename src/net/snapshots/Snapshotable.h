@@ -11,8 +11,8 @@ private:
 	uint ID;
 public:
 	Snapshotable(uint ID) : ID(ID){};
-	/*virtual Snapshot getSnapshot() = 0;
-	virtual void setStateFromSnapshot(const Snapshot& snapshot) = 0;*/
+	virtual Snapshot getSnapshot() = 0;
+	virtual void setStateFromSnapshot(const Snapshot& snapshot) = 0;
 	uint obtenerID(){return ID;};
 };
 #endif

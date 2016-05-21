@@ -78,6 +78,10 @@ public:
 	private:
 	//Dibujable (de esta forma nos aseguramos que todos los cuerpos estén en pantalla)
 	virtual const std::list<Rectangulo> obtenerRepresentacion() const;
+	
+	//Snapshotable
+	virtual Snapshot getSnapshot();
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 
 #endif

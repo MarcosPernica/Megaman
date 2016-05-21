@@ -181,3 +181,32 @@ const std::list<Rectangulo> Cuerpo::obtenerRepresentacion() const{
 
 	return rectangulos;
 }
+
+#define PROP_POS_X "posX"
+#define PROP_POS_Y "posY"
+#define PROP_VEL_X "velX"
+#define PROP_VEL_Y "velY"
+#define PROP_ORIENTACION "orientacion"
+
+Snapshot Cuerpo::getSnapshot(){
+	Snapshot sn(obtenerID());
+	sn.agregarPropiedad(PROP_POS_X, obtenerPosicion().x*1000);
+	sn.agregarPropiedad(PROP_POS_Y, obtenerPosicion().y*1000);
+	sn.agregarPropiedad(PROP_VEL_X, obtenerVelocidad().x*1000);
+	sn.agregarPropiedad(PROP_VEL_Y, obtenerVelocidad().y*1000);
+	sn.agregarPropiedad(PROP_ORIENTACION, (int)obtenerOrientacion());
+	return sn;
+}
+void Cuerpo::setStateFromSnapshot(const Snapshot& sn){
+	real px = (real)sn.obtenerPropiedad(PROP_POS_X)/1000;
+	real py = (real)sn.obtenerPropiedad(PROP_POS_Y)/1000;
+	
+	real vx = (real)sn.obtenerPropiedad(PROP_VEL_X)/1000;
+	real vy = (real)sn.obtenerPropiedad(PROP_VEL_Y)/1000;
+	
+	Orientaciones o = (Orientaciones) sn.obtenerPropiedad(PROP_ORIENTACION);
+	
+	modificarPosicion(b2Vec2(px,py));
+	modificarVelocidad(b2Vec2(vx,vy));
+	modificarOrientacion(o);
+}
