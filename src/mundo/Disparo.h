@@ -37,9 +37,6 @@ public:
 	bool megamanLoDisparo() const;
 
 	virtual Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad) = 0;
-	
-	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
-	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 
 class Plasma : public Disparo
@@ -56,6 +53,11 @@ public:
 	uint obtenerMultiplicadorVelocidad() const;
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
+	
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int  getTipo() const {return TIPO_DISPARO_PLASMA;};
+	static Plasma* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 };
 
 class Bomba : public Disparo
@@ -72,6 +74,13 @@ public:
 
 	bool lanzable();
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
+	
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int  getTipo() const {return TIPO_DISPARO_BOMBA;};
+	
+	static Bomba* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
+	
 private:
 	void explotar();
 };

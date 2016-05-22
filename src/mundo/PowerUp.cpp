@@ -109,3 +109,48 @@ void PowerUp::eliminarPowerUp()
 {
 	obtenerMundo().eliminar(this);
 }
+
+void PowerUp::agregarPropiedadesASnapshot(Snapshot& sn){
+	//yo
+	Cuerpo::agregarPropiedadesASnapshot(sn);
+}
+void PowerUp::setStateFromSnapshot(const Snapshot& sn){
+	//yo
+	Cuerpo::setStateFromSnapshot(sn);
+}
+
+ NuevaVida* NuevaVida::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	NuevaVida* p =new NuevaVida(sn.getID(),mundo,b2Vec2(0,0));
+	p->setStateFromSnapshot(sn);
+	return p;
+}
+
+ CapsulaEnergiaChica* CapsulaEnergiaChica::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	CapsulaEnergiaChica* p =new CapsulaEnergiaChica(sn.getID(),mundo,b2Vec2(0,0));
+	p->setStateFromSnapshot(sn);
+	return p;
+}
+
+ CapsulaEnergiaGrande* CapsulaEnergiaGrande::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	CapsulaEnergiaGrande* p =new CapsulaEnergiaGrande(sn.getID(),mundo,b2Vec2(0,0));
+	p->setStateFromSnapshot(sn);
+	return p;
+}
+
+ CapsulaPlasmaChica* CapsulaPlasmaChica::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	CapsulaPlasmaChica* p =new CapsulaPlasmaChica(sn.getID(),mundo,b2Vec2(0,0));
+	p->setStateFromSnapshot(sn);
+	return p;
+}
+
+ CapsulaPlasmaGrande* CapsulaPlasmaGrande::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	CapsulaPlasmaGrande* p =new CapsulaPlasmaGrande(sn.getID(),mundo,b2Vec2(0,0));
+	p->setStateFromSnapshot(sn);
+	return p;
+}
+
+ HabilitadorBomba* HabilitadorBomba::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	HabilitadorBomba* p =new HabilitadorBomba(sn.getID(),mundo,b2Vec2(0,0));
+	p->setStateFromSnapshot(sn);
+	return p;
+}

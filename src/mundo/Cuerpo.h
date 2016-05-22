@@ -2,15 +2,14 @@
 #define CUERPO 97
 
 #include "Definiciones.h"
-#include "../net/snapshots/Snapshotable.h"
+
 #include "../common/Rectangulo.h"
 #include <Box2D/Box2D.h>
-
-class Mundo;
-
 #define MASAINFINITA -1
 #include "../graficos/Dibujable.h"
-
+//#include "Mundo.h"
+#include "../net/snapshots/Snapshotable.h"
+class Mundo;
 enum Orientaciones
 {
 	izquierda,
@@ -28,8 +27,7 @@ struct DatosColisionCuerpo
 	DatosColisionCuerpo(Cuerpo *cuerpo, uint ID, Rectangulo caja) : cuerpo(cuerpo), ID(ID), caja(caja){};
 };
 
-class Cuerpo: public Dibujable, public Snapshotable 
-{
+class Cuerpo: public Dibujable, public Snapshotable {
 private:
 	b2Body *cuerpo;
 	Orientaciones orientacion;
@@ -83,6 +81,8 @@ public:
 	//Snapshotable
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int getTipo() const {return TIPO_CUERPO;};
+	virtual void eliminarse(Mundo& de);
 };
 
 #endif

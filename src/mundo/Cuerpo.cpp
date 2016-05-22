@@ -180,11 +180,13 @@ void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, u
 		Dibujable::dibujarRectangulo(cr, origen, factorAmplificacion, Dibujable::mundoARender(topLeftMundo), Dibujable::mundoARender(datos.at(i)->caja.obtenerAncho()), Dibujable::mundoARender(datos.at(i)->caja.obtenerAlto()));
 	}
 }
-
+////---------------------------snapshotable-----------------------------//
 #define PROP_POS_X "posX"
 #define PROP_POS_Y "posY"
 #define PROP_VEL_X "velX"
 #define PROP_VEL_Y "velY"
+#define PROP_ANCHO "ancho"
+#define PROP_ALTO "alto"
 #define PROP_ORIENTACION "orientacion"
 
 void Cuerpo::agregarPropiedadesASnapshot(Snapshot& sn){
@@ -206,4 +208,8 @@ void Cuerpo::setStateFromSnapshot(const Snapshot& sn){
 	modificarPosicion(b2Vec2(px,py));
 	modificarVelocidad(b2Vec2(vx,vy));
 	modificarOrientacion(o);
+}
+
+void Cuerpo::eliminarse(Mundo& de){
+	de.eliminar(this);
 }

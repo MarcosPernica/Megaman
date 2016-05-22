@@ -5,7 +5,7 @@ Snapshot::Snapshot(){}
 Snapshot::Snapshot(const SnapshotSerializada& serializada){
 	deserializar(serializada);
 }
-Snapshot::Snapshot(ID id){
+Snapshot::Snapshot(uint id){
 	agregarPropiedad("ID", id);
 }
 
@@ -44,4 +44,8 @@ void Snapshot::deserializar(const SnapshotSerializada& serializada){
 		istream>>valor;
 		agregarPropiedad(nombre,valor);
 	}
+}
+
+int Snapshot::getTipo() const{
+	return obtenerPropiedad(PROP_TIPO);
 }

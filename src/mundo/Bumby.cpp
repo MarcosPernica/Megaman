@@ -17,6 +17,12 @@ void Bumby::setStateFromSnapshot(const Snapshot& snapshot){
 	Cuerpo::setStateFromSnapshot(snapshot);
 }
 
+Bumby* Bumby::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	Bumby* b =new Bumby(sn.getID(),mundo,b2Vec2_zero,b2Vec2_zero);
+	b->setStateFromSnapshot(sn);
+	return b;
+}
+
 Bumby::Bumby(uint ID,
 			 Mundo & mundo,
 			 const b2Vec2 & posicion,

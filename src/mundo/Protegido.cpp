@@ -53,3 +53,19 @@ bool Protegido::estaCubierto()
 {
 	return cubierto;
 }
+
+#define PROP_CUBIERTO "cubierto"
+#define PROP_ESCUDO "escudo"
+
+void Protegido::agregarPropiedadesASnapshot(Snapshot& sn){
+	sn.agregarPropiedad(PROP_ESCUDO,escudo);
+	sn.agregarPropiedad(PROP_CUBIERTO,cubierto);
+	
+	Entidad::agregarPropiedadesASnapshot(sn);
+}
+void Protegido::setStateFromSnapshot(const Snapshot& sn){
+	escudo = sn.obtenerPropiedad(PROP_ESCUDO);
+	cubierto = sn.obtenerPropiedad(PROP_CUBIERTO);
+	
+	Entidad::setStateFromSnapshot(sn);
+}

@@ -5,7 +5,9 @@
 #include "CajaAccion.h"
 #include "Cuerpo.h"
 #include "Escalera.h"
-
+#include "../net/snapshots/FullSnapshot.h"
+#include "Bumby.h"
+#include "Met.h"
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
 Mundo::Mundo() : mundo(gravedad)
@@ -239,4 +241,94 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 Megaman* Mundo::getMegaman(){
 	return megamanes.begin()->second;
+}
+
+void Mundo::obtenerSnapshot(FullSnapshot& en){
+	FullSnapshot nueva;
+	std::map<uint, Snapshotable*>::iterator it;
+	for(it=snapshotables.begin(); it!=snapshotables.end(); ++it){
+		nueva.add((it->second)->getSnapshot());
+	}
+	en=nueva;
+}
+
+/**
+ * Inyecta un FullSnapshot.
+ * -Los objetos en mundo pero no en el fs, son destruídos
+ * -A los objetos en el mundo y en el fs se les inyecta una Snapshot
+ * -Los objetos que están sólo en el fs se crean en cualquier estado
+ * y se les inyecta una snapshot
+ * 
+ * Dos Snapshotables representan al mismo objeto sii su ID y su tipo son iguales.
+ * */
+void Mundo::inyectarSnapshot(FullSnapshot& fs){
+	fs.reiniciarRevisadas();
+	
+	//-----iterar sobre los Snapshotables, encontrar cuales remover y actualizar los que sea necesario
+	std::map<uint, Snapshotable*>::iterator it;
+	std::set<Snapshotable*> a_eliminar;
+	for(it=snapshotables.begin(); it != snapshotables.end(); ++it){
+		Snapshotable* snapshotable =it->second;
+		if(fs.existe(*snapshotable)){
+			snapshotable->setStateFromSnapshot(fs.get(*snapshotable));
+			fs.marcarRevisada(*snapshotable);
+		}else{
+			a_eliminar.insert(snapshotable);
+		}
+	}
+	
+	//-----remover los Snapshotable que estén en mundo y no en fs
+	std::set<Snapshotable*>::iterator ite;
+	for(ite=a_eliminar.begin(); ite!=a_eliminar.end(); ++ite){
+		(*ite)->eliminarse(*this);
+	}
+	
+	//-----crear los snapshotables que no fueron revisados al princípio porque no estaban
+	const std::set<const Snapshot*> no_revisadas = fs.noRevisadas();
+	std::set<const Snapshot*>::const_iterator itr;
+	for(itr = no_revisadas.begin(); itr!=no_revisadas.end(); ++itr){
+		agregarDesdeSnapshot(*(*itr));
+	}
+}
+/**
+#define TIPO_CUERPO 	1//"tipo_cuerpo"
+#define TIPO_ENTIDAD 	2//"tipo_entidad"
+#define TIPO_DISPARO 	3//"tipo_disparo"
+#define TIPO_BUMBY 		4//"tipo_bumby"
+#define TIPO_MEGAMAN 	5//"tipo_megaman"
+#define TIPO_POWERUP 	6//"tipo_powerup"
+#define TIPO_MET 		7//"tipo_met"
+#define TIPO_PROTEGIDO 	8//"tipo_protegido"
+* */
+void Mundo::agregarDesdeSnapshot(const Snapshot& sn){
+	switch(sn.getTipo()){
+		/*
+		case TIPO_CUERPO : 
+			agregar(new Cuerpo(
+		*/
+		//case TIPO_ENTIDAD:
+		case TIPO_DISPARO_PLASMA:
+			agregar(Plasma::desdeSnapshot(sn,*this));
+			break;
+		case TIPO_DISPARO_BOMBA:
+			agregar(Bomba::desdeSnapshot(sn,*this));
+			break;
+		case TIPO_BUMBY:
+			agregar(Bumby::desdeSnapshot(sn,*this));
+			break;
+		//case TIPO_MEGAMAN :
+		//	agregar(new Megaman(sn));
+		//	break;
+		/*
+		case TIPO_POWERUP:
+			agregar(PowerUp::desdeSnapshot(sn,*this));
+			break;
+		*/
+		case TIPO_MET:
+			agregar(Met::desdeSnapshot(sn,*this));
+			break;
+		//case TIPO_PROTEGIDO:
+		//	agregar(new Protegido(sn));
+		//	break;
+	}
 }

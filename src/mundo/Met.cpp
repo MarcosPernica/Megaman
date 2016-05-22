@@ -19,4 +19,17 @@ Met::Met(uint ID,
 				   velocidad)
 {
 }
+void Met::agregarPropiedadesASnapshot(Snapshot& sn){
+	//yo aquí
+	Protegido::agregarPropiedadesASnapshot(sn);
+}
+void Met::setStateFromSnapshot(const Snapshot& sn){
+	//yo aquí
+	Protegido::setStateFromSnapshot(sn);
+}
 
+Met* Met::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	Met* p =new Met(sn.getID(),mundo,b2Vec2_zero);
+	p->setStateFromSnapshot(sn);
+	return p;
+}

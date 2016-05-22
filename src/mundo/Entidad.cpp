@@ -73,10 +73,3 @@ void Entidad::setStateFromSnapshot(const Snapshot& sn){
 	energia = (uint) sn.obtenerPropiedad(PROP_ENERGIA);
 	Cuerpo::setStateFromSnapshot(sn);
 }
-/*
-Snapshot Entidad::getSnapshot(){
-}
-void Entidad::setStateFromSnapshot(const Snapshot& snapshot)}
-
-}
-*/

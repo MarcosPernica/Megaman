@@ -2,12 +2,12 @@
 #define ENTIDAD
 
 #include "Definiciones.h"
-#include "Cuerpo.h"
+
 #include "Actualizable.h"
 #include "Enemigo.h"
 #include "../net/snapshots/Snapshotable.h"
 #include <Box2D/Box2D.h>
-class Mundo;
+#include "Cuerpo.h"
 class Entidad : public Cuerpo, public Actualizable, public Enemigo
 {
 private:
@@ -37,6 +37,7 @@ public:
 
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int getTipo(){return TIPO_ENTIDAD;};
 };
 
 #endif

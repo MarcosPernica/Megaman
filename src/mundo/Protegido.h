@@ -31,6 +31,10 @@ public:
 	void cubrirse();
 	void exponerse();
 	bool estaCubierto();
+	
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int getTipo(){return TIPO_PROTEGIDO;};
 };
 
 #endif

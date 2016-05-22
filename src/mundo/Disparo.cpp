@@ -149,9 +149,34 @@ Disparo * Plasma::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 {
 	return new Plasma(ID, obtenerMundo(), posicion, velocidad);
 }
-void Disparo::agregarPropiedadesASnapshot(Snapshot& sn){
-	Cuerpo::agregarPropiedadesASnapshot(sn);
+
+//////////---------------------snapshotable de plasma---------------------//
+void Plasma::agregarPropiedadesASnapshot(Snapshot& sn){
+	//yo
+	Disparo::agregarPropiedadesASnapshot(sn);
 }
-void Disparo::setStateFromSnapshot(const Snapshot& sn){
-	Cuerpo::setStateFromSnapshot(sn);
+void Plasma::setStateFromSnapshot(const Snapshot& sn){
+	//yo
+	Disparo::setStateFromSnapshot(sn);
+}
+Plasma* Plasma::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	Plasma* p = new Plasma(sn.getID(), mundo);
+	p->setStateFromSnapshot(sn);
+	return p;
+}
+
+//////////-----------------------snapshotable de bomba--------------------//
+#define PROP_TIEMPOTOTAL	"tiempo_total"
+void Bomba::agregarPropiedadesASnapshot(Snapshot& sn){
+	sn.agregarPropiedad(PROP_TIEMPOTOTAL, (int)(tiempoTotal*1000));
+	Disparo::agregarPropiedadesASnapshot(sn);
+}
+void Bomba::setStateFromSnapshot(const Snapshot& sn){
+	tiempoTotal = (real)sn.obtenerPropiedad(PROP_TIEMPOTOTAL)/1000;
+	Disparo::setStateFromSnapshot(sn);
+}
+Bomba* Bomba::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
+	Bomba* p = new Bomba(sn.getID(), mundo);
+	p->setStateFromSnapshot(sn);
+	return p;
 }

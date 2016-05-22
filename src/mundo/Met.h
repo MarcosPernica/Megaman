@@ -17,6 +17,10 @@ public:
 
 	void actualizar(real deltaT){};
 	ushort tipoCuerpo() const {return ENEMIGOS;};
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int getTipo() const {return TIPO_MET;};
+	static Met* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 };
 
 #endif

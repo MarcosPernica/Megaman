@@ -12,6 +12,7 @@
 #include "Disparo.h"
 #include "Construccion.h"
 #include "../graficos/Dibujable.h"
+class FullSnapshot;
 
 
 class PowerUp;
@@ -81,6 +82,27 @@ public:
 	
 	Megaman* getMegaman();
 	
+	/**
+	 * Genera un FullSnapshot, lo asigna a la variable en, con lo que se
+	 * evita copiar y crear FullSnapshots más veces de las necesarias.
+	 * */
+	void obtenerSnapshot(FullSnapshot& en);//const;
+	
+	/**
+	 * Inyecta un FullSnapshot.
+	 * -Los objetos en mundo pero no en el fs, son destruídos
+	 * -A los objetos en el mundo y en el fs se les inyecta una Snapshot
+	 * -Los objetos que están sólo en el fs se crean en cualquier estado
+	 * y se les inyecta una snapshot
+	 * 
+	 * Dos Snapshotables representan al mismo objeto sii su ID y su tipo son iguales.
+	 * */
+	 void inyectarSnapshot(FullSnapshot& fs);
+	 
+	/**
+	 * Agrega lo que el Snapshot represente al mundo
+	 * */
+	void agregarDesdeSnapshot(const Snapshot& sn);
 };
 
 #endif

@@ -5,7 +5,9 @@
 #include <vector>
 #include "../../mundo/Definiciones.h"
 
-typedef uint ID;
+#define PROP_TIPO "tipo"
+
+//typedef uint ID;
 typedef std::string SnapshotSerializada;
 typedef std::map<std::string,int> MapaPropiedades;
 /**
@@ -14,8 +16,8 @@ Full snapshot de una entidad, tiene un ID asociado
 class Snapshot{
 	public:
 	SnapshotSerializada serializar();
-	Snapshot(const SnapshotSerializada& serializada);
-	Snapshot(uint de);
+	explicit Snapshot(const SnapshotSerializada& serializada);
+	explicit Snapshot(uint de);//... mejor: Snapshot(const Snapshotable& de);
 	
 	//éstas deberían estar protegido de alguna forma para que sólo los Snapshotable tengan acceso.
 	//protected + herencia?
@@ -23,6 +25,7 @@ class Snapshot{
 	int obtenerPropiedad(const std::string& nombre) const;
 	
 	int getID() const;
+	int getTipo() const;
 	
 	private:
 	Snapshot();

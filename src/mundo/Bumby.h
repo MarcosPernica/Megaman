@@ -4,7 +4,7 @@
 #include "Entidad.h"
 #include "Definiciones.h"
 #include <Box2D/Box2D.h>
-
+#include <string>
 class Bumby : public Entidad
 {
 private:
@@ -18,6 +18,11 @@ public:
 	void actualizar(real deltaT);
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int getTipo() const {return TIPO_BUMBY;};
+	
+	static Bumby* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
+	
+	virtual ushort tipoCuerpo() const{return ENEMIGOS;};
 };
 
 #endif
