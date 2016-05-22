@@ -3,12 +3,24 @@
 
 #include <Box2D/Box2D.h>
 #include "Definiciones.h"
+#include <list>
+
+class Dibujable;
 
 class Callback
 {	
 public:
 	virtual void ejecutar() = 0;
 	~Callback(){};
+};
+
+class ElementosEnZona : public b2QueryCallback
+{
+private:
+	std::list<Dibujable*> &elementos;
+public:
+	ElementosEnZona(std::list<Dibujable*> &elementos);
+	bool ReportFixture(b2Fixture *fixture);
 };
 
 class DanarRadio : public b2QueryCallback

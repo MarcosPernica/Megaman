@@ -1,6 +1,7 @@
 #include "Cuerpo.h"
 #include "Mundo.h"
 #include <Box2D/Box2D.h>
+#include "../graficos/Dibujable.h"
 #include <iostream>
 const b2Vec2 Cuerpo::versorIzquierda(-1, 0);
 const b2Vec2 Cuerpo::versorDerecha(1, 0);
@@ -165,21 +166,19 @@ const b2Vec2 & Cuerpo::orientacionAVector(Orientaciones orientacion)
 		return versorIzquierda;
 }
 
-const std::list<Rectangulo> Cuerpo::obtenerRepresentacion() const{
-	std::list<Rectangulo> rectangulos;
+void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion) const
+{
+	Rectangulo principal = obtenerCajaMagnificada(1);
 
-	rectangulos.push_back(obtenerCajaMagnificada(1));
+	Dibujable::dibujarRectangulo(cr, origen, factorAmplificacion, Dibujable::mundoARender(principal.topLeft()), Dibujable::mundoARender(principal.obtenerAncho()), Dibujable::mundoARender(principal.obtenerAlto()));
 
 	for(uint i=1;i<datos.size();i++)
 	{
 		b2Vec2 topLeftCuerpo = datos.at(i)->caja.topLeft();
 		b2Vec2 topLeftMundo = topLeftCuerpo + obtenerPosicion();
 		
-		rectangulos.push_back(Rectangulo(topLeftMundo.x,topLeftMundo.y,datos.at(i)->caja.obtenerAncho(),datos.at(i)->caja.obtenerAlto()));		
+		Dibujable::dibujarRectangulo(cr, origen, factorAmplificacion, Dibujable::mundoARender(topLeftMundo), Dibujable::mundoARender(datos.at(i)->caja.obtenerAncho()), Dibujable::mundoARender(datos.at(i)->caja.obtenerAlto()));
 	}
-
-
-	return rectangulos;
 }
 
 #define PROP_POS_X "posX"
@@ -188,7 +187,7 @@ const std::list<Rectangulo> Cuerpo::obtenerRepresentacion() const{
 #define PROP_VEL_Y "velY"
 #define PROP_ORIENTACION "orientacion"
 
-virtual void agregarPropiedadesASnapshot(Snapshot& sn){
+void Cuerpo::agregarPropiedadesASnapshot(Snapshot& sn){
 	sn.agregarPropiedad(PROP_POS_X, obtenerPosicion().x*1000);
 	sn.agregarPropiedad(PROP_POS_Y, obtenerPosicion().y*1000);
 	sn.agregarPropiedad(PROP_VEL_X, obtenerVelocidad().x*1000);

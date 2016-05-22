@@ -60,19 +60,19 @@ int main(int argc, char *argv[])
 //-------------MAIN CON VENTANA Y FISICAS-------------
 
 #include "graficos/VentanaJuego.h"
+#include "graficos/Camara.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
-#include "net/Jugador.h"
-#include "mundo/Mutex.h"
+#include "net/cliente/Jugador.h"
 
 int main(int argc, char *argv[])
 {
-	Mutex mutexAcciones;
 	Mundo mundo;
-	VentanaJuego ventana(mundo,mutexAcciones,argc,argv,"1");
+	Camara camara(mundo,b2Vec2(0,0),800,600);
+	VentanaJuego ventana(mundo,argc,argv,"1");
 	ventana.start();
 	
-	Simulador simulador(mundo,mutexAcciones,33);
+	Simulador simulador(mundo,33);
 	
 
 	/**
@@ -167,8 +167,8 @@ int main(int argc, char *argv[])
 */
 //-------------MAIN CLI/SERV con complejidad-------------
 /*
-#include "net/Servidor.h"
-#include "net/Cliente.h"
+#include "net/servidor/Servidor.h"
+#include "net/cliente/Cliente.h"
 #ifndef compiling_server
 */
 /**

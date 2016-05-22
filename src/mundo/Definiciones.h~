@@ -88,7 +88,7 @@
 typedef unsigned int uint;
 typedef float real;
 typedef unsigned short ushort;
-
+/////////////////////////////////////////////////////////////////////////
 class NoPudoCrearseConexion : public std::exception {};
 class NoHayConexion : public std::exception {};
 class ErrorEnLaConexion : public std::exception {};

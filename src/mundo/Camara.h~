@@ -1,0 +1,31 @@
+#ifndef CAMARA
+#define CAMARA
+
+#include "Mundo.h"
+#include "Megaman.h"
+#include "Actualizable"
+#include <Box2D/Box2D.h>
+#include "../graficos/Dibujable.h"
+
+
+class Camara : public Actualizable
+{
+private:
+	b2Vec2 x, y;
+
+	/*En pixeles.*/
+	real ancho, alto;
+	std::list<Megaman *> megamanes;
+	Mundo &mundo;
+public:
+	Camara(b2Vec2 posicion, real ancho, real alto);
+	void cambiarDimensiones(real ancho, real alto);
+	void actualizar(real deltaT);
+
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr);
+private:
+	real calcularPromedio();
+
+};
+
+#endif

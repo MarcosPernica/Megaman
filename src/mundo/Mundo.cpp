@@ -191,23 +191,6 @@ bool Mundo::existeElemento(uint ID)
 	return false;
 }
 
-std::list<Dibujable*> Mundo::obtenerDibujables() const{/////////COPIA//// esa lista podría ser demasiado grande
-	std::list<Dibujable*> ret;
-	
-	std::map<uint, Dibujable*>::const_iterator i = dibujables.begin();
-	std::list<Construccion*>::const_iterator a = construcciones.begin();
-
-	while(a != construcciones.end())
-		ret.push_back(*a++);
-
-	
-	while(i != dibujables.end())
-		ret.push_back(i++->second);
-
-	
-	return ret;
-}
-
 void Mundo::actualizar(real segundosDesdeUltima){
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
@@ -225,6 +208,33 @@ void Mundo::actualizar(real segundosDesdeUltima){
 
 	while(a != controladores.end())
 		(*a++)->actualizar(segundosDesdeUltima);
+}
+
+std::list<Megaman *> Mundo::obtenerMegamanes()
+{
+	std::list<Megaman *> megas;
+
+	std::map<uint, Megaman*>::iterator i = megamanes.begin();
+
+	while(i != megamanes.end())
+		megas.push_back((i++)->second);
+
+	return megas;
+}
+
+std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real alto)
+{
+	b2AABB consulta;
+	
+	std::list<Dibujable *> aux;
+	ElementosEnZona zona(aux);
+
+	consulta.upperBound = b2Vec2(posicion.x+ancho, posicion.y+alto);
+	consulta.lowerBound = posicion;
+
+	mundo.QueryAABB(&zona, consulta);
+
+	return aux;
 }
 
 Megaman* Mundo::getMegaman(){

@@ -1,16 +1,25 @@
 #ifndef DIBUJABLE
 #define DIBUJABLE
 #include <cairomm/context.h>
+#include <Box2D/Box2D.h>
+#include "../mundo/Definiciones.h"
 
-/*Mira aca abajo, esta como escalo el mundo a pixeles. Se lee como 38px/m y estaba basado en el ratio original de megaman*/
+/*Mira aca abajo, esta como escalo el mundo a pixeles. Se lee como 38px/m y esta basado en el ratio original de megaman*/
 
-#define FACTORAMPLIFICACIONVENTANA 0.5
-#define FACTORCONVERSIONMPX 38*FACTORAMPLIFICACIONVENTANA
+#define FACTORAMPLIFICACIONVENTANA 2
+#define FACTORCONVERSIONMPX (38.0*FACTORAMPLIFICACIONVENTANA)
 
 class Dibujable{
 	public:
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, const int cam_x, const int cam_y) const = 0;
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion) const = 0;
 	virtual ~Dibujable(){};
+
+	static void dibujarRectangulo(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion, b2Vec2 posicion, real ancho, real alto);
+
+	static b2Vec2 renderAMundo(b2Vec2 vector);	
+	static b2Vec2 mundoARender(b2Vec2 vector);
+	static real renderAMundo(real numero);	
+	static real mundoARender(real numero);
 };
 
 #endif

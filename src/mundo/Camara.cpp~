@@ -1,0 +1,26 @@
+#include "Camara.h"
+
+Camara::Camara(b2Vec2 posicion, real ancho, real alto) : posicion(posicion), ancho(ancho), alto(alto)
+{
+}
+
+void Camara::modificarDimensiones(real ancho, real alto)
+{
+	ancho = ancho;
+	alto = alto;
+}
+
+void Camara::actualizar(real deltaT)
+{
+	b2Vec2 posicionPromedio = b2Vec2_zero;
+
+	std::list<Megaman*>::iterator i = megamanes.begin();
+
+	while(i != megamanes.end())
+		posicionPromedio += (*i++)->obtenerPosicion();
+
+	posicion = 1/(real)megamanes.size() * posicionPromedio;
+
+	
+}
+

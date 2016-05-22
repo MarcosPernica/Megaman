@@ -16,7 +16,7 @@
 
 class PowerUp;
 class Cuerpo;
-class CajaSpawn;
+class CajaAccion;
 class Interactuable;
 
 	/*
@@ -75,6 +75,9 @@ public:
 	static const b2Vec2 gravedad;
 	
 	void actualizar(real segundosDesdeUltima);
+
+	std::list<Megaman *> mundo.obtenerMegamanes();
+	std::list<Dibujable *> mundo.elementosEnZona(b2Vec2 posicion, real ancho, real alto);
 	
 	Megaman* getMegaman();
 	

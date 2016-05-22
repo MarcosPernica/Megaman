@@ -8,6 +8,22 @@
 #include "CajaAccion.h"
 #include "Mundo.h"
 #include <iostream>
+#include "../graficos/Dibujable.h"
+
+ElementosEnZona::ElementosEnZona(std::list<Dibujable*> &elementos) : elementos(elementos)
+{
+}
+
+bool ElementosEnZona::ReportFixture(b2Fixture * fixture)
+{
+	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)fixture->GetUserData();
+
+	if(datos->ID == CUERPOPRINCIPAL)
+		elementos.push_back((Dibujable*)datos->cuerpo);
+
+	return true;
+}
+
 
 DanarRadio::DanarRadio(uint dano) : dano(dano)
 {

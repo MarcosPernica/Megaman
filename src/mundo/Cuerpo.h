@@ -3,11 +3,13 @@
 
 #include "Definiciones.h"
 #include "../net/snapshots/Snapshotable.h"
+#include "../common/Rectangulo.h"
 #include <Box2D/Box2D.h>
+
 class Mundo;
 
 #define MASAINFINITA -1
-#include "../graficos/ImagenRectangulo.h"
+#include "../graficos/Dibujable.h"
 
 enum Orientaciones
 {
@@ -26,7 +28,7 @@ struct DatosColisionCuerpo
 	DatosColisionCuerpo(Cuerpo *cuerpo, uint ID, Rectangulo caja) : cuerpo(cuerpo), ID(ID), caja(caja){};
 };
 
-class Cuerpo: public ImagenRectangulo, public Snapshotable 
+class Cuerpo: public Dibujable, public Snapshotable 
 {
 private:
 	b2Body *cuerpo;
@@ -75,12 +77,11 @@ public:
 	static const b2Vec2 versorIzquierda, versorDerecha;
 	static const b2Vec2 &orientacionAVector(Orientaciones orientacion);
 	
-	private:
-	//Dibujable (de esta forma nos aseguramos que todos los cuerpos estén en pantalla)
-	virtual const std::list<Rectangulo> obtenerRepresentacion() const;
+	/*Es responsabilidad de cada cuerpo saber que forma tiene.*/
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion) const;
 	
 	//Snapshotable
-	virtual void agregarPropiedadesASnapshot(const Snapshot& snapshot);
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 

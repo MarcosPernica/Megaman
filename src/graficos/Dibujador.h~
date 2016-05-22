@@ -1,4 +1,4 @@
-/*#ifndef DIBUJADOR
+#ifndef DIBUJADOR
 #define DIBUJADOR
 #include <cairo.h>
 #include <cairomm/context.h>
@@ -12,4 +12,4 @@ class Dibujador{
 	//Dibujador();
 	void dibujar(const Cairo::RefPtr<Cairo::Context>& cr, const int width, const int height) const;
 };
-#endif*/
+#endif

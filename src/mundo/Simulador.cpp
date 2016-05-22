@@ -1,8 +1,11 @@
 #include "Simulador.h"
+#include "../graficos/Camara.h"
 #include <glibmm/main.h>
 #include <iostream>
-Simulador::Simulador(Mundo& mun, uint ms):
+
+Simulador::Simulador(Mundo& mun, Camara &camara, uint ms):
 					mundo(mun),
+					camara(camara),			
 					milisPorActualizacion(ms){
 Glib::signal_timeout().connect(
 			sigc::mem_fun(*this, &Simulador::on_actualizar)
@@ -10,6 +13,7 @@ Glib::signal_timeout().connect(
 }
 
 bool Simulador::on_actualizar(){
-	mundo.actualizar((real)milisPorActualizacion/1000);	
+	mundo.actualizar((real)milisPorActualizacion/1000);
+	camara.actualizar((real)milisPorActualizacion/1000);	
 	return true;
 }

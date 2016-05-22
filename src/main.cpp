@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
 //-------------MAIN CON VENTANA Y FISICAS-------------
 
 #include "graficos/VentanaJuego.h"
+#include "graficos/Camara.h"
 #include "mundo/Mundo.h"
 #include "mundo/Simulador.h"
 #include "net/cliente/Jugador.h"
@@ -67,10 +68,11 @@ int main(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 	Mundo mundo;
-	VentanaJuego ventana(mundo,argc,argv,"1");
+	Camara camara(mundo,b2Vec2(0,0),800,600);
+	VentanaJuego ventana(mundo,camara,argc,argv,"1");
 	ventana.start();
 	
-	Simulador simulador(mundo,33);
+	Simulador simulador(mundo,camara,33);
 	
 
 	/**

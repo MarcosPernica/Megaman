@@ -115,7 +115,7 @@ Disparo * Bomba::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocida
 void Bomba::explotar()
 {
 	b2AABB consulta;
-	Rectangulo rect = obtenerCajaMagnificada(DANOBOMBA);
+	Rectangulo rect = obtenerCajaMagnificada(RADIOEXPLOSION);
 
 	consulta.upperBound = rect.rightBottom();
 	consulta.lowerBound = rect.topLeft();
@@ -149,9 +149,9 @@ Disparo * Plasma::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 {
 	return new Plasma(ID, obtenerMundo(), posicion, velocidad);
 }
-void Plasma::agregarPropiedadesASnapshot(Snapshot& sn){
+void Disparo::agregarPropiedadesASnapshot(Snapshot& sn){
 	Cuerpo::agregarPropiedadesASnapshot(sn);
 }
-void Plasma::setStateFromSnapshot(const Snapshot& sn){
+void Disparo::setStateFromSnapshot(const Snapshot& sn){
 	Cuerpo::setStateFromSnapshot(sn);
 }

@@ -49,27 +49,26 @@ void Megaman::actualizar(real deltaT)
 		b2Vec2 velocidad = obtenerVelocidad();
 		velocidad.y -= 6;
 
-		modificarVelocidad(velocidad);
-
+		modificarVelocidad(velocidad);	
 		saltando = false;
+		gravitar();
 	}
 
-	if(agarrado)
+	if(subiendoEscalera || bajandoEscalera)
 	{
-		if(puedeSubir >= 1)
-		{
-			b2Vec2 velocidad = b2Vec2_zero, posicion = obtenerPosicion();
-			posicion.x = agarreX;
-			modificarPosicion(posicion);
+		b2Vec2 velocidad = b2Vec2_zero, posicion = obtenerPosicion();
+		posicion.x = agarreX;
+		modificarPosicion(posicion);
 
-			if(subiendoEscalera)
-				velocidad.y = -VELOCIDADMEGAMANESCALERA;
-			else if(bajandoEscalera)
-				velocidad.y = +VELOCIDADMEGAMANESCALERA;
+		if(subiendoEscalera)
+			velocidad.y = -VELOCIDADMEGAMANESCALERA;
+		else if(bajandoEscalera)
+			velocidad.y = +VELOCIDADMEGAMANESCALERA;
 
-			modificarVelocidad(velocidad);
-		}
+		modificarVelocidad(velocidad);
+		ingravitar();
 	}
+
 	
 	if (disparando || lanzando)
 	{
@@ -131,8 +130,12 @@ Megaman::Megaman(uint ID,
 	saltando = false;
 	agarrado = false;
 	puedeSaltar = 0;
-	corriendo = false;
 	puedeSubir = 0;
+	corriendo = false;
+	subiendoEscalera = false;
+	bajandoEscalera = false;
+	disparando = false;
+	lanzando = false;
 	
 	Arma arma;
 
@@ -153,7 +156,6 @@ Megaman::~Megaman()
 
 void Megaman::habilitarSalto()
 {
-	bajandoEscalera = false;
 	puedeSaltar++;
 }
 
@@ -164,12 +166,8 @@ void Megaman::deshabilitarSalto()
 
 void Megaman::saltar()
 {
-	if (!saltando && puedeSaltar >= 1)
-	{
+	if (puedeSaltar >= 1)
 		saltando = true;
-		agarrado = false;
-		gravitar();
-	}
 }
 
 void Megaman::correr()
@@ -215,13 +213,7 @@ void Megaman::deshabilitarAgarre()
 void Megaman::subirEscalera()
 {
 	if(puedeSubir >= 1)
-	{
-		ingravitar();
-		agarrado = true;
-		puedeSaltar = 1;
 		subiendoEscalera = true;
-		bajandoEscalera = false;
-	}
 }
 
 void Megaman::dejarSubirEscalera()
@@ -232,13 +224,7 @@ void Megaman::dejarSubirEscalera()
 void Megaman::bajarEscalera()
 {
 	if(puedeSubir)
-	{
-		ingravitar();
-		agarrado = true;
-		puedeSaltar = 1;
-		subiendoEscalera = false;
 		bajandoEscalera = true;
-	}
 }
 
 void Megaman::dejarBajarEscalera()
@@ -324,5 +310,5 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	saltando = (estado_gral & 1);
 	//-----------------------------------------------------------------
 	
-	Entidad::setStateFromSnapshot(sn)
+	Entidad::setStateFromSnapshot(sn);
 }

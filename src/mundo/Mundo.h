@@ -75,6 +75,9 @@ public:
 	static const b2Vec2 gravedad;
 	
 	void actualizar(real segundosDesdeUltima);
+
+	std::list<Megaman *> obtenerMegamanes();
+	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
 	
 	Megaman* getMegaman();
 	

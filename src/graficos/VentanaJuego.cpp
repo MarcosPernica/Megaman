@@ -29,7 +29,7 @@ void VentanaJuego::run(){
 }
 void VentanaJuego::end(){}
 
-VentanaJuego::VentanaJuego(const Mundo& mun,int argc, char * argv[], const std::string& id):mundo(mun),dibujador(mun){
+VentanaJuego::VentanaJuego(const Mundo& mun, Camara &camara, int argc, char * argv[], const std::string& id):mundo(mun), camara(camara){
 	app = Gtk::Application::create(argc, argv, "Megamarta.is.angry" + id);
 	darea=new Gtk::DrawingArea;//tengo que hacer estos new después de crear la application porque sino gtkmm chilla
 	window= new Gtk::Window;
@@ -47,7 +47,7 @@ bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	Gtk::Allocation allocation = darea->get_allocation();
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();
-	dibujador.dibujar(cr,width,height);
+	camara.dibujarEn(cr);
 	return true;
 }
 bool VentanaJuego::on_actualizar_dibujo(){
