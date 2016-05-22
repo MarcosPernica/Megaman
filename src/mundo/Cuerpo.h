@@ -80,7 +80,7 @@ public:
 	virtual const std::list<Rectangulo> obtenerRepresentacion() const;
 	
 	//Snapshotable
-	virtual Snapshot getSnapshot();
+	virtual void agregarPropiedadesASnapshot(const Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 

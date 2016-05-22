@@ -8,6 +8,15 @@ void Bumby::actualizar(real deltaT)
 {
 }
 
+void Bumby::agregarPropiedadesASnapshot(Snapshot& sn){
+	//mis propiedades
+	Cuerpo::agregarPropiedadesASnapshot(sn);
+}
+void Bumby::setStateFromSnapshot(const Snapshot& snapshot){
+	//mis propiedades
+	Cuerpo::setStateFromSnapshot(snapshot);
+}
+
 Bumby::Bumby(uint ID,
 			 Mundo & mundo,
 			 const b2Vec2 & posicion,

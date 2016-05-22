@@ -33,10 +33,10 @@ public:
 	uint obtenerEnergiaMaxima();
 	uint obtenerEnergiaActual();
 	virtual void atacado(uint danio);
-	/*
-	virtual Snapshot getSnapshot();
+
+
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	*/
 };
 
 #endif

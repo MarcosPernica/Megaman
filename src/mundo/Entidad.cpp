@@ -64,6 +64,15 @@ void Entidad::atacado(uint danio)
 	}
 		
 }
+#define PROP_ENERGIA "energia"
+void Entidad::agregarPropiedadesASnapshot(Snapshot& sn){
+	sn.agregarPropiedad(PROP_ENERGIA,(int)energia);
+	Cuerpo::agregarPropiedadesASnapshot(sn);
+}
+void Entidad::setStateFromSnapshot(const Snapshot& snapshot){
+	energia = (uint) sn.obtenerPropiedad(PROP_ENERGIA);
+	Cuerpo::setStateFromSnapshot(sn);
+}
 /*
 Snapshot Entidad::getSnapshot(){
 }

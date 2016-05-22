@@ -149,3 +149,9 @@ Disparo * Plasma::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 {
 	return new Plasma(ID, obtenerMundo(), posicion, velocidad);
 }
+void Plasma::agregarPropiedadesASnapshot(Snapshot& sn){
+	Cuerpo::agregarPropiedadesASnapshot(sn);
+}
+void Plasma::setStateFromSnapshot(const Snapshot& sn){
+	Cuerpo::setStateFromSnapshot(sn);
+}

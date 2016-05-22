@@ -65,6 +65,9 @@ public:
 	void actualizar(real deltaT);
 
 	void agregarArma(Disparo *disparom, uint cantidadPlasma);
+	
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 
 #endif

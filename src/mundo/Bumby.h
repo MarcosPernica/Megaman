@@ -16,7 +16,8 @@ public:
 		  const b2Vec2 &velocidad = b2Vec2_zero);
 
 	void actualizar(real deltaT);
-
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 
 #endif

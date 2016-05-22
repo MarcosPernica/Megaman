@@ -245,3 +245,84 @@ void Megaman::dejarBajarEscalera()
 {
 	bajandoEscalera = false;
 }
+
+
+////--------------!!!!!!!!!!!------LO QUE VIENE ES SUCIO Y PELIGROSO
+/*
+ * Nótese que voy metiendo las booleanas de a 1 en el int, 
+ * y luego corro el valor a la izquierda. Después cuando hago la lectura,
+ * saco las variables en el orden opuesto y voy corriendo a la derecha.
+ * 
+ * Según el estándard de C++ false = 0 y true = 1, aprovecho eso
+ * */
+
+#define PROP_VIDA "vida"
+#define PROP_PUEDE_SALTAR "puedeSaltar"
+#define PROP_PUEDE_SUBIR "puedeSubir"
+#define PROP_ESTADO_GRAL "estadoGral"
+#define PROP_AGARREX "agarreX"
+//TODO: SERIALIZAR ARMAS
+void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
+	//---------------------------------------codificación del estado general
+	int estado_gral = 0;
+	
+	estado_gral+=saltando;
+	estado_gral<<=1;
+	
+	estado_gral+=disparando;
+	estado_gral<<=1;
+	
+	estado_gral+=lanzando;
+	estado_gral<<=1;
+	
+	estado_gral+=agarrado;
+	estado_gral<<=1;
+	
+	estado_gral+=subiendoEscalera;
+	estado_gral<<=1;
+	
+	estado_gral+=bajandoEscalera;
+	estado_gral<<=1;
+	
+	estado_gral+=corriendo;
+	//-----------------------------------------------------------------------
+	
+	sn.agregarPropiedad(PROP_VIDA,(int)vida);
+	sn.agregarPropiedad(PROP_PUEDE_SALTAR,puedeSaltar);
+	sn.agregarPropiedad(PROP_PUEDE_SUBIR,puedeSubir);
+	sn.agregarPropiedad(PROP_ESTADO_GRAL,estado_gral);
+	sn.agregarPropiedad(PROP_AGARREX,(int)(agarreX*1000));
+	
+	Entidad::agregarPropiedadesASnapshot(sn);
+}
+void Megaman::setStateFromSnapshot(const Snapshot& sn){
+	vida = (uint) sn.obtenerPropiedad(PROP_VIDA);
+	puedeSaltar = sn.obtenerPropiedad(PROP_PUEDE_SALTAR);
+	puedeSubir = sn.obtenerPropiedad(PROP_PUEDE_SUBIR);
+	int estado_gral = sn.obtenerPropiedad(PROP_ESTADO_GRAL);
+	agarreX = (real)sn.obtenerPropiedad(PROP_AGARREX)/1000;
+	
+	//------------------------------------------decodificar estado gral
+	corriendo = (estado_gral & 1);
+	estado_gral>>=1;
+	
+	bajandoEscalera = (estado_gral & 1);
+	estado_gral>>=1;
+	
+	subiendoEscalera = (estado_gral & 1);
+	estado_gral>>=1;
+	
+	agarrado = (estado_gral & 1);
+	estado_gral>>=1;
+	
+	lanzando = (estado_gral & 1);
+	estado_gral>>=1;
+	
+	disparando = (estado_gral & 1);
+	estado_gral>>=1;
+	
+	saltando = (estado_gral & 1);
+	//-----------------------------------------------------------------
+	
+	Entidad::setStateFromSnapshot(sn)
+}

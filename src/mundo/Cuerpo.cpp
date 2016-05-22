@@ -188,14 +188,12 @@ const std::list<Rectangulo> Cuerpo::obtenerRepresentacion() const{
 #define PROP_VEL_Y "velY"
 #define PROP_ORIENTACION "orientacion"
 
-Snapshot Cuerpo::getSnapshot(){
-	Snapshot sn(obtenerID());
+virtual void agregarPropiedadesASnapshot(Snapshot& sn){
 	sn.agregarPropiedad(PROP_POS_X, obtenerPosicion().x*1000);
 	sn.agregarPropiedad(PROP_POS_Y, obtenerPosicion().y*1000);
 	sn.agregarPropiedad(PROP_VEL_X, obtenerVelocidad().x*1000);
 	sn.agregarPropiedad(PROP_VEL_Y, obtenerVelocidad().y*1000);
 	sn.agregarPropiedad(PROP_ORIENTACION, (int)obtenerOrientacion());
-	return sn;
 }
 void Cuerpo::setStateFromSnapshot(const Snapshot& sn){
 	real px = (real)sn.obtenerPropiedad(PROP_POS_X)/1000;

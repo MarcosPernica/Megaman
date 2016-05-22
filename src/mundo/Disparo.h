@@ -37,6 +37,9 @@ public:
 	bool megamanLoDisparo() const;
 
 	virtual Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad) = 0;
+	
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 
 class Plasma : public Disparo
