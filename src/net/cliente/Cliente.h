@@ -4,6 +4,7 @@
 #include <set>
 #include <string>
 #include "../../common/Mutex.h"
+#include "Emisor.h"
 enum Posicion{
 	Primero,
 	NoPrimero,
@@ -30,13 +31,15 @@ class Cliente{
 	/**
 	 * Pide ID y lo envía al server
 	 * */
-	void enviarID();
+	void enviarID(const Emisor& emisor);
 	
 	
 	/**
 	 * Envia la señal de iniciar la partida
 	 * */
 	 void iniciarPartida();
+	 
+	 std::string nombre;
 	public:
 	void correr();
 	
@@ -46,10 +49,12 @@ class Cliente{
 	void agregarLlega(const std::string& usuario);
 	void definirSoyPrimero(bool soy_primero);
 	Posicion obtenerPosicion();
-	void enviarIniciar();
 	void iniciar();
 	bool iniciado();
 	//void enviarMensaje(const std::string& mensaje);
+	
+	void iniciarVentana(const Emisor& emisor);
+	Cliente(std::string nombre = std::string("anon"));
 	
 };
 #endif

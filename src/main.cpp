@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 
 //-------------MAIN CON VENTANA Y FISICAS-------------
-
+/*
 #include "graficos/VentanaJuego.h"
 #include "graficos/Camara.h"
 #include "mundo/Mundo.h"
@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 	ventana.start();
 	
 	Simulador simulador(mundo,camara,33);
-	
+	*/
 
 	/**
 	 * Marcos, qué te parece si hacemos
@@ -81,12 +81,12 @@ int main(int argc, char *argv[])
 	 * y después se llama
 	 * mundo.iniciar() o lo que sea
 	 * */
-	 
+	 /*
 	Jugador jugador(mundo.getMegaman(), ventana);
 	ventana.join();
 }
-
-//-------------MAIN CLI/SERV HASTA LA PIJA-------------
+*/
+//-------------MAIN CLI/SERV HASTA -------------
 /*
 #include <string>
 #include "net/ChannelSocket.h"
@@ -166,11 +166,11 @@ int main(int argc, char *argv[])
 #endif
 */
 //-------------MAIN CLI/SERV con complejidad-------------
-/*
+
 #include "net/servidor/Servidor.h"
 #include "net/cliente/Cliente.h"
 #ifndef compiling_server
-*/
+
 /**
  * El juego va a tener las sig. etapas:
  * 
@@ -186,11 +186,14 @@ int main(int argc, char *argv[])
  * 
  * y así...
  * */
-/*
+
 int main(int argc, char *argv[])
 {
-	Cliente cli;
-	cli.correr();
+	if(argc>1){
+		std::string n(argv[1]);
+		Cliente cli(n);
+		cli.correr();
+	}
 }
 #else
 int main(int argc, char *argv[])
@@ -198,5 +201,5 @@ int main(int argc, char *argv[])
 	Servidor servidor;
 	servidor.correr();
 }
-#endif*/
+#endif
 

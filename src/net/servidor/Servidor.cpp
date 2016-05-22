@@ -19,7 +19,8 @@ void Servidor::correr(){
 	Mundo mundo;
 	SimuladorSinVentana sim(mundo,50);
 	sim.start();
-	sleep(5);
+	sleep(40);///hay que hacer que en vez de una cantidad fija de segundos 
+	///se espere la condición que corresponda
 	sim.join();
 	
 	matarConexiones();

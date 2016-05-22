@@ -80,8 +80,6 @@ public:
 	std::list<Megaman *> obtenerMegamanes();
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
 	
-	Megaman* getMegaman();
-	
 	/**
 	 * Genera un FullSnapshot, lo asigna a la variable en, con lo que se
 	 * evita copiar y crear FullSnapshots más veces de las necesarias.

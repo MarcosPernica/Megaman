@@ -5,6 +5,7 @@
 class VentanaJuego;
 class ServerProxy;
 #include "../../mundo/Megaman.h"
+#include "Emisor.h"
 class ServerProxy;
 #include <gdk/gdk.h>
 
@@ -20,13 +21,12 @@ typedef char CodigoEvento;
 class Jugador{
 	private:
 	Megaman* controlado;
-	//ServerProxy& server_proxy;
+	const Emisor& emisor;
 	public:
 	/**
 	 * Usado del lado del cliente
 	 * */
-	 Jugador(Megaman* controlado, VentanaJuego& ventana);
-	//ProxyJugador(Megaman* controlado, VentanaJuego& ventana, ServerProxy& server_proxy);
+	 Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emisor);
 	/**
 	 * Esta se uso del lado de cliente para detectar el teclado
 	 * */
