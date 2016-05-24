@@ -1,4 +1,4 @@
-get#include "Mundo.h"
+#include "Mundo.h"
 #include "Callbacks.h"
 #include <algorithm>
 #include <iostream>
@@ -38,7 +38,7 @@ void Mundo::crearNivel(){
 	agregarEscalera(4,b2Vec2(14.5,4));
 	agregarEscalera(3,b2Vec2(15.5,9.5));
 
-	agagregarMegaman(b2Vec2(3,2));
+	agregarMegaman(b2Vec2(3,2));
 
 	agregarZonaTransporte(1,1,b2Vec2(8.5,12.5), b2Vec2(3,2));
 	agregarZonaMortal(2,1,b2Vec2(11,11.5));
@@ -237,6 +237,10 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 	mundo.QueryAABB(&zona, consulta);
 
 	return aux;
+}
+
+Megaman* Mundo::getMegaman(){
+	return megamanes.begin()->second;
 }
 
 void Mundo::obtenerSnapshot(FullSnapshot& en){

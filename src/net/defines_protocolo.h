@@ -4,6 +4,7 @@
 #define MENSAJE_ID "ID"
 #define MENSAJE_SOS_PRIMERO "sos_primero"
 #define MENSAJE_NO_SOS_PRIMERO "no_sos_primero"
+
 #define MENSAJE_KEY_1 "key_1"
 #define MENSAJE_KEY_2 "key_2"
 #define MENSAJE_KEY_3 "key_3"
