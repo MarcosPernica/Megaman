@@ -8,12 +8,15 @@
 #include <string>
 #include "../sockets/Receptor.h"
 #include <set>
+#include "../../mundo/Megaman.h"
 
 class ProxyJugador: public Receptor{
 	private:
 	Mutex m_id;
 	Mutex m_conexion_sana;
 	Mutex m_quiero_iniciar;
+	
+	Megaman* controlado;
 	
 	std::string id_usuario;
 	bool conexion_sana;
@@ -41,9 +44,12 @@ class ProxyJugador: public Receptor{
 	void notificarInicio();
 	
 	~ProxyJugador();
+	
 	/**
-	 * Esta se usa del lado del servidor para recibir los keystrokes remotos...
-	 * */
+	 * Define a qué Megaman enviar los keystrokes recibidos desde el cliente.
+	 * Cuando haya que dejar de enviar keystrokes a ese Megaman, se debe pasar NULL
+	 * */ 
+	void enviarKeystrokesA(Megaman* a);
 	
 	//void recibirMensajeDeCliente(CodigoEvento evento);
 };

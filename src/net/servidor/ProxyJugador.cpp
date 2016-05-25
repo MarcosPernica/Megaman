@@ -1,7 +1,7 @@
 #include "ProxyJugador.h"
 #include <iostream>
 #include "../../graficos/VentanaJuego.h"
-#include "../../mundo/Megaman.h"
+
 #include "../sockets/Buffer.h"
 #include "../defines_protocolo.h"
 #include "../../common/exceptions.h"
@@ -36,11 +36,47 @@ void ProxyJugador::notificarEstaba(ProxyJugador* jugador){
 }
 
 void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
+	std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
+	
 	if(tipo_mensaje == MENSAJE_ID){
 		Lock l(m_id);
 		id_usuario = resto_mensaje;
 	}else if(tipo_mensaje == MENSAJE_INICIAR){
 		setQuiereIniciarPartida();
+	}
+	
+	if(controlado != NULL){
+		if(tipo_mensaje == MENSAJE_KEY_1){
+			controlado->seleccionarArma(1);
+		}else if(tipo_mensaje == MENSAJE_KEY_2){
+			controlado->seleccionarArma(2);
+		}else if(tipo_mensaje == MENSAJE_KEY_3){
+			controlado->seleccionarArma(3);
+		}else if(tipo_mensaje == MENSAJE_KEY_4){
+			controlado->seleccionarArma(4);
+		}else if(tipo_mensaje == MENSAJE_KEY_5){
+			controlado->seleccionarArma(5);
+		}else if(tipo_mensaje == MENSAJE_KEY_Z){
+			controlado->saltar();
+			std::cout<<"Z!"<<std::endl;
+		}else if(tipo_mensaje == MENSAJE_KEY_X){
+			controlado->disparar();
+			std::cout<<"X!"<<std::endl;
+		}else if(tipo_mensaje == MENSAJE_KEY_UP){
+			controlado->subirEscalera();
+			std::cout<<"UP!"<<std::endl;
+		}else if(tipo_mensaje == MENSAJE_KEY_DN){
+			controlado->bajarEscalera();
+			std::cout<<"DN!"<<std::endl;
+		}else if(tipo_mensaje == MENSAJE_KEY_RIGHT){
+			controlado->mirarDerecha();
+			controlado->correr();
+			std::cout<<"right!"<<std::endl;
+		}else if(tipo_mensaje == MENSAJE_KEY_LEFT){
+			controlado->mirarIzquierda();
+			controlado->correr();
+			std::cout<<"left!"<<std::endl;
+		}
 	}
 }
 
@@ -48,7 +84,9 @@ ProxyJugador::ProxyJugador(ChannelSocket* chan)
 							:Receptor(*chan),
 							 channel(chan),
 							 conexion_sana(true),
-							 quiero_iniciar(false){}
+							 quiero_iniciar(false){
+	controlado = NULL;
+}
 							 
 bool ProxyJugador::tengoUsuario(){
 	Lock l(m_id);
@@ -98,4 +136,8 @@ void ProxyJugador::notificarInicio(){
 	channel->sendFixed(buf);
 	Lock l(m_quiero_iniciar);
 	quiero_iniciar = false;//esto prepara la próxima pantalla de selección de niveles
+}
+
+void ProxyJugador::enviarKeystrokesA(Megaman* a){
+	controlado = a;
 }

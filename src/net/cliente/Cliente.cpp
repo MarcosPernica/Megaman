@@ -6,7 +6,7 @@
 #include "../defines_protocolo.h"
 #include "../../common/Lock.h"
 #include "../../graficos/VentanaJuego.h"
-#include "../../graficos/Camara.h"
+#include "../../graficos/Camara.h"s
 #include "../../mundo/Mundo.h"
 #include "../../mundo/Simulador.h"
 #include "Jugador.h"
@@ -100,7 +100,6 @@ bool Cliente::iniciado(){
 }
 
 void Cliente::iniciarVentana(const Emisor& emisor){
-	
 	Mundo mundo;
 	Camara camara(mundo,b2Vec2(0,0),800,600);
 	char* argv1="./holi";
@@ -109,8 +108,11 @@ void Cliente::iniciarVentana(const Emisor& emisor){
 	
 	Simulador simulador(mundo,camara,33);
 	Jugador jugador(mundo.getMegaman(), ventana, emisor);
+	ventana.ejecutar();
+	/*
 	ventana.start();//sencillo volar este Thread
 	ventana.join();
+	* */
 }
 
 Cliente::Cliente(std::string n){

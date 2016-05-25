@@ -63,3 +63,8 @@ VentanaJuego::~VentanaJuego(){
 Gtk::Window& VentanaJuego::getWindow(){
 	return *window;
 }
+
+void VentanaJuego::ejecutar(){
+	start();
+	join();
+}
