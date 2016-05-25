@@ -19,7 +19,7 @@ void Servidor::correr(){
 	DistribuidorSnapshots distribuidor(proxies);
 	Mundo mundo;
 	(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
-	SimuladorSinVentana sim(mundo,100,distribuidor);
+	SimuladorSinVentana sim(mundo,20,distribuidor);
 	sim.start();
 	sleep(40);///hay que hacer que en vez de una cantidad fija de segundos 
 	///se espere la condición que corresponda

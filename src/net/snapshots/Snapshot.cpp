@@ -1,6 +1,7 @@
 #include "Snapshot.h"
 #include <sstream>
 #include "../../common/exceptions.h"
+#include <iostream>
 Snapshot::Snapshot(){}
 Snapshot::Snapshot(const SnapshotSerializada& serializada){
 	deserializar(serializada);
@@ -37,13 +38,19 @@ int Snapshot::getID() const{
 
 void Snapshot::deserializar(const SnapshotSerializada& serializada){
 	std::istringstream istream(serializada);
+	//std::cout<<"deserializando----------------------"<<std::endl;
 	while(!istream.eof()){
 		std::string nombre;
 		int valor;
 		istream>>nombre;
 		istream>>valor;
-		agregarPropiedad(nombre,valor);
+		if(nombre.size()>=1){
+			agregarPropiedad(nombre,valor);
+			//std::cout<<"agregando propiedad: "<<nombre<<", "<<valor<<std::endl;
+		}
 	}
+	//std::cout<<"Yo cuando estaba serializado: "<<serializada<<std::endl;
+	//std::cout<<"Yo antes de serializar: "<<serializar()<<std::endl;
 }
 
 int Snapshot::getTipo() const{

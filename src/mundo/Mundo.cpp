@@ -264,6 +264,17 @@ void Mundo::obtenerSnapshot(FullSnapshot& en){
  * */
 void Mundo::inyectarSnapshot(FullSnapshot& fs){
 	fs.reiniciarRevisadas();
+	/*
+	//-----------------------------------------------------------------
+	std::cout<<"-------------------actual:---------------------"<<std::endl;
+	FullSnapshot fsActual;
+	obtenerSnapshot(fsActual);
+	fsActual.mostrar();
+	//-----------------------------------------------------------------
+	std::cout<<"-------------------inyectada:---------------------"<<std::endl;
+	fs.mostrar();
+	//-----------------------------------------------------------------
+	*/
 	
 	//-----iterar sobre los Snapshotables, encontrar cuales remover y actualizar los que sea necesario
 	std::map<uint, Snapshotable*>::iterator it;
@@ -274,7 +285,10 @@ void Mundo::inyectarSnapshot(FullSnapshot& fs){
 			snapshotable->setStateFromSnapshot(fs.get(*snapshotable));
 			fs.marcarRevisada(*snapshotable);
 		}else{
-			a_eliminar.insert(snapshotable);
+			//if(snapshotable->getTipo()!=TIPO_MEGAMAN){
+				a_eliminar.insert(snapshotable);
+				//std::cout<<"Voy a eliminar un snapshotable de tipo "<<snapshotable->getTipo()<<std::endl;
+			//}
 		}
 	}
 	

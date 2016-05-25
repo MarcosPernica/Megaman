@@ -18,7 +18,7 @@ class FullSnapshot{
 	SnapshotMap snapshots;
 	std::set<const Snapshot*> no_revisadas;
 	
-	FullSnapshot deserializar(const FSSerializada& serializada);
+	void deserializar(const FSSerializada& serializada);
 	
 	public:
 	const Snapshot& get(uint id);//...eliminar!
@@ -28,11 +28,12 @@ class FullSnapshot{
 	void marcarRevisada(Snapshotable& snapshotable);
 	const std::set<const Snapshot*> noRevisadas();
 	
-	void add(const Snapshot& es);
+	void add(Snapshot es);
 	bool existe(const Snapshotable& snapshotable) const;
 	const FSSerializada serializar() const;
 	static FullSnapshot desdeSerializada(const FSSerializada& serializada);
 	
+	void mostrar();
 };
 
 

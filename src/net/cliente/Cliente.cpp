@@ -43,7 +43,7 @@ void Cliente::correr(){
 	
 	
 	std::cout<<"Se lanza la partida y la ventana aca!"<<std::endl;	
-	iniciarVentana(emisor);
+	iniciarVentana(emisor, receptor);
 	//------------------ACÁ SE LANZA LA VENTANA Y LOS COHETES----------//
 }
 void Cliente::conectarse(){
@@ -99,16 +99,19 @@ bool Cliente::iniciado(){
 	return flag_iniciado;
 }
 
-void Cliente::iniciarVentana(const Emisor& emisor){
+void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	Mundo mundo;
 	Camara camara(mundo,b2Vec2(0,0),800,600);
-	char* argv1="./holi";
-	char** argv =&argv1;
+	char* argv1 = "./holi";
+	char** argv = &argv1;
 	VentanaJuego ventana(mundo,camara,1,argv,"1");
 	
-	Simulador simulador(mundo,camara,33);
+	
 	Jugador jugador(mundo.getMegaman(), ventana, emisor);
+	receptor.inyectarFullSnapshotsA(&mundo);
+	Simulador simulador(mundo,camara,33);
 	ventana.ejecutar();
+	receptor.inyectarFullSnapshotsA(NULL);
 	/*
 	ventana.start();//sencillo volar este Thread
 	ventana.join();

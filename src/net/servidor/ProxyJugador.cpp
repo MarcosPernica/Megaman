@@ -36,7 +36,7 @@ void ProxyJugador::notificarEstaba(ProxyJugador* jugador){
 }
 
 void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
+	//std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
 	
 	if(tipo_mensaje == MENSAJE_ID){
 		Lock l(m_id);
@@ -58,24 +58,24 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 			controlado->seleccionarArma(5);
 		}else if(tipo_mensaje == MENSAJE_KEY_Z){
 			controlado->saltar();
-			std::cout<<"Z!"<<std::endl;
+			//std::cout<<"Z!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_X){
 			controlado->disparar();
-			std::cout<<"X!"<<std::endl;
+			//std::cout<<"X!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_UP){
 			controlado->subirEscalera();
-			std::cout<<"UP!"<<std::endl;
+			//std::cout<<"UP!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_DN){
 			controlado->bajarEscalera();
-			std::cout<<"DN!"<<std::endl;
+			//std::cout<<"DN!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_RIGHT){
 			controlado->mirarDerecha();
 			controlado->correr();
-			std::cout<<"right!"<<std::endl;
+			//std::cout<<"right!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_LEFT){
 			controlado->mirarIzquierda();
 			controlado->correr();
-			std::cout<<"left!"<<std::endl;
+			//std::cout<<"left!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_UP_LIBERADA){
 			controlado->dejarSubirEscalera();
 		}else if(tipo_mensaje == MENSAJE_KEY_DN_LIBERADA){
@@ -152,7 +152,7 @@ void ProxyJugador::enviarKeystrokesA(Megaman* a){
 }
 
 void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
-	std::cout<<"--------------------------enviando fullsnapshot"<<std::endl;
+	//std::cout<<"--------------------------enviando fullsnapshot"<<std::endl;
 	const FSSerializada serializada = full_snapshot.serializar();
 	FSSerializada::const_iterator it;
 	
@@ -162,7 +162,7 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	for(it = serializada.begin(); it!=serializada.end(); ++it){
 		Buffer buf2 = Buffer::createString(std::string(MENSAJE_ENVIO_SNAPSHOT)+" " + (*it) + "\n");
 		channel->sendFixed(buf2);
-		std::cout<<*it<<std::endl;
+		//std::cout<<*it<<std::endl;
 	}
 	
 	Buffer buf3 = Buffer::createString(std::string(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT)+"\n");

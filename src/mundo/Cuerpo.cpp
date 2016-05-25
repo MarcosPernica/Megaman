@@ -205,6 +205,8 @@ void Cuerpo::setStateFromSnapshot(const Snapshot& sn){
 	
 	Orientaciones o = (Orientaciones) sn.obtenerPropiedad(PROP_ORIENTACION);
 	
+	real px_ini = obtenerPosicion().x;
+	
 	modificarPosicion(b2Vec2(px,py));
 	modificarVelocidad(b2Vec2(vx,vy));
 	modificarOrientacion(o);

@@ -5,6 +5,7 @@
 #include <string>
 #include "../../common/Mutex.h"
 #include "Emisor.h"
+class ReceptorCliente;
 enum Posicion{
 	Primero,
 	NoPrimero,
@@ -53,7 +54,7 @@ class Cliente{
 	bool iniciado();
 	//void enviarMensaje(const std::string& mensaje);
 	
-	void iniciarVentana(const Emisor& emisor);
+	void iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor);
 	Cliente(std::string nombre = std::string("anon"));
 	
 };

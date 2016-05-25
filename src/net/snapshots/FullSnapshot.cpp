@@ -2,14 +2,13 @@
 #include "../../common/exceptions.h"
 #include <map>
 #include <vector>
+#include <iostream>
 
-FullSnapshot FullSnapshot::deserializar(const FSSerializada& serializada){
+void FullSnapshot::deserializar(const FSSerializada& serializada){
 	FSSerializada::const_iterator it;
-	FullSnapshot f;
 	for(it=serializada.begin(); it!=serializada.end(); ++it){
-		f.add(Snapshot(*it));
+		add(Snapshot(*it));
 	}
-	return f;
 }
 
 const Snapshot& FullSnapshot::get(uint id){
@@ -20,7 +19,7 @@ const Snapshot& FullSnapshot::get(uint id){
 	return snapshots.find(id)->second;
 }
 
-void FullSnapshot::add(const Snapshot& es){
+void FullSnapshot::add(Snapshot es){
 	if(snapshots.count(es.getID())==1){
 		throw CustomException("Ya existe un snapshot con ese id y no la quiero pisar");
 	}
@@ -74,4 +73,12 @@ void FullSnapshot::marcarRevisada(Snapshotable& snapshotable){
 }
 const std::set<const Snapshot*> FullSnapshot::noRevisadas(){
 	return no_revisadas;
+}
+
+void FullSnapshot::mostrar(){
+	std::cout<<"------------mostrando fullsnapshot---------__"<<std::endl;
+	SnapshotMap::const_iterator it; 
+	for(it=snapshots.begin(); it!=snapshots.end(); ++it){
+		std::cout<<(it->second).serializar()<<std::endl;
+	}
 }
