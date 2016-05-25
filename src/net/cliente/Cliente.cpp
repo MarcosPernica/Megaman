@@ -111,7 +111,7 @@ void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	receptor.inyectarFullSnapshotsA(&mundo);
 	Simulador simulador(mundo,camara,33);
 	ventana.ejecutar();
-	receptor.inyectarFullSnapshotsA(NULL);
+	receptor.inyectarFullSnapshotsA(NULL);////////esta!!!!!!!!!!!!
 	/*
 	ventana.start();//sencillo volar este Thread
 	ventana.join();
