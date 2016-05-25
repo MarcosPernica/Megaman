@@ -76,7 +76,16 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 			controlado->mirarIzquierda();
 			controlado->correr();
 			std::cout<<"left!"<<std::endl;
+		}else if(tipo_mensaje == MENSAJE_KEY_UP_LIBERADA){
+			controlado->dejarSubirEscalera();
+		}else if(tipo_mensaje == MENSAJE_KEY_DN_LIBERADA){
+			controlado->dejarBajarEscalera();
+		}else if(tipo_mensaje == MENSAJE_KEY_RIGHT_LIBERADA){
+			controlado->dejarCorrer();
+		}else if(tipo_mensaje == MENSAJE_KEY_LEFT_LIBERADA){
+			controlado->dejarCorrer();
 		}
+			
 	}
 }
 
@@ -140,4 +149,22 @@ void ProxyJugador::notificarInicio(){
 
 void ProxyJugador::enviarKeystrokesA(Megaman* a){
 	controlado = a;
+}
+
+void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
+	std::cout<<"--------------------------enviando fullsnapshot"<<std::endl;
+	const FSSerializada serializada = full_snapshot.serializar();
+	FSSerializada::const_iterator it;
+	
+	Buffer buf1 = Buffer::createString(std::string(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT)+"\n");
+	channel->sendFixed(buf1);
+	
+	for(it = serializada.begin(); it!=serializada.end(); ++it){
+		Buffer buf2 = Buffer::createString(std::string(MENSAJE_ENVIO_SNAPSHOT)+" " + (*it) + "\n");
+		channel->sendFixed(buf2);
+		std::cout<<*it<<std::endl;
+	}
+	
+	Buffer buf3 = Buffer::createString(std::string(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT)+"\n");
+	channel->sendFixed(buf3);
 }

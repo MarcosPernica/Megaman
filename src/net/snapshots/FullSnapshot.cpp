@@ -27,9 +27,9 @@ void FullSnapshot::add(const Snapshot& es){
 	snapshots.insert(std::pair<uint,Snapshot>(es.getID(),es));
 }
 
-const FSSerializada FullSnapshot::serializar(){
+const FSSerializada FullSnapshot::serializar() const{
 	FSSerializada resultado;
-	SnapshotMap::iterator it; 
+	SnapshotMap::const_iterator it; 
 	for(it=snapshots.begin(); it!=snapshots.end(); ++it){
 		resultado.push_back(it->second.serializar());
 	}

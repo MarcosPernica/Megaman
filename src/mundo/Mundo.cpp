@@ -105,6 +105,7 @@ Megaman *Mundo::agregarMegaman(b2Vec2 posicion)
 	megamanes[megaman->obtenerID()] = megaman;
 	dibujables[megaman->obtenerID()] = megaman;
 	actualizables[megaman->obtenerID()] = megaman;
+	snapshotables[megaman->obtenerID()] = megaman;
 
 	return megaman;
 }

@@ -15,7 +15,7 @@ Full snapshot de una entidad, tiene un ID asociado
 */
 class Snapshot{
 	public:
-	SnapshotSerializada serializar();
+	SnapshotSerializada serializar() const;
 	explicit Snapshot(const SnapshotSerializada& serializada);
 	explicit Snapshot(uint de);//... mejor: Snapshot(const Snapshotable& de);
 	

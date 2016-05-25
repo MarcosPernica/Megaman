@@ -4,6 +4,7 @@
 #include <ctime>
 #include "../../mundo/Mundo.h"
 #include "../../mundo/SimuladorSinVentana.h"
+#include "DistribuidorSnapshots.h"
 
 void Servidor::conectar(){
 	accepter.open(5002,4);
@@ -15,9 +16,10 @@ void Servidor::correr(){
 	notificarInicio();
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
 	
-	
+	DistribuidorSnapshots distribuidor(proxies);
 	Mundo mundo;
-	SimuladorSinVentana sim(mundo,50);
+	(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
+	SimuladorSinVentana sim(mundo,100,distribuidor);
 	sim.start();
 	sleep(40);///hay que hacer que en vez de una cantidad fija de segundos 
 	///se espere la condición que corresponda

@@ -10,11 +10,11 @@ Snapshot::Snapshot(uint id){
 }
 
 
-SnapshotSerializada Snapshot::serializar(){
+SnapshotSerializada Snapshot::serializar() const{
 	std::ostringstream ostream;
-	MapaPropiedades::iterator it;
+	MapaPropiedades::const_iterator it;
 	for(it=propiedades.begin(); it!=propiedades.end(); ++it){
-		ostream<< it->first <<" "<<it->second<<std::endl;
+		ostream<< it->first <<" "<<it->second<<" ";//<<std::endl; ese es el caracter de fin de mensaje segun nuestro protocolo!
 	}
 	
 	return ostream.str();///////COPIA/////////////////////////////	

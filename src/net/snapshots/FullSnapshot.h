@@ -30,7 +30,7 @@ class FullSnapshot{
 	
 	void add(const Snapshot& es);
 	bool existe(const Snapshotable& snapshotable) const;
-	const FSSerializada serializar();
+	const FSSerializada serializar() const;
 	static FullSnapshot desdeSerializada(const FSSerializada& serializada);
 	
 };

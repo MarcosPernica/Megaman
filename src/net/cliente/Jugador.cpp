@@ -92,21 +92,25 @@ bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
 	{
 		case GDK_KEY_Up:
 		{
+			emisor.enviar(MENSAJE_KEY_UP_LIBERADA);
 			controlado->dejarSubirEscalera();
 			break;
 		}
 		case GDK_KEY_Down:
 		{
+			emisor.enviar(MENSAJE_KEY_DN_LIBERADA);
 			controlado->dejarBajarEscalera();
 			break;
 		}
 		case GDK_KEY_Right:
 		{
+			emisor.enviar(MENSAJE_KEY_RIGHT_LIBERADA);
 			controlado->dejarCorrer();
 			break;
 		}
 		case GDK_KEY_Left:
 		{
+			emisor.enviar(MENSAJE_KEY_LEFT_LIBERADA);
 			controlado->dejarCorrer();
 			break;
 		}		

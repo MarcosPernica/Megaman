@@ -16,3 +16,12 @@
 #define MENSAJE_KEY_LEFT "key_lt"
 #define MENSAJE_KEY_Z "key_z"
 #define MENSAJE_KEY_X "key_x"
+
+#define MENSAJE_KEY_UP_LIBERADA		"key_up_liberada"
+#define MENSAJE_KEY_DN_LIBERADA		"key_dn_liberada"
+#define MENSAJE_KEY_RIGHT_LIBERADA	"key_rt_liberada"
+#define MENSAJE_KEY_LEFT_LIBERADA	"key_lt_liberada"
+
+#define MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT	"iniciar_envio_fs"
+#define MENSAJE_ENVIO_SNAPSHOT				"viene_snapshot"
+#define MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT	"terminar_envio_fs"

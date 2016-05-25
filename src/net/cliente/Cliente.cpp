@@ -6,7 +6,7 @@
 #include "../defines_protocolo.h"
 #include "../../common/Lock.h"
 #include "../../graficos/VentanaJuego.h"
-#include "../../graficos/Camara.h"s
+#include "../../graficos/Camara.h"
 #include "../../mundo/Mundo.h"
 #include "../../mundo/Simulador.h"
 #include "Jugador.h"

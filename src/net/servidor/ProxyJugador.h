@@ -9,6 +9,7 @@
 #include "../sockets/Receptor.h"
 #include <set>
 #include "../../mundo/Megaman.h"
+#include "../snapshots/FullSnapshot.h"
 
 class ProxyJugador: public Receptor{
 	private:
@@ -39,6 +40,7 @@ class ProxyJugador: public Receptor{
 	bool getEstaSana();
 	void enviarSosPrimero();
 	void enviarNoSosPrimero();
+	void enviar(const FullSnapshot& full_snapshot);
 	
 	bool quiereIniciarPartida();
 	void notificarInicio();
