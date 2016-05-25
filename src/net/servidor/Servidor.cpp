@@ -21,8 +21,9 @@ void Servidor::correr(){
 	(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
 	SimuladorSinVentana sim(mundo,20,distribuidor);
 	sim.start();
-	sleep(40);///hay que hacer que en vez de una cantidad fija de segundos 
-	///se espere la condición que corresponda
+	std::cout<<"Ingresa cualquier cosa para matar el server sin avisarle a nadie"<<std::endl;
+	std::string listo;
+	std::cin>>listo;
 	sim.join();
 	
 	matarConexiones();

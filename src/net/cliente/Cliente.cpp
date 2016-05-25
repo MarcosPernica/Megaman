@@ -29,11 +29,15 @@ void Cliente::correr(){
 	if(obtenerPosicion()==NoPrimero){
 		std::cout<<"No sos el primero"<<std::endl;
 	}else{
+		
+		//comentar esto de abajo hace que se deje de esperar la i
 		char respuesta='0';
 		while(obtenerPosicion()==Primero && respuesta!='i'){
 			std::cout<<"Usted es el primero. Ingrese i para iniciar la partida"<<std::endl;
 			std::cin>>respuesta;
 		}
+		//(comentar hasta acá)
+		
 		emisor.enviar(MENSAJE_INICIAR);//acá hay que meter la información del nivel
 	}
 	
