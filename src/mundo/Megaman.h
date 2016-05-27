@@ -5,12 +5,12 @@
 #include "Definiciones.h"
 #include <vector>
 #include "Disparo.h"
-
+#include "../graficos/Imagen.h"
 #define MEGAMANNOCORRE 0
 #define MEGAMANEMPEZANDOACORRRER 1
 #define MEGAMANCORRIENDO 2
 
-class Megaman : public Entidad
+class Megaman : public Entidad, public Imagen
 {
 private:
 
@@ -69,6 +69,14 @@ public:
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	virtual int getTipo() const {return TIPO_MEGAMAN;};
+	
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion) const{
+		Imagen::dibujarEn(cr,origen,factorAmplificacion);
+	}
+	/**
+	 * Devuelve el rectángulo en unidades de render
+	 * */
+	virtual const Rectangulo obtenerRepresentacion() const;
 };
 
 #endif

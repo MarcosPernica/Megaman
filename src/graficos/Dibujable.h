@@ -3,6 +3,8 @@
 #include <cairomm/context.h>
 #include <Box2D/Box2D.h>
 #include "../mundo/Definiciones.h"
+#include <gdkmm/pixbuf.h>
+#include <gdkmm/general.h>
 
 /*Mira aca abajo, esta como escalo el mundo a pixeles. Se lee como 38px/m y esta basado en el ratio original de megaman*/
 
@@ -11,10 +13,17 @@
 
 class Dibujable{
 	public:
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion) const = 0;
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion) const = 0;
 	virtual ~Dibujable(){};
 
 	static void dibujarRectangulo(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion, b2Vec2 posicion, real ancho, real alto);
+	static void dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr, 
+				  b2Vec2 origen,
+				  uint factorAmplificacion, 
+				  b2Vec2 posicion,
+				  real ancho,
+				  real alto,
+				  Cairo::RefPtr<Cairo::ImageSurface> imagen);
 
 	static b2Vec2 renderAMundo(b2Vec2 vector);	
 	static b2Vec2 mundoARender(b2Vec2 vector);

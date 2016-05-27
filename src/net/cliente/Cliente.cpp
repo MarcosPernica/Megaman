@@ -52,7 +52,7 @@ void Cliente::correr(){
 	//------------------ACÁ SE LANZA LA VENTANA Y LOS COHETES----------//
 }
 void Cliente::conectarse(){
-	socket.connectTo("127.0.0.1",5001);
+	socket.connectTo("127.0.0.1",5002);
 }
 void Cliente::enviarID(const Emisor& emisor){
 	std::string id;

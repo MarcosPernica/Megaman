@@ -7,7 +7,7 @@
  * */
 class ImagenRectangulo: public Dibujable{
 	public:
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion) const;
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion) const;
 	protected:
 	/**
 	 * Pregunta qué rectángulo dibujar, las coordenadas son absolutas

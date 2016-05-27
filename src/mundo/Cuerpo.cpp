@@ -166,7 +166,7 @@ const b2Vec2 & Cuerpo::orientacionAVector(Orientaciones orientacion)
 		return versorIzquierda;
 }
 
-void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion) const
+void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion) const
 {
 	Rectangulo principal = obtenerCajaMagnificada(1);
 

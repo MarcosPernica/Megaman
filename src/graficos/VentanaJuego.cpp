@@ -47,6 +47,10 @@ bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	Gtk::Allocation allocation = darea->get_allocation();
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();
+	
+	//std::cout<<"El ancho de la ventana es "<<width<<std::endl;
+	//std::cout<<"El alto de la ventana es "<<height<<std::endl;
+	
 	camara.dibujarEn(cr);
 	return true;
 }

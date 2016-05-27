@@ -312,3 +312,11 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	
 	Entidad::setStateFromSnapshot(sn);
 }
+
+//------------------------------------------------------------------
+const Rectangulo Megaman::obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEMEGAMAN/2,
+						obtenerPosicion().y-ALTOSPRITEMEGAMAN/2,
+						ANCHOSPRITEMEGAMAN,
+						ALTOSPRITEMEGAMAN);
+}

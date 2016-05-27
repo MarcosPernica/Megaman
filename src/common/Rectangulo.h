@@ -11,6 +11,7 @@ public: //Solo para debug
 	real w;
 	real h;
 public:
+	Rectangulo(b2Vec2 topLeft, b2Vec2 botRight) : x(topLeft.x), y(topLeft.y), w(botRight.x-topLeft.x), h(botRight.y-topLeft.y){};
 	Rectangulo(real x, real y, real ancho, real alto) : x(x), y(y), w(ancho), h(alto){};
 
 	real obtenerAncho() const
