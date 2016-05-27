@@ -10,7 +10,7 @@
 #include <set>
 #include "../../mundo/Megaman.h"
 #include "../snapshots/FullSnapshot.h"
-
+#include <queue>
 class ProxyJugador: public Receptor{
 	private:
 	uint posicion;
@@ -18,6 +18,9 @@ class ProxyJugador: public Receptor{
 	Mutex m_id;
 	Mutex m_conexion_sana;
 	Mutex m_quiero_iniciar;
+	Mutex m_controles_recibidos;
+	
+	std::queue<std::string> controles_recibidos;
 	
 	Megaman* controlado;
 	
@@ -55,8 +58,19 @@ class ProxyJugador: public Receptor{
 	 * */ 
 	void enviarKeystrokesA(Megaman* a);
 	
+	/**
+	 * Envia la posición en que entró al server
+	 * */
 	void enviarPosicion(uint posicion);
 	
+	/**
+	 * Devuelve la posición en que entró al server
+	 * */
 	uint obtenerPosicion();
+	
+	/**
+	 * Desacola algún control recibido y apreta los botones del Megaman correspondiente
+	 * */
+	 void ejecutarControlSobreMegaman();
 };
 #endif

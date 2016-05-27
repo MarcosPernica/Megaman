@@ -35,15 +35,13 @@ void ProxyJugador::notificarEstaba(ProxyJugador* jugador){
 	}
 }
 
-void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	//std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
+void ProxyJugador::ejecutarControlSobreMegaman(){
+	Lock l(m_controles_recibidos);
 	
-	if(tipo_mensaje == MENSAJE_ID){
-		Lock l(m_id);
-		id_usuario = resto_mensaje;
-	}else if(tipo_mensaje == MENSAJE_INICIAR){
-		setQuiereIniciarPartida();
-	}
+	if(controles_recibidos.size()==0) return;
+	
+	std::string tipo_mensaje = controles_recibidos.front();
+	controles_recibidos.pop();
 	
 	if(controlado != NULL){
 		if(tipo_mensaje == MENSAJE_KEY_1){
@@ -58,7 +56,7 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 			controlado->seleccionarArma(5);
 		}else if(tipo_mensaje == MENSAJE_KEY_Z){
 			controlado->saltar();
-			//std::cout<<"Z!"<<std::endl;
+			std::cout<<"Z!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_X){
 			controlado->disparar();
 			//std::cout<<"X!"<<std::endl;
@@ -71,11 +69,11 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 		}else if(tipo_mensaje == MENSAJE_KEY_RIGHT){
 			controlado->mirarDerecha();
 			controlado->correr();
-			//std::cout<<"right!"<<std::endl;
+			std::cout<<"right!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_LEFT){
 			controlado->mirarIzquierda();
 			controlado->correr();
-			//std::cout<<"left!"<<std::endl;
+			std::cout<<"left!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_UP_LIBERADA){
 			controlado->dejarSubirEscalera();
 		}else if(tipo_mensaje == MENSAJE_KEY_DN_LIBERADA){
@@ -85,7 +83,20 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 		}else if(tipo_mensaje == MENSAJE_KEY_LEFT_LIBERADA){
 			controlado->dejarCorrer();
 		}
-			
+	}
+}
+
+void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
+	//std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
+	
+	if(tipo_mensaje == MENSAJE_ID){
+		Lock l(m_id);
+		id_usuario = resto_mensaje;
+	}else if(tipo_mensaje == MENSAJE_INICIAR){
+		setQuiereIniciarPartida();
+	}else if(controlado != NULL){
+		Lock l(m_controles_recibidos);
+		controles_recibidos.push(tipo_mensaje);
 	}
 }
 

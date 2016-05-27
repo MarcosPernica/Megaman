@@ -4,7 +4,7 @@
 #include <ctime>
 #include "../../mundo/Mundo.h"
 #include "../../mundo/SimuladorSinVentana.h"
-#include "DistribuidorSnapshots.h"
+#include "ContenedorProxies.h"
 
 void Servidor::conectar(){
 	accepter.open(5001,4);
@@ -16,7 +16,7 @@ void Servidor::correr(){
 	notificarInicio();
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
 	
-	DistribuidorSnapshots distribuidor(proxies);
+	ContenedorProxies distribuidor(proxies);
 	Mundo mundo;
 	//(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
 	std::set<ProxyJugador*>::iterator it;
