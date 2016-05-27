@@ -50,8 +50,8 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 {
 	//Gdk::Cairo::set_source_pixbuf(cr,imagen,imagen->get_width(),imagen->get_height());
 	cr->save();
-	cr->set_source(imagen,0,0);
 	b2Vec2 aux = factorAmplificacion*(posicion - origen);
+	cr->set_source(imagen,aux.x,aux.y);
 
 	cr->rectangle(aux.x, 
 		      aux.y, 
