@@ -6,11 +6,6 @@
 #include "../../common/Mutex.h"
 #include "Emisor.h"
 class ReceptorCliente;
-enum Posicion{
-	Primero,
-	NoPrimero,
-	Desconocida
-};
 
 /**
  * "Singleton" que representa la aplicación cliente
@@ -22,7 +17,7 @@ class Cliente{
 	Mutex m_iniciado;
 	
 	ChannelSocket socket;
-	Posicion posicion;
+	int posicion;
 	bool flag_iniciado;
 	
 	/**
@@ -48,11 +43,10 @@ class Cliente{
 	//interfaz para ReceptorCliente
 	void agregarEstaba(const std::string& usuario);
 	void agregarLlega(const std::string& usuario);
-	void definirSoyPrimero(bool soy_primero);
-	Posicion obtenerPosicion();
+	void definirPosicion(int posicion);
+	int obtenerPosicion();
 	void iniciar();
 	bool iniciado();
-	//void enviarMensaje(const std::string& mensaje);
 	
 	void iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor);
 	Cliente(std::string nombre = std::string("anon"));

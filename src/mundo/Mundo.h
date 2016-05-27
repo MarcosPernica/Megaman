@@ -103,6 +103,13 @@ public:
 	 * Agrega lo que el Snapshot represente al mundo
 	 * */
 	void agregarDesdeSnapshot(const Snapshot& sn);
+	
+	/**
+	 * devuelve el megaman 0, 1, 2, 3; 
+	 * cada cliente sabe cuál megaman es el suyo porque
+	 * este numero se distribuye
+	 * */
+	Megaman* obtenerMegaman(uint posicion);
 };
 
 #endif

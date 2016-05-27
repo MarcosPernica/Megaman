@@ -8,6 +8,7 @@
 #include "../net/snapshots/FullSnapshot.h"
 #include "Bumby.h"
 #include "Met.h"
+#include "../common/exceptions.h"
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
 Mundo::Mundo() : mundo(gravedad)
@@ -39,6 +40,9 @@ void Mundo::crearNivel(){
 	agregarEscalera(3,b2Vec2(15.5,9.5));
 
 	agregarMegaman(b2Vec2(3,2));
+	agregarMegaman(b2Vec2(4,2));
+	agregarMegaman(b2Vec2(2,2));
+	agregarMegaman(b2Vec2(1,2));
 
 	agregarZonaTransporte(1,1,b2Vec2(8.5,12.5), b2Vec2(3,2));
 	agregarZonaMortal(2,1,b2Vec2(11,11.5));
@@ -242,6 +246,18 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 Megaman* Mundo::getMegaman(){
 	return megamanes.begin()->second;
+}
+
+Megaman* Mundo::obtenerMegaman(uint posicion)
+{
+	if(posicion>3)
+		throw CustomException("Pasaste una posicion mayor a 3, sólo hay 4 Megaman");
+		
+	std::map<uint, Megaman*>::iterator it;
+	it = megamanes.begin();
+	for(int i = 0; i<posicion; i++) ++it;
+	
+	return it->second;
 }
 
 void Mundo::obtenerSnapshot(FullSnapshot& en){

@@ -13,6 +13,8 @@
 
 class ProxyJugador: public Receptor{
 	private:
+	uint posicion;
+	
 	Mutex m_id;
 	Mutex m_conexion_sana;
 	Mutex m_quiero_iniciar;
@@ -53,6 +55,8 @@ class ProxyJugador: public Receptor{
 	 * */ 
 	void enviarKeystrokesA(Megaman* a);
 	
-	//void recibirMensajeDeCliente(CodigoEvento evento);
+	void enviarPosicion(uint posicion);
+	
+	uint obtenerPosicion();
 };
 #endif

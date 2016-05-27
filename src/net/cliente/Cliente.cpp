@@ -10,10 +10,11 @@
 #include "../../mundo/Mundo.h"
 #include "../../mundo/Simulador.h"
 #include "Jugador.h"
+#include "../../common/exceptions.h"
 
 //Cliente::Cliente(){}
 void Cliente::correr(){
-	posicion=Desconocida;
+	posicion=-1;
 	flag_iniciado=false;
 	
 	conectarse();
@@ -22,17 +23,17 @@ void Cliente::correr(){
 	Emisor emisor(socket);
 	enviarID(emisor);
 	
-	while(obtenerPosicion()==Desconocida){
+	while(obtenerPosicion()==-1){
 		//bloquear el hilo
 	}
-	
-	if(obtenerPosicion()==NoPrimero){
+	std::cout<<"La posicion  que vino es: "<<obtenerPosicion()<<std::endl;
+	if(obtenerPosicion()>0){
 		std::cout<<"No sos el primero"<<std::endl;
 	}else{
 		
 		//comentar esto de abajo hace que se deje de esperar la i
 		char respuesta='0';
-		while(obtenerPosicion()==Primero && respuesta!='i'){
+		while(obtenerPosicion()==0 && respuesta!='i'){
 			std::cout<<"Usted es el primero. Ingrese i para iniciar la partida"<<std::endl;
 			std::cin>>respuesta;
 		}
@@ -51,10 +52,9 @@ void Cliente::correr(){
 	//------------------ACÁ SE LANZA LA VENTANA Y LOS COHETES----------//
 }
 void Cliente::conectarse(){
-	socket.connectTo("127.0.0.1",5002);
+	socket.connectTo("127.0.0.1",5001);
 }
 void Cliente::enviarID(const Emisor& emisor){
-	
 	std::string id;
 	//std::cout<<"Introduzca su ID unica. Confio en usted"<<std::endl;
 	//std::cin>>id;
@@ -74,25 +74,17 @@ void Cliente::agregarLlega(const std::string& usuario){
 	Lock l(m_pantalla);
 	std::cout<<"Llega el usuario "<<usuario<<std::endl;
 }
-void Cliente::definirSoyPrimero(bool soy_primero){
-	Lock l(m_posicion);
-	if(soy_primero){
-		posicion=Primero;
-	}else{
-		posicion=NoPrimero;
+void Cliente::definirPosicion(int pos){
+	if( pos<0 || pos>3){
+		throw CustomException("Las posiciones deben estar entre 0 y 3");
 	}
+	Lock l(m_posicion);
+	posicion = pos;
 }
-
-Posicion Cliente::obtenerPosicion(){
+int Cliente::obtenerPosicion(){
 	Lock l(m_posicion);
 	return posicion;
 }
-/*
-void Cliente::enviarIniciar(const Emisor& emisor){
-	Buffer men_buf = Buffer::createString(std::string(MENSAJE_INICIAR) + " \n");
-	socket.sendFixed(men_buf);
-}
-*/
 void Cliente::iniciar(){
 	Lock l(m_iniciado);
 	flag_iniciado=true;
@@ -111,7 +103,7 @@ void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	VentanaJuego ventana(mundo,camara,1,argv,"1");
 	
 	
-	Jugador jugador(mundo.getMegaman(), ventana, emisor);
+	Jugador jugador(mundo.obtenerMegaman(posicion), ventana, emisor);
 	receptor.inyectarFullSnapshotsA(&mundo);
 	Simulador simulador(mundo,camara,33);
 	ventana.ejecutar();

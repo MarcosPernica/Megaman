@@ -16,10 +16,11 @@ void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std:
 		cliente.agregarEstaba(resto_mensaje);
 	}else if(tipo_mensaje==MENSAJE_LLEGA){
 		cliente.agregarLlega(resto_mensaje);
-	}else if(tipo_mensaje==MENSAJE_SOS_PRIMERO){
-		cliente.definirSoyPrimero(true);
-	}else if(tipo_mensaje==MENSAJE_NO_SOS_PRIMERO){
-		cliente.definirSoyPrimero(false);
+	}else if(tipo_mensaje==MENSAJE_POSICION){
+		std::istringstream ss(resto_mensaje);
+		int posicion;
+		ss>>posicion;
+		cliente.definirPosicion(posicion);
 	}else if(tipo_mensaje==MENSAJE_INICIAR){
 		cliente.iniciar();
 	}else if(tipo_mensaje==MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT){

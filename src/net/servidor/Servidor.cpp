@@ -7,7 +7,7 @@
 #include "DistribuidorSnapshots.h"
 
 void Servidor::conectar(){
-	accepter.open(5002,4);
+	accepter.open(5001,4);
 }
 void Servidor::correr(){
 	conectar();
@@ -18,7 +18,13 @@ void Servidor::correr(){
 	
 	DistribuidorSnapshots distribuidor(proxies);
 	Mundo mundo;
-	(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
+	//(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
+	std::set<ProxyJugador*>::iterator it;
+	for(it=proxies.begin(); it != proxies.end(); ++it){
+		int pos = (*it)->obtenerPosicion();
+		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
+	}
+	
 	SimuladorSinVentana sim(mundo,20,distribuidor);
 	sim.start();
 	std::cout<<"Ingresa cualquier cosa para matar el server sin avisarle a nadie"<<std::endl;
@@ -47,10 +53,11 @@ ProxyJugador* Servidor::agregarJugadores(){
 			
 			if(primero==NULL){
 				primero=nuevo;
-				primero->enviarSosPrimero();
+				//primero->enviarSosPrimero();
 			}else{
-				nuevo->enviarNoSosPrimero();
+				//nuevo->enviarNoSosPrimero();
 			}
+			nuevo->enviarPosicion(proxies.size());
 			
 			nuevo->enviarListaJugadores(proxies);//se le envían los que ya estaban
 			notificarLlegada(nuevo);//se notifica a los que ya estaban

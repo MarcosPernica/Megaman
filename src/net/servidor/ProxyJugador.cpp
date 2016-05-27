@@ -168,3 +168,14 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	Buffer buf3 = Buffer::createString(std::string(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT)+"\n");
 	channel->sendFixed(buf3);
 }
+
+void ProxyJugador::enviarPosicion(uint posicion){
+	std::ostringstream ss;
+	ss << MENSAJE_POSICION <<" "<< posicion << std::endl;
+	Buffer buf = Buffer::createString(ss.str());
+	channel->sendFixed(buf);
+	this->posicion = posicion;
+}
+uint ProxyJugador::obtenerPosicion(){
+	return posicion;
+}
