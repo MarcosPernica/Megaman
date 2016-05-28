@@ -320,3 +320,7 @@ const Rectangulo Megaman::obtenerRepresentacion() const{
 						ANCHOSPRITEMEGAMAN,
 						ALTOSPRITEMEGAMAN);
 }
+
+const b2Vec2 Megaman::obtenerPosicion() const{
+	return Cuerpo::obtenerPosicion();
+}

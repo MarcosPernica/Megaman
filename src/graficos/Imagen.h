@@ -10,5 +10,9 @@ class Imagen : public virtual Dibujable{
 	 * En unidades del mundo
 	 * */
 	virtual const Rectangulo obtenerRepresentacion() const = 0;
+	/**
+	 * También en unidades de Mundo
+	 * */
+	virtual const b2Vec2 obtenerPosicion() const = 0;
 };
 #endif

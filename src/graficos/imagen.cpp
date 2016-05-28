@@ -19,6 +19,9 @@ void Imagen::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 	const real altoEscalado = mundoARender(representacion.obtenerAlto());
 	const real anchoEscalado = mundoARender(representacion.obtenerAncho());
 	
-	Dibujable::dibujarImagen(	cr, origen, factorAmplificacion, top_left_escalada,
-								anchoEscalado, altoEscalado, image);		
+//	Dibujable::dibujarImagen(	cr, origen, factorAmplificacion, top_left_escalada,
+//								anchoEscalado, altoEscalado, image);		
+	Dibujable::dibujarRectangulo(	cr, origen, factorAmplificacion, top_left_escalada,
+								anchoEscalado, altoEscalado);		
+								
 }

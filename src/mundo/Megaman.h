@@ -77,6 +77,10 @@ public:
 	 * Devuelve el rectángulo en unidades de render
 	 * */
 	virtual const Rectangulo obtenerRepresentacion() const;
+	/**
+	 * También en unidades de Mundo
+	 * */
+	virtual const b2Vec2 obtenerPosicion() const;
 };
 
 #endif

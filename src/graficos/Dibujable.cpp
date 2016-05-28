@@ -52,11 +52,15 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 	cr->save();
 	b2Vec2 aux = factorAmplificacion*(posicion - origen);
 	cr->set_source(imagen,aux.x,aux.y);
-
-	cr->rectangle(aux.x, 
-		      aux.y, 
-		      ancho*factorAmplificacion, 
-		      alto*factorAmplificacion);
+	
+	real cambio_x = ancho/imagen->get_width();
+	real cambio_y = alto/imagen->get_height();
+	
+	//cairo_scale(cr, cambio_x, cambio_y);
+	cr->rectangle(aux.x/cambio_x, 
+		      aux.y/cambio_y, 
+		      imagen->get_width() *factorAmplificacion*cambio_x, 
+		      imagen->get_height()*factorAmplificacion*cambio_y);
 
 	cr->clip();
 	cr->paint();
