@@ -13,7 +13,7 @@
 
 class Dibujable{
 	public:
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion) const = 0;
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion) = 0;
 	virtual ~Dibujable(){};
 
 	static void dibujarRectangulo(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion, b2Vec2 posicion, real ancho, real alto);
@@ -23,7 +23,8 @@ class Dibujable{
 				  b2Vec2 posicion,
 				  real ancho,
 				  real alto,
-				  Cairo::RefPtr<Cairo::ImageSurface> imagen);
+				  Glib::RefPtr<Gdk::Pixbuf> imagen,
+				  bool invertir = true);
 
 	static b2Vec2 renderAMundo(b2Vec2 vector);	
 	static b2Vec2 mundoARender(b2Vec2 vector);

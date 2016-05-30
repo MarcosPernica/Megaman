@@ -2,6 +2,14 @@
 #include <cairo.h>
 #include <cairomm/context.h>
 #include <gtkmm/drawingarea.h>
+
+//-------------
+#include <cairomm/context.h>
+//#include <giomm/resource.h>
+#include <gdkmm/general.h> // set_source_pixbuf()
+#include <glibmm/fileutils.h>
+#include <iostream>
+//--------------------
 void VentanaJuego::run(){
 	
 	std::cout<<"VentanaJuego esta corriendo"<<std::endl;
@@ -29,29 +37,40 @@ void VentanaJuego::run(){
 }
 void VentanaJuego::end(){}
 
-VentanaJuego::VentanaJuego(const Mundo& mun, Camara &camara, int argc, char * argv[], const std::string& id):mundo(mun), camara(camara){
+VentanaJuego::VentanaJuego(int argc, char * argv[], const std::string& id){
 	app = Gtk::Application::create(argc, argv, "Megamarta.is.angry" + id);
 	darea=new Gtk::DrawingArea;//tengo que hacer estos new después de crear la application porque sino gtkmm chilla
 	window= new Gtk::Window;
+	camara = NULL;//esto es por lo mismo aunque parezca loco!
 }
 
 bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
-	/*
-	cr->set_line_width(10.0);
-	cr->set_source_rgb(1,1,0);
-	cr->move_to(0,0.2);
-	cr->move_to(0.1,3);
-	cr->stroke();
-	* */
 
 	Gtk::Allocation allocation = darea->get_allocation();
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();
-	
+	/*
+	//Cairo::RefPtr<Cairo::Context> cr2 = new Cairo::Context(cairo_create(cr->cobj()));
+	//------------------cr2--------------
+	cr->save();
+	cr->scale(3,3);
 	//std::cout<<"El ancho de la ventana es "<<width<<std::endl;
 	//std::cout<<"El alto de la ventana es "<<height<<std::endl;
+	Glib::RefPtr<Gdk::Pixbuf> imagen_prueba = 
+						Gdk::Pixbuf::create_from_file("imagenes/spritesheet.png");
+						
+	Gdk::Cairo::set_source_pixbuf(cr, 
+						imagen_prueba,
+						0 , 
+						0);
 	
-	camara.dibujarEn(cr);
+	cr->paint();
+	cr->restore();
+	//-----------fin de cr2---------------
+	*/
+	if(camara!=NULL){
+		camara->dibujarEn(cr);
+	}
 	return true;
 }
 bool VentanaJuego::on_actualizar_dibujo(){
@@ -71,4 +90,8 @@ Gtk::Window& VentanaJuego::getWindow(){
 void VentanaJuego::ejecutar(){
 	start();
 	join();
+}
+
+void VentanaJuego::setCamara(Camara* camara){
+	this->camara = camara;
 }

@@ -39,30 +39,43 @@ void Dibujable::dibujarRectangulo(const Cairo::RefPtr<Cairo::Context>& cr,
 	cr->stroke();
 	cr->restore();
 }
-
+/**
+ * Dibuja el Pixbuf escalándolo para ponerlo en el lugar que se indica.
+ * si invertir == true, la imagen se invierte por el eje vertical que pasa por el borde izquierdo
+ * */
 void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr, 
 				  b2Vec2 origen,
 				  uint factorAmplificacion, 
 				  b2Vec2 posicion,
 				  real ancho,
 				  real alto,
-				  Cairo::RefPtr<Cairo::ImageSurface> imagen)
+				  Glib::RefPtr<Gdk::Pixbuf> imagen,
+				  bool invertir)
 {
-	//Gdk::Cairo::set_source_pixbuf(cr,imagen,imagen->get_width(),imagen->get_height());
-	cr->save();
+	real alto_def = alto*factorAmplificacion;
+	real ancho_def = ancho*factorAmplificacion;
 	b2Vec2 aux = factorAmplificacion*(posicion - origen);
-	cr->set_source(imagen,aux.x,aux.y);
+	real escala_x = ancho_def/imagen->get_width();
+	real escala_y = alto_def/imagen->get_height();
+	cr->save();
 	
-	real cambio_x = ancho/imagen->get_width();
-	real cambio_y = alto/imagen->get_height();
+	cr->translate(aux.x,aux.y);
+	if(invertir){
+		cr->scale(-escala_x,escala_y);
+	}else{
+		cr->scale(escala_x,escala_y);
+	}
+	Gdk::Cairo::set_source_pixbuf(cr, 
+						imagen,
+						0,0);
 	
-	//cairo_scale(cr, cambio_x, cambio_y);
-	cr->rectangle(aux.x/cambio_x, 
-		      aux.y/cambio_y, 
-		      imagen->get_width() *factorAmplificacion*cambio_x, 
-		      imagen->get_height()*factorAmplificacion*cambio_y);
-
+	cr->rectangle(0, 
+		      0, 
+		      ancho_def, 
+		      alto_def);
+	
 	cr->clip();
+	
 	cr->paint();
 	cr->restore();
 }

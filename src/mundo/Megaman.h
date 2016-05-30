@@ -5,15 +5,19 @@
 #include "Definiciones.h"
 #include <vector>
 #include "Disparo.h"
-#include "../graficos/Imagen.h"
+#include "../graficos/Animado.h"
+#include "../graficos/Animacion.h"
 #define MEGAMANNOCORRE 0
 #define MEGAMANEMPEZANDOACORRRER 1
 #define MEGAMANCORRIENDO 2
 
-class Megaman : public Entidad, public Imagen
+class Megaman : public Entidad, public Animado
 {
 private:
-
+	Animacion animacion_corriendo;
+	Animacion animacion_saltando;
+	Animacion animacion_quieto;
+	
 	struct Arma
 	{
 		Disparo *arma;
@@ -70,17 +74,17 @@ public:
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	virtual int getTipo() const {return TIPO_MEGAMAN;};
 	
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion) const{
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 		Imagen::dibujarEn(cr,origen,factorAmplificacion);
 	}
 	/**
 	 * Devuelve el rectángulo en unidades de render
 	 * */
 	virtual const Rectangulo obtenerRepresentacion() const;
-	/**
-	 * También en unidades de Mundo
-	 * */
-	virtual const b2Vec2 obtenerPosicion() const;
+	
+	virtual bool espejado() const;
+	
+	//virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar() const;
 };
 
 #endif

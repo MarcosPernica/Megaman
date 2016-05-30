@@ -35,7 +35,7 @@ ushort Megaman::tipoCuerpo() const
 
 void Megaman::actualizar(real deltaT)
 {
-
+	avanzar(deltaT);
 	if (corriendo)
 	{
 		b2Vec2 velocidad = obtenerVelocidad();
@@ -51,6 +51,7 @@ void Megaman::actualizar(real deltaT)
 
 		modificarVelocidad(velocidad);	
 		saltando = false;
+		cambiar(animacion_quieto);
 		gravitar();
 	}
 
@@ -124,7 +125,11 @@ Megaman::Megaman(uint ID,
 					     false,
 					     true,
 					     velocidad,
-					     orientacion)
+					     orientacion),
+				animacion_corriendo(ANIM_MEGAM_CORRE,0.2),
+				animacion_saltando(ANIM_MEGAM_SALTA,0.2),
+				animacion_quieto(ANIM_MEGAM_QUIETO,0.2),
+				Animado(animacion_quieto)
 {
 	vida = VIDASINICIALES;
 	saltando = false;
@@ -166,18 +171,22 @@ void Megaman::deshabilitarSalto()
 
 void Megaman::saltar()
 {
-	if (puedeSaltar >= 1)
+	if (puedeSaltar >= 1){
 		saltando = true;
+		cambiar(animacion_saltando);
+	}
 }
 
 void Megaman::correr()
 {
 	corriendo = true;
+	cambiar(animacion_corriendo);
 }
 
 void Megaman::dejarCorrer()
 {
 	corriendo = false;
+	cambiar(animacion_quieto);
 }
 
 void Megaman::mirarDerecha()
@@ -321,6 +330,11 @@ const Rectangulo Megaman::obtenerRepresentacion() const{
 						ALTOSPRITEMEGAMAN);
 }
 
-const b2Vec2 Megaman::obtenerPosicion() const{
-	return Cuerpo::obtenerPosicion();
+bool Megaman::espejado() const{
+	return obtenerOrientacion()==izquierda;
 }
+/*
+Glib::RefPtr<Gdk::Pixbuf> Megaman::a_dibujar() const{
+	return Gdk::Pixbuf::create_from_file("imagenes/megaman/megaman quieto.png");
+}
+*/
