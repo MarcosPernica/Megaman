@@ -373,7 +373,7 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 	return aux;
 }
-
+/*
 void Mundo::obtenerSnapshot(FullSnapshot& en){
 	FullSnapshot nueva;
 	std::map<uint, Snapshotable*>::iterator it;
@@ -382,7 +382,7 @@ void Mundo::obtenerSnapshot(FullSnapshot& en){
 	}
 	en=nueva;
 }
-
+*/
 void Mundo::obtenerSnapshot(FullSnapshot& en){
 	FullSnapshot nueva;
 	std::map<uint, Snapshotable*>::iterator it;
@@ -485,4 +485,12 @@ void Mundo::agregarDesdeSnapshot(const Snapshot& sn){
 		//	agregar(new Protegido(sn));
 		//	break;
 	}
+}
+
+Megaman* Mundo::obtenerMegaman(uint posicion){
+	std::map<uint, Megaman*>::iterator it = megamanes.begin();
+	for(uint i = 0; i < posicion; i++){
+		++it;
+	}
+	return it->second;
 }

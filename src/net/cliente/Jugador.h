@@ -12,6 +12,8 @@ class ServerProxy;
 typedef char CodigoEvento;
 #define CODIGO_EVENTO_SALTO 's'
 
+#include "Emisor.h"
+
 /**
  * Jugador detecta eventos del teclado, habla con la interfaz del objeto
  * Megaman enviándole los controles, y a la vez los envía al servidor.
@@ -23,11 +25,12 @@ typedef char CodigoEvento;
 class Jugador{
 	private:
 	Megaman* controlado;
+	const Emisor& emisor;
 	public:
 	/**
 	 * Usado del lado del cliente
 	 * */
-	 Jugador(Megaman* controlado, VentanaJuego& ventana);
+	 Jugador(Megaman* controlado, VentanaJuego& ventana,const Emisor& emi);
 	/**
 	 * Esta se uso del lado de cliente para detectar el teclado
 	 * */

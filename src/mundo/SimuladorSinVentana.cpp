@@ -8,14 +8,14 @@ void SimuladorSinVentana::run()
 		time_t t_inicial=clock();
 		time_t t_final=t_inicial;
 		while(getContinuar() && ((float)(t_final-t_inicial))/CLOCKS_PER_SEC < segundosPorActualizacion){
-			//bloquear
+			contenedor.ejecutarControlesSobreMegaman();
 		}
 		mundo.actualizar(segundosPorActualizacion);
 	}
 	std::cout<<"Chau ventana!!"<<std::endl;
 }
 
-SimuladorSinVentana::SimuladorSinVentana(Mundo& mun, uint milis):mundo(mun){
+SimuladorSinVentana::SimuladorSinVentana(Mundo& mun, uint milis,ContenedorProxies& con):mundo(mun), contenedor(con){
 	segundosPorActualizacion = ((float)milis)/1000;
 }
 

@@ -137,7 +137,12 @@ Megaman::Megaman(uint ID,
 					     false,
 					     true,
 					     velocidad,
-					     orientacion)
+					     orientacion),
+				animacion_corriendo(ANIM_MEGAM_CORRE,0.1),
+				animacion_saltando(ANIM_MEGAM_SALTA,1),
+				animacion_quieto(ANIM_MEGAM_QUIETO,1),
+				Animado(animacion_quieto)
+				
 {
 	vidas = VIDASINICIALES;
 
@@ -262,6 +267,7 @@ void Megaman::pararMovimientoEscalera()
 #define PROP_AGARREX "agarreX"
 //TODO: SERIALIZAR ARMAS
 void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
+	/*
 	//---------------------------------------codificación del estado general
 	int estado_gral = 0;
 	
@@ -291,10 +297,11 @@ void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	sn.agregarPropiedad(PROP_PUEDE_SUBIR,puedeSubir);
 	sn.agregarPropiedad(PROP_ESTADO_GRAL,estado_gral);
 	sn.agregarPropiedad(PROP_AGARREX,(int)(agarreX*1000));
-	
+	*/
 	Entidad::agregarPropiedadesASnapshot(sn);
 }
 void Megaman::setStateFromSnapshot(const Snapshot& sn){
+	/*
 	vida = (uint) sn.obtenerPropiedad(PROP_VIDA);
 	puedeSaltar = sn.obtenerPropiedad(PROP_PUEDE_SALTAR);
 	puedeSubir = sn.obtenerPropiedad(PROP_PUEDE_SUBIR);
@@ -322,7 +329,7 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	
 	saltando = (estado_gral & 1);
 	//-----------------------------------------------------------------
-	
+	*/
 	Entidad::setStateFromSnapshot(sn);
 }
 
