@@ -106,4 +106,38 @@ public:
 	static HabilitadorBomba* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 };
 
+
+class HabilitadorIman : public PowerUp
+{
+public:
+	HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion);
+	void aumentar(Megaman &megaman);
+	virtual int getTipo() const {return TIPO_PWRUP_HABILITA_BOMBA;};
+};
+
+
+class HabilitadorChispa : public PowerUp
+{
+public:
+	HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posicion);
+	void aumentar(Megaman &megaman);
+	virtual int getTipo() const {return TIPO_PWRUP_HABILITA_BOMBA;};
+};
+
+class HabilitadorAnillo : public PowerUp
+{
+public:
+	HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posicion);
+	void aumentar(Megaman &megaman);
+	virtual int getTipo() const {return TIPO_PWRUP_HABILITA_BOMBA;};
+};
+
+class HabilitadorFuego: public PowerUp
+{
+public:
+	HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion);
+	void aumentar(Megaman &megaman);
+	virtual int getTipo() const {return TIPO_PWRUP_HABILITA_BOMBA;};
+};
+
 #endif

@@ -29,8 +29,14 @@ Entidad::Entidad(uint ID,
 						rotable,
 						gravitacional,
 						velocidad,
-						orientacion)
+						orientacion),
+			 muerta(muerta)
 {
+}
+
+bool Entidad::estaMuerta()
+{
+	return muerta;
 }
 
 uint Entidad::obtenerEnergiaMaxima()
@@ -51,15 +57,21 @@ void Entidad::recuperarEnergia(uint cantidadEnergia)
 		energia += cantidadEnergia;
 }
 
+void Entidad::alMorir()
+{
+}
+
 void Entidad::atacado(uint danio)
 {
+	std::cout << danio << std::endl;
 	PowerUp *powerUp;
 
 	if (danio < energia)
 		energia -= danio;
 	else
 	{
-		ruletaPowerUp(obtenerMundo().generarID(),obtenerMundo(),obtenerPosicion());
+		alMorir();
+		muerta = true;
 		obtenerMundo().eliminar(this);
 	}
 		

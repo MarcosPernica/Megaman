@@ -27,7 +27,7 @@ struct DatosColisionCuerpo
 	DatosColisionCuerpo(Cuerpo *cuerpo, uint ID, Rectangulo caja) : cuerpo(cuerpo), ID(ID), caja(caja){};
 };
 
-class Cuerpo: public virtual Dibujable, public Snapshotable {
+class Cuerpo: public Dibujable, public Snapshotable {
 private:
 	b2Body *cuerpo;
 	Orientaciones orientacion;
@@ -64,11 +64,12 @@ public:
 	void modificarOrientacion(Orientaciones orientacion);
 	void modificarPosicion(const b2Vec2 &posicion);
 	void aplicarImpulso(const b2Vec2 &impulso);
+	void modificarRestitucion(real coeficiente);
 	void gravitar();
 	void ingravitar();
 
 	
-	void agregarCuerpoInmaterial(real ancho, real alto, b2Vec2 posicion, uint identificador, ushort categoria, ushort colisionaCon);
+	void agregarCuerpoInmaterial(real ancho, real alto, b2Vec2 posicion, uint identificador, ushort categoria, ushort colisionaCon, bool fantasma = true);
 
 	virtual ushort tipoCuerpo() const = 0;
 
@@ -76,7 +77,7 @@ public:
 	static const b2Vec2 &orientacionAVector(Orientaciones orientacion);
 	
 	/*Es responsabilidad de cada cuerpo saber que forma tiene.*/
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion);
 	
 	//Snapshotable
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);

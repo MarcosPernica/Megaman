@@ -14,6 +14,6 @@ Glib::signal_timeout().connect(
 
 bool Simulador::on_actualizar(){
 	mundo.actualizar((real)milisPorActualizacion/1000);
-	camara.actualizar((real)milisPorActualizacion/1000);
+	camara.actualizar((real)milisPorActualizacion/1000);	
 	return true;
 }

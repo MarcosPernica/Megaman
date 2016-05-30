@@ -1,5 +1,5 @@
-#ifndef BUMBY
-#define BUMBY
+#ifndef BOMBMAN
+#define BOMBMAN
 
 #include "Enemigo.h"
 #include <Box2D/Box2D.h>
@@ -7,20 +7,21 @@
 
 class Megaman;
 
-class Bumby : public Enemigo
+class Bombman : public Enemigo
 {
 private:
 	Megaman *megaman;
-	real tiempo, reflejos;
-	bool quieto;
-	Plasma arma;
+	char estadoBombman;
+	real reflejos;
+	Bomba arma;
 public:
-	Bumby(uint ID,
+	Bombman(uint ID,
 		Mundo &mundo,
 		const b2Vec2 &posicion,
 		const b2Vec2 &velocidad = b2Vec2_zero);
-	~Bumby(){};
+	~Bombman(){};
 
+	void alMorir();
 	void actualizarMaquinaEstados(real deltaT);
 	void actualizar(real deltaT);
 	ushort tipoCuerpo() const {return ENEMIGOS;};
@@ -28,8 +29,8 @@ public:
 
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	virtual int getTipo() const {return TIPO_BUMBY;};
-	static Bumby* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
+	virtual int getTipo() const {return TIPO_MET;};
+	static Bombman* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 };
 
 #endif

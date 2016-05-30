@@ -3,12 +3,50 @@
 #include "Entidad.h"
 #include "Megaman.h"
 #include "Disparo.h"
+#include "Escalera.h"
 #include "PowerUp.h"
 #include "Definiciones.h"
 #include "CajaAccion.h"
 #include "Mundo.h"
 #include <iostream>
 #include "../graficos/Dibujable.h"
+#include "Saltador.h" 
+
+CallbackCreadorPowerUp::CallbackCreadorPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion) : ID(ID), mundo(mundo), posicion(posicion){};
+
+void CallbackCreadorPowerUp::ejecutar()
+{
+	/*Equiprobabilidad de eventos.*/
+
+	srand(time(NULL));
+	
+	real aleatorio = (real)rand()/RAND_MAX, piso = 0;
+
+	if(aleatorio >= piso && aleatorio < (piso += PROBANUEVAVIDA))
+		mundo.agregar(new NuevaVida(ID,mundo,posicion));
+	else if(aleatorio >= piso && aleatorio < (piso += PROBAENERGIACHICA))
+		mundo.agregar(new CapsulaEnergiaChica(ID,mundo,posicion));
+	else if(aleatorio >= piso && aleatorio < (piso += PROBAENERGIAGRANDE))
+		mundo.agregar(new CapsulaEnergiaGrande(ID,mundo,posicion));
+	else if(aleatorio >= piso && aleatorio < (piso += PROBAPLASMACHICA))
+		mundo.agregar(new CapsulaPlasmaChica(ID,mundo,posicion));
+	else if(aleatorio >= piso && aleatorio < (piso += PROBAPLASMAGRANDE))
+		mundo.agregar(new CapsulaPlasmaChica(ID,mundo,posicion));
+}
+
+CallbackHabilitadorArma::CallbackHabilitadorArma(uint ID, Mundo &mundo, const b2Vec2 &posicion, uint arma) : ID(ID), mundo(mundo), posicion(posicion), arma(arma){};
+
+void CallbackHabilitadorArma::ejecutar()
+{
+	switch(arma)
+	{
+		case BOMBA:
+			mundo.agregar(new HabilitadorBomba(ID,mundo,posicion));
+		break;
+	}
+}
+
+
 
 ElementosEnZona::ElementosEnZona(std::list<Dibujable*> &elementos) : elementos(elementos)
 {
@@ -56,8 +94,9 @@ void DetectarEscalera::BeginContact(b2Contact * contacto)
 		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
 			Megaman *megaman = (Megaman*)datosB->cuerpo;
-			
-			megaman->habilitarAgarre(datosA->cuerpo->obtenerPosicion().x);			
+
+			if(datosA->ID == CUERPOPRINCIPAL)			
+				megaman->habilitarAgarre(datosA->cuerpo->obtenerPosicion().x);
 		}
 	}
 
@@ -66,8 +105,9 @@ void DetectarEscalera::BeginContact(b2Contact * contacto)
 		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
 			Megaman *megaman = (Megaman*)datosA->cuerpo;
-			
-			megaman->habilitarAgarre(datosB->cuerpo->obtenerPosicion().x);			
+
+			if(datosB->ID == CUERPOPRINCIPAL)			
+				megaman->habilitarAgarre(datosB->cuerpo->obtenerPosicion().x);		
 		}
 	}
 }
@@ -82,8 +122,9 @@ void DetectarEscalera::EndContact(b2Contact * contacto)
 		if (datosB->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
 			Megaman *megaman = (Megaman*)datosB->cuerpo;
-			
-			megaman->deshabilitarAgarre();			
+
+			if(datosA->ID == CUERPOPRINCIPAL)			
+				megaman->deshabilitarAgarre();			
 		}
 	}
 
@@ -92,8 +133,9 @@ void DetectarEscalera::EndContact(b2Contact * contacto)
 		if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
 		{
 			Megaman *megaman = (Megaman*)datosA->cuerpo;
-			
-			megaman->deshabilitarAgarre();			
+
+			if(datosB->ID == CUERPOPRINCIPAL)			
+				megaman->deshabilitarAgarre();				
 		}
 	}
 }
@@ -107,15 +149,60 @@ void DetectarSuelo::BeginContact(b2Contact * contacto)
 
 	if (datosA->ID == JUMPBOX)
 	{
-		Megaman *megaman = (Megaman*)datosA->cuerpo;
-		megaman->habilitarSalto();			
+		if(datosA->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosA->cuerpo;
+			megaman->habilitarSalto();
+		}
+		else
+		{
+			Enemigo *enemigo = (Enemigo*)datosA->cuerpo;
+			enemigo->habilitarSalto();
+		}
+			
 	}
 
 
 	if (datosB->ID == JUMPBOX)
 	{
-		Megaman *megaman = (Megaman*)datosB->cuerpo;
-		megaman->habilitarSalto();			
+		if(datosB->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosB->cuerpo;
+			megaman->habilitarSalto();
+		}
+		else
+		{
+			Enemigo *enemigo = (Enemigo*)datosB->cuerpo;
+			enemigo->habilitarSalto();
+		}
+				
+	}
+
+	if (datosA->ID == LEFTBOX)
+	{
+		
+		Enemigo *enemigo = (Enemigo*)datosA->cuerpo;
+		enemigo->tocoIzquierda();
+	}
+
+
+	if (datosB->ID == LEFTBOX)
+	{
+		Enemigo *enemigo = (Enemigo*)datosB->cuerpo;
+		enemigo->tocoIzquierda();
+	}
+
+	if (datosA->ID == RIGHTBOX)
+	{
+		Enemigo *enemigo = (Enemigo*)datosA->cuerpo;
+		enemigo->tocoDerecha();
+	}
+
+
+	if (datosB->ID == RIGHTBOX)
+	{
+		Enemigo *enemigo = (Enemigo*)datosB->cuerpo;
+		enemigo->tocoDerecha();
 	}
 }
 
@@ -126,16 +213,58 @@ void DetectarSuelo::EndContact(b2Contact * contacto)
 
 	if (datosA->ID == JUMPBOX)
 	{
-		Megaman *megaman = (Megaman*)datosA->cuerpo;
-		megaman->deshabilitarSalto();			
+		if(datosA->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosA->cuerpo;
+			megaman->deshabilitarSalto();
+		}	
+		else
+		{
+			Enemigo *enemigo = (Enemigo*)datosA->cuerpo;
+			enemigo->deshabilitarSalto();
+		}	
 	}
 
 
 	if (datosB->ID == JUMPBOX)
 	{
-		Megaman *megaman = (Megaman*)datosB->cuerpo;
-		megaman->deshabilitarSalto();			
+		if(datosB->cuerpo->tipoCuerpo() == PERSONAJES)
+		{
+			Megaman *megaman = (Megaman*)datosB->cuerpo;
+			megaman->deshabilitarSalto();
+		}	
+		else
+		{
+			Enemigo *enemigo = (Enemigo*)datosB->cuerpo;
+			enemigo->deshabilitarSalto();
+		}	
 	}
+
+	if (datosA->ID == LEFTBOX)
+	{
+		Enemigo *enemigo = (Enemigo*)datosA->cuerpo;
+		enemigo->dejoTocarIzquierda();
+	}
+
+
+	if (datosB->ID == LEFTBOX)
+	{
+		Enemigo *enemigo = (Enemigo*)datosB->cuerpo;
+		enemigo->dejoTocarIzquierda();
+	}
+
+	if (datosA->ID == RIGHTBOX)
+	{
+		Enemigo *enemigo = (Enemigo*)datosA->cuerpo;
+		enemigo->dejoTocarDerecha();
+	}
+
+
+	if (datosB->ID == RIGHTBOX)
+	{
+		Enemigo *enemigo = (Enemigo*)datosB->cuerpo;
+		enemigo->dejoTocarDerecha();
+	}	
 }
 
 void DetectarBalistica::BeginContact(b2Contact * contacto)
@@ -146,15 +275,9 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 	if (datosA->cuerpo->tipoCuerpo() == DISPAROS)
 	{
 		Disparo *disparo = (Disparo*)datosA->cuerpo;
-		if (disparo->megamanLoDisparo())
-		{
-			if (datosB->cuerpo->tipoCuerpo() == ENEMIGOS)
-				disparo->danar((Entidad*)datosB->cuerpo);
-		}
-		else if(datosB->cuerpo->tipoCuerpo() == PERSONAJES)
-		{
+		
+		if (datosB->cuerpo->tipoCuerpo() != CONSTRUCCIONES)
 			disparo->danar((Entidad*)datosB->cuerpo);
-		}
 
 		if(disparo->perecedero())
 			disparo->obtenerMundo().eliminar(disparo);
@@ -163,15 +286,9 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 	if (datosB->cuerpo->tipoCuerpo() == DISPAROS)
 	{
 		Disparo *disparo = (Disparo*)datosB->cuerpo;
-		if (disparo->megamanLoDisparo())
-		{
-			if (datosA->cuerpo->tipoCuerpo() == ENEMIGOS)
-				disparo->danar((Entidad*)datosA->cuerpo);
-		}
-		else if (datosA->cuerpo->tipoCuerpo() == PERSONAJES)
-		{
+
+		if (datosA->cuerpo->tipoCuerpo() != CONSTRUCCIONES)
 			disparo->danar((Entidad*)datosA->cuerpo);
-		}
 
 		if(disparo->perecedero())
 			disparo->obtenerMundo().eliminar(disparo);

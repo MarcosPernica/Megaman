@@ -1,13 +1,20 @@
 #ifndef MET
 #define MET
 
-#include "Protegido.h"
+#include "Enemigo.h"
 #include <Box2D/Box2D.h>
+#include "Disparo.h"
 
-class Met : public Protegido
+class Megaman;
+
+class Met : public Enemigo
 {
 private:
-
+	Megaman *megaman;
+	real tiempo;
+	char estadoMet;
+	bool accionEjecutada;
+	Plasma arma;
 public:
 	Met(uint ID,
 		Mundo &mundo,
@@ -15,8 +22,11 @@ public:
 		const b2Vec2 &velocidad = b2Vec2_zero);
 	~Met(){};
 
-	void actualizar(real deltaT){};
+	void actualizarMaquinaEstados(real deltaT);
+	void actualizar(real deltaT);
 	ushort tipoCuerpo() const {return ENEMIGOS;};
+
+
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	virtual int getTipo() const {return TIPO_MET;};

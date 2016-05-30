@@ -4,27 +4,87 @@
 #include "Definiciones.h"
 #include <Box2D/Box2D.h>
 #include "Callbacks.h"
+#include "Entidad.h"
+#include "Saltador.h"
 
-class Mundo;
-class PowerUp;
+class Disparo;
 
-class CallbackCreadorPowerUp : public Callback
+class Enemigo : public Entidad, public Saltador
 {
 private:
-	uint ID;
-	Mundo &mundo;
-	const b2Vec2 &posicion;
-public:
-	CallbackCreadorPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion);
-	void ejecutar();
-};
+	real aleatorio;
+	/*Algebra de colisiones*/
+	int contadorPiso;
 
-class Enemigo
-{
-private:
-	uint valorPrevio;
+	/*Variable de estado.*/
+	char estadoSalto, estadoDisparo;
+	bool corriendo;
+	char tocandoIzquierda, tocandoDerecha;
+	uint escudo;
+	bool cubierto;
+
+	Disparo *arma;
+	b2Vec2 direccionDisparo;
+
+	bool powerUpMorir;
+	real velocidadSalto;
+	real velocidadCorrer;
 public:
-	Enemigo();
+	Enemigo(uint ID,
+			  Mundo &mundo,
+			  real ancho,
+			  real alto,
+			  Disparo *arma,
+			  uint energiaMaxima,
+			  uint escudo,
+			  real masa,
+			  real velocidadSalto,
+			  real velocidadCorrer,
+			  ushort categoria,
+			  ushort colisionaCon,
+			  const b2Vec2 &posicion,
+			  bool rotable = false,
+			  bool gravitacional = true,
+			  const b2Vec2 &velocidad = b2Vec2_zero,
+			  Orientaciones orientacion = izquierda,
+			  bool powerUpMorir = true);
+	
+	virtual void alMorir();
+	void habilitarSalto();
+	void deshabilitarSalto();
+
+	void tocoIzquierda();
+	void dejoTocarIzquierda();
+	void tocoDerecha();
+	void dejoTocarDerecha();
+
+	bool puedeIrIzquierda();
+	bool puedeIrDerecha();
+	bool puedeCorrer();
+
+	bool puedeSaltar();
+	void saltar();
+	void correr();
+	void dejarCorrer();
+	virtual void disparar(b2Vec2 direccion = b2Vec2_zero);
+	void mirarIzquierda();
+	void mirarDerecha();	
+	void virar();
+
+	void atacado(uint danio);
+
+	void cubrirse();
+	void exponerse();
+	bool estaCubierto();
+
+	real numeroAleatorio(real desde, real hasta);
+	void actualizar(real deltaT);	
+
+	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	virtual int getTipo(){return TIPO_PROTEGIDO;};
+	
+private:
 	void ruletaPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion);
 };
 

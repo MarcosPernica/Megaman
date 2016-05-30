@@ -61,7 +61,7 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 		}
 		case GDK_KEY_Right:
 		{
-			emisor.enviar(MENSAJE_KEY_RIGHT);
+			
 			controlado->mirarDerecha();
 			controlado->correr();
 			break;
@@ -80,9 +80,11 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 			break;
 		}
 		case GDK_KEY_z:
+		{
 			emisor.enviar(MENSAJE_KEY_Z);
 			controlado->saltar();
-			break;			
+			break;		
+		}	
 	}
 	return true;
 }
@@ -93,13 +95,13 @@ bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
 		case GDK_KEY_Up:
 		{
 			emisor.enviar(MENSAJE_KEY_UP_LIBERADA);
-			controlado->dejarSubirEscalera();
+			controlado->pararMovimientoEscalera();
 			break;
 		}
 		case GDK_KEY_Down:
 		{
 			emisor.enviar(MENSAJE_KEY_DN_LIBERADA);
-			controlado->dejarBajarEscalera();
+			controlado->pararMovimientoEscalera();
 			break;
 		}
 		case GDK_KEY_Right:

@@ -1,11 +1,11 @@
 #ifndef PROXYJUGADOR
 #define PROXYJUGADOR
 
-//#include "../graficos/VentanaJuego.h"
+
 class VentanaJuego;
 class ServerProxy;
 #include "../../mundo/Megaman.h"
-#include "Emisor.h"
+
 class ServerProxy;
 #include <gdk/gdk.h>
 
@@ -18,15 +18,16 @@ typedef char CodigoEvento;
  * Se ocupa sólo de la emisión de mensajes, no su recepción. 
  * 
  * */
+
+
 class Jugador{
 	private:
 	Megaman* controlado;
-	const Emisor& emisor;
 	public:
 	/**
 	 * Usado del lado del cliente
 	 * */
-	 Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emisor);
+	 Jugador(Megaman* controlado, VentanaJuego& ventana);
 	/**
 	 * Esta se uso del lado de cliente para detectar el teclado
 	 * */

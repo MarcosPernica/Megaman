@@ -4,6 +4,10 @@
 #include "../net/snapshots/Snapshotable.h"
 #include "Actualizable.h"
 #include "Met.h"
+#include "Bumby.h"
+#include "Sniper.h"
+#include "JumpingSniper.h"
+#include "Bombman.h"
 
 #include <Box2D/Box2D.h>
 #include "Definiciones.h"
@@ -88,6 +92,54 @@ private:
 	uint ID;
 public:
 	CajaSpawnMet(uint ID, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnBumby : public CajaSpawn
+{
+private:
+	real cuentaRegresiva;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnBumby(uint ID, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnSniper : public CajaSpawn
+{
+private:
+	real cuentaRegresiva;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnSniper(uint ID, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnJumpingSniper : public CajaSpawn
+{
+private:
+	real cuentaRegresiva;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnJumpingSniper(uint ID, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnBombman : public CajaSpawn
+{
+private:
+	bool creado;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnBombman(uint ID, Mundo &mundo, b2Vec2 posicion);
 	void interactuar(Megaman *megaman){};
 	void actualizar(real deltaT);
 };

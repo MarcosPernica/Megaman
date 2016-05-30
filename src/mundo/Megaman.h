@@ -3,36 +3,41 @@
 
 #include "Entidad.h"
 #include "Definiciones.h"
-#include <vector>
-#include "Disparo.h"
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
-#define MEGAMANNOCORRE 0
-#define MEGAMANEMPEZANDOACORRRER 1
-#define MEGAMANCORRIENDO 2
+#include <vector>
+#include "Disparo.h"
+#include "Saltador.h"
 
-class Megaman : public Entidad, public Animado
+
+class Megaman : public Entidad, public Saltador, public Animado
 {
 private:
 	Animacion animacion_corriendo;
 	Animacion animacion_saltando;
 	Animacion animacion_quieto;
-	
+
 	struct Arma
 	{
 		Disparo *arma;
 		char plasma;
 	};
-
-	uint vida;
-	int puedeSaltar;
-	bool saltando, disparando, lanzando, agarrado;
-	bool subiendoEscalera, bajandoEscalera;
-	int puedeSubir;
-	bool corriendo;
 	std::vector<Arma> armas;
-	char armaSeleccionada;
+	unsigned char armaSeleccionada;
+
+	uint vidas;
+
+	/*Algebra de colisiones*/
+	int puedeSaltar;
+	int puedeSubir;
+
+	/*Variable de estado.*/
+	char estadoSalto, estadoDisparo, estadoEscalado;
+	bool corriendo;
+
+	/*Posicion X de la que megaman puede agarrarse.*/
 	real agarreX;
+	real topeY;	
 public:
 	Megaman(uint ID,
 			Mundo &mundo,
@@ -47,9 +52,8 @@ public:
 	void habilitarAgarre(real agarreX);
 	void deshabilitarAgarre();
 	void subirEscalera();
-	void dejarSubirEscalera();
 	void bajarEscalera();
-	void dejarBajarEscalera();
+	void pararMovimientoEscalera();
 	
 	void saltar();
 	void correr();
@@ -58,7 +62,7 @@ public:
 	void mirarIzquierda();
 	void mirarDerecha();
 
-	void seleccionarArma(char slot);
+	void seleccionarArma(unsigned char slot);
 
 	void aumentarVida();
 	void recuperarPlasma(int cantidadPlasma);
@@ -72,9 +76,9 @@ public:
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	virtual int getTipo() const {return TIPO_MEGAMAN;};
-	
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	virtual int  getTipo(){return TIPO_MEGAMAN;};
+
+		virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 		Imagen::dibujarEn(cr,origen,factorAmplificacion);
 	}
 	/**

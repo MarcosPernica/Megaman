@@ -6,56 +6,130 @@
 #include "Cuerpo.h"
 #include "Escalera.h"
 #include "../net/snapshots/FullSnapshot.h"
-#include "Bumby.h"
-#include "Met.h"
+#include "Enemigo.h"
+#include "PowerUp.h"
+#include "Cadena.h"
 #include "../common/exceptions.h"
+
+#include <tinyxml.h>
+
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
 Mundo::Mundo() : mundo(gravedad)
 {
+	Cadena nombre("nivel.xml");
 	mundo.SetContactListener(&listenerColisiones);
-	crearNivel();	
+
+	cargarNivel(nombre);	
 }
 
-void Mundo::crearNivel(){
-	agregarConstruccion(18,1,b2Vec2(9,6.5));
-	agregarConstruccion(1,6,b2Vec2(0.5,3));
-	agregarConstruccion(22,1,b2Vec2(11,0.5));
-	agregarConstruccion(1,11,b2Vec2(22.5,5.5));
-	agregarConstruccion(8,1,b2Vec2(19,11.5));
-	agregarConstruccion(1,3,b2Vec2(14.5,10.5));
-	agregarConstruccion(2,1,b2Vec2(13,9.5));
-	agregarConstruccion(1,2,b2Vec2(12.5,11));
-	agregarConstruccion(3,1,b2Vec2(10.5,11.5));
-	agregarConstruccion(1,2,b2Vec2(9.5,10));
-	agregarConstruccion(1,5,b2Vec2(7.5,9.5));
+void Mundo::cargarNivel(Cadena nombre){
 
-	agregarConstruccion(6,1,b2Vec2(8,5.5));
-	agregarConstruccion(5,1,b2Vec2(8.5,4.5));
-	agregarConstruccion(4,1,b2Vec2(9,3.5));
+	TiXmlDocument doc( "nivel.xml" );
+	if(!doc.LoadFile())
+		exit(0); //Poner excepcion
 
-	agregarConstruccion(6,1,b2Vec2(18,3.5));
 
-	agregarEscalera(4,b2Vec2(14.5,4));
-	agregarEscalera(3,b2Vec2(15.5,9.5));
+	struct DatosXML
+	{
+		real ancho, alto, x, y;
+	};
 
-	agregarMegaman(b2Vec2(3,2));
-	agregarMegaman(b2Vec2(4,2));
-	agregarMegaman(b2Vec2(2,2));
-	agregarMegaman(b2Vec2(1,2));
+	TiXmlElement *pRoot = doc.RootElement();
+    	TiXmlElement *elemento = pRoot->FirstChildElement();
+   	while(elemento)
+    	{
+		DatosXML dat;
 
-	agregarZonaTransporte(1,1,b2Vec2(8.5,12.5), b2Vec2(3,2));
-	agregarZonaMortal(2,1,b2Vec2(11,11.5));
+		TiXmlAttribute *attr = elemento->FirstAttribute();
+		while(attr)
+		{
+			if(Cadena(attr->Name()) == "ancho")
+				dat.ancho = attr->DoubleValue();
+			else if(Cadena(attr->Name()) == "alto")
+				dat.alto = attr->DoubleValue();
+			else if(Cadena(attr->Name()) == "x")
+				dat.x = attr->DoubleValue();
+			else if(Cadena(attr->Name()) == "y")
+				dat.y = attr->DoubleValue();
+			attr = attr->Next();
+		}
 
-	agregar(new HabilitadorBomba(generarID(),*this,b2Vec2(17.5,5.5)));
+       		if(elemento->ValueStr() == "Construccion")
+			agregarConstruccion(dat.ancho,dat.alto,b2Vec2(dat.x,dat.y));
+		else if(elemento->ValueStr() == "Escalera")
+			agregarEscalera(dat.alto,b2Vec2(dat.x,dat.y));
+    		else if(elemento->ValueStr() == "Megaman")
+			agregarMegaman(b2Vec2(dat.x,dat.y));
+		else if(elemento->ValueStr() == "Met")
+			agregarZonaSpawnMet(b2Vec2(dat.x,dat.y));
+		else if(elemento->ValueStr() == "Bumby")
+			agregarZonaSpawnBumby(b2Vec2(dat.x,dat.y));
+		else if(elemento->ValueStr() == "Sniper")
+			agregarZonaSpawnSniper(b2Vec2(dat.x,dat.y));
+		else if(elemento->ValueStr() == "JumpingSniper")
+			agregarZonaSpawnJumpingSniper(b2Vec2(dat.x,dat.y));
+
+
+       		elemento = elemento->NextSiblingElement();
+    	}
+
+		
+
 	
-	controladores.push_back(new CajaSpawnMet(generarID(),*this, b2Vec2(16,5)));
-	
+
+	/*agregarMegaman(b2Vec2(7,3));
+	agregarZonaSpawnBombman(b2Vec2(6,3));
+	agregarConstruccion(12,1,b2Vec2(6,0.5));
+	agregarConstruccion(1,7,b2Vec2(11.5,4.5));
+	agregarConstruccion(11,1,b2Vec2(5.5,7.5));
+	agregarConstruccion(1,6,b2Vec2(0.5,4));*/
 }
 
 b2World & Mundo::obtenerMundo()
 {
 	return mundo;
+}
+
+Megaman *Mundo::obtenerMegamanCercano(const b2Vec2 posicion)
+{
+	Megaman *cercano = megamanes.begin()->second;
+	real normaCuadrada = (cercano->obtenerPosicion() - posicion).LengthSquared(), normaAux;
+	std::map<uint, Megaman*>::iterator i = ++megamanes.begin();
+
+	while(i != megamanes.end())
+	{
+		normaAux = (i->second->obtenerPosicion() - posicion).LengthSquared();
+		if( normaAux < normaCuadrada)
+		{
+			normaCuadrada = normaAux;
+			cercano = i->second;
+		}
+		i++;
+	}
+
+	return cercano;
+}
+
+Enemigo *Mundo::obtenerEnemigoCercano(const b2Vec2 posicion)
+{
+	Enemigo *cercano = enemigos.begin()->second;
+	real normaCuadrada = (cercano->obtenerPosicion() - posicion).LengthSquared(), normaAux; 
+	std::map<uint, Enemigo*>::iterator i = ++enemigos.begin();
+
+	while(i != enemigos.end())
+	{
+		normaAux = (i->second->obtenerPosicion() - posicion).LengthSquared();
+		if(i->second->tipoCuerpo() == ENEMIGOS)
+			if( normaAux < normaCuadrada)
+			{
+				normaCuadrada = normaAux;
+				cercano = i->second;
+			}
+		i++;
+	}
+
+	return cercano;
 }
 
 void Mundo::danarZona(b2AABB zona, uint dano)
@@ -85,11 +159,12 @@ void Mundo::agregar(PowerUp * powerUp)
 	actualizables[powerUp->obtenerID()] = powerUp;
 }
 
-void Mundo::agregar(Entidad * entidad)
+void Mundo::agregar(Enemigo* enemigo)
 {
-	snapshotables[entidad->obtenerID()] = entidad;
-	dibujables[entidad->obtenerID()] = entidad;
-	actualizables[entidad->obtenerID()] = entidad;
+	enemigos[enemigo->obtenerID()] = enemigo;
+	snapshotables[enemigo->obtenerID()] = enemigo;
+	dibujables[enemigo->obtenerID()] = enemigo;
+	actualizables[enemigo->obtenerID()] = enemigo;
 }
 
 void Mundo::agregarConstruccion(real ancho, real alto, b2Vec2 posicion)
@@ -109,7 +184,6 @@ Megaman *Mundo::agregarMegaman(b2Vec2 posicion)
 	megamanes[megaman->obtenerID()] = megaman;
 	dibujables[megaman->obtenerID()] = megaman;
 	actualizables[megaman->obtenerID()] = megaman;
-	snapshotables[megaman->obtenerID()] = megaman;
 
 	return megaman;
 }
@@ -122,6 +196,51 @@ void Mundo::agregarZonaMortal(real ancho, real alto, b2Vec2 posicion)
 void Mundo::agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino)
 {
 	controladores.push_back(new ZonaTransporte(*this, ancho, alto, posicion, posicionDestino));
+}
+
+void Mundo::agregarZonaSpawnMet(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnMet(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnBumby(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnBumby(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnSniper(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnSniper(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnJumpingSniper(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnJumpingSniper(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnBombman(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnMagnetman(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnSparkman(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnRingman(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+}
+
+void Mundo::agregarZonaSpawnFireman(b2Vec2 posicion)
+{
+	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
 }
 
 void Mundo::destruirCuerpos()
@@ -167,6 +286,16 @@ void Mundo::destruirCuerpos()
 			}
 			dibujables.erase(*i);	
 		}
+
+		if(enemigos.find(*i) != enemigos.end())
+		{
+			if(!borrado)
+			{
+				delete enemigos[*i];
+				borrado = true;
+			}
+			enemigos.erase(*i);	
+		}
 	i++;
 	}
 	destrucciones.clear();
@@ -204,7 +333,6 @@ void Mundo::actualizar(real segundosDesdeUltima){
 	
 	mundo.Step(segundosDesdeUltima, velocityIterations, positionIterations);
 	ejecutarTareasDiferidas();
-	destruirCuerpos();
 
 	std::map<uint, Actualizable*>::const_iterator i = actualizables.begin();
 
@@ -215,6 +343,8 @@ void Mundo::actualizar(real segundosDesdeUltima){
 
 	while(a != controladores.end())
 		(*a++)->actualizar(segundosDesdeUltima);
+
+	destruirCuerpos();
 }
 
 std::list<Megaman *> Mundo::obtenerMegamanes()
@@ -244,20 +374,13 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 	return aux;
 }
 
-Megaman* Mundo::getMegaman(){
-	return megamanes.begin()->second;
-}
-
-Megaman* Mundo::obtenerMegaman(uint posicion)
-{
-	if(posicion>3)
-		throw CustomException("Pasaste una posicion mayor a 3, sólo hay 4 Megaman");
-		
-	std::map<uint, Megaman*>::iterator it;
-	it = megamanes.begin();
-	for(int i = 0; i<posicion; i++) ++it;
-	
-	return it->second;
+void Mundo::obtenerSnapshot(FullSnapshot& en){
+	FullSnapshot nueva;
+	std::map<uint, Snapshotable*>::iterator it;
+	for(it=snapshotables.begin(); it!=snapshotables.end(); ++it){
+		nueva.add((it->second)->getSnapshot());
+	}
+	en=nueva;
 }
 
 void Mundo::obtenerSnapshot(FullSnapshot& en){

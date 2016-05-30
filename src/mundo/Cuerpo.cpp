@@ -120,6 +120,11 @@ void Cuerpo::modificarOrientacion(Orientaciones orientacion)
 	this->orientacion = orientacion;
 }
 
+void Cuerpo::modificarRestitucion(real coeficiente)
+{
+	cuerpo->GetFixtureList()->SetRestitution(coeficiente);
+}
+
 void Cuerpo::aplicarImpulso(const b2Vec2 & impulso)
 {
 	cuerpo->ApplyLinearImpulse(impulso,cuerpo->GetWorldCenter(),false);
@@ -140,17 +145,19 @@ void Cuerpo::agregarCuerpoInmaterial(real ancho,
 			     b2Vec2 posicion, 
 			     uint identificador,
 			     ushort categoria,
-			     ushort colisionaCon)
+			     ushort colisionaCon,
+			     bool fantasma)
 {
 		b2PolygonShape cajita;
 		cajita.SetAsBox(ancho/2, alto/2, posicion, 0);
 		b2FixtureDef unionCajita;
-		unionCajita.isSensor = true;
+		unionCajita.isSensor = fantasma;
 
 		unionCajita.filter.categoryBits = categoria;
 		unionCajita.filter.maskBits = colisionaCon;
 
-		datos.push_back(new DatosColisionCuerpo(this,identificador,Rectangulo(posicion.x,posicion.y,ancho,alto)));
+		/*El rectangulo usa de posicion el topLeft (no el centro de masa).*/
+		datos.push_back(new DatosColisionCuerpo(this,identificador,Rectangulo(posicion.x-ancho/2,posicion.y-alto/2,ancho,alto)));
 
 		unionCajita.userData = datos.at(datos.size()-1);
 		unionCajita.shape = &cajita;
@@ -166,7 +173,7 @@ const b2Vec2 & Cuerpo::orientacionAVector(Orientaciones orientacion)
 		return versorIzquierda;
 }
 
-void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion)
+void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion) const
 {
 	Rectangulo principal = obtenerCajaMagnificada(1);
 
@@ -204,8 +211,6 @@ void Cuerpo::setStateFromSnapshot(const Snapshot& sn){
 	real vy = (real)sn.obtenerPropiedad(PROP_VEL_Y)/1000;
 	
 	Orientaciones o = (Orientaciones) sn.obtenerPropiedad(PROP_ORIENTACION);
-	
-	real px_ini = obtenerPosicion().x;
 	
 	modificarPosicion(b2Vec2(px,py));
 	modificarVelocidad(b2Vec2(vx,vy));

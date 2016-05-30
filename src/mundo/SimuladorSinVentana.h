@@ -7,16 +7,14 @@
  #include "Mundo.h"
  #include "../common/Thread.h"
  #include "../common/Mutex.h"
- #include "../net/servidor/ContenedorProxies.h"
 class SimuladorSinVentana:public Thread{
 	public:
-	SimuladorSinVentana(Mundo& mundo, uint milisPorActualizacion, ContenedorProxies& contenedor);
+	SimuladorSinVentana(Mundo& mundo, uint milisPorActualizacion);
 	private:
 	void run();
 	void end();
 	bool continuar;
 	Mutex m_continuar;
-	ContenedorProxies& contenedor;
 	bool getContinuar();
 	Mundo& mundo;
 	float segundosPorActualizacion;

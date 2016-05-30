@@ -75,9 +75,9 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 			controlado->correr();
 			std::cout<<"left!"<<std::endl;
 		}else if(tipo_mensaje == MENSAJE_KEY_UP_LIBERADA){
-			controlado->pararMovimientoEscalera();
+			controlado->dejarSubirEscalera();
 		}else if(tipo_mensaje == MENSAJE_KEY_DN_LIBERADA){
-			controlado->pararMovimientoEscalera();
+			controlado->dejarBajarEscalera();
 		}else if(tipo_mensaje == MENSAJE_KEY_RIGHT_LIBERADA){
 			controlado->dejarCorrer();
 		}else if(tipo_mensaje == MENSAJE_KEY_LEFT_LIBERADA){

@@ -28,7 +28,47 @@ HabilitadorBomba::HabilitadorBomba(uint ID, Mundo &mundo, const b2Vec2 &posicion
 
 void HabilitadorBomba::aumentar(Megaman & megaman)
 {
-	megaman.agregarArma(new Bomba(obtenerMundo().generarID(),obtenerMundo()), CANTIDADINFINITAPLASMA);
+	megaman.agregarArma(new Bomba(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
+	eliminarPowerUp();
+}
+
+HabilitadorIman::HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
+{
+}
+
+void HabilitadorIman::aumentar(Megaman & megaman)
+{
+	megaman.agregarArma(new Iman(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
+	eliminarPowerUp();
+}
+
+HabilitadorChispa::HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
+{
+}
+
+void HabilitadorChispa::aumentar(Megaman & megaman)
+{
+	megaman.agregarArma(new Chispa(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
+	eliminarPowerUp();
+}
+
+HabilitadorAnillo::HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
+{
+}
+
+void HabilitadorAnillo::aumentar(Megaman & megaman)
+{
+	megaman.agregarArma(new Anillo(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
+	eliminarPowerUp();
+}
+
+HabilitadorFuego::HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
+{
+}
+
+void HabilitadorFuego::aumentar(Megaman & megaman)
+{
+	megaman.agregarArma(new Fuego(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
 	eliminarPowerUp();
 }
 

@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 #include "Definiciones.h"
 #include "Callbacks.h"
+#include "Cadena.h"
 
 #include "Megaman.h"
 #include "PowerUp.h"
@@ -12,6 +13,9 @@
 #include "Disparo.h"
 #include "Construccion.h"
 #include "../graficos/Dibujable.h"
+
+#include <tinyxml.h>
+
 class FullSnapshot;
 
 
@@ -19,6 +23,7 @@ class PowerUp;
 class Cuerpo;
 class CajaAccion;
 class Interactuable;
+class Enemigo;
 
 	/*
 	 * Marcos, qué te parece si hacemos
@@ -32,38 +37,51 @@ private:
 	ListenerColisiones listenerColisiones;
 	b2World mundo;
 
-	/*Distintas representaciones del mismo objeto en memoria (optimiza y ademas el polimorfismo no aplica aca).*/
 	std::map<uint, Megaman*> megamanes;
 	std::map<uint, Snapshotable*> snapshotables;
 	std::map<uint, Dibujable*> dibujables;
 	std::map<uint, Actualizable*> actualizables;
-	std::list<CajaAccion*> controladores;
+	std::map<uint, Enemigo*> enemigos;
 
+	std::list<CajaAccion*> controladores;
 	std::list<Interactuable*> zonas;
 	std::list<Construccion*> construcciones;
 	std::list<Callback*> tareasDiferidas;
 	std::list<uint> destrucciones;
 	
-	void crearNivel();
+	void cargarNivel(Cadena nombre);
 public:
 	/*Paleativo del server*/
 	uint generarID(){static uint ID = 0; return ++ID;};
 
 	Mundo();
 	b2World &obtenerMundo();
+	Megaman *obtenerMegamanCercano(const b2Vec2 posicion);
+	Enemigo *obtenerEnemigoCercano(const b2Vec2 posicion);
 	void danarZona(b2AABB zona, uint dano);
 
 	void eliminar(Cuerpo *cuerpo);
 
 	void agregar(Disparo * disparo);
 	void agregar(PowerUp * powerUp);
-	void agregar(Entidad * entidad);
+	void agregar(Enemigo * enemigo);
 
 	void agregarConstruccion(real ancho, real alto, b2Vec2 posicion);
 	void agregarEscalera(real alto, b2Vec2 posicion);
 	Megaman *agregarMegaman(b2Vec2 posicion);
 	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
 	void agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino);
+
+	void agregarZonaSpawnMet(b2Vec2 posicion);
+	void agregarZonaSpawnBumby(b2Vec2 posicion);
+	void agregarZonaSpawnSniper(b2Vec2 posicion);
+	void agregarZonaSpawnJumpingSniper(b2Vec2 posicion);
+
+	void agregarZonaSpawnBombman(b2Vec2 posicion);
+	void agregarZonaSpawnMagnetman(b2Vec2 posicion);
+	void agregarZonaSpawnSparkman(b2Vec2 posicion);
+	void agregarZonaSpawnRingman(b2Vec2 posicion);
+	void agregarZonaSpawnFireman(b2Vec2 posicion);
 
 	bool existeElemento(uint ID);
 
@@ -79,8 +97,6 @@ public:
 
 	std::list<Megaman *> obtenerMegamanes();
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
-	
-	Megaman* getMegaman();
 	
 	/**
 	 * Genera un FullSnapshot, lo asigna a la variable en, con lo que se

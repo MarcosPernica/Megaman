@@ -4,15 +4,16 @@
 #include "Definiciones.h"
 
 #include "Actualizable.h"
-#include "Enemigo.h"
 #include "../net/snapshots/Snapshotable.h"
 #include <Box2D/Box2D.h>
 #include "Cuerpo.h"
-class Entidad : public Cuerpo, public Actualizable, public Enemigo
+
+class Entidad : public Cuerpo, public Actualizable
 {
 private:
 	uint energia, energiaMaxima;
 	Mundo &mundo;
+	bool muerta;
 public:
 	Entidad(uint ID, 
 			Mundo &mundo,
@@ -32,7 +33,9 @@ public:
 	void recuperarEnergia(uint cantidadEnergia);
 	uint obtenerEnergiaMaxima();
 	uint obtenerEnergiaActual();
+	bool estaMuerta();
 	virtual void atacado(uint danio);
+	virtual void alMorir();
 
 
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
