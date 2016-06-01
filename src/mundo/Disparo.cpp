@@ -5,6 +5,7 @@
 #include <iostream>
 #include <Box2D/Box2D.h>
 #include "../common/Rectangulo.h"
+#include "../net/snapshots/Snapshot.h"
 
 void Disparo::actualizar(real DeltaT)
 {
@@ -303,33 +304,33 @@ Disparo * Iman::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocidad
 	return new Iman(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
 }
 
-//////////---------------------snapshotable de plasma---------------------//
-void Plasma::agregarPropiedadesASnapshot(Snapshot& sn){
-	//yo
-	Disparo::agregarPropiedadesASnapshot(sn);
+//------------------------------snapshotable de Disparo------------------//
+void Disparo::agregarPropiedadesASnapshot(Snapshot& sn){
+	SN_AGREGAR_PROPIEDAD(dano);
+	SN_AGREGAR_PROPIEDAD(categoriaTarget);
+	Cuerpo::agregarPropiedadesASnapshot(sn);
 }
-void Plasma::setStateFromSnapshot(const Snapshot& sn){
-	//yo
-	Disparo::setStateFromSnapshot(sn);
-}
-Plasma* Plasma::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	Plasma* p = new Plasma(sn.getID(), mundo, PERSONAJES /*Puse PERSONAJES pero esta mal, hay que snapshotear esto tambien y ponerlo bien.*/);
-	p->setStateFromSnapshot(sn);
-	return p;
+void Disparo::setStateFromSnapshot(const Snapshot& sn){
+	SN_OBTENER_PROPIEDAD(dano);
+	SN_OBTENER_PROPIEDAD(categoriaTarget);
+	Cuerpo::setStateFromSnapshot(sn);
 }
 
 //////////-----------------------snapshotable de bomba--------------------//
-#define PROP_TIEMPOTOTAL	"tiempo_total"
 void Bomba::agregarPropiedadesASnapshot(Snapshot& sn){
-	sn.agregarPropiedad(PROP_TIEMPOTOTAL, (int)(tiempoTotal*1000));
+	SN_AGREGAR_PROPIEDAD(tiempoTotal);
 	Disparo::agregarPropiedadesASnapshot(sn);
 }
 void Bomba::setStateFromSnapshot(const Snapshot& sn){
-	tiempoTotal = (real)sn.obtenerPropiedad(PROP_TIEMPOTOTAL)/1000;
+	SN_OBTENER_PROPIEDAD(tiempoTotal);
 	Disparo::setStateFromSnapshot(sn);
 }
-Bomba* Bomba::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	Bomba* p = new Bomba(sn.getID(), mundo, PERSONAJES /*Puse PERSONAJES pero esta mal, hay que snapshotear esto tambien y ponerlo bien.*/);
-	p->setStateFromSnapshot(sn);
-	return p;
+//---------------------------snapshotable de anillo--------------------
+void Anillo::agregarPropiedadesASnapshot(Snapshot& sn){
+	SN_AGREGAR_PROPIEDAD(tiempo);
+	Disparo::agregarPropiedadesASnapshot(sn);
+}
+void Anillo::setStateFromSnapshot(const Snapshot& sn){
+	SN_OBTENER_PROPIEDAD(tiempo);
+	Disparo::setStateFromSnapshot(sn);
 }

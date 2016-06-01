@@ -5,8 +5,15 @@
 void SimuladorSinVentana::run()
 {
 	FullSnapshot a_distribuir;
+	//-------------while con el server no jodiendo----------------
+	/*
 	while(getContinuar()){
-		/*
+		sleep(1);
+	}
+	*/
+	
+	
+	while(getContinuar()){
 		time_t t_inicial=clock();
 		time_t t_final=t_inicial;
 		while(getContinuar() && ((float)(t_final-t_inicial))/CLOCKS_PER_SEC < segundosPorActualizacion){
@@ -17,13 +24,13 @@ void SimuladorSinVentana::run()
 		mundo.obtenerSnapshot(a_distribuir);
 		contenedor.distribuir(a_distribuir);
 		std::cout<<"Distribuí el snapshot"<<std::endl;
-		* */
-		sleep(1);
-		//COMENTO TODO EL WHILE LOCO DE ADENTRO, QUE A MI ME SIRVE PARA TESTEAR AUNQUE A VOS TE JODE!!!!
+		
 	}
+	
 	std::cout<<"Chau Simulador sin ventana"<<std::endl;
 	//lo que dijo MARTIN/////////////////////////IMPLEMENTAR URGENTE
 	/*
+	//----------------pseudowhile de Martín-----------------------
 	FullSnapshot a_distribuir;
 	t_time t_sleep_extra = 0;
 	while(getContinuar()){
@@ -43,7 +50,7 @@ void SimuladorSinVentana::run()
 		t_sleep_extra = clock() - (DORMIR - ((t_process_time)*1000000)/CLOCKS_PER_SEC) - t_sleep_extra)
 	}
 	std::cout<<"Chau Simulador sin ventana"<<std::endl;
-	* */
+	*/
 }
 
 SimuladorSinVentana::SimuladorSinVentana(Mundo& mun, uint milis,ContenedorProxies& con):mundo(mun), contenedor(con),continuar(true){

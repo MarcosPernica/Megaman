@@ -83,7 +83,7 @@ public:
 	void eliminarse(Mundo& de);
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	virtual int getTipo(){return TIPO_PROTEGIDO;};
+	//virtual int getTipo(){return TIPO_PROTEGIDO;};
 	
 private:
 	void ruletaPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion);

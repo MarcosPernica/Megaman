@@ -3,6 +3,7 @@
 #include "Megaman.h"
 #include "../common/exceptions.h"
 #include <iostream>
+#include "../net/snapshots/Snapshot.h"
 
 #define CUBIERTO 0
 #define DESCUBIERTO 1
@@ -107,31 +108,18 @@ void Met::actualizar(real deltaT)
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
-#define PROP_TIEMPO "tiempo"
-#define PROP_ESTADO_MET "estadoMet"
-#define PROP_ACCION_EJECUTADA "accionEjecutada"
 void Met::agregarPropiedadesASnapshot(Snapshot& sn){
 	Enemigo::agregarPropiedadesASnapshot(sn);
-	sn.agregarPropiedad(PROP_TIEMPO,(int)(tiempo*1000));
-	sn.agregarPropiedad(PROP_ESTADO_MET,estadoMet);
-	sn.agregarPropiedad(PROP_ACCION_EJECUTADA,(int)accionEjecutada);
+	SN_AGREGAR_PROPIEDAD(tiempo);
+	SN_AGREGAR_PROPIEDAD(estadoMet);
+	SN_AGREGAR_PROPIEDAD(accionEjecutada);
 	
 }
 void Met::setStateFromSnapshot(const Snapshot& sn){
 	Enemigo::setStateFromSnapshot(sn);
-	try{
-	accionEjecutada = (bool)sn.obtenerPropiedad(PROP_ACCION_EJECUTADA);
-	estadoMet = sn.obtenerPropiedad(PROP_ESTADO_MET);
-	tiempo = (float)sn.obtenerPropiedad(PROP_TIEMPO)/1000;
-	//std::cout<<"normal:" <<tiempo<<" "<<(int)estadoMet<<" "<<accionEjecutada<<std::endl;
-	}catch(const CustomException& e){
-		/*
-		std::cout<<"--------SNAPSHOT ANOMALA DE MET------"<<std::endl;
-		std::cout<<sn.serializar()<<std::endl;
-		//nos salió feo el MET de ID 14. Ni idea qué tiene.
-		std::cout<<tiempo<<" "<<(int)estadoMet<<" "<<accionEjecutada<<std::endl;
-		*/
-	}
+	SN_OBTENER_PROPIEDAD(tiempo);
+	SN_OBTENER_PROPIEDAD(estadoMet);
+	SN_OBTENER_PROPIEDAD(accionEjecutada);
 }
 
 Met* Met::desdeSnapshot(const Snapshot& sn, Mundo& mundo){

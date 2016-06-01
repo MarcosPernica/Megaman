@@ -6,7 +6,7 @@
 #include <iostream>
 #include "Cuerpo.h"
 #include <iostream>
-
+#include "../net/snapshots/Snapshot.h"
 #define HACIENDONADA 0
 
 #define PISANDO 1
@@ -265,60 +265,34 @@ void Enemigo::eliminarse(Mundo& de)
 {
 	de.eliminar(this);
 }
-
-#define PROP_ESTADO_SALTO "estadoSalto"
-#define PROP_ESTADO_DISPARO "estadoDisparo"
-#define PROP_CUBIERTO "cubierto"
-#define PROP_ESCUDO "escudo"
-
-#define PROP_POWER_UP_MORIR "powerUpMorir"
-#define PROP_VELOCIDAD_SALTO "velocidadSalto"
-#define PROP_VELOCIDAD_CORRER "velocidadCorrer"
-#define PROP_DIR_DISPARO_X "dirDisparoX"
-#define PROP_DIR_DISPARO_Y "dirDisparoY"
-#define PROP_TOCANDO_IZQ "tocandoIzq"
-#define PROP_TOCANDO_DER "tocandoDer"
-#define PROP_CORRIENDO "corriendo"
-
-
 void Enemigo::agregarPropiedadesASnapshot(Snapshot& sn){
-	sn.agregarPropiedad(PROP_ESCUDO,escudo);
-	sn.agregarPropiedad(PROP_CUBIERTO,cubierto);
-	
-	sn.agregarPropiedad(PROP_ESTADO_SALTO,estadoSalto);
-	sn.agregarPropiedad(PROP_ESTADO_DISPARO,estadoDisparo);
-	
-	sn.agregarPropiedad(PROP_POWER_UP_MORIR,powerUpMorir);
-	sn.agregarPropiedad(PROP_CORRIENDO,corriendo);
-	sn.agregarPropiedad(PROP_TOCANDO_IZQ,tocandoIzquierda);
-	sn.agregarPropiedad(PROP_TOCANDO_DER,tocandoDerecha);
-	
-	sn.agregarPropiedad(PROP_DIR_DISPARO_X,(int)(direccionDisparo.x*1000));
-	sn.agregarPropiedad(PROP_DIR_DISPARO_Y,(int)(direccionDisparo.y*1000));
-	
-	sn.agregarPropiedad(PROP_VELOCIDAD_SALTO,(int)(velocidadSalto*1000));
-	sn.agregarPropiedad(PROP_VELOCIDAD_CORRER,(int)(velocidadCorrer*1000));
-	
+	SN_AGREGAR_PROPIEDAD(escudo);
+	SN_AGREGAR_PROPIEDAD(cubierto);
+	SN_AGREGAR_PROPIEDAD(powerUpMorir);
+	SN_AGREGAR_PROPIEDAD(corriendo);
+	SN_AGREGAR_PROPIEDAD(tocandoIzquierda);
+	SN_AGREGAR_PROPIEDAD(tocandoDerecha);
+	SN_AGREGAR_PROPIEDAD(direccionDisparo.x);
+	SN_AGREGAR_PROPIEDAD(direccionDisparo.y);
+	SN_AGREGAR_PROPIEDAD(velocidadSalto);
+	SN_AGREGAR_PROPIEDAD(velocidadCorrer);
+	SN_AGREGAR_PROPIEDAD(estadoSalto);
+	SN_AGREGAR_PROPIEDAD(estadoDisparo);
 	Entidad::agregarPropiedadesASnapshot(sn);
 }
 
 void Enemigo::setStateFromSnapshot(const Snapshot& sn){
-	escudo = sn.obtenerPropiedad(PROP_ESCUDO);
-	cubierto = sn.obtenerPropiedad(PROP_CUBIERTO);
-	
-	estadoSalto = sn.obtenerPropiedad(PROP_ESTADO_SALTO);
-	estadoDisparo = sn.obtenerPropiedad(PROP_ESTADO_DISPARO);
-	
-	powerUpMorir = sn.obtenerPropiedad(PROP_POWER_UP_MORIR);
-	corriendo = sn.obtenerPropiedad(PROP_CORRIENDO);
-	tocandoIzquierda = sn.obtenerPropiedad(PROP_TOCANDO_IZQ);
-	tocandoDerecha = sn.obtenerPropiedad(PROP_TOCANDO_DER);
-	
-	direccionDisparo.x = (float) sn.obtenerPropiedad(PROP_DIR_DISPARO_X)/1000;
-	direccionDisparo.y = (float) sn.obtenerPropiedad(PROP_DIR_DISPARO_Y)/1000;
-	
-	velocidadSalto  = (float)sn.obtenerPropiedad(PROP_VELOCIDAD_SALTO)/1000;
-	velocidadCorrer = (float)sn.obtenerPropiedad(PROP_VELOCIDAD_CORRER)/1000;
-	
+	SN_OBTENER_PROPIEDAD(escudo);
+	SN_OBTENER_PROPIEDAD(cubierto);
+	SN_OBTENER_PROPIEDAD(powerUpMorir);
+	SN_OBTENER_PROPIEDAD(corriendo);
+	SN_OBTENER_PROPIEDAD(tocandoIzquierda);
+	SN_OBTENER_PROPIEDAD(tocandoDerecha);
+	SN_OBTENER_PROPIEDAD(direccionDisparo.x);
+	SN_OBTENER_PROPIEDAD(direccionDisparo.y);
+	SN_OBTENER_PROPIEDAD(velocidadSalto);
+	SN_OBTENER_PROPIEDAD(velocidadCorrer);
+	SN_OBTENER_PROPIEDAD(estadoSalto);
+	SN_OBTENER_PROPIEDAD(estadoDisparo);
 	Entidad::setStateFromSnapshot(sn);
 }

@@ -3,6 +3,7 @@
 #include "Megaman.h"
 #include <math.h>
 #include <iostream>
+#include "../net/snapshots/Snapshot.h"
 
 #define DISTANCIADISPARO 2
 #define TIEMPODISPARO 1
@@ -89,23 +90,17 @@ void Bumby::actualizar(real deltaT)
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
-#define PROP_TIEMPO "tiempo"
-#define PROP_REFLEJOS "reflejos"
-#define PROP_QUIETO "quieto"
-/*
-real tiempo, reflejos;//snapshotados
-bool quieto;//snapshotado
-*/
+
 void Bumby::agregarPropiedadesASnapshot(Snapshot& sn){
-	sn.agregarPropiedad(PROP_TIEMPO,(int)(tiempo*1000));
-	sn.agregarPropiedad(PROP_REFLEJOS,(int)(reflejos*1000));
-	sn.agregarPropiedad(PROP_QUIETO,(int)quieto);
+	SN_AGREGAR_PROPIEDAD(tiempo);
+	SN_AGREGAR_PROPIEDAD(reflejos);
+	SN_AGREGAR_PROPIEDAD(quieto);
 	Enemigo::agregarPropiedadesASnapshot(sn);
 }
 void Bumby::setStateFromSnapshot(const Snapshot& sn){
-	tiempo = (float)sn.obtenerPropiedad(PROP_TIEMPO)/1000;
-	reflejos = (float)sn.obtenerPropiedad(PROP_REFLEJOS)/1000;
-	quieto = (bool)sn.obtenerPropiedad(PROP_QUIETO);
+	SN_OBTENER_PROPIEDAD(tiempo);
+	SN_OBTENER_PROPIEDAD(reflejos);
+	SN_OBTENER_PROPIEDAD(quieto);
 	Enemigo::setStateFromSnapshot(sn);
 }
 

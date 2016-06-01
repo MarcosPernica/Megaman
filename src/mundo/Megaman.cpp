@@ -2,6 +2,7 @@
 #include "Disparo.h"
 #include "Mundo.h"
 #include <iostream>
+#include "../net/snapshots/Snapshot.h"
 
 #define HACIENDONADA 0
 
@@ -299,34 +300,53 @@ void Megaman::atacado(uint dano)
 
 void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	Entidad::agregarPropiedadesASnapshot(sn);
-	sn.agregarPropiedad(PROP_VIDAS,(int)vidas);
+	SN_AGREGAR_PROPIEDAD(vidas);
+	SN_AGREGAR_PROPIEDAD(puedeSaltar);
+	SN_AGREGAR_PROPIEDAD(puedeSubir);
+	SN_AGREGAR_PROPIEDAD(estadoSalto);
+	SN_AGREGAR_PROPIEDAD(estadoDisparo);
+	SN_AGREGAR_PROPIEDAD(estadoEscalado);
+	SN_AGREGAR_PROPIEDAD(corriendo);
+	SN_AGREGAR_PROPIEDAD(agarreX);
+	SN_AGREGAR_PROPIEDAD(topeY);
 	
-	sn.agregarPropiedad(PROP_PUEDE_SALTAR,puedeSaltar);
-	sn.agregarPropiedad(PROP_PUEDE_SUBIR,puedeSubir);
-	
-	sn.agregarPropiedad(PROP_ESTADO_SALTO,estadoSalto);
-	sn.agregarPropiedad(PROP_ESTADO_DISPARO,estadoDisparo);
-	sn.agregarPropiedad(PROP_ESTADO_ESCALADO,estadoEscalado);
-	sn.agregarPropiedad(PROP_ESTADO_CORRIENDO,corriendo);
-	
-	sn.agregarPropiedad(PROP_AGARREX,(int)(agarreX*1000));
-	sn.agregarPropiedad(PROP_TOPEY,(int)(topeY*1000));
+	SN_AGREGAR_PROPIEDAD(armas[0].plasma);
+	//SN_AGREGAR_PROPIEDAD(armas[0].arma);
+	SN_AGREGAR_PROPIEDAD(armas[1].plasma);
+	//SN_AGREGAR_PROPIEDAD(armas[1].arma);
+	SN_AGREGAR_PROPIEDAD(armas[2].plasma);
+	//SN_AGREGAR_PROPIEDAD(armas[2].arma);
+	SN_AGREGAR_PROPIEDAD(armas[3].plasma);
+	//SN_AGREGAR_PROPIEDAD(armas[3].arma);
+	SN_AGREGAR_PROPIEDAD(armas[4].plasma);
+	//SN_AGREGAR_PROPIEDAD(armas[4].arma);
+	SN_AGREGAR_PROPIEDAD(armas[5].plasma);
+	//SN_AGREGAR_PROPIEDAD(armas[5].arma);
 }
 void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	Entidad::setStateFromSnapshot(sn);
+	SN_OBTENER_PROPIEDAD(vidas);
+	SN_OBTENER_PROPIEDAD(puedeSaltar);
+	SN_OBTENER_PROPIEDAD(puedeSubir);
+	SN_OBTENER_PROPIEDAD(estadoSalto);
+	SN_OBTENER_PROPIEDAD(estadoDisparo);
+	SN_OBTENER_PROPIEDAD(estadoEscalado);
+	SN_OBTENER_PROPIEDAD(corriendo);
+	SN_OBTENER_PROPIEDAD(agarreX);
+	SN_OBTENER_PROPIEDAD(topeY);
 	
-	vidas = (uint) sn.obtenerPropiedad(PROP_VIDAS);
-	
-	puedeSaltar = sn.obtenerPropiedad(PROP_PUEDE_SALTAR);
-	puedeSubir = sn.obtenerPropiedad(PROP_PUEDE_SUBIR);
-	
-	estadoSalto = (char) sn.obtenerPropiedad(PROP_ESTADO_SALTO);
-	estadoDisparo = (char) sn.obtenerPropiedad(PROP_ESTADO_DISPARO);
-	estadoEscalado = (char) sn.obtenerPropiedad(PROP_ESTADO_ESCALADO);
-	corriendo = (bool)sn.obtenerPropiedad(PROP_ESTADO_CORRIENDO);
-	
-	agarreX = (real)sn.obtenerPropiedad(PROP_AGARREX)/1000;
-	topeY = (real)sn.obtenerPropiedad(PROP_TOPEY)/1000;
+	SN_OBTENER_PROPIEDAD(armas[0].plasma);
+	//SN_OBTENER_PROPIEDAD(armas[0].arma);
+	SN_OBTENER_PROPIEDAD(armas[1].plasma);
+	//SN_OBTENER_PROPIEDAD(armas[1].arma);
+	SN_OBTENER_PROPIEDAD(armas[2].plasma);
+	//SN_OBTENER_PROPIEDAD(armas[2].arma);
+	SN_OBTENER_PROPIEDAD(armas[3].plasma);
+	//SN_OBTENER_PROPIEDAD(armas[3].arma);
+	SN_OBTENER_PROPIEDAD(armas[4].plasma);
+	//SN_OBTENER_PROPIEDAD(armas[4].arma);
+	SN_OBTENER_PROPIEDAD(armas[5].plasma);
+	//SN_OBTENER_PROPIEDAD(armas[5].arma);
 }
 
 //------------------------------------------------------------------

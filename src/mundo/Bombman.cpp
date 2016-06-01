@@ -4,6 +4,8 @@
 #include "PowerUp.h"
 #include <iostream>
 
+#include "../net/snapshots/Snapshot.h"
+
 #define QUIETO 0
 #define CORRIENDO 1
 #define SALTANDO 2
@@ -112,11 +114,13 @@ void Bombman::actualizar(real deltaT)
 }
 
 void Bombman::agregarPropiedadesASnapshot(Snapshot& sn){
-	//yo aquí
+	SN_AGREGAR_PROPIEDAD(estadoBombman);
+	SN_AGREGAR_PROPIEDAD(reflejos);
 	Enemigo::agregarPropiedadesASnapshot(sn);
 }
 void Bombman::setStateFromSnapshot(const Snapshot& sn){
-	//yo aquí
+	SN_OBTENER_PROPIEDAD(estadoBombman);
+	SN_OBTENER_PROPIEDAD(reflejos);
 	Enemigo::setStateFromSnapshot(sn);
 }
 

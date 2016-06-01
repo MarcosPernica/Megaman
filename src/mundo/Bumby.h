@@ -28,7 +28,7 @@ public:
 
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	virtual int getTipo() const {return TIPO_BUMBY;};
+	GENERAR_GET_TIPO(Bumby);
 	static Bumby* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 };
 

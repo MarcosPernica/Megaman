@@ -3,6 +3,7 @@
 #include <Box2D/Box2D.h>
 #include "../graficos/Dibujable.h"
 #include <iostream>
+#include "../net/snapshots/Snapshot.h"
 const b2Vec2 Cuerpo::versorIzquierda(-1, 0);
 const b2Vec2 Cuerpo::versorDerecha(1, 0);
 
@@ -193,39 +194,57 @@ void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, r
  * 1- cada Snapshotable concreto tiene un getTipo() que devuelve un int /macro de 
  * 		las definidas en Snapshotable.h.
  * 	Además, tienen un desdeSnapshot() que llama el new y inyecta el snapshot or primera vez.
- * 	Cuando llega un desconocido, Mundo mira su atributo tipo y decide qué objeto crear.
- * 2- Por cada propiedad a snapshotar, se define una macro con su nombre, como se ve acá abajo
- * 3- En agrtegarPropiedadASnapshot() seguís como patron lo que está abajo de todo, 
- * 		todo se ransforma en int
- * 4- Luego en setStateFromSnapshot hacés el camino inverso, como se ve ahí
+ * 	Cuando llega un desconocido y nuevo, Mundo mira su atributo tipo y decide qué objeto crear.
+ * 2-llamar a las macros SN_AGREGAR_PROPIEDAD en agregarPropiedadesASnapshot, las variables entran 
+ * 	y salen con su nombre: sí ó sí, tenés que recuperar y/o meter una variable que se llame igual
+ *  siempre.
+ * 	Ojo que lo que metas entre los paréntesis  (me refiero al texto!) NO DEBE TENER ESPACIOS
+ * 3-lo mismo en setStateFromSnapshot, con SN_OBTENER_PROPIEDAD. observá que el 
+ * nombre de las variables es el mismo!!
  * 
- * SIEMPRE en agregarPropiedadesASnapshot y setStateFromSnapshot, hay que llamar al mismo método del padre antes!
+ * La idea es que en situaciones donde directamente se toquen los atributos privados, 
+ * esto queda más lindo
+ * 
+ * PROBLEMA: no se pueden tener variables homónimas en el hijo y el padre, de 
+ * todas formas siempre se puede hacer una variable con otro nombre y snapshotear esa.
+ * 
+ * Para comprimir los strings más adelante, podemos usar una función de hash o de 
+ * compresión o algo por el estilo
+ * 
+ * PRECAUCIÓN: el argumento de ambos métodos SIEMPRE DEBE LLAMARSE sn 
+ * porque la macro tiene eso incorporado
+ * 
+ * SIEMPRE en agregarPropiedadesASnapshot y setStateFromSnapshot, 
+ * hay que llamar al mismo método del padre antes!(esta es la única excepción)
  * */
-#define PROP_POS_X "posX"
-#define PROP_POS_Y "posY"
-#define PROP_VEL_X "velX"
-#define PROP_VEL_Y "velY"
-#define PROP_ANCHO "ancho"
-#define PROP_ALTO "alto"
-#define PROP_ORIENTACION "orientacion"
 
 void Cuerpo::agregarPropiedadesASnapshot(Snapshot& sn){
-	sn.agregarPropiedad(PROP_POS_X, obtenerPosicion().x*1000);
-	sn.agregarPropiedad(PROP_POS_Y, obtenerPosicion().y*1000);
-	sn.agregarPropiedad(PROP_VEL_X, obtenerVelocidad().x*1000);
-	sn.agregarPropiedad(PROP_VEL_Y, obtenerVelocidad().y*1000);
-	sn.agregarPropiedad(PROP_ORIENTACION, (int)obtenerOrientacion());
+	real pos_x = obtenerPosicion().x;
+	real pos_y = obtenerPosicion().y;
+	SN_AGREGAR_PROPIEDAD(pos_x);
+	SN_AGREGAR_PROPIEDAD(pos_y);
+	
+	real vel_x = obtenerVelocidad().x;
+	real vel_y = obtenerVelocidad().y;
+	SN_AGREGAR_PROPIEDAD(vel_x);
+	SN_AGREGAR_PROPIEDAD(vel_y);
+	
+	Orientaciones orientacion = obtenerOrientacion();
+	SN_AGREGAR_PROPIEDAD(orientacion);
 }
 void Cuerpo::setStateFromSnapshot(const Snapshot& sn){
-	real px = (real)sn.obtenerPropiedad(PROP_POS_X)/1000;
-	real py = (real)sn.obtenerPropiedad(PROP_POS_Y)/1000;
+	real pos_x,pos_y;
+	SN_OBTENER_PROPIEDAD(pos_x);
+	SN_OBTENER_PROPIEDAD(pos_y);
 	
-	real vx = (real)sn.obtenerPropiedad(PROP_VEL_X)/1000;
-	real vy = (real)sn.obtenerPropiedad(PROP_VEL_Y)/1000;
+	real vel_x,vel_y;
+	SN_OBTENER_PROPIEDAD(vel_x);
+	SN_OBTENER_PROPIEDAD(vel_y);
 	
-	Orientaciones o = (Orientaciones) sn.obtenerPropiedad(PROP_ORIENTACION);
+	Orientaciones orientacion;
+	SN_OBTENER_PROPIEDAD(orientacion);
 	
-	modificarPosicion(b2Vec2(px,py));
-	modificarVelocidad(b2Vec2(vx,vy));
-	modificarOrientacion(o);
+	modificarPosicion(b2Vec2(pos_x,pos_y));
+	modificarVelocidad(b2Vec2(vel_x,vel_y));
+	modificarOrientacion(orientacion);
 }

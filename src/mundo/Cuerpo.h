@@ -9,13 +9,8 @@
 #include "../graficos/Dibujable.h"
 //#include "Mundo.h"
 #include "../net/snapshots/Snapshotable.h"
+#include "Orientaciones.h"
 class Mundo;
-enum Orientaciones
-{
-	izquierda,
-	derecha
-};
-
 class Cuerpo;
 
 struct DatosColisionCuerpo

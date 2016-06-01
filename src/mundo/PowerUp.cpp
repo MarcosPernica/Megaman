@@ -1,6 +1,7 @@
 #include "PowerUp.h"
 #include "Disparo.h"
 #include "Definiciones.h"
+#include "../net/snapshots/Snapshot.h"
 
 CallbackAumentador::CallbackAumentador(PowerUp *powerUp, Megaman *megaman) : powerUp(powerUp), megaman(megaman)
 {
@@ -156,46 +157,36 @@ void PowerUp::eliminarPowerUp()
 }
 
 void PowerUp::agregarPropiedadesASnapshot(Snapshot& sn){
-	//yo
+	SN_AGREGAR_PROPIEDAD(probabilidadAparicion);
 	Cuerpo::agregarPropiedadesASnapshot(sn);
 }
 void PowerUp::setStateFromSnapshot(const Snapshot& sn){
-	//yo
+	SN_OBTENER_PROPIEDAD(probabilidadAparicion);
 	Cuerpo::setStateFromSnapshot(sn);
 }
-
- NuevaVida* NuevaVida::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	NuevaVida* p =new NuevaVida(sn.getID(),mundo,b2Vec2(0,0));
-	p->setStateFromSnapshot(sn);
-	return p;
-}
-
- CapsulaEnergiaChica* CapsulaEnergiaChica::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	CapsulaEnergiaChica* p =new CapsulaEnergiaChica(sn.getID(),mundo,b2Vec2(0,0));
-	p->setStateFromSnapshot(sn);
-	return p;
-}
-
- CapsulaEnergiaGrande* CapsulaEnergiaGrande::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	CapsulaEnergiaGrande* p =new CapsulaEnergiaGrande(sn.getID(),mundo,b2Vec2(0,0));
-	p->setStateFromSnapshot(sn);
-	return p;
-}
-
- CapsulaPlasmaChica* CapsulaPlasmaChica::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	CapsulaPlasmaChica* p =new CapsulaPlasmaChica(sn.getID(),mundo,b2Vec2(0,0));
-	p->setStateFromSnapshot(sn);
-	return p;
-}
-
- CapsulaPlasmaGrande* CapsulaPlasmaGrande::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	CapsulaPlasmaGrande* p =new CapsulaPlasmaGrande(sn.getID(),mundo,b2Vec2(0,0));
-	p->setStateFromSnapshot(sn);
-	return p;
-}
-
+/*
  HabilitadorBomba* HabilitadorBomba::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	HabilitadorBomba* p =new HabilitadorBomba(sn.getID(),mundo,b2Vec2(0,0));
 	p->setStateFromSnapshot(sn);
 	return p;
 }
+*/
+/*
+#define GENERAR_IMPLEMENTACION_DESDESNAPSHOT(clase) \
+clase* clase::desdeSnapshot(const Snapshot& sn, Mundo& mundo){ \
+	clase* p =new clase(sn.getID(),mundo,b2Vec2(0,0)); \
+	p->setStateFromSnapshot(sn); \
+	return p; \
+}
+
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorBomba)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorIman)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorChispa)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorAnillo)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorFuego)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaPlasmaGrande)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaPlasmaChica)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaEnergiaGrande)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaEnergiaChica)
+GENERAR_IMPLEMENTACION_DESDESNAPSHOT(NuevaVida)
+*/

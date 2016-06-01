@@ -80,7 +80,7 @@ public:
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	virtual int  getTipo(){return TIPO_MEGAMAN;};
+	GENERAR_GET_TIPO(Megaman);
 
 	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 	Imagen::dibujarEn(cr,origen,factorAmplificacion);

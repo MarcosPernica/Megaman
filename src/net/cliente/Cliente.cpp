@@ -116,7 +116,9 @@ void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	ventana.setCamara(&camara);
 	
 	Jugador jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);
-	//receptor.inyectarFullSnapshotsA(&mundo);
+	#ifndef DEBUG
+	receptor.inyectarFullSnapshotsA(&mundo);
+	#endif
 	Simulador simulador(mundo,camara,33);
 	ventana.ejecutar();//se lanza la ventana
 	receptor.inyectarFullSnapshotsA(NULL);

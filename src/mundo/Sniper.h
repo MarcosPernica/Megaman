@@ -29,7 +29,7 @@ public:
 
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	virtual int getTipo() const {return TIPO_MET;};
+	GENERAR_GET_TIPO(Sniper);
 	static Sniper* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 };
 

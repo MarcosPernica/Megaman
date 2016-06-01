@@ -2,6 +2,7 @@
 #include "Mundo.h"
 #include "Megaman.h"
 #include <iostream>
+#include "../net/snapshots/Snapshot.h"
 
 #define CUBIERTO 1
 #define CUBRIENDOSE 2
@@ -114,11 +115,15 @@ void JumpingSniper::actualizar(real deltaT)
 }
 
 void JumpingSniper::agregarPropiedadesASnapshot(Snapshot& sn){
-	//yo aquí
+	SN_AGREGAR_PROPIEDAD(estadoSniper);
+	SN_AGREGAR_PROPIEDAD(reflejos);
+	SN_AGREGAR_PROPIEDAD(cantidadDisparos);
 	Enemigo::agregarPropiedadesASnapshot(sn);
 }
 void JumpingSniper::setStateFromSnapshot(const Snapshot& sn){
-	//yo aquí
+	SN_OBTENER_PROPIEDAD(estadoSniper);
+	SN_OBTENER_PROPIEDAD(reflejos);
+	SN_OBTENER_PROPIEDAD(cantidadDisparos);
 	Enemigo::setStateFromSnapshot(sn);
 }
 
@@ -127,3 +132,5 @@ JumpingSniper* JumpingSniper::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	p->setStateFromSnapshot(sn);
 	return p;
 }
+
+

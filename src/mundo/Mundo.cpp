@@ -500,36 +500,34 @@ void Mundo::inyectarSnapshot(FullSnapshot& fs){
 	}
 }
 
+#define GENERAR_CASE_AGREGAR(clase) \
+case TIPO_##clase :\
+	agregar(clase::desdeSnapshot(sn,*this));\
+	break;
+
 void Mundo::agregarDesdeSnapshot(const Snapshot& sn){
 	switch(sn.getTipo()){
-		/*
-		case TIPO_CUERPO : 
-			agregar(new Cuerpo(
-		*/
-		//case TIPO_ENTIDAD:
-		case TIPO_DISPARO_PLASMA:
-			agregar(Plasma::desdeSnapshot(sn,*this));
-			break;
-		case TIPO_DISPARO_BOMBA:
-			agregar(Bomba::desdeSnapshot(sn,*this));
-			break;
-		case TIPO_BUMBY:
-			agregar(Bumby::desdeSnapshot(sn,*this));
-			break;
-		//case TIPO_MEGAMAN :
-		//	agregar(new Megaman(sn));
-		//	break;
-		/*
-		case TIPO_POWERUP:
-			agregar(PowerUp::desdeSnapshot(sn,*this));
-			break;
-		*/
-		case TIPO_MET:
-			agregar(Met::desdeSnapshot(sn,*this));
-			break;
-		//case TIPO_PROTEGIDO:
-		//	agregar(new Protegido(sn));
-		//	break;
+		GENERAR_CASE_AGREGAR(Bumby)
+		GENERAR_CASE_AGREGAR(Met)
+		GENERAR_CASE_AGREGAR(Plasma)
+		GENERAR_CASE_AGREGAR(Chispa)
+		GENERAR_CASE_AGREGAR(NuevaVida)
+		GENERAR_CASE_AGREGAR(CapsulaEnergiaChica)
+		GENERAR_CASE_AGREGAR(CapsulaEnergiaGrande)
+		GENERAR_CASE_AGREGAR(CapsulaPlasmaChica)
+		GENERAR_CASE_AGREGAR(CapsulaPlasmaGrande)
+		GENERAR_CASE_AGREGAR(HabilitadorBomba)
+		GENERAR_CASE_AGREGAR(HabilitadorIman)
+		GENERAR_CASE_AGREGAR(HabilitadorChispa)
+		GENERAR_CASE_AGREGAR(HabilitadorAnillo)
+		GENERAR_CASE_AGREGAR(HabilitadorFuego)
+		GENERAR_CASE_AGREGAR(Anillo)
+		GENERAR_CASE_AGREGAR(Fuego)
+		GENERAR_CASE_AGREGAR(Iman)
+		GENERAR_CASE_AGREGAR(Bomba)
+		GENERAR_CASE_AGREGAR(JumpingSniper)
+		GENERAR_CASE_AGREGAR(Sniper)
+		GENERAR_CASE_AGREGAR(Bombman)
 	}
 }
 
