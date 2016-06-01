@@ -55,6 +55,7 @@ void Cliente::correr(){
 	std::cout<<"Se lanza la partida y la ventana aca!"<<std::endl;	
 	iniciarVentana(emisor, receptor);
 	//------------------ACÁ SE LANZA LA VENTANA Y LOS COHETES----------//
+	socket.closeS();
 	
 }
 void Cliente::conectarse(){

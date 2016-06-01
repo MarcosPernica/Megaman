@@ -12,9 +12,8 @@ class EventoReceptor{
 
 /**
  * Es un hilo que responde con eventos cuando recibe mensajes.
- * Utilizando EventoSocket, se hace la correspondencia entre el tipo de mensaje
- * entrante y la función a ser llamada.
- * Advertencia: los mensajes se llaman en el hilo correspondiente a esta instancia
+ * Advertencia 1: los mensajes se llaman en el hilo correspondiente a esta instancia
+ * Advertencia 2: el hilo no termina hasta que no se cierre el socket correspondiente.
  * */
 class Receptor: private Thread{
 	private:

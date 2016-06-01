@@ -71,5 +71,11 @@ class Socket{
 	 * send, es un bind directo, devuelve el resultado
 	 * */
 	int sendS(char* from, unsigned size) const;
+	
+	public:
+	/**
+	 * close y shutdown del socket
+	 * */
+	void closeS();
 };
 #endif

@@ -14,6 +14,6 @@ void Emisor::enviar(const std::string& tipo_mensaje) const{
 	#ifndef DEBUG
 	Buffer id_buf = Buffer::createString(tipo_mensaje+ "\n");
 	socket.sendFixed(id_buf);
-	std::cout<<"estoy enviando el mensaje: "<<tipo_mensaje<<std::endl;
+	//std::cout<<"estoy enviando el mensaje: "<<tipo_mensaje<<std::endl;
 	#endif
 }

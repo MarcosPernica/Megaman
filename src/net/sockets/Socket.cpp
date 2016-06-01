@@ -17,10 +17,16 @@ Socket::Socket(int fd){
 Socket::~Socket(){
 	if (file_descriptor != -1){
 		try{
-			shutdown(file_descriptor,SHUT_RDWR);
-			close(file_descriptor);
+			closeS();
 		}
 		catch(...){ }
+	}
+}
+void Socket::closeS(){
+	if (file_descriptor != -1){
+		shutdown(file_descriptor,SHUT_RDWR);
+		close(file_descriptor);
+		file_descriptor = -1;
 	}
 }
 

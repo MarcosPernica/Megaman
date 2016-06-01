@@ -18,7 +18,7 @@
  * socket) desde este constructor. El file descriptor luego se pisaba y se 
  * perdía.
  * */
-ChannelSocket::ChannelSocket(int file_descriptor):Socket(file_descriptor){setNonBlocking();}
+ChannelSocket::ChannelSocket(int file_descriptor):Socket(file_descriptor){}
 
 ChannelSocket::ChannelSocket(){
 }
@@ -46,7 +46,6 @@ void ChannelSocket::connectTo(const std::string url, const unsigned port){
 	getAddrinfo(address, url.c_str(),port);
 	connectAddr(address);
 	freeaddrinfo(address);
-	setNonBlocking();
 }
 
 void ChannelSocket::receiveFixed(Buffer& into) const{
