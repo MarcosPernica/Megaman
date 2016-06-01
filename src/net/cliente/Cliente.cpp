@@ -60,7 +60,7 @@ void Cliente::correr(){
 }
 void Cliente::conectarse(){
 	#ifndef DEBUG
-	socket.connectTo("127.0.0.1",5001);
+	socket.connectTo("127.0.0.1",10020);
 	#endif
 }
 void Cliente::enviarID(const Emisor& emisor){

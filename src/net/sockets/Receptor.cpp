@@ -16,7 +16,7 @@ void Receptor::run(){
 		try{
 			std::string recibido = channel.receiveUntilNl(1);
 			decodificarMensaje(recibido);
-		}catch(RecvException& e){}
+		}//catch(RecvException& e){}
 		 catch(RecvTimeOutException &e){
 			 setRecepcionRota();
 			 throw e;////////////////////POR AHORA NO HAGO NINGUN MANEJO ESPECIAL DE ESTA SITUACION!!
