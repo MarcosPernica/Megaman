@@ -49,6 +49,7 @@ ushort Megaman::tipoCuerpo() const
 
 void Megaman::actualizar(real deltaT)
 {
+	avanzar(deltaT);//animacion
 	
 	if (corriendo)
 	{
@@ -189,12 +190,14 @@ void Megaman::saltar()
 	{
 		gravitar();
 		estadoSalto = PORSALTAR;
+		cambiar(animacion_saltando);
 	}
 }
 
 void Megaman::correr()
 {
 	corriendo = true;
+	cambiar(animacion_corriendo);
 }
 
 void Megaman::dejarCorrer()
@@ -260,77 +263,49 @@ void Megaman::pararMovimientoEscalera()
  * Según el estándard de C++ false = 0 y true = 1, aprovecho eso
  * */
 
-#define PROP_VIDA "vida"
-#define PROP_PUEDE_SALTAR "puedeSaltar"
-#define PROP_PUEDE_SUBIR "puedeSubir"
-#define PROP_ESTADO_GRAL "estadoGral"
-#define PROP_AGARREX "agarreX"
+#define PROP_VIDAS 				"vidas"
+#define PROP_PUEDE_SALTAR 		"puedeSaltar"
+#define PROP_PUEDE_SUBIR 		"puedeSubir"
+
+#define PROP_ESTADO_SALTO 		"estadoSalto"
+#define PROP_ESTADO_DISPARO 	"estadoDisparo"
+#define PROP_ESTADO_ESCALADO 	"estadoEscalado"
+#define PROP_ESTADO_CORRIENDO 	"estadoCorriendo"
+
+#define PROP_AGARREX 			"agarreX"
+#define PROP_TOPEY 				"topeY"
 //TODO: SERIALIZAR ARMAS
+
 void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
-	/*
-	//---------------------------------------codificación del estado general
-	int estado_gral = 0;
+	Entidad::agregarPropiedadesASnapshot(sn);
+	sn.agregarPropiedad(PROP_VIDAS,(int)vidas);
 	
-	estado_gral+=saltando;
-	estado_gral<<=1;
-	
-	estado_gral+=disparando;
-	estado_gral<<=1;
-	
-	estado_gral+=lanzando;
-	estado_gral<<=1;
-	
-	estado_gral+=agarrado;
-	estado_gral<<=1;
-	
-	estado_gral+=subiendoEscalera;
-	estado_gral<<=1;
-	
-	estado_gral+=bajandoEscalera;
-	estado_gral<<=1;
-	
-	estado_gral+=corriendo;
-	//-----------------------------------------------------------------------
-	
-	sn.agregarPropiedad(PROP_VIDA,(int)vida);
 	sn.agregarPropiedad(PROP_PUEDE_SALTAR,puedeSaltar);
 	sn.agregarPropiedad(PROP_PUEDE_SUBIR,puedeSubir);
-	sn.agregarPropiedad(PROP_ESTADO_GRAL,estado_gral);
+	
+	sn.agregarPropiedad(PROP_ESTADO_SALTO,estadoSalto);
+	sn.agregarPropiedad(PROP_ESTADO_DISPARO,estadoDisparo);
+	sn.agregarPropiedad(PROP_ESTADO_ESCALADO,estadoEscalado);
+	sn.agregarPropiedad(PROP_ESTADO_CORRIENDO,corriendo);
+	
 	sn.agregarPropiedad(PROP_AGARREX,(int)(agarreX*1000));
-	*/
-	Entidad::agregarPropiedadesASnapshot(sn);
+	sn.agregarPropiedad(PROP_TOPEY,(int)(topeY*1000));
 }
 void Megaman::setStateFromSnapshot(const Snapshot& sn){
-	/*
-	vida = (uint) sn.obtenerPropiedad(PROP_VIDA);
+	Entidad::setStateFromSnapshot(sn);
+	
+	vidas = (uint) sn.obtenerPropiedad(PROP_VIDAS);
+	
 	puedeSaltar = sn.obtenerPropiedad(PROP_PUEDE_SALTAR);
 	puedeSubir = sn.obtenerPropiedad(PROP_PUEDE_SUBIR);
-	int estado_gral = sn.obtenerPropiedad(PROP_ESTADO_GRAL);
+	
+	estadoSalto = (char) sn.obtenerPropiedad(PROP_ESTADO_SALTO);
+	estadoDisparo = (char) sn.obtenerPropiedad(PROP_ESTADO_DISPARO);
+	estadoEscalado = (char) sn.obtenerPropiedad(PROP_ESTADO_ESCALADO);
+	corriendo = (bool)sn.obtenerPropiedad(PROP_ESTADO_CORRIENDO);
+	
 	agarreX = (real)sn.obtenerPropiedad(PROP_AGARREX)/1000;
-	
-	//------------------------------------------decodificar estado gral
-	corriendo = (estado_gral & 1);
-	estado_gral>>=1;
-	
-	bajandoEscalera = (estado_gral & 1);
-	estado_gral>>=1;
-	
-	subiendoEscalera = (estado_gral & 1);
-	estado_gral>>=1;
-	
-	agarrado = (estado_gral & 1);
-	estado_gral>>=1;
-	
-	lanzando = (estado_gral & 1);
-	estado_gral>>=1;
-	
-	disparando = (estado_gral & 1);
-	estado_gral>>=1;
-	
-	saltando = (estado_gral & 1);
-	//-----------------------------------------------------------------
-	*/
-	Entidad::setStateFromSnapshot(sn);
+	topeY = (real)sn.obtenerPropiedad(PROP_TOPEY)/1000;
 }
 
 //------------------------------------------------------------------
@@ -344,8 +319,3 @@ const Rectangulo Megaman::obtenerRepresentacion() const{
 bool Megaman::espejado() const{
 	return obtenerOrientacion()==izquierda;
 }
-/*
-Glib::RefPtr<Gdk::Pixbuf> Megaman::a_dibujar() const{
-	return Gdk::Pixbuf::create_from_file("imagenes/megaman/megaman quieto.png");
-}
-*/

@@ -269,6 +269,7 @@ void DetectarSuelo::EndContact(b2Contact * contacto)
 
 void DetectarBalistica::BeginContact(b2Contact * contacto)
 {
+	/*
 	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
@@ -293,6 +294,7 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 		if(disparo->perecedero())
 			disparo->obtenerMundo().eliminar(disparo);
 	}
+	* */
 }
 
 void DetectarTocarPowerUp::BeginContact(b2Contact * contacto)

@@ -11,8 +11,8 @@ class Bumby : public Enemigo
 {
 private:
 	Megaman *megaman;
-	real tiempo, reflejos;
-	bool quieto;
+	real tiempo, reflejos;//snapshotados
+	bool quieto;//snapshotado
 	Plasma arma;
 public:
 	Bumby(uint ID,

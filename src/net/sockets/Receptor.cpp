@@ -6,7 +6,8 @@
 #include <ctime>
 Receptor::Receptor(const ChannelSocket& chan):
 								channel(chan),
-								recibiendo(true){
+								recibiendo(true),
+								recepcion_sana(true){
 	start();
 }
 
@@ -50,6 +51,7 @@ Receptor::~Receptor(){
 }
 bool Receptor::setRecepcionRota(){
 	Lock l(m_recepcion_sana);
+	std::cout<<"La recepcion acaba de romperse"<<std::endl;
 	recepcion_sana = false;
 }
 bool Receptor::getRecepcionSana(){

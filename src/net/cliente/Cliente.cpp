@@ -24,9 +24,9 @@ void Cliente::correr(){
 	enviarID(emisor);
 	
 	while(obtenerPosicion()==-1){
-		//bloquear el hilo
+		//detener
 	}
-	std::cout<<"La posicion  que vino es: "<<obtenerPosicion()<<std::endl;
+	//std::cout<<"La posicion  que vino es: "<<obtenerPosicion()<<std::endl;
 	if(obtenerPosicion()>0){
 		std::cout<<"No sos el primero"<<std::endl;
 	}else{
@@ -52,7 +52,7 @@ void Cliente::correr(){
 	//------------------ACÁ SE LANZA LA VENTANA Y LOS COHETES----------//
 }
 void Cliente::conectarse(){
-	socket.connectTo("127.0.0.1",5003);
+	socket.connectTo("127.0.0.1",5001);
 }
 void Cliente::enviarID(const Emisor& emisor){
 	std::string id;
@@ -103,18 +103,12 @@ void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	Camara camara(mundo,b2Vec2(0,0),800,600);
 	ventana.setCamara(&camara);
 	
-	
-	
-	Jugador jugador(mundo.obtenerMegaman(posicion), ventana, emisor);
+	Jugador jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);
 	std::cout<<"Estan desconectados el snapshot cliente y snapshot servidor!!"<<std::endl;
-	//receptor.inyectarFullSnapshotsA(&mundo);////////////////////////DESCONECTÉ
+	//receptor.inyectarFullSnapshotsA(&mundo);
 	Simulador simulador(mundo,camara,33);
-	ventana.ejecutar();
-	receptor.inyectarFullSnapshotsA(NULL);////////esta!!!!!!!!!!!!
-	/*
-	ventana.start();//sencillo volar este Thread
-	ventana.join();
-	* */
+	ventana.ejecutar();//se lanza la ventana
+	receptor.inyectarFullSnapshotsA(NULL);
 }
 
 Cliente::Cliente(std::string n){

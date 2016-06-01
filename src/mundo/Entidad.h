@@ -11,9 +11,9 @@
 class Entidad : public Cuerpo, public Actualizable
 {
 private:
-	uint energia, energiaMaxima;
+	uint energia, energiaMaxima;//snapshoteados
 	Mundo &mundo;
-	bool muerta;
+	bool muerta;//snapshoteado
 public:
 	Entidad(uint ID, 
 			Mundo &mundo,

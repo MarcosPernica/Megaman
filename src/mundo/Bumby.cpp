@@ -89,18 +89,28 @@ void Bumby::actualizar(real deltaT)
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
-
+#define PROP_TIEMPO "tiempo"
+#define PROP_REFLEJOS "reflejos"
+#define PROP_QUIETO "quieto"
+/*
+real tiempo, reflejos;//snapshotados
+bool quieto;//snapshotado
+*/
 void Bumby::agregarPropiedadesASnapshot(Snapshot& sn){
-	//mis propiedades
-	Cuerpo::agregarPropiedadesASnapshot(sn);
+	sn.agregarPropiedad(PROP_TIEMPO,(int)(tiempo*1000));
+	sn.agregarPropiedad(PROP_REFLEJOS,(int)(reflejos*1000));
+	sn.agregarPropiedad(PROP_QUIETO,(int)quieto);
+	Enemigo::agregarPropiedadesASnapshot(sn);
 }
-void Bumby::setStateFromSnapshot(const Snapshot& snapshot){
-	//mis propiedades
-	Cuerpo::setStateFromSnapshot(snapshot);
+void Bumby::setStateFromSnapshot(const Snapshot& sn){
+	tiempo = (float)sn.obtenerPropiedad(PROP_TIEMPO)/1000;
+	reflejos = (float)sn.obtenerPropiedad(PROP_REFLEJOS)/1000;
+	quieto = (bool)sn.obtenerPropiedad(PROP_QUIETO);
+	Enemigo::setStateFromSnapshot(sn);
 }
 
 Bumby* Bumby::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	Bumby* p =new Bumby(sn.getID(),mundo,b2Vec2_zero,b2Vec2_zero);
+	Bumby* p = new Bumby(sn.getID(),mundo,b2Vec2_zero,b2Vec2_zero);
 	p->setStateFromSnapshot(sn);
 	return p;
 }

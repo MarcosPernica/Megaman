@@ -12,6 +12,7 @@ ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 
 
 void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
+	std::cout<<"estoy recibiendo un mensaje "<<tipo_mensaje<<std::endl;
 	if(tipo_mensaje==MENSAJE_ESTABA){
 		cliente.agregarEstaba(resto_mensaje);
 	}else if(tipo_mensaje==MENSAJE_LLEGA){

@@ -76,12 +76,18 @@ void Entidad::atacado(uint danio)
 	}
 		
 }
-#define PROP_ENERGIA "energia"
+#define PROP_ENERGIA 		"energia"
+#define PROP_ENERGIA_MAXIMA "energiaMaxima"
+#define PROP_MUERTA 		"muerta"
 void Entidad::agregarPropiedadesASnapshot(Snapshot& sn){
 	sn.agregarPropiedad(PROP_ENERGIA,(int)energia);
+	sn.agregarPropiedad(PROP_ENERGIA_MAXIMA,(int)energiaMaxima);
+	sn.agregarPropiedad(PROP_MUERTA,(int)muerta);
 	Cuerpo::agregarPropiedadesASnapshot(sn);
 }
 void Entidad::setStateFromSnapshot(const Snapshot& sn){
 	energia = (uint) sn.obtenerPropiedad(PROP_ENERGIA);
+	energiaMaxima = (uint) sn.obtenerPropiedad(PROP_ENERGIA_MAXIMA);
+	muerta = (bool) sn.obtenerPropiedad(PROP_MUERTA);
 	Cuerpo::setStateFromSnapshot(sn);
 }

@@ -17,18 +17,18 @@ private:
 	int contadorPiso;
 
 	/*Variable de estado.*/
-	char estadoSalto, estadoDisparo;
-	bool corriendo;
-	char tocandoIzquierda, tocandoDerecha;
-	uint escudo;
-	bool cubierto;
+	char estadoSalto, estadoDisparo;//snapshoteados
+	bool corriendo;//snapshoteado
+	char tocandoIzquierda, tocandoDerecha;//snapshoteados
+	uint escudo;//snapshoteado
+	bool cubierto;//snapshoteado
 
-	Disparo *arma;
-	b2Vec2 direccionDisparo;
+	Disparo *arma;//NO SNAPSHOTEADO
+	b2Vec2 direccionDisparo;//snapshoteado
 
-	bool powerUpMorir;
-	real velocidadSalto;
-	real velocidadCorrer;
+	bool powerUpMorir;//snapshoteado
+	real velocidadSalto;//snapshoteado
+	real velocidadCorrer;//snapshoteado
 public:
 	Enemigo(uint ID,
 			  Mundo &mundo,

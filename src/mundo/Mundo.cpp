@@ -444,16 +444,7 @@ void Mundo::inyectarSnapshot(FullSnapshot& fs){
 		agregarDesdeSnapshot(*(*itr));
 	}
 }
-/**
-#define TIPO_CUERPO 	1//"tipo_cuerpo"
-#define TIPO_ENTIDAD 	2//"tipo_entidad"
-#define TIPO_DISPARO 	3//"tipo_disparo"
-#define TIPO_BUMBY 		4//"tipo_bumby"
-#define TIPO_MEGAMAN 	5//"tipo_megaman"
-#define TIPO_POWERUP 	6//"tipo_powerup"
-#define TIPO_MET 		7//"tipo_met"
-#define TIPO_PROTEGIDO 	8//"tipo_protegido"
-* */
+
 void Mundo::agregarDesdeSnapshot(const Snapshot& sn){
 	switch(sn.getTipo()){
 		/*

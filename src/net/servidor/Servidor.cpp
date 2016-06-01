@@ -7,7 +7,7 @@
 #include "ContenedorProxies.h"
 
 void Servidor::conectar(){
-	accepter.open(5003,4);
+	accepter.open(5001,4);
 }
 void Servidor::correr(){
 	conectar();
@@ -25,7 +25,7 @@ void Servidor::correr(){
 		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
 	}
 	
-	SimuladorSinVentana sim(mundo,20,distribuidor);
+	SimuladorSinVentana sim(mundo,500,distribuidor);
 	sim.start();
 	std::cout<<"Ingresa cualquier cosa para matar el server sin avisarle a nadie"<<std::endl;
 	std::string listo;
@@ -58,6 +58,8 @@ ProxyJugador* Servidor::agregarJugadores(){
 				//nuevo->enviarNoSosPrimero();
 			}
 			nuevo->enviarPosicion(proxies.size());
+			sleep(1);
+			nuevo->enviarPosicion(proxies.size());//dos veces para asegurarme de que llegue
 			
 			nuevo->enviarListaJugadores(proxies);//se le envían los que ya estaban
 			notificarLlegada(nuevo);//se notifica a los que ya estaban

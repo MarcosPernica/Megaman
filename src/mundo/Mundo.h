@@ -38,10 +38,12 @@ private:
 	b2World mundo;
 
 	std::map<uint, Megaman*> megamanes;
+	std::map<uint, Enemigo*> enemigos;
+	
 	std::map<uint, Snapshotable*> snapshotables;
 	std::map<uint, Dibujable*> dibujables;
 	std::map<uint, Actualizable*> actualizables;
-	std::map<uint, Enemigo*> enemigos;
+	
 
 	std::list<CajaAccion*> controladores;
 	std::list<Interactuable*> zonas;

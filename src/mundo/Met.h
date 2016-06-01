@@ -11,10 +11,10 @@ class Met : public Enemigo
 {
 private:
 	Megaman *megaman;
-	real tiempo;
-	char estadoMet;
-	bool accionEjecutada;
-	Plasma arma;
+	real tiempo;//snapshoteado
+	char estadoMet;//snapshoteado
+	bool accionEjecutada;//snapshoteado
+	Plasma arma;//no lo puedo snapshotear
 public:
 	Met(uint ID,
 		Mundo &mundo,

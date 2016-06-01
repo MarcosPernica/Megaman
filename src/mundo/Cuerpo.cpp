@@ -188,6 +188,19 @@ void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, r
 	}
 }
 ////---------------------------snapshotable-----------------------------//
+
+/**
+ * 1- cada Snapshotable concreto tiene un getTipo() que devuelve un int /macro de 
+ * 		las definidas en Snapshotable.h.
+ * 	Además, tienen un desdeSnapshot() que llama el new y inyecta el snapshot or primera vez.
+ * 	Cuando llega un desconocido, Mundo mira su atributo tipo y decide qué objeto crear.
+ * 2- Por cada propiedad a snapshotar, se define una macro con su nombre, como se ve acá abajo
+ * 3- En agrtegarPropiedadASnapshot() seguís como patron lo que está abajo de todo, 
+ * 		todo se ransforma en int
+ * 4- Luego en setStateFromSnapshot hacés el camino inverso, como se ve ahí
+ * 
+ * SIEMPRE en agregarPropiedadesASnapshot y setStateFromSnapshot, hay que llamar al mismo método del padre antes!
+ * */
 #define PROP_POS_X "posX"
 #define PROP_POS_Y "posY"
 #define PROP_VEL_X "velX"

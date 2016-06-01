@@ -163,7 +163,7 @@ void ProxyJugador::enviarKeystrokesA(Megaman* a){
 }
 
 void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
-	//std::cout<<"--------------------------enviando fullsnapshot"<<std::endl;
+
 	const FSSerializada serializada = full_snapshot.serializar();
 	FSSerializada::const_iterator it;
 	

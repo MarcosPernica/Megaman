@@ -8,7 +8,7 @@
 
 /*Mira aca abajo, esta como escalo el mundo a pixeles. Se lee como 38px/m y esta basado en el ratio original de megaman*/
 
-#define FACTORAMPLIFICACIONVENTANA 2
+#define FACTORAMPLIFICACIONVENTANA 1
 #define FACTORCONVERSIONMPX (38.0*FACTORAMPLIFICACIONVENTANA)
 
 class Dibujable{

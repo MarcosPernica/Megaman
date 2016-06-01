@@ -22,22 +22,22 @@ private:
 		Disparo *arma;
 		char plasma;
 	};
-	std::vector<Arma> armas;
-	unsigned char armaSeleccionada;
+	std::vector<Arma> armas;//no puedo snapshotear vectores,si son 5 armas podemos hacer algo tipo Arma->representacionInt y Arma::desdeInt
+	unsigned char armaSeleccionada;//lo snaphoteo cuando tenga las armas
 
-	uint vidas;
+	uint vidas;//snapshoteado
 
 	/*Algebra de colisiones*/
-	int puedeSaltar;
-	int puedeSubir;
+	int puedeSaltar;//snapshoteado
+	int puedeSubir;//snapshoteado
 
 	/*Variable de estado.*/
-	char estadoSalto, estadoDisparo, estadoEscalado;
-	bool corriendo;
+	char estadoSalto, estadoDisparo, estadoEscalado;//snapshoteado
+	bool corriendo;//snapshoteado
 
 	/*Posicion X de la que megaman puede agarrarse.*/
-	real agarreX;
-	real topeY;	
+	real agarreX;//snapshoteado
+	real topeY;	//snapshoteado
 public:
 	Megaman(uint ID,
 			Mundo &mundo,
