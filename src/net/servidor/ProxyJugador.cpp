@@ -37,51 +37,50 @@ void ProxyJugador::notificarEstaba(ProxyJugador* jugador){
 
 void ProxyJugador::ejecutarControlSobreMegaman(){
 	Lock l(m_controles_recibidos);
-	
-	if(controles_recibidos.size()==0) return;
-	
-	std::string tipo_mensaje = controles_recibidos.front();
-	controles_recibidos.pop();
-	
-	if(controlado != NULL){
-		if(tipo_mensaje == MENSAJE_KEY_1){
-			controlado->seleccionarArma(1);
-		}else if(tipo_mensaje == MENSAJE_KEY_2){
-			controlado->seleccionarArma(2);
-		}else if(tipo_mensaje == MENSAJE_KEY_3){
-			controlado->seleccionarArma(3);
-		}else if(tipo_mensaje == MENSAJE_KEY_4){
-			controlado->seleccionarArma(4);
-		}else if(tipo_mensaje == MENSAJE_KEY_5){
-			controlado->seleccionarArma(5);
-		}else if(tipo_mensaje == MENSAJE_KEY_Z){
-			controlado->saltar();
-			std::cout<<"Z!"<<std::endl;
-		}else if(tipo_mensaje == MENSAJE_KEY_X){
-			controlado->disparar();
-			//std::cout<<"X!"<<std::endl;
-		}else if(tipo_mensaje == MENSAJE_KEY_UP){
-			controlado->subirEscalera();
-			//std::cout<<"UP!"<<std::endl;
-		}else if(tipo_mensaje == MENSAJE_KEY_DN){
-			controlado->bajarEscalera();
-			//std::cout<<"DN!"<<std::endl;
-		}else if(tipo_mensaje == MENSAJE_KEY_RIGHT){
-			controlado->mirarDerecha();
-			controlado->correr();
-			std::cout<<"right!"<<std::endl;
-		}else if(tipo_mensaje == MENSAJE_KEY_LEFT){
-			controlado->mirarIzquierda();
-			controlado->correr();
-			std::cout<<"left!"<<std::endl;
-		}else if(tipo_mensaje == MENSAJE_KEY_UP_LIBERADA){
-			controlado->pararMovimientoEscalera();
-		}else if(tipo_mensaje == MENSAJE_KEY_DN_LIBERADA){
-			controlado->pararMovimientoEscalera();
-		}else if(tipo_mensaje == MENSAJE_KEY_RIGHT_LIBERADA){
-			controlado->dejarCorrer();
-		}else if(tipo_mensaje == MENSAJE_KEY_LEFT_LIBERADA){
-			controlado->dejarCorrer();
+	while(controles_recibidos.size()!=0){
+		std::string tipo_mensaje = controles_recibidos.front();
+		controles_recibidos.pop();
+		
+		if(controlado != NULL){
+			if(tipo_mensaje == MENSAJE_KEY_1){
+				controlado->seleccionarArma(1);
+			}else if(tipo_mensaje == MENSAJE_KEY_2){
+				controlado->seleccionarArma(2);
+			}else if(tipo_mensaje == MENSAJE_KEY_3){
+				controlado->seleccionarArma(3);
+			}else if(tipo_mensaje == MENSAJE_KEY_4){
+				controlado->seleccionarArma(4);
+			}else if(tipo_mensaje == MENSAJE_KEY_5){
+				controlado->seleccionarArma(5);
+			}else if(tipo_mensaje == MENSAJE_KEY_Z){
+				controlado->saltar();
+				std::cout<<"Z!"<<std::endl;
+			}else if(tipo_mensaje == MENSAJE_KEY_X){
+				controlado->disparar();
+				//std::cout<<"X!"<<std::endl;
+			}else if(tipo_mensaje == MENSAJE_KEY_UP){
+				controlado->subirEscalera();
+				//std::cout<<"UP!"<<std::endl;
+			}else if(tipo_mensaje == MENSAJE_KEY_DN){
+				controlado->bajarEscalera();
+				//std::cout<<"DN!"<<std::endl;
+			}else if(tipo_mensaje == MENSAJE_KEY_RIGHT){
+				controlado->mirarDerecha();
+				controlado->correr();
+				std::cout<<"right!"<<std::endl;
+			}else if(tipo_mensaje == MENSAJE_KEY_LEFT){
+				controlado->mirarIzquierda();
+				controlado->correr();
+				std::cout<<"left!"<<std::endl;
+			}else if(tipo_mensaje == MENSAJE_KEY_UP_LIBERADA){
+				controlado->pararMovimientoEscalera();
+			}else if(tipo_mensaje == MENSAJE_KEY_DN_LIBERADA){
+				controlado->pararMovimientoEscalera();
+			}else if(tipo_mensaje == MENSAJE_KEY_RIGHT_LIBERADA){
+				controlado->dejarCorrer();
+			}else if(tipo_mensaje == MENSAJE_KEY_LEFT_LIBERADA){
+				controlado->dejarCorrer();
+			}
 		}
 	}
 }
@@ -97,6 +96,7 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 	}else if(controlado != NULL){
 		Lock l(m_controles_recibidos);
 		controles_recibidos.push(tipo_mensaje);
+		std::cout<<"Llegó un mensaje: "<<tipo_mensaje<<std::endl;
 	}
 }
 
@@ -169,7 +169,7 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	
 	Buffer buf1 = Buffer::createString(std::string(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT)+"\n");
 	channel->sendFixed(buf1);
-	
+	//std::cout<<"-----------ENVIANDO  FULL SNAPSHOT------------"<<std::endl;
 	for(it = serializada.begin(); it!=serializada.end(); ++it){
 		Buffer buf2 = Buffer::createString(std::string(MENSAJE_ENVIO_SNAPSHOT)+" " + (*it) + "\n");
 		channel->sendFixed(buf2);

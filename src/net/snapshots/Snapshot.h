@@ -9,8 +9,8 @@ class Disparo;
 
 #define PROP_TIPO "tipo"
 
-#define SN_AGREGAR_PROPIEDAD(variable) sn.agregarPropiedad("variable", variable)
-#define SN_OBTENER_PROPIEDAD(variable) sn.obtenerPropiedad("variable", variable)
+#define SN_AGREGAR_PROPIEDAD(variable) sn.agregarPropiedad(#variable, variable)
+#define SN_OBTENER_PROPIEDAD(variable) sn.obtenerPropiedad(#variable, variable)
 
 //typedef uint ID;
 typedef std::string SnapshotSerializada;

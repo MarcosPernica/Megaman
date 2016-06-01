@@ -4,6 +4,18 @@ class Snapshot;
 class Mundo;
 #include "../../mundo/Definiciones.h"
 
+
+/**
+ * CÓMO SE AGREGA UN SNAPSHOTABLE?
+ * 1-acá se agrega TIPO_NombreClase
+ * 2-en la clase en vez de definir getTipo poné GENERAR_GET_TIPO(NombreClase)
+ * 3-en Mundo, donde está el switch, en agregarDesdeSnapshot, agregá adentro del switch GENERAR_CASE_AGREGAR(NombreClase)
+ * 4-la clase tiene que tener un generarDesdeSnapshot como las demás. 
+ * 	 En algunos casos la genero con una macro pero no siempre es igual así que eso es más a mano.
+ * 5-Para ver cómo snapshotear, mirá Cuerpo.cpp que actualicé la explicación pero es re sencillo.
+ * 	(de hecho, Cuerpo es un mal ejemplo, la idea es tocar directamente los atributos de clase [que se hace 
+ * en casi todos los otros casos]pero en Cuerpo se muestra cómo puentear eso)
+ * */
 #define TIPO_CUERPO 	1//"tipo_cuerpo" habría que volarlos...
 #define TIPO_ENTIDAD 	2//"tipo_entidad"
 //#define TIPO_DISPARO 	3//"tipo_disparo"

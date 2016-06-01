@@ -12,7 +12,7 @@ ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 
 
 void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	std::cout<<"estoy recibiendo un mensaje "<<tipo_mensaje<<std::endl;
+	//std::cout<<"estoy recibiendo un mensaje "<<tipo_mensaje<<std::endl;
 	if(tipo_mensaje==MENSAJE_ESTABA){
 		cliente.agregarEstaba(resto_mensaje);
 	}else if(tipo_mensaje==MENSAJE_LLEGA){
@@ -42,7 +42,7 @@ void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std:
 				std::cout<<*it<<std::endl;
 			}
 			std::cout<<"--------------finfs recibida"<<std::endl;
-			* */
+			*/
 			a_punto_de_inyectar = FullSnapshot::desdeSerializada(recibidas);
 			Glib::signal_idle().connect(sigc::mem_fun(*this, &ReceptorCliente::onInyectar));
 			//a_punto_de_inyectar.mostrar();

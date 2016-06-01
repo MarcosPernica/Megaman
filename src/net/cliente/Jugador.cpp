@@ -15,7 +15,7 @@ Jugador::Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emi):
 }
 
 bool Jugador::detectarPresionTecla(GdkEventKey* evento){
-	if(!controlado->estaMuerta())
+	//if(!controlado->estaMuerta()) NO ME PASABA POR ESTA CONDICIÓN NO ESTOY SEGURO POR QUÉ
 	{
 		switch(evento->keyval)
 		{
@@ -83,6 +83,7 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 			}
 			case GDK_KEY_z:
 			{
+				std::cout<<"llegué a hacer que salte Megaman!"<<std::endl;
 				emisor.enviar(MENSAJE_KEY_Z);
 				controlado->saltar();
 				break;		

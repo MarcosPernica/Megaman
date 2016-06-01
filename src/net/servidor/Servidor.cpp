@@ -25,7 +25,7 @@ void Servidor::correr(){
 		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
 	}
 	
-	SimuladorSinVentana sim(mundo,500,distribuidor);
+	SimuladorSinVentana sim(mundo,30,distribuidor);
 	sim.start();
 	std::cout<<"Ingresa cualquier cosa para matar el server sin avisarle a nadie"<<std::endl;
 	std::string listo;

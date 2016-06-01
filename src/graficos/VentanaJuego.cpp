@@ -5,7 +5,6 @@
 
 //-------------
 #include <cairomm/context.h>
-//#include <giomm/resource.h>
 #include <gdkmm/general.h> // set_source_pixbuf()
 #include <glibmm/fileutils.h>
 #include <iostream>

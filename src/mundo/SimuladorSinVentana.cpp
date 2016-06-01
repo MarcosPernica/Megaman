@@ -2,6 +2,10 @@
 #include <ctime>
 #include "../common/Lock.h"
 #include <iostream>
+#include <unistd.h>
+
+#define _POSIX_C_SOURCE 200809L
+
 void SimuladorSinVentana::run()
 {
 	FullSnapshot a_distribuir;
@@ -12,7 +16,7 @@ void SimuladorSinVentana::run()
 	}
 	*/
 	
-	
+	/*
 	while(getContinuar()){
 		time_t t_inicial=clock();
 		time_t t_final=t_inicial;
@@ -23,8 +27,28 @@ void SimuladorSinVentana::run()
 		mundo.actualizar(segundosPorActualizacion);
 		mundo.obtenerSnapshot(a_distribuir);
 		contenedor.distribuir(a_distribuir);
-		std::cout<<"Distribuí el snapshot"<<std::endl;
 		
+	}
+	*/
+	float segs_dormi_extra = 0;
+	while(getContinuar()){
+		time_t t_inicial = clock();
+		
+		contenedor.ejecutarControlesSobreMegaman();
+		mundo.actualizar(segundosPorActualizacion);
+		mundo.obtenerSnapshot(a_distribuir);
+		contenedor.distribuir(a_distribuir);
+		
+		time_t t_despues_de_computos = clock();
+		float segs_computando = ((float)(t_despues_de_computos-t_inicial))/CLOCKS_PER_SEC;
+		float segs_a_dormir = segundosPorActualizacion - segs_computando - segs_dormi_extra;
+		
+		usleep((useconds_t)(segs_a_dormir * 1000000));
+		
+		time_t t_despues_de_dormir = clock();
+		
+		float segs_que_dormi = ((float)(t_despues_de_dormir-t_despues_de_computos))/CLOCKS_PER_SEC;
+		segs_dormi_extra = segs_que_dormi-segs_a_dormir;
 	}
 	
 	std::cout<<"Chau Simulador sin ventana"<<std::endl;

@@ -84,15 +84,15 @@ void Snapshot::obtenerPropiedad(const std::string& nombre, bool& ponerEn) const{
 //-------------------real--------------------------------//
 void Snapshot::agregarPropiedad(const std::string& nombre, real valor){
 	int post = (int) (valor*1000);
-	if(valor!=0)
-	std::cout<<"AGREGAR: Entra: "<<valor<<" sale: "<<post<<std::endl;
+	//if(valor!=0)
+	//std::cout<<"AGREGAR: Entra: "<<valor<<" sale: "<<post<<std::endl;
 	agregarPropiedad(nombre,post);
 }
 void Snapshot::obtenerPropiedad(const std::string& nombre, real& ponerEn) const{
 	int prop = obtenerPropiedad(nombre);
 	ponerEn = ((float)prop)/1000;
-	if(prop!=0)
-	std::cout<<"OBTENER: Entra: "<<prop<<" sale: "<<ponerEn<<std::endl;
+	//if(prop!=0)
+	//std::cout<<"OBTENER: Entra: "<<prop<<" sale: "<<ponerEn<<std::endl;
 }
 //-------------------char--------------------------------//
 void Snapshot::agregarPropiedad(const std::string& nombre, char valor){
