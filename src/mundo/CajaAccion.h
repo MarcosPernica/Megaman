@@ -40,6 +40,7 @@ public:
 
 	virtual ~CajaAccion(){};
 	ushort tipoCuerpo() const;
+	void eliminarse(Mundo &de){};
 
 	virtual void actualizar(real deltaT){};
 };

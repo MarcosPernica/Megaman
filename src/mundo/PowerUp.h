@@ -40,6 +40,7 @@ public:
 	void actualizar(real deltaT){};
 	virtual void aumentar(Megaman &megaman) = 0;
 	
+	void eliminarse(Mundo& de);
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };

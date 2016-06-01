@@ -62,12 +62,4 @@ void Camara::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr)
 
 	while(i != dibujables.end())
 		(*i++)->dibujarEn(cr, posicion, 1);
-		
-	Dibujable::dibujarRectangulo(cr,
-						Dibujable::mundoARender(posicion),
-						1,
-						Dibujable::mundoARender(b2Vec2(6.5,0)),
-						1,
-						600
-						);
 }

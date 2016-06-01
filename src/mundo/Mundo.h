@@ -6,6 +6,7 @@
 #include "Definiciones.h"
 #include "Callbacks.h"
 #include "Cadena.h"
+#include <string>
 
 #include "Megaman.h"
 #include "PowerUp.h"
@@ -25,35 +26,51 @@ class CajaAccion;
 class Interactuable;
 class Enemigo;
 
-	/*
-	 * Marcos, qué te parece si hacemos
-	 * Megaman* Mundo::agregarMegaman(id_usuario)
-	 * y después se llama
-	 * mundo.iniciar() o algo así
-	 * */
+enum EstadoMundo
+{
+	vivo,
+	gameover,
+	ganado,
+	perdido	
+};
+
 class Mundo
 {
 private:
+
+	enum Categoria
+	{
+		enemigo,
+		powerUp,
+		disparo
+	};
+
+	struct DatosEliminacion
+	{
+		uint ID;
+		Categoria categoria;
+		DatosEliminacion(uint ID, Categoria categoria) : ID(ID), categoria(categoria){};
+	};
+
 	ListenerColisiones listenerColisiones;
 	b2World mundo;
 
 	std::map<uint, Megaman*> megamanes;
 	std::map<uint, Enemigo*> enemigos;
-	
-	std::map<uint, Snapshotable*> snapshotables;
-	std::map<uint, Dibujable*> dibujables;
-	std::map<uint, Actualizable*> actualizables;
+	std::map<uint, PowerUp*> powerUps;
+	std::map<uint, Disparo*> disparos;
 	
 
 	std::list<CajaAccion*> controladores;
 	std::list<Interactuable*> zonas;
 	std::list<Construccion*> construcciones;
 	std::list<Callback*> tareasDiferidas;
-	std::list<uint> destrucciones;
+	std::list<DatosEliminacion> destrucciones;
+
+	bool terminado;
 	
 	void cargarNivel(Cadena nombre);
 public:
-	/*Paleativo del server*/
 	uint generarID(){static uint ID = 0; return ++ID;};
 
 	Mundo();
@@ -62,13 +79,19 @@ public:
 	Enemigo *obtenerEnemigoCercano(const b2Vec2 posicion);
 	void danarZona(b2AABB zona, uint dano);
 
-	void eliminar(Cuerpo *cuerpo);
+	void eliminar(Enemigo * enemigo);
+	void eliminar(PowerUp * powerUp);
+	void eliminar(Disparo * disparo);
 
 	void agregar(Disparo * disparo);
 	void agregar(PowerUp * powerUp);
 	void agregar(Enemigo * enemigo);
 
-	void agregarConstruccion(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboMadera(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboMetal(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboLadrillo(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboTierra(real ancho, real alto, b2Vec2 posicion);
+	void agregarPuas(real ancho, real alto, b2Vec2 posicion);
 	void agregarEscalera(real alto, b2Vec2 posicion);
 	Megaman *agregarMegaman(b2Vec2 posicion);
 	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
@@ -99,6 +122,10 @@ public:
 
 	std::list<Megaman *> obtenerMegamanes();
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
+
+	bool finalizarMundo();
+	EstadoMundo obtenerEstadoMundo();
+
 	
 	/**
 	 * Genera un FullSnapshot, lo asigna a la variable en, con lo que se
@@ -128,6 +155,11 @@ public:
 	 * este numero se distribuye
 	 * */
 	Megaman* obtenerMegaman(uint posicion);
+	void obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa);
+
+private:
+	void actualizarCuerpos(real deltaT);
+	void obtenerAtributosXML(TiXmlAttribute *atributo, std::map<std::string,real>& mapaAtributos);
 };
 
 #endif

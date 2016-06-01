@@ -59,6 +59,7 @@ void Entidad::recuperarEnergia(uint cantidadEnergia)
 
 void Entidad::alMorir()
 {
+	eliminarse(obtenerMundo());
 }
 
 void Entidad::atacado(uint danio)
@@ -69,12 +70,10 @@ void Entidad::atacado(uint danio)
 	if (danio < energia)
 		energia -= danio;
 	else
-	{
-		alMorir();
+	{	
 		muerta = true;
-		obtenerMundo().eliminar(this);
-	}
-		
+		alMorir();
+	}		
 }
 #define PROP_ENERGIA 		"energia"
 #define PROP_ENERGIA_MAXIMA "energiaMaxima"

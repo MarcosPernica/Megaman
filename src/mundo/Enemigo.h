@@ -80,6 +80,7 @@ public:
 	real numeroAleatorio(real desde, real hasta);
 	void actualizar(real deltaT);	
 
+	void eliminarse(Mundo& de);
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	virtual int getTipo(){return TIPO_PROTEGIDO;};

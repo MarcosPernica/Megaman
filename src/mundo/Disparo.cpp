@@ -8,7 +8,18 @@
 
 void Disparo::actualizar(real DeltaT)
 {
+}
 
+void Disparo::alColisionar(Cuerpo *cuerpo)
+{
+	if(cuerpo->tipoCuerpo() == PERSONAJES || cuerpo->tipoCuerpo() == ENEMIGOS)
+		((Entidad*)cuerpo)->atacado(dano);
+	eliminarse(obtenerMundo());
+}
+
+void Disparo::eliminarse(Mundo& de)
+{
+	de.eliminar(this);
 }
 
 bool Disparo::lanzable()
@@ -51,11 +62,6 @@ Disparo::Disparo(uint ID, Mundo &mundo,
 {
 }
 
-bool Disparo::perecedero()
-{
-	return true;
-}
-
 bool Disparo::danar(Entidad *entidad)
 {
 	entidad->atacado(dano);
@@ -82,11 +88,6 @@ Bomba::Bomba(uint ID,
 }
 
 bool Bomba::danar(Entidad * entidad)
-{
-	return false;
-}
-
-bool Bomba::perecedero()
 {
 	return false;
 }
@@ -197,19 +198,25 @@ Anillo::Anillo(uint ID,
 					   categoriaTarget,
 					   posicion,
 				       false,
-		               velocidad)
+		               velocidad),
+			       tiempo(TIEMPOANILLO)
 {
 	modificarRestitucion(1);
 }
 
-bool Anillo::perecedero()
+void Anillo::alColisionar(Cuerpo *cuerpo)
 {
-	return false;
+	if(cuerpo->tipoCuerpo() == PERSONAJES || cuerpo->tipoCuerpo() == ENEMIGOS)
+		danar((Entidad*)cuerpo);
 }
 
 void Anillo::actualizar(real deltaT)
 {
+	tiempo -= deltaT;
 	aplicarImpulso(b2Vec2(0,-0.2));
+
+	if(deltaT <= 0)
+		eliminarse(obtenerMundo());
 }
 
 uint Anillo::obtenerMultiplicadorVelocidad() const

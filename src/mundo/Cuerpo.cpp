@@ -229,7 +229,3 @@ void Cuerpo::setStateFromSnapshot(const Snapshot& sn){
 	modificarVelocidad(b2Vec2(vx,vy));
 	modificarOrientacion(o);
 }
-
-void Cuerpo::eliminarse(Mundo& de){
-	de.eliminar(this);
-}

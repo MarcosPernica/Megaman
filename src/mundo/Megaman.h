@@ -34,6 +34,7 @@ private:
 	/*Variable de estado.*/
 	char estadoSalto, estadoDisparo, estadoEscalado;//snapshoteado
 	bool corriendo;//snapshoteado
+	real tiempoInmunidad;
 
 	/*Posicion X de la que megaman puede agarrarse.*/
 	real agarreX;//snapshoteado
@@ -67,19 +68,22 @@ public:
 	void aumentarVida();
 	void recuperarPlasma(int cantidadPlasma);
 	char obtenerCantidadPlasma();
+	uint obtenerCantidadVidas();
+	void atacado(uint dano);
 
 	ushort tipoCuerpo() const;
 
 	void actualizar(real deltaT);
 
 	void agregarArma(Disparo *disparom, uint cantidadPlasma);
+	void alMorir();
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	virtual int  getTipo(){return TIPO_MEGAMAN;};
 
-		virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-		Imagen::dibujarEn(cr,origen,factorAmplificacion);
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);
 	}
 	/**
 	 * Devuelve el rectángulo en unidades de render
@@ -89,6 +93,7 @@ public:
 	virtual bool espejado() const;
 	
 	//virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar() const;
+	void eliminarse(Mundo& de){};
 };
 
 #endif

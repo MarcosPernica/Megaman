@@ -8,4 +8,4 @@ mkdir build/net/snapshots
 mkdir build/net/servidor
 mkdir build/net/cliente
 mkdir build/graficos
-make
+make -f Makefile posta

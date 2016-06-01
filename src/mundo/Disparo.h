@@ -28,14 +28,15 @@ public:
 
 	virtual bool danar(Entidad *entidad);
 	virtual void actualizar(real deltaT);
+	virtual void alColisionar(Cuerpo *cuerpo);
 	~Disparo(){};
 
 	/*Un disparo puede lanzarse (Bomba o bumerang) o dispararse (Plasma)*/
 	virtual bool lanzable();
-	virtual bool perecedero();
 	virtual uint obtenerMultiplicadorVelocidad() const = 0;
 	ushort tipoCuerpo() const;
 	ushort obtenerCategoriaTarget();
+	void eliminarse(Mundo& de);
 
 	virtual Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad) = 0;
 };
@@ -82,7 +83,7 @@ public:
 class Anillo : public Disparo
 {
 private:
-	
+	real tiempo;
 public:
 	Anillo(uint ID, 
 		   Mundo &mundo, 
@@ -91,9 +92,9 @@ public:
 		   const b2Vec2 &velocidad = b2Vec2_zero);
 	~Anillo(){};
 
-	bool perecedero();
 	uint obtenerMultiplicadorVelocidad() const;
 	void actualizar(real deltaT);
+	void alColisionar(Cuerpo *cuerpo);
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 };
@@ -142,10 +143,10 @@ public:
 	~Bomba(){};
 	bool danar(Entidad *entidad);
 	void actualizar(real deltaT);
-	bool perecedero();
 	uint obtenerMultiplicadorVelocidad() const;
 
 	bool lanzable();
+	void alColisionar(){};
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);

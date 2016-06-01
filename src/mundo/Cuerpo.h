@@ -83,7 +83,7 @@ public:
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	virtual int getTipo() const {return TIPO_CUERPO;};
-	virtual void eliminarse(Mundo& de);
+	virtual void eliminarse(Mundo& de) = 0;
 };
 
 #endif

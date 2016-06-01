@@ -11,17 +11,21 @@
 #include "../../mundo/Simulador.h"
 #include "Jugador.h"
 #include "../../common/exceptions.h"
+#include "Debug.h"
 
 //Cliente::Cliente(){}
 void Cliente::correr(){
 	posicion=-1;
 	flag_iniciado=false;
 	
+	
 	conectarse();
 	
 	ReceptorCliente receptor(socket,*this);
 	Emisor emisor(socket);
 	enviarID(emisor);
+
+	#ifndef DEBUG
 	
 	while(obtenerPosicion()==-1){
 		//detener
@@ -45,14 +49,18 @@ void Cliente::correr(){
 	while(!iniciado()){//ahora, seas segundo o primero, te bloqueo hasta que recibis el iniciar
 		//detener este hilo
 	}
-	
-	
+
+	#endif
+
 	std::cout<<"Se lanza la partida y la ventana aca!"<<std::endl;	
 	iniciarVentana(emisor, receptor);
 	//------------------ACÁ SE LANZA LA VENTANA Y LOS COHETES----------//
+	
 }
 void Cliente::conectarse(){
+	#ifndef DEBUG
 	socket.connectTo("127.0.0.1",5001);
+	#endif
 }
 void Cliente::enviarID(const Emisor& emisor){
 	std::string id;
@@ -82,8 +90,12 @@ void Cliente::definirPosicion(int pos){
 	posicion = pos;
 }
 int Cliente::obtenerPosicion(){
+	#ifndef DEBUG
 	Lock l(m_posicion);
 	return posicion;
+	#else
+	return 0;
+	#endif
 }
 void Cliente::iniciar(){
 	Lock l(m_iniciado);
@@ -104,7 +116,6 @@ void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	ventana.setCamara(&camara);
 	
 	Jugador jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);
-	std::cout<<"Estan desconectados el snapshot cliente y snapshot servidor!!"<<std::endl;
 	//receptor.inyectarFullSnapshotsA(&mundo);
 	Simulador simulador(mundo,camara,33);
 	ventana.ejecutar();//se lanza la ventana

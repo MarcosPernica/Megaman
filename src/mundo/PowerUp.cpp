@@ -135,6 +135,11 @@ PowerUp::PowerUp(uint ID, Mundo &mundo,
 	this->probabilidadAparicion = probabilidadAparicion;
 }
 
+void PowerUp::eliminarse(Mundo& de)
+{
+	de.eliminar(this);
+}
+
 ushort PowerUp::tipoCuerpo() const
 {
 	return POWERUPS;

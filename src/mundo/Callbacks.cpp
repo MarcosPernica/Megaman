@@ -269,7 +269,7 @@ void DetectarSuelo::EndContact(b2Contact * contacto)
 
 void DetectarBalistica::BeginContact(b2Contact * contacto)
 {
-	/*
+	
 	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
@@ -277,24 +277,16 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 	{
 		Disparo *disparo = (Disparo*)datosA->cuerpo;
 		
-		if (datosB->cuerpo->tipoCuerpo() != CONSTRUCCIONES)
-			disparo->danar((Entidad*)datosB->cuerpo);
-
-		if(disparo->perecedero())
-			disparo->obtenerMundo().eliminar(disparo);
+		disparo->alColisionar(datosB->cuerpo);
 	}
 
 	if (datosB->cuerpo->tipoCuerpo() == DISPAROS)
 	{
 		Disparo *disparo = (Disparo*)datosB->cuerpo;
 
-		if (datosA->cuerpo->tipoCuerpo() != CONSTRUCCIONES)
-			disparo->danar((Entidad*)datosA->cuerpo);
-
-		if(disparo->perecedero())
-			disparo->obtenerMundo().eliminar(disparo);
+		disparo->alColisionar(datosA->cuerpo);
 	}
-	* */
+	
 }
 
 void DetectarTocarPowerUp::BeginContact(b2Contact * contacto)
@@ -347,13 +339,13 @@ void DetectarTocarEnemigos::BeginContact(b2Contact * contacto)
 	DatosColisionCuerpo *datosA = (DatosColisionCuerpo*)contacto->GetFixtureA()->GetUserData();
 	DatosColisionCuerpo *datosB = (DatosColisionCuerpo*)contacto->GetFixtureB()->GetUserData();
 
-	if (datosA->cuerpo->tipoCuerpo() == PERSONAJES && datosB->cuerpo->tipoCuerpo() == ENEMIGOS)
+	if (datosA->cuerpo->tipoCuerpo() == PERSONAJES && datosB->cuerpo->tipoCuerpo() == AURAENEMIGOS)
 	{
 		Megaman *megaman = (Megaman*)datosA->cuerpo;
 		megaman->atacado(DANOPORCONTACTO);
 	}
 	
-	if (datosB->cuerpo->tipoCuerpo() == PERSONAJES && datosA->cuerpo->tipoCuerpo() == ENEMIGOS)
+	if (datosB->cuerpo->tipoCuerpo() == PERSONAJES && datosA->cuerpo->tipoCuerpo() == AURAENEMIGOS)
 	{
 		
 		Megaman *megaman = (Megaman*)datosB->cuerpo;

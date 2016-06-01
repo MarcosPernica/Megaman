@@ -8,19 +8,59 @@
 #include "../net/snapshots/FullSnapshot.h"
 #include "Enemigo.h"
 #include "PowerUp.h"
+#include "Puas.h"
 #include "Cadena.h"
 #include "../common/exceptions.h"
-
 #include <tinyxml.h>
+
+#define MUNDOVIVO 0
+#define MUNDOTERMINADO 1
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
-Mundo::Mundo() : mundo(gravedad)
+Mundo::Mundo() : mundo(gravedad), terminado(false)
 {
 	Cadena nombre("nivel.xml");
 	mundo.SetContactListener(&listenerColisiones);
 
 	cargarNivel(nombre);	
+}
+
+bool Mundo::finalizarMundo()
+{
+	terminado = true;
+}
+
+EstadoMundo Mundo::obtenerEstadoMundo()
+{
+	if(terminado)
+		return ganado;
+
+	bool muertos = true;
+
+	std::map<uint, Megaman*>::const_iterator i = megamanes.begin();
+
+	while(i != megamanes.end())
+		muertos |= i->second->estaMuerta();
+
+	if(muertos)
+	{
+		if(!megamanes.begin()->second->obtenerCantidadVidas())
+			return gameover;
+		else
+			return perdido;
+	}
+	else
+		vivo;
+}
+
+void Mundo::obtenerAtributosXML(TiXmlAttribute *atributo, std::map<std::string,real>& mapaAtributos)
+{
+	while(atributo)
+	{
+		mapaAtributos[atributo->Name()] = atributo->DoubleValue();		
+		atributo = atributo->Next();
+	}
 }
 
 void Mundo::cargarNivel(Cadena nombre){
@@ -29,61 +69,41 @@ void Mundo::cargarNivel(Cadena nombre){
 	if(!doc.LoadFile())
 		exit(0); //Poner excepcion
 
-
-	struct DatosXML
-	{
-		real ancho, alto, x, y;
-	};
-
-	TiXmlElement *pRoot = doc.RootElement();
-    	TiXmlElement *elemento = pRoot->FirstChildElement();
+    	TiXmlElement *elemento = doc.RootElement()->FirstChildElement();
    	while(elemento)
     	{
-		DatosXML dat;
+		std::map<std::string,real> atributos;
+		obtenerAtributosXML(elemento->FirstAttribute(), atributos);
 
-		TiXmlAttribute *attr = elemento->FirstAttribute();
-		while(attr)
-		{
-			if(Cadena(attr->Name()) == "ancho")
-				dat.ancho = attr->DoubleValue();
-			else if(Cadena(attr->Name()) == "alto")
-				dat.alto = attr->DoubleValue();
-			else if(Cadena(attr->Name()) == "x")
-				dat.x = attr->DoubleValue();
-			else if(Cadena(attr->Name()) == "y")
-				dat.y = attr->DoubleValue();
-			attr = attr->Next();
-		}
-
-       		if(elemento->ValueStr() == "Construccion")
-			agregarConstruccion(dat.ancho,dat.alto,b2Vec2(dat.x,dat.y));
+       		if(elemento->ValueStr() == "CuboMadera")
+			agregarCuboMadera(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "CuboMetal")
+			agregarCuboMetal(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "CuboLadrillo")
+			agregarCuboLadrillo(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "CuboTierra")
+			agregarCuboTierra(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "ZonaMortal")
+			agregarZonaMortal(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "ZonaTransporte")
+			agregarZonaTransporte(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]),b2Vec2(atributos["destX"],atributos["destY"]));
+		else if(elemento->ValueStr() == "Puas")
+			agregarPuas(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Escalera")
-			agregarEscalera(dat.alto,b2Vec2(dat.x,dat.y));
+			agregarEscalera(atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
     		else if(elemento->ValueStr() == "Megaman")
-			agregarMegaman(b2Vec2(dat.x,dat.y));
+			agregarMegaman(b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Met")
-			agregarZonaSpawnMet(b2Vec2(dat.x,dat.y));
+			agregarZonaSpawnMet(b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Bumby")
-			agregarZonaSpawnBumby(b2Vec2(dat.x,dat.y));
+			agregarZonaSpawnBumby(b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Sniper")
-			agregarZonaSpawnSniper(b2Vec2(dat.x,dat.y));
+			agregarZonaSpawnSniper(b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "JumpingSniper")
-			agregarZonaSpawnJumpingSniper(b2Vec2(dat.x,dat.y));
-
+			agregarZonaSpawnJumpingSniper(b2Vec2(atributos["x"], atributos["y"]));
 
        		elemento = elemento->NextSiblingElement();
     	}
-
-		
-
-	
-
-	/*agregarMegaman(b2Vec2(7,3));
-	agregarZonaSpawnBombman(b2Vec2(6,3));
-	agregarConstruccion(12,1,b2Vec2(6,0.5));
-	agregarConstruccion(1,7,b2Vec2(11.5,4.5));
-	agregarConstruccion(11,1,b2Vec2(5.5,7.5));
-	agregarConstruccion(1,6,b2Vec2(0.5,4));*/
 }
 
 b2World & Mundo::obtenerMundo()
@@ -139,38 +159,61 @@ void Mundo::danarZona(b2AABB zona, uint dano)
 	mundo.QueryAABB(&danoRadio, zona);
 }
 
-void Mundo::eliminar(Cuerpo * cuerpo)
+void Mundo::eliminar(Enemigo * elemento)
 {
-	if (snapshotables.find(cuerpo->obtenerID()) != snapshotables.end() || megamanes.find(cuerpo->obtenerID()) != megamanes.end())
-		destrucciones.push_back(cuerpo->obtenerID());		
+	destrucciones.push_back(DatosEliminacion(elemento->obtenerID(),enemigo));
+}
+
+void Mundo::eliminar(PowerUp * elemento)
+{
+	destrucciones.push_back(DatosEliminacion(elemento->obtenerID(),powerUp));
+}
+
+void Mundo::eliminar(Disparo * elemento)
+{
+	destrucciones.push_back(DatosEliminacion(elemento->obtenerID(),disparo));
 }
 
 void Mundo::agregar(Disparo * disparo)
 {
-	snapshotables[disparo->obtenerID()] = disparo;
-	dibujables[disparo->obtenerID()] = disparo;
-	actualizables[disparo->obtenerID()] = disparo;
+	disparos[disparo->obtenerID()] = disparo;
 }
 
 void Mundo::agregar(PowerUp * powerUp)
 {
-	snapshotables[powerUp->obtenerID()] = powerUp;
-	dibujables[powerUp->obtenerID()] = powerUp;
-	actualizables[powerUp->obtenerID()] = powerUp;
+	powerUps[powerUp->obtenerID()] = powerUp;
 }
 
 void Mundo::agregar(Enemigo* enemigo)
 {
 	enemigos[enemigo->obtenerID()] = enemigo;
-	snapshotables[enemigo->obtenerID()] = enemigo;
-	dibujables[enemigo->obtenerID()] = enemigo;
-	actualizables[enemigo->obtenerID()] = enemigo;
 }
 
-void Mundo::agregarConstruccion(real ancho, real alto, b2Vec2 posicion)
+void Mundo::agregarCuboMadera(real ancho, real alto, b2Vec2 posicion)
 {
-	construcciones.push_back(new Construccion(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
+	construcciones.push_back(new CuboMadera(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
 }
+
+void Mundo::agregarCuboMetal(real ancho, real alto, b2Vec2 posicion)
+{
+	construcciones.push_back(new CuboMetal(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
+}
+
+void Mundo::agregarCuboLadrillo(real ancho, real alto, b2Vec2 posicion)
+{
+	construcciones.push_back(new CuboLadrillo(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
+}
+
+void Mundo::agregarCuboTierra(real ancho, real alto, b2Vec2 posicion)
+{
+	construcciones.push_back(new CuboTierra(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
+}
+
+void Mundo::agregarPuas(real ancho, real alto, b2Vec2 posicion)
+{
+	controladores.push_back(new Puas(*this, ancho, alto, posicion));
+}
+
 
 void Mundo::agregarEscalera(real alto, b2Vec2 posicion)
 {
@@ -182,8 +225,6 @@ Megaman *Mundo::agregarMegaman(b2Vec2 posicion)
 	Megaman *megaman = new Megaman(generarID(),*this, posicion);
 	
 	megamanes[megaman->obtenerID()] = megaman;
-	dibujables[megaman->obtenerID()] = megaman;
-	actualizables[megaman->obtenerID()] = megaman;
 
 	return megaman;
 }
@@ -245,58 +286,27 @@ void Mundo::agregarZonaSpawnFireman(b2Vec2 posicion)
 
 void Mundo::destruirCuerpos()
 {
-	bool borrado = false;
-	std::list<uint>::iterator i = destrucciones.begin();
+	std::list<DatosEliminacion>::iterator i = destrucciones.begin();
 
 	while (i != destrucciones.end())	
 	{
-		if(actualizables.find(*i) != actualizables.end())
+		switch((*i).categoria)
 		{
-			delete actualizables[*i];
-			borrado = true;
-			actualizables.erase(*i);
-		}
+			case enemigo:
+				delete enemigos[(*i).ID];
+				enemigos.erase((*i).ID);
+				break;
+			case powerUp:
+				delete powerUps[(*i).ID];
+				powerUps.erase((*i).ID);
+				break;
 
-		if(megamanes.find(*i) != megamanes.end())
-		{
-			if(!borrado)
-			{
-				delete megamanes[*i];
-				borrado = true;			
-			}
-			megamanes.erase(*i);
+			case disparo:
+				delete disparos[(*i).ID];
+				disparos.erase((*i).ID);
+				break;
 		}
-
-		if(snapshotables.find(*i) != snapshotables.end())
-		{
-			if(!borrado)
-			{
-				delete snapshotables[*i];
-				borrado = true;
-			}
-			snapshotables.erase(*i);
-		}
-
-		if(dibujables.find(*i) != dibujables.end())
-		{
-			if(!borrado)
-			{
-				delete dibujables[*i];
-				borrado = true;
-			}
-			dibujables.erase(*i);	
-		}
-
-		if(enemigos.find(*i) != enemigos.end())
-		{
-			if(!borrado)
-			{
-				delete enemigos[*i];
-				borrado = true;
-			}
-			enemigos.erase(*i);	
-		}
-	i++;
+		i++;
 	}
 	destrucciones.clear();
 }
@@ -322,9 +332,32 @@ void Mundo::ejecutarTareasDiferidas()
 
 bool Mundo::existeElemento(uint ID)
 {
-	if(snapshotables.find(ID) != snapshotables.end())
+	if(enemigos.find(ID) != enemigos.end() || disparos.find(ID) != disparos.end() || powerUps.find(ID) != powerUps.end()|| megamanes.find(ID) != megamanes.end())
 		return true;
 	return false;
+}
+
+void Mundo::actualizarCuerpos(real deltaT)
+{
+	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
+	while(a != megamanes.end())
+		(a++)->second->actualizar(deltaT);	
+
+	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
+	while(b != enemigos.end())
+		(b++)->second->actualizar(deltaT);	
+
+	std::map<uint, Disparo*>::const_iterator c = disparos.begin();
+	while(c != disparos.end())
+		(c++)->second->actualizar(deltaT);
+
+	std::map<uint, PowerUp*>::const_iterator d = powerUps.begin();
+	while(d != powerUps.end())
+		(d++)->second->actualizar(deltaT);
+
+	std::list<CajaAccion*>::const_iterator e = controladores.begin();
+	while(e != controladores.end())
+		(*e++)->actualizar(deltaT);	
 }
 
 void Mundo::actualizar(real segundosDesdeUltima){
@@ -334,10 +367,7 @@ void Mundo::actualizar(real segundosDesdeUltima){
 	mundo.Step(segundosDesdeUltima, velocityIterations, positionIterations);
 	ejecutarTareasDiferidas();
 
-	std::map<uint, Actualizable*>::const_iterator i = actualizables.begin();
-
-	while(i != actualizables.end())
-		(i++)->second->actualizar(segundosDesdeUltima);	
+	actualizarCuerpos(segundosDesdeUltima);
 
 	std::list<CajaAccion*>::const_iterator a = controladores.begin();
 
@@ -373,6 +403,25 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 	return aux;
 }
+
+void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)
+{
+	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
+	while(a != megamanes.end())
+		mapa[a->first] = (a++)->second;
+
+	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
+	while(b != enemigos.end())
+		mapa[b->first] = (b++)->second;	
+
+	std::map<uint, Disparo*>::const_iterator c = disparos.begin();
+	while(c != disparos.end())
+		mapa[c->first] = (c++)->second;
+
+	std::map<uint, PowerUp*>::const_iterator d = powerUps.begin();
+	while(d != powerUps.end())
+		mapa[d->first] = (d++)->second;
+}
 /*
 void Mundo::obtenerSnapshot(FullSnapshot& en){
 	FullSnapshot nueva;
@@ -384,9 +433,12 @@ void Mundo::obtenerSnapshot(FullSnapshot& en){
 }
 */
 void Mundo::obtenerSnapshot(FullSnapshot& en){
+	std::map<uint, Snapshotable*> mapa;
+	obtenerSnapshotables(mapa);
+
 	FullSnapshot nueva;
 	std::map<uint, Snapshotable*>::iterator it;
-	for(it=snapshotables.begin(); it!=snapshotables.end(); ++it){
+	for(it=mapa.begin(); it!=mapa.end(); ++it){
 		nueva.add((it->second)->getSnapshot());
 	}
 	en=nueva;
@@ -416,9 +468,12 @@ void Mundo::inyectarSnapshot(FullSnapshot& fs){
 	*/
 	
 	//-----iterar sobre los Snapshotables, encontrar cuales remover y actualizar los que sea necesario
+	std::map<uint, Snapshotable*> mapa;
+	obtenerSnapshotables(mapa);
+
 	std::map<uint, Snapshotable*>::iterator it;
 	std::set<Snapshotable*> a_eliminar;
-	for(it=snapshotables.begin(); it != snapshotables.end(); ++it){
+	for(it=mapa.begin(); it != mapa.end(); ++it){
 		Snapshotable* snapshotable =it->second;
 		if(fs.existe(*snapshotable)){
 			snapshotable->setStateFromSnapshot(fs.get(*snapshotable));

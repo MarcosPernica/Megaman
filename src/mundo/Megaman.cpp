@@ -50,6 +50,9 @@ ushort Megaman::tipoCuerpo() const
 void Megaman::actualizar(real deltaT)
 {
 	avanzar(deltaT);//animacion
+	tiempoInmunidad -= deltaT;
+	if(tiempoInmunidad <= 0)
+		tiempoInmunidad = 0;
 	
 	if (corriendo)
 	{
@@ -121,6 +124,15 @@ void Megaman::agregarArma(Disparo * disparo, uint cantidadPlasma)
 	armas.push_back(arma);
 }
 
+void Megaman::alMorir()
+{	
+}
+
+uint Megaman::obtenerCantidadVidas()
+{
+	return vidas;
+}
+
 Megaman::Megaman(uint ID,
 				Mundo & mundo,
 				 const b2Vec2 & posicion,
@@ -133,7 +145,7 @@ Megaman::Megaman(uint ID,
 					     ENERGIAMEGAMAN,
 						 MASAMEGAMAN,
 						 PERSONAJES,
-					     CONSTRUCCIONES | POWERUPS | ENEMIGOS | DISPAROS | CAJASACCION | LEFTBOX | RIGHTBOX,
+					     CONSTRUCCIONES | POWERUPS | AURAENEMIGOS | DISPAROS | CAJASACCION | LEFTBOX | RIGHTBOX,
 						 posicion,
 					     false,
 					     true,
@@ -146,6 +158,7 @@ Megaman::Megaman(uint ID,
 				
 {
 	vidas = VIDASINICIALES;
+	tiempoInmunidad = 0;
 
 	puedeSaltar = 0;
 	puedeSubir = 0;
@@ -153,7 +166,6 @@ Megaman::Megaman(uint ID,
 	estadoDisparo = HACIENDONADA;
 	estadoEscalado = HACIENDONADA;
 	corriendo = false;
-	
 	
 	Arma arma;
 
@@ -251,6 +263,15 @@ void Megaman::pararMovimientoEscalera()
 {
 	if(estadoEscalado != HACIENDONADA)
 		estadoEscalado = AGARRADOESCALERA;
+}
+
+void Megaman::atacado(uint dano)
+{
+	if(!tiempoInmunidad)
+	{
+		Entidad::atacado(dano);
+		tiempoInmunidad = TIEMPOINMUNIDADMEGAMAN;
+	}
 }
 
 

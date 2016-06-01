@@ -69,6 +69,7 @@ Enemigo::Enemigo(uint ID,
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(0,alto*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(-ancho/2,0), LEFTBOX, LEFTBOX, CONSTRUCCIONES | PERSONAJES);
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(+ancho/2,0), RIGHTBOX, RIGHTBOX, CONSTRUCCIONES | PERSONAJES);
+	agregarCuerpoInmaterial(ancho,alto,b2Vec2(0,0), AURAENEMIGOS, AURAENEMIGOS, PERSONAJES);
 }
 
 void Enemigo::atacado(uint dano)
@@ -152,6 +153,7 @@ void Enemigo::alMorir()
 {
 	if(powerUpMorir)
 		ruletaPowerUp(obtenerMundo().generarID(),obtenerMundo(),obtenerPosicion());
+	Entidad::alMorir();
 }
 
 void Enemigo::ruletaPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion)
@@ -258,6 +260,12 @@ real Enemigo::numeroAleatorio(real desde, real hasta)
 
 	return aleatorio;	
 }
+
+void Enemigo::eliminarse(Mundo& de)
+{
+	de.eliminar(this);
+}
+
 #define PROP_ESTADO_SALTO "estadoSalto"
 #define PROP_ESTADO_DISPARO "estadoDisparo"
 #define PROP_CUBIERTO "cubierto"
