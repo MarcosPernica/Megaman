@@ -7,7 +7,7 @@
 #include "ContenedorProxies.h"
 
 void Servidor::conectar(){
-	accepter.open(10020,4);
+	accepter.open(10021,4);
 }
 void Servidor::correr(){
 	conectar();
@@ -25,7 +25,7 @@ void Servidor::correr(){
 		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
 	}
 	
-	SimuladorSinVentana sim(mundo,30,distribuidor);
+	SimuladorSinVentana sim(mundo,50,distribuidor);
 	sim.start();
 	std::cout<<"Ingresa cualquier cosa para matar el server sin avisarle a nadie"<<std::endl;
 	std::string listo;

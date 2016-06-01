@@ -88,16 +88,17 @@ std::string ChannelSocket::receiveUntilNl(float seconds) const{
 		
 		now_time = clock();
 	}
-	/*
+	
 	if(received<0){
 		throw CException("hubo un error al recibir datos (receive until Nl)");
 	}
-	*/
 	
+	
+	/*
 	if((now_time-start_time)>=seconds*CLOCKS_PER_SEC){
-		throw RecvTimeOutException();
+		throw RecvTimeOutException();/////esta no se lanza más porque el socket ahora bloquea!!
 	}
-	
+	*/
 	if(received<=0){
 		throw RecvException();//CException("no hay datos que recibir (receive until Nl)");
 	}
