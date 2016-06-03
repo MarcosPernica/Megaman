@@ -94,7 +94,7 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 }
 
 bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
-	if(!controlado->estaMuerta())
+	//if(!controlado->estaMuerta()) NO ME PASABA POR ESTA CONDICIÓN NO ESTOY SEGURO POR QUÉ
 	{	
 		switch(evento->keyval)
 		{
