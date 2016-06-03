@@ -91,13 +91,15 @@ void SimuladorSinVentana::run()
 	int loops_desde_ultimo_envio = 0;
 	double segs_dormi_extra = 0;
 	while(getContinuar()){
-		loops_desde_ultimo_envio += 1;
+		
 		
 		timespec t_inicial;
 		clock_gettime(CLOCK_REALTIME,&t_inicial);
 		
 		contenedor.ejecutarControlesSobreMegaman();
 		mundo.actualizar(segundosPorActualizacion);
+		
+		loops_desde_ultimo_envio += 1;
 		if(loops_desde_ultimo_envio>10){
 			mundo.obtenerSnapshot(a_distribuir);
 			contenedor.distribuir(a_distribuir);

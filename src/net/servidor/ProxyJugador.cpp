@@ -85,7 +85,7 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 }
 
 void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
+	//std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
 	
 	if(tipo_mensaje == MENSAJE_ID){
 		Lock l(m_id);
@@ -93,9 +93,14 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 	}else if(tipo_mensaje == MENSAJE_INICIAR){
 		setQuiereIniciarPartida();
 	}else if(controlado != NULL){
+		if(tipo_mensaje == MENSAJE_KEY_Z){
+			timespec ahora;
+			clock_gettime(CLOCK_REALTIME,&ahora);
+			std::cout<<"Llega la Z a las "<<ahora.tv_nsec<<std::endl;
+		}
 		Lock l(m_controles_recibidos);
 		controles_recibidos.push(tipo_mensaje);
-		std::cout<<"Llegó un mensaje: "<<tipo_mensaje<<std::endl;
+		//std::cout<<"Llegó un mensaje: "<<tipo_mensaje<<std::endl;
 	}
 }
 

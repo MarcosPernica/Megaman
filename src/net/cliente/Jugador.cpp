@@ -83,9 +83,12 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 			}
 			case GDK_KEY_z:
 			{
-				std::cout<<"llegué a hacer que salte Megaman!"<<std::endl;
+				timespec ahora;
+				clock_gettime(CLOCK_REALTIME,&ahora);
+				std::cout<<"llegué a hacer que salte Megaman! a las "<<ahora.tv_nsec<<std::endl;
 				emisor.enviar(MENSAJE_KEY_Z);
 				controlado->saltar();
+				
 				break;		
 			}	
 		}

@@ -84,7 +84,7 @@ bool ReceptorCliente::onInyectar(){
 			clock_gettime(CLOCK_REALTIME,&luego_de_inyectar);
 			//std::cout<<"estoy inyectando un fs que recibi a las "<<horario_creacion<<"son las "<<clock()<<"en segundos la antigüedad es: "<<(float)(horario_creacion-clock())/CLOCKS_PER_SEC<<std::endl;
 			//std::cout<<"s desde la ultima inyeccion: "<<(float)(clock()-horario_ultima_inyeccion)/CLOCKS_PER_SEC<<std::endl;
-			std::cout<<"Nanos que tardé en inyectar: "<<luego_de_inyectar.tv_nsec-antes_de_inyectar.tv_nsec<<std::endl;
+//			std::cout<<"Nanos que tardé en inyectar: "<<luego_de_inyectar.tv_nsec-antes_de_inyectar.tv_nsec<<std::endl;
 			horario_ultimo_inyectado = horario_creacion;
 			horario_ultima_inyeccion=clock();
 		}

@@ -2,6 +2,7 @@
 #include "../sockets/Buffer.h"
 #include <iostream>
 #include <sstream>
+#include "../defines_protocolo.h"
 Emisor::Emisor(const ChannelSocket& s):socket(s){}
 /*
 void Emisor::enviar(const std::string& tipo_mensaje, const std::string& mensaje) const{
@@ -33,6 +34,11 @@ void Emisor::enviar(const std::string& tipo_mensaje, const std::string& mensaje)
 	enviarString(tipo_mensaje);
 	enviarNumero(mensaje.size());
 	enviarString(mensaje);
+	if(tipo_mensaje==MENSAJE_KEY_Z){
+		timespec ahora;
+		clock_gettime(CLOCK_REALTIME,&ahora);
+		std::cout<<"Envié el Z a las: "<<ahora.tv_nsec<<std::endl;
+	}
 	#endif
 }
 void Emisor::enviar(const std::string& tipo_mensaje) const{

@@ -3,6 +3,7 @@
 #include "Mundo.h"
 #include <iostream>
 #include "../net/snapshots/Snapshot.h"
+#include <ctime>
 
 #define HACIENDONADA 0
 
@@ -201,6 +202,10 @@ void Megaman::saltar()
 {
 	if (puedeSaltar >= 1 || estadoEscalado != HACIENDONADA)
 	{
+		timespec ahora;
+		clock_gettime(CLOCK_REALTIME,&ahora);
+		std::cout<<"Soy Megaman y salto a las: "<<ahora.tv_nsec<<std::endl;
+		
 		gravitar();
 		estadoSalto = PORSALTAR;
 		cambiar(animacion_saltando);
