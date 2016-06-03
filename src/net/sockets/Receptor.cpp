@@ -41,7 +41,13 @@ void Receptor::decodificarMensaje(const std::string& mensaje){
 	
 	stream>>tipo_mensaje;
 	std::cout<<"Antes de substr"<<std::endl;
-	std::string resto_mensaje(stream.str().substr(stream.tellg()));
+	std::cout<<"stream.str(): "<<stream.str()<<std::endl;
+	std::cout<<"stream.tellg(): "<<stream.tellg()<<std::endl;
+	std::cout<<"stream.str().size(): "<<stream.str().size()<<std::endl;
+	std::string resto_mensaje;
+	if(stream.tellg()>0){
+		resto_mensaje = stream.str().substr(stream.tellg());
+	}
 	std::cout<<"despues de substr"<<std::endl;
 	
 	ejecutarMensaje(tipo_mensaje,resto_mensaje);
