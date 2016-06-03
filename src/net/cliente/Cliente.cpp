@@ -11,7 +11,6 @@
 #include "../../mundo/Simulador.h"
 #include "Jugador.h"
 #include "../../common/exceptions.h"
-#include "Debug.h"
 
 //Cliente::Cliente(){}
 void Cliente::correr(){
@@ -26,7 +25,6 @@ void Cliente::correr(){
 	enviarID(emisor);
 
 	#ifndef DEBUG
-	
 	while(obtenerPosicion()==-1){
 		//detener
 	}
@@ -60,7 +58,7 @@ void Cliente::correr(){
 }
 void Cliente::conectarse(){
 	#ifndef DEBUG
-	socket.connectTo("127.0.0.1",10021);
+	socket.connectTo("127.0.0.1",10020);
 	#endif
 }
 void Cliente::enviarID(const Emisor& emisor){

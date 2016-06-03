@@ -11,6 +11,7 @@
 #include "../../mundo/Megaman.h"
 #include "../snapshots/FullSnapshot.h"
 #include <queue>
+#include "../sockets/Emisor.h"
 class ProxyJugador: public Receptor{
 	private:
 	uint posicion;
@@ -34,6 +35,7 @@ class ProxyJugador: public Receptor{
 	bool tengoUsuario();
 	void informarEstaRota();
 	void setQuiereIniciarPartida();
+	Emisor emisor;
 	public:
 	//ProxyJugador(const std::string& id_usuario, ChannelSocket* channel);
 	ProxyJugador(ChannelSocket* channel);
@@ -44,8 +46,6 @@ class ProxyJugador: public Receptor{
 	void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje);
 	const std::string& getUsuario();
 	bool getEstaSana();
-	void enviarSosPrimero();
-	void enviarNoSosPrimero();
 	void enviar(const FullSnapshot& full_snapshot);
 	
 	bool quiereIniciarPartida();

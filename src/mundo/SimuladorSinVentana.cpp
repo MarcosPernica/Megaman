@@ -110,8 +110,8 @@ void SimuladorSinVentana::run()
 		double segs_computando = ((double)(t_despues_de_computos.tv_nsec-t_inicial.tv_nsec))/nanos_por_segundo;//aunque deberían ser 9 ceros (se supone que son 9!)
 		double segs_a_dormir = segundosPorActualizacion - segs_computando - segs_dormi_extra;
 		if(segs_a_dormir>0){
-			std::cout<<"voy a dormir en us"<<(useconds_t)(segs_a_dormir * 1000000)<<" en s: "<<segs_a_dormir<<std::endl;
-			std::cout<<"segs p/a "<<segundosPorActualizacion<<" segs computando "<<segs_computando<<" segs extra "<<segs_dormi_extra<<std::endl;
+//			std::cout<<"voy a dormir en us"<<(useconds_t)(segs_a_dormir * 1000000)<<" en s: "<<segs_a_dormir<<std::endl;
+//			std::cout<<"segs p/a "<<segundosPorActualizacion<<" segs computando "<<segs_computando<<" segs extra "<<segs_dormi_extra<<std::endl;
 			usleep((useconds_t)(segs_a_dormir * 1000000));// 6 ceros
 			
 			timespec t_despues_de_dormir;

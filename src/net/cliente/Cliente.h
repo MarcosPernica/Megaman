@@ -4,7 +4,7 @@
 #include <set>
 #include <string>
 #include "../../common/Mutex.h"
-#include "Emisor.h"
+#include "../sockets/Emisor.h"
 class ReceptorCliente;
 
 /**

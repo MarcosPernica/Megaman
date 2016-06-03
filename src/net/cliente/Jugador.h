@@ -12,7 +12,7 @@ class ServerProxy;
 typedef char CodigoEvento;
 #define CODIGO_EVENTO_SALTO 's'
 
-#include "Emisor.h"
+#include "../sockets/Emisor.h"
 
 /**
  * Jugador detecta eventos del teclado, habla con la interfaz del objeto

@@ -7,7 +7,7 @@
 #include "ContenedorProxies.h"
 
 void Servidor::conectar(){
-	accepter.open(10021,4);
+	accepter.open(10020,4);
 }
 void Servidor::correr(){
 	conectar();
@@ -59,12 +59,10 @@ ProxyJugador* Servidor::agregarJugadores(){
 			}
 			nuevo->enviarPosicion(proxies.size());
 			sleep(1);
-			nuevo->enviarPosicion(proxies.size());//dos veces para asegurarme de que llegue
 			
 			nuevo->enviarListaJugadores(proxies);//se le envían los que ya estaban
 			notificarLlegada(nuevo);//se notifica a los que ya estaban
 			proxies.insert(nuevo);//se agrega el nuevo a la lista
-			
 			if(proxies.size()==4){
 				aceptarJugadores=false;
 				std::cout<<"Se alcanzo el limite de jugadores posibles"<<std::endl;

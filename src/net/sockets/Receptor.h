@@ -37,6 +37,22 @@ class Receptor: private Thread{
 	void decodificarMensaje(const std::string& mensaje);
 	bool seguirRecibiendo();
 	bool setRecepcionRota();
+	
+	/**
+	 * Recibe los 3 caracteres que son el tipo de mensaje
+	 * */
+	void recibirTipoMensaje(std::string& poner_en);
+	
+	/**
+	 * Recibe un número
+	 * */
+	int recibirLargo();
+	
+	/**
+	 * recibe un string de tamaño variable
+	 * */
+	void recibirString(std::string& poner_en, int tamanio);
+	
 	public:
 	~Receptor();
 	bool getRecepcionSana();

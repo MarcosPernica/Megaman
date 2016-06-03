@@ -4,6 +4,7 @@
 #include "../../common/Lock.h"
 #include "../../common/exceptions.h"
 #include <ctime>
+#include "Buffer.h"
 Receptor::Receptor(const ChannelSocket& chan):
 								channel(chan),
 								recibiendo(true),
@@ -14,8 +15,17 @@ Receptor::Receptor(const ChannelSocket& chan):
 void Receptor::run(){
 	while(seguirRecibiendo() && getRecepcionSana()){
 		try{
-			std::string recibido = channel.receiveUntilNl(1);
+			/*
+			std::string recibido = channel.receiveUntilNl(0.01);
 			decodificarMensaje(recibido);
+			*/
+			std::string tipo, mensaje;
+			recibirTipoMensaje(tipo);
+			int largo = recibirLargo();
+			if(largo>0){
+				recibirString(mensaje,largo);
+			}
+			ejecutarMensaje(tipo,mensaje);
 		}//catch(RecvException& e){}
 		 catch(RecvTimeOutException &e){
 			 setRecepcionRota();
@@ -61,4 +71,22 @@ bool Receptor::setRecepcionRota(){
 bool Receptor::getRecepcionSana(){
 	Lock l(m_recepcion_sana);
 	return recepcion_sana;
+}
+
+void Receptor::recibirTipoMensaje(std::string& poner_en){
+	Buffer buf(3);
+	channel.receiveFixed(buf);
+	poner_en = buf.asString();
+}
+
+int Receptor::recibirLargo(){
+	Buffer buf(sizeof(int));
+	channel.receiveFixed(buf);
+	return buf.asNumber();
+}
+
+void Receptor::recibirString(std::string& poner_en, int tamanio){
+	Buffer buf(tamanio);
+	channel.receiveFixed(buf);
+	poner_en = buf.asString();
 }

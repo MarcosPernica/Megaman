@@ -20,17 +20,15 @@ void ProxyJugador::enviarListaJugadores(const std::set<ProxyJugador*>& lista){
 }
 
 void ProxyJugador::notificarLlegada(ProxyJugador* jugador){
-	Buffer buf = Buffer::createString(MENSAJE_LLEGA + std::string(" ")+ jugador->getUsuario());
 	try{
-		channel->sendFixed(buf);
+		emisor.enviar(MENSAJE_LLEGA,jugador->getUsuario());
 	}catch(CException& e){
 		informarEstaRota();
 	}
 }
 void ProxyJugador::notificarEstaba(ProxyJugador* jugador){
-	Buffer buf = Buffer::createString(MENSAJE_ESTABA +std::string(" ")+ jugador->getUsuario());
 	try{
-		channel->sendFixed(buf);
+		emisor.enviar(MENSAJE_ESTABA,jugador->getUsuario());
 	}catch(CException& e){
 		informarEstaRota();
 	}
@@ -87,7 +85,7 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 }
 
 void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	//std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
+	std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
 	
 	if(tipo_mensaje == MENSAJE_ID){
 		Lock l(m_id);
@@ -105,7 +103,8 @@ ProxyJugador::ProxyJugador(ChannelSocket* chan)
 							:Receptor(*chan),
 							 channel(chan),
 							 conexion_sana(true),
-							 quiero_iniciar(false){
+							 quiero_iniciar(false),
+							 emisor(*chan){
 	controlado = NULL;
 }
 							 
@@ -135,15 +134,6 @@ void ProxyJugador::informarEstaRota(){
 	Lock l(m_conexion_sana);
 	conexion_sana = false;
 }
-
-void ProxyJugador::enviarSosPrimero(){
-	Buffer buf = Buffer::createString(std::string(MENSAJE_SOS_PRIMERO)+"\n");
-	channel->sendFixed(buf);
-}
-void ProxyJugador::enviarNoSosPrimero(){
-	Buffer buf = Buffer::createString(std::string(MENSAJE_NO_SOS_PRIMERO)+"\n");
-	channel->sendFixed(buf);
-}
 bool ProxyJugador::quiereIniciarPartida(){
 	Lock l(m_quiero_iniciar);
 	return quiero_iniciar;
@@ -153,8 +143,7 @@ void ProxyJugador::setQuiereIniciarPartida(){
 	quiero_iniciar = true;
 }
 void ProxyJugador::notificarInicio(){
-	Buffer buf = Buffer::createString(std::string(MENSAJE_INICIAR)+"\n");
-	channel->sendFixed(buf);
+	emisor.enviar(MENSAJE_INICIAR);
 	Lock l(m_quiero_iniciar);
 	quiero_iniciar = false;//esto prepara la próxima pantalla de selección de niveles
 }
@@ -168,35 +157,25 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	const FSSerializada serializada = full_snapshot.serializar();
 	FSSerializada::const_iterator it;
 	
-	std::ostringstream stream;
-	stream<<MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT<<" ";
-	stream<<full_snapshot.obtenerHorarioCreacion()<<std::endl;
-	Buffer buf1 = Buffer::createString(stream.str());
-	channel->sendFixed(buf1);
+	emisor.enviar(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT,full_snapshot.obtenerHorarioCreacion());
 	
 	//std::cout<<"-----------ENVIANDO  FULL SNAPSHOT------------"<<std::endl;
 	for(it = serializada.begin(); it!=serializada.end(); ++it){
-		Buffer buf2 = Buffer::createString(std::string(MENSAJE_ENVIO_SNAPSHOT)+" " + (*it) + "\n");
-		channel->sendFixed(buf2);
+		emisor.enviar(MENSAJE_ENVIO_SNAPSHOT,*it);
 		//std::cout<<*it<<std::endl;
 	}
 	
 	timespec ahora;
 	clock_gettime(CLOCK_REALTIME, &ahora);
 	long nanos_ahora = ahora.tv_nsec;
-	std::cout<<"Enviando un full snapshot de"<<full_snapshot.obtenerHorarioCreacion()<<" a las "<<clock()<<". Desde el ultimo pasaron: "<< ((double)(nanos_ahora - nanos_ultimo_envio))/1000000000000<<std::endl;
+	//std::cout<<"Enviando un full snapshot de"<<full_snapshot.obtenerHorarioCreacion()<<" a las "<<clock()<<". Desde el ultimo pasaron: "<< ((double)(nanos_ahora - nanos_ultimo_envio))/1000000000000<<std::endl;
 	
 	nanos_ultimo_envio = nanos_ahora;
-	
-	Buffer buf3 = Buffer::createString(std::string(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT)+"\n");
-	channel->sendFixed(buf3);
+	emisor.enviar(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT);
 }
 
 void ProxyJugador::enviarPosicion(uint posicion){
-	std::ostringstream ss;
-	ss << MENSAJE_POSICION <<" "<< posicion << std::endl;
-	Buffer buf = Buffer::createString(ss.str());
-	channel->sendFixed(buf);
+	emisor.enviar(MENSAJE_POSICION,(int)posicion);
 	this->posicion = posicion;
 }
 uint ProxyJugador::obtenerPosicion(){

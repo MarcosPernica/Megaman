@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <string>
 #include <string.h>
+#include <arpa/inet.h>
 Buffer::Buffer(unsigned size){
 	len = size;
 	data = (char*) malloc(size);
@@ -27,7 +28,8 @@ void Buffer::write(const char* data, const unsigned len){
 
 Buffer Buffer::createNumber(CommonNumber n){
 	Buffer ret(sizeof(n));
-	ret.write((char*) &n, sizeof(n));
+	CommonNumber env = htonl(n);
+	ret.write((char*) &env, sizeof(n));
 	//devuelve una copia, esto hace más sencillo el código
 	//además, Buffer es un objeto pequeño
 	return ret;
@@ -42,7 +44,8 @@ Buffer Buffer::createString(const std::string& s){
 }
 
 CommonNumber Buffer::asNumber() const{
-	return * ((CommonNumber*) data);
+	CommonNumber env = * ((CommonNumber*) data);
+	return ntohl(env);
 }
 
 std::string Buffer::asString() const{
