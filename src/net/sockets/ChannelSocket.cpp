@@ -8,9 +8,6 @@
 #include <netdb.h>
 #include <iostream>
 #include <ctime>
-/*
- * MARTIN: DEBERÍA USAR POLL() O PUEDO MEDIR EL TIEMPO A MANO COMO HICE?
- * */
  
 /**
  * El llamado a Socket(file_descriptor) soluciona el leak de la primera entrega
@@ -78,8 +75,8 @@ std::string ChannelSocket::receiveUntilNl(float seconds) const{
 	
 	while(received >= 0 
 		&& received_datum != '\n'
-		&& total_received < MAX_TAM_MENSAJE
-		&& (now_time-start_time)<seconds*CLOCKS_PER_SEC){
+		&& total_received < MAX_TAM_MENSAJE){
+		//&& (now_time-start_time)<seconds*CLOCKS_PER_SEC){
 			
 		received = recvS(&received_datum, 1);
 		
