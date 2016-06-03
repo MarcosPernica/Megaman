@@ -6,7 +6,7 @@
 #include "Snapshot.h"
 #include "Snapshotable.h"
 #include <set>
-
+#include <ctime>
 
 /**
 Representa la full snapshot, con info de todos los entes del mundo en un momento
@@ -16,6 +16,7 @@ typedef std::map<uint,Snapshot> SnapshotMap;
 class FullSnapshot{
 	private:
 	SnapshotMap snapshots;
+	clock_t horario_creacion;
 	std::set<const Snapshot*> no_revisadas;
 	
 	void deserializar(const FSSerializada& serializada);
@@ -34,6 +35,7 @@ class FullSnapshot{
 	static FullSnapshot desdeSerializada(const FSSerializada& serializada);
 	
 	void mostrar();
+	clock_t obtenerHorarioCreacion() const;
 };
 
 

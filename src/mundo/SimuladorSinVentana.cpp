@@ -30,20 +30,27 @@ void SimuladorSinVentana::run()
 		
 	}
 	*/
+	int loops_desde_ultimo_envio = 0;
 	float segs_dormi_extra = 0;
 	while(getContinuar()){
+		loops_desde_ultimo_envio += 1;
+		
 		time_t t_inicial = clock();
 		
 		contenedor.ejecutarControlesSobreMegaman();
 		mundo.actualizar(segundosPorActualizacion);
-		mundo.obtenerSnapshot(a_distribuir);
-		contenedor.distribuir(a_distribuir);
+		if(loops_desde_ultimo_envio>10){
+			mundo.obtenerSnapshot(a_distribuir);
+			contenedor.distribuir(a_distribuir);
+			loops_desde_ultimo_envio = 0;
+		}
 		
 		time_t t_despues_de_computos = clock();
 		float segs_computando = ((float)(t_despues_de_computos-t_inicial))/CLOCKS_PER_SEC;
 		float segs_a_dormir = segundosPorActualizacion - segs_computando - segs_dormi_extra;
 		
-		usleep((useconds_t)(segs_a_dormir * 1000000));
+		usleep((useconds_t)(segs_a_dormir * 1000000));// CON TODOS LOS CEROS!!
+		//usleep((useconds_t)(segs_a_dormir * 10000));
 		
 		time_t t_despues_de_dormir = clock();
 		

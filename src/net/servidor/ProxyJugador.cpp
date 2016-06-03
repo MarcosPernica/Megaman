@@ -6,6 +6,7 @@
 #include "../defines_protocolo.h"
 #include "../../common/exceptions.h"
 #include "../../common/Lock.h"
+#include <ctime>
 /*
 ProxyJugador::ProxyJugador(const std::string& id, ChannelSocket* chan)
 							:channel(chan),
@@ -167,14 +168,20 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	const FSSerializada serializada = full_snapshot.serializar();
 	FSSerializada::const_iterator it;
 	
-	Buffer buf1 = Buffer::createString(std::string(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT)+"\n");
+	std::ostringstream stream;
+	stream<<MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT<<" ";
+	stream<<full_snapshot.obtenerHorarioCreacion()<<std::endl;
+	Buffer buf1 = Buffer::createString(stream.str());
 	channel->sendFixed(buf1);
+	
 	//std::cout<<"-----------ENVIANDO  FULL SNAPSHOT------------"<<std::endl;
 	for(it = serializada.begin(); it!=serializada.end(); ++it){
 		Buffer buf2 = Buffer::createString(std::string(MENSAJE_ENVIO_SNAPSHOT)+" " + (*it) + "\n");
 		channel->sendFixed(buf2);
 		//std::cout<<*it<<std::endl;
 	}
+	std::cout<<"Enviando un full snapshot de"<<full_snapshot.obtenerHorarioCreacion()<<" a las "<<clock()<<". Desde el ultimo pasaron: "<< (float)(clock()-fecha_ultimo_envio)/CLOCKS_PER_SEC<<std::endl;
+	fecha_ultimo_envio = clock();
 	
 	Buffer buf3 = Buffer::createString(std::string(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT)+"\n");
 	channel->sendFixed(buf3);

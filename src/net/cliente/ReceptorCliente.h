@@ -8,8 +8,12 @@
 #include "../snapshots/FullSnapshot.h"
 #include "../../mundo/Mundo.h"
 #include "../../common/Lock.h"
+#include <ctime>
 class ReceptorCliente: public Receptor{
 	private:
+	clock_t horario_ultimo_inyectado;
+	clock_t horario_ultima_inyeccion;
+	bool inyectado;
 	Cliente& cliente;
 	/**
 	 * Recibidas contiene la lista de snapshots recibida hasta ahora

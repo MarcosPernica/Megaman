@@ -14,6 +14,7 @@
 class ProxyJugador: public Receptor{
 	private:
 	uint posicion;
+	clock_t fecha_ultimo_envio;
 	
 	Mutex m_id;
 	Mutex m_conexion_sana;

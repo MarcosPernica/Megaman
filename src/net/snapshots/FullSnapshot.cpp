@@ -24,6 +24,7 @@ void FullSnapshot::add(Snapshot es){
 		throw CustomException("Ya existe un snapshot con ese id y no la quiero pisar");
 	}
 	snapshots.insert(std::pair<uint,Snapshot>(es.getID(),es));
+	horario_creacion = clock();
 }
 
 const FSSerializada FullSnapshot::serializar() const{
@@ -81,4 +82,8 @@ void FullSnapshot::mostrar(){
 	for(it=snapshots.begin(); it!=snapshots.end(); ++it){
 		std::cout<<(it->second).serializar()<<std::endl;
 	}
+}
+
+clock_t FullSnapshot::obtenerHorarioCreacion() const{
+	return horario_creacion;
 }
