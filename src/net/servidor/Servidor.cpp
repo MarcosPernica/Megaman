@@ -7,7 +7,7 @@
 #include "ContenedorProxies.h"
 
 void Servidor::conectar(){
-	accepter.open(10020,4);
+	accepter.open(10021,4);
 }
 void Servidor::correr(){
 	conectar();
