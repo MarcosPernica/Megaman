@@ -40,7 +40,9 @@ void Receptor::decodificarMensaje(const std::string& mensaje){
 	std::string tipo_mensaje;
 	
 	stream>>tipo_mensaje;
+	std::cout<<"Antes de substr"<<std::endl;
 	std::string resto_mensaje(stream.str().substr(stream.tellg()));
+	std::cout<<"despues de substr"<<std::endl;
 	
 	ejecutarMensaje(tipo_mensaje,resto_mensaje);
 	//std::cout<<tipo_mensaje<<" - "<<resto_mensaje<<std::endl;
