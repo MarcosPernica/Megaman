@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include "../defines_protocolo.h"
+#include "../Debug.h"
+
 Emisor::Emisor(const ChannelSocket& s):socket(s){}
 /*
 void Emisor::enviar(const std::string& tipo_mensaje, const std::string& mensaje) const{

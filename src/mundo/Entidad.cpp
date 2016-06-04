@@ -72,6 +72,7 @@ void Entidad::atacado(uint danio)
 		energia -= danio;
 	else
 	{	
+		std::cout << "Dead" << std::endl;
 		muerta = true;
 		alMorir();
 	}		

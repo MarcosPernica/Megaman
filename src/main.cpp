@@ -189,6 +189,7 @@ int main(int argc, char *argv[])
 
 int main(int argc, char *argv[])
 {
+	std::locale::global( std::locale( "" ) );
 	if(argc>1){
 		std::string n(argv[1]);
 		Cliente cli(n);
@@ -198,6 +199,7 @@ int main(int argc, char *argv[])
 #else
 int main(int argc, char *argv[])
 {
+	std::locale::global( std::locale( "" ) );
 	Servidor servidor;
 	servidor.correr();
 }

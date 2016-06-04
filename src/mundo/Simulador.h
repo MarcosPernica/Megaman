@@ -6,15 +6,12 @@
  * */
 #include "Mundo.h"
 
-class Camara;
-
 class Simulador{
 	public:
-	Simulador(Mundo& mundo, Camara &camara, uint milisPorActualizacion);
+	Simulador(Mundo& mundo, uint milisPorActualizacion);
 	bool on_actualizar();
 	private:
 	Mundo& mundo;
-	Camara &camara;
 	uint milisPorActualizacion;
 };
 

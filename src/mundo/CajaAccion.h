@@ -32,6 +32,8 @@ public:
 
 class CajaAccion : public Cuerpo, public Actualizable, public Interactuable
 {
+private:
+	bool habilitada;
 public:
 	CajaAccion(Mundo &mundo,
 		   real ancho,
@@ -41,6 +43,10 @@ public:
 	virtual ~CajaAccion(){};
 	ushort tipoCuerpo() const;
 	void eliminarse(Mundo &de){};
+	
+	void deshabilitar();
+	void habilitarse();
+	bool estaHabilitada();
 
 	virtual void actualizar(real deltaT){};
 };
@@ -143,6 +149,30 @@ public:
 	CajaSpawnBombman(uint ID, Mundo &mundo, b2Vec2 posicion);
 	void interactuar(Megaman *megaman){};
 	void actualizar(real deltaT);
+};
+
+class ZonaCamara
+{
+private:
+	b2Vec2 posicion;
+	real ancho, alto;
+	Mundo& mundo;
+
+public:
+	ZonaCamara(Mundo &mundo,
+		       real ancho,
+		       real alto,
+		       const b2Vec2 &posicion);
+	~ZonaCamara(){};
+
+	real obtenerAlto();
+	real obtenerAncho();
+	b2Vec2 obtenerPosicion();
+
+	void actualizar(real deltaT);
+
+private:
+	void actualizarRecinto(real deltaT);
 };
 
 #endif

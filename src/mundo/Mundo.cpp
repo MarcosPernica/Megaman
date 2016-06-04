@@ -18,15 +18,22 @@
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
-Mundo::Mundo() : mundo(gravedad), terminado(false)
+Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara) : mundo(gravedad), terminado(false)
 {
 	Cadena nombre("nivel.xml");
 	mundo.SetContactListener(&listenerColisiones);
+	camara = new ZonaCamara(*this,anchoCamara, altoCamara, posicionCamara);
 
 	cargarNivel(nombre);	
 }
 
-bool Mundo::finalizarMundo()
+b2Vec2 Mundo::obtenerPosicionCamara()
+{
+	return camara->obtenerPosicion();
+}
+
+
+void Mundo::finalizarMundo()
 {
 	terminado = true;
 }
@@ -150,6 +157,21 @@ Enemigo *Mundo::obtenerEnemigoCercano(const b2Vec2 posicion)
 	}
 
 	return cercano;
+}
+
+Entidad *Mundo::obtenerEntidad(uint ID)
+{
+	std::map<uint, Enemigo*>::iterator iEnemigo;
+
+	if((iEnemigo = enemigos.find(ID)) != enemigos.end())
+		return iEnemigo->second;
+
+	std::map<uint, Megaman*>::iterator iMegaman;
+
+	if((iMegaman = megamanes.find(ID)) != megamanes.end())
+		return iMegaman->second;
+
+	return NULL;	
 }
 
 void Mundo::danarZona(b2AABB zona, uint dano)
@@ -375,6 +397,7 @@ void Mundo::actualizar(real segundosDesdeUltima){
 		(*a++)->actualizar(segundosDesdeUltima);
 
 	destruirCuerpos();
+	camara->actualizar(segundosDesdeUltima);
 }
 
 std::list<Megaman *> Mundo::obtenerMegamanes()
@@ -402,6 +425,40 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 	mundo.QueryAABB(&zona, consulta);
 
 	return aux;
+}
+
+void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
+{
+	real radio = (posicion.x+ancho)*(posicion.x+ancho) +  (posicion.y+alto)*(posicion.y+alto);
+
+	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
+	while(b != enemigos.end())
+	{
+		if((b->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
+			eliminar(b->second), std::cout << "Borrado" << std::endl;
+		b++;	
+	}
+
+	std::map<uint, Disparo*>::const_iterator c = disparos.begin();
+	while(c != disparos.end())
+	{
+		if((c->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
+			eliminar(c->second), std::cout << "Borrado" << std::endl;
+		c++;	
+	}
+
+	std::map<uint, PowerUp*>::const_iterator d = powerUps.begin();
+	while(d != powerUps.end())
+	{
+		if((d->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
+			eliminar(d->second);
+		d++;	
+	}
+}
+
+std::list<Dibujable *> Mundo::obtenerElementosCamara()
+{
+	return elementosEnZona(camara->obtenerPosicion(),camara->obtenerAncho(),camara->obtenerAlto());
 }
 
 void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)

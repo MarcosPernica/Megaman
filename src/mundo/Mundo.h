@@ -18,7 +18,7 @@
 #include <tinyxml.h>
 
 class FullSnapshot;
-
+class ZonaCamara;
 
 class PowerUp;
 class Cuerpo;
@@ -59,6 +59,8 @@ private:
 	std::map<uint, Enemigo*> enemigos;
 	std::map<uint, PowerUp*> powerUps;
 	std::map<uint, Disparo*> disparos;
+
+	ZonaCamara *camara;
 	
 
 	std::list<CajaAccion*> controladores;
@@ -72,11 +74,14 @@ private:
 	void cargarNivel(Cadena nombre);
 public:
 	uint generarID(){static uint ID = 0; return ++ID;};
-
-	Mundo();
+	Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara);
 	b2World &obtenerMundo();
+
+	b2Vec2 obtenerPosicionCamara();
+
 	Megaman *obtenerMegamanCercano(const b2Vec2 posicion);
 	Enemigo *obtenerEnemigoCercano(const b2Vec2 posicion);
+	Entidad *obtenerEntidad(uint ID);
 	void danarZona(b2AABB zona, uint dano);
 
 	void eliminar(Enemigo * enemigo);
@@ -122,8 +127,10 @@ public:
 
 	std::list<Megaman *> obtenerMegamanes();
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
+	void limpiar(b2Vec2 posicion, real ancho, real alto);
+	std::list<Dibujable *> obtenerElementosCamara();
 
-	bool finalizarMundo();
+	void finalizarMundo();
 	EstadoMundo obtenerEstadoMundo();
 
 	

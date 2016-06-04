@@ -11,6 +11,7 @@
 #include "../../mundo/Simulador.h"
 #include "Jugador.h"
 #include "../../common/exceptions.h"
+#include "../Debug.h"
 
 //Cliente::Cliente(){}
 void Cliente::correr(){
@@ -109,16 +110,15 @@ bool Cliente::iniciado(){
 void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	char* argv1 = "./holi";
 	char** argv = &argv1;
-	VentanaJuego ventana(1,argv,"1");
-	Mundo mundo;
-	Camara camara(mundo,b2Vec2(0,0),800,600);
-	ventana.setCamara(&camara);
+	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0));
+	VentanaJuego ventana(1,argv,"1", mundo);
+	
 	
 	Jugador jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);
 	#ifndef DEBUG
 	receptor.inyectarFullSnapshotsA(&mundo);
 	#endif
-	Simulador simulador(mundo,camara,33);
+	Simulador simulador(mundo,33);
 	ventana.ejecutar();//se lanza la ventana
 	receptor.inyectarFullSnapshotsA(NULL);
 }
