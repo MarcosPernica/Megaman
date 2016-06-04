@@ -145,4 +145,23 @@ public:
 	void actualizar(real deltaT);
 };
 
+class ZonaCamara : public CajaAccion
+{
+private:
+	uint jugadoresZona1, jugadoresZona2;
+public:
+	ZonaCamara(Mundo &mundo,
+		       real ancho,
+		       real alto,
+		       const b2Vec2 &posicion,
+		       const b2Vec2 &posicionDestino);
+
+	~ZonaCamara(){};
+	void agregarJugadorZona1();
+	void quitarJugadorZona1();
+	void agregarJugadorZona2();
+	void quitarJugadorZona2();
+	void actualizar(real deltaT);
+};
+
 #endif

@@ -164,3 +164,44 @@ void CajaSpawnBombman::actualizar(real deltaT)
 		obtenerMundo().agregar(new Bombman(ID,obtenerMundo(),obtenerPosicion(),b2Vec2_zero));
 	}			
 }
+
+ZonaCamara::ZonaCamara(Mundo &mundo,
+		       real ancho,
+		       real alto,
+		       const b2Vec2 &posicion,
+		       const b2Vec2 &posicionDestino) :
+		       CajaAccion(mundo,
+			    	  ancho,
+			    	  alto,
+			    	  posicion),
+			posicionDestino(posicionDestino)
+			    
+{
+	jugadoresZona1 = 0;
+	jugadoresZona2 = 0;
+}
+
+void ZonaCamara::agregarJugadorZona1()
+{
+	jugadoresZona1++;
+}
+
+void ZonaCamara::quitarJugadorZona1()
+{
+	jugadoresZona1--;
+}
+
+void ZonaCamara::agregarJugadorZona2()
+{
+	jugadoresZona2++;
+}
+
+void ZonaCamara::quitarJugadorZona2()
+{
+	jugadoresZona2--;
+}
+
+void ZonaCamara::actualizar(real deltaT)
+{
+	
+}

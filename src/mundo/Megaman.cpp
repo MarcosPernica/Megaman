@@ -55,6 +55,12 @@ void Megaman::actualizar(real deltaT)
 	tiempoInmunidad -= deltaT;
 	if(tiempoInmunidad <= 0)
 		tiempoInmunidad = 0;
+
+	if(inmovilizado)
+	{
+		corriendo = false;
+		inmovilizado = false;	
+	}
 	
 	if (corriendo)
 	{
@@ -130,6 +136,11 @@ void Megaman::alMorir()
 {	
 }
 
+void Megaman::inmovilizar()
+{
+	inmovilizado = true;
+}
+
 uint Megaman::obtenerCantidadVidas()
 {
 	return vidas;
@@ -168,6 +179,7 @@ Megaman::Megaman(uint ID,
 	estadoDisparo = HACIENDONADA;
 	estadoEscalado = HACIENDONADA;
 	corriendo = false;
+	inmovilizado = true;
 	
 	Arma arma;
 
@@ -203,9 +215,9 @@ void Megaman::saltar()
 	if (puedeSaltar >= 1 || estadoEscalado != HACIENDONADA)
 	{
 		timespec ahora;
-		clock_gettime(CLOCK_REALTIME,&ahora);
+ 		clock_gettime(CLOCK_REALTIME,&ahora);
 		std::cout<<"Soy Megaman y salto a las: "<<ahora.tv_nsec<<std::endl;
-		
+
 		gravitar();
 		estadoSalto = PORSALTAR;
 		cambiar(animacion_saltando);

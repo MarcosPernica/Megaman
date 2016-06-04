@@ -152,6 +152,21 @@ Enemigo *Mundo::obtenerEnemigoCercano(const b2Vec2 posicion)
 	return cercano;
 }
 
+Entidad *Mundo::obtenerEntidad(uint ID)
+{
+	std::map<uint, Enemigo*>::iterator iEnemigo;
+
+	if((iEnemigo = enemigos.find(ID)) != enemigos.end())
+		return iEnemigo->second;
+
+	std::map<uint, Megaman*>::iterator iMegaman;
+
+	if((iMegaman = megamanes.find(ID)) != megamanes.end())
+		return iMegaman->second;
+
+	return NULL;	
+}
+
 void Mundo::danarZona(b2AABB zona, uint dano)
 {
 	DanarRadio danoRadio(dano);

@@ -11,6 +11,7 @@
 #include "../../mundo/Simulador.h"
 #include "Jugador.h"
 #include "../../common/exceptions.h"
+#include "../Debug.h"
 
 //Cliente::Cliente(){}
 void Cliente::correr(){

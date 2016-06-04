@@ -34,6 +34,7 @@ private:
 	/*Variable de estado.*/
 	char estadoSalto, estadoDisparo, estadoEscalado;//snapshoteado
 	bool corriendo;//snapshoteado
+	bool inmovilizado; //snapshoteado
 	real tiempoInmunidad;
 
 	/*Posicion X de la que megaman puede agarrarse.*/
@@ -70,6 +71,7 @@ public:
 	char obtenerCantidadPlasma();
 	uint obtenerCantidadVidas();
 	void atacado(uint dano);
+	void inmovilizar(); //Por un cuadro no puede caminar
 
 	ushort tipoCuerpo() const;
 
