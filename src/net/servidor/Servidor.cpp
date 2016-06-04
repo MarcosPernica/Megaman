@@ -5,6 +5,7 @@
 #include "../../mundo/Mundo.h"
 #include "../../mundo/SimuladorSinVentana.h"
 #include "ContenedorProxies.h"
+#include "../../graficos/Dibujable.h" 
 
 void Servidor::conectar(){
 	accepter.open(10020,4);
@@ -17,7 +18,7 @@ void Servidor::correr(){
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
 	
 	ContenedorProxies distribuidor(proxies);
-	Mundo mundo;
+	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0));
 	//(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
 	std::set<ProxyJugador*>::iterator it;
 	for(it=proxies.begin(); it != proxies.end(); ++it){

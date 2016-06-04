@@ -36,11 +36,10 @@ void VentanaJuego::run(){
 }
 void VentanaJuego::end(){}
 
-VentanaJuego::VentanaJuego(int argc, char * argv[], const std::string& id){
+VentanaJuego::VentanaJuego(int argc, char * argv[], const std::string& id, Mundo &mundo) : mundo(mundo){
 	app = Gtk::Application::create(argc, argv, "Megamarta.is.angry" + id);
 	darea=new Gtk::DrawingArea;//tengo que hacer estos new después de crear la application porque sino gtkmm chilla
 	window= new Gtk::Window;
-	camara = NULL;//esto es por lo mismo aunque parezca loco!
 }
 
 bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
@@ -67,9 +66,15 @@ bool VentanaJuego::on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	cr->restore();
 	//-----------fin de cr2---------------
 	*/
-	if(camara!=NULL){
-		camara->dibujarEn(cr);
-	}
+
+	b2Vec2 posicion = Dibujable::mundoARender(mundo.obtenerPosicionCamara());
+	std::list<Dibujable*> dibujables = mundo.obtenerElementosCamara();
+
+	std::list<Dibujable*>::iterator i = dibujables.begin();
+
+	while(i != dibujables.end())
+		(*i++)->dibujarEn(cr, posicion, 1);
+
 	return true;
 }
 bool VentanaJuego::on_actualizar_dibujo(){
@@ -89,8 +94,4 @@ Gtk::Window& VentanaJuego::getWindow(){
 void VentanaJuego::ejecutar(){
 	start();
 	join();
-}
-
-void VentanaJuego::setCamara(Camara* camara){
-	this->camara = camara;
 }

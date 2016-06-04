@@ -32,6 +32,8 @@ public:
 
 class CajaAccion : public Cuerpo, public Actualizable, public Interactuable
 {
+private:
+	bool habilitada;
 public:
 	CajaAccion(Mundo &mundo,
 		   real ancho,
@@ -41,6 +43,10 @@ public:
 	virtual ~CajaAccion(){};
 	ushort tipoCuerpo() const;
 	void eliminarse(Mundo &de){};
+	
+	void deshabilitar();
+	void habilitarse();
+	bool estaHabilitada();
 
 	virtual void actualizar(real deltaT){};
 };
@@ -145,23 +151,28 @@ public:
 	void actualizar(real deltaT);
 };
 
-class ZonaCamara : public CajaAccion
+class ZonaCamara
 {
 private:
-	uint jugadoresZona1, jugadoresZona2;
+	b2Vec2 posicion;
+	real ancho, alto;
+	Mundo& mundo;
+
 public:
 	ZonaCamara(Mundo &mundo,
 		       real ancho,
 		       real alto,
-		       const b2Vec2 &posicion,
-		       const b2Vec2 &posicionDestino);
-
+		       const b2Vec2 &posicion);
 	~ZonaCamara(){};
-	void agregarJugadorZona1();
-	void quitarJugadorZona1();
-	void agregarJugadorZona2();
-	void quitarJugadorZona2();
+
+	real obtenerAlto();
+	real obtenerAncho();
+	b2Vec2 obtenerPosicion();
+
 	void actualizar(real deltaT);
+
+private:
+	void actualizarRecinto(real deltaT);
 };
 
 #endif

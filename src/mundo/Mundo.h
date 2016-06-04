@@ -74,9 +74,11 @@ private:
 	void cargarNivel(Cadena nombre);
 public:
 	uint generarID(){static uint ID = 0; return ++ID;};
-
-	Mundo();
+	Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara);
 	b2World &obtenerMundo();
+
+	b2Vec2 obtenerPosicionCamara();
+
 	Megaman *obtenerMegamanCercano(const b2Vec2 posicion);
 	Enemigo *obtenerEnemigoCercano(const b2Vec2 posicion);
 	Entidad *obtenerEntidad(uint ID);
@@ -125,8 +127,10 @@ public:
 
 	std::list<Megaman *> obtenerMegamanes();
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
+	void limpiar(b2Vec2 posicion, real ancho, real alto);
+	std::list<Dibujable *> obtenerElementosCamara();
 
-	bool finalizarMundo();
+	void finalizarMundo();
 	EstadoMundo obtenerEstadoMundo();
 
 	
