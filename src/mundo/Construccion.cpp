@@ -62,3 +62,32 @@ CuboTierra::CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 				     alto)
 {
 }
+
+Puerta::Puerta(uint ID, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion):
+			Cuerpo(ID,
+							  mundo,
+							  ancho,
+							  alto,
+							  MASAINFINITA,	
+							  CONSTRUCCIONES,
+							  PERSONAJES | POWERUPS | ENEMIGOS | DISPAROS | JUMPBOX | LEFTBOX | RIGHTBOX,
+							  posicion,
+							  false,
+							  false,
+							  b2Vec2_zero,
+							  izquierda,
+							  true),
+							  cerrada(false)
+{
+}
+
+void Puerta::cerrar()
+{
+	cerrada = true;
+	materializar();	
+}
+
+bool Puerta::estaCerrada()
+{
+	return cerrada;
+}

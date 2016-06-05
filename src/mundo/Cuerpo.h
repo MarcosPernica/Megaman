@@ -62,6 +62,8 @@ public:
 	void modificarRestitucion(real coeficiente);
 	void gravitar();
 	void ingravitar();
+	
+	void materializar();
 
 	
 	void agregarCuerpoInmaterial(real ancho, real alto, b2Vec2 posicion, uint identificador, ushort categoria, ushort colisionaCon, bool fantasma = true);

@@ -69,7 +69,6 @@ ZonaMortal::ZonaMortal(Mundo &mundo,
 
 void ZonaMortal::interactuar(Megaman *megaman)
 {
-	std::cout << "Es=" << megaman->obtenerEnergiaMaxima() << std::endl;
 	megaman->atacado(megaman->obtenerEnergiaMaxima());
 }
 
@@ -90,6 +89,61 @@ ZonaTransporte::ZonaTransporte(Mundo &mundo,
 void ZonaTransporte::interactuar(Megaman *megaman)
 {
 	megaman->modificarPosicion(posicionDestino);
+}
+
+ZonaBoss::ZonaBoss(Mundo &mundo,
+		       real ancho,
+		       real alto,
+		       const b2Vec2 &posicion,
+		       Puerta *puerta) :
+		       CajaAccion(mundo,
+			    	  ancho,
+			    	  alto,
+			    	  posicion),
+			puerta(puerta),
+			ancho(ancho),
+			alto(alto)
+			    
+{
+}
+
+void ZonaBoss::actualizar(real deltaT)
+{
+	if(!puerta->estaCerrada())
+	{
+		b2Vec2 posicion = obtenerPosicion(), posicionMegaman;
+		bool adentro = true;
+
+		std::list<Megaman*> megamanes = obtenerMundo().obtenerMegamanes();
+		std::list<Megaman*>::iterator i = megamanes.begin();
+
+		while(i != megamanes.end() && adentro)
+		{
+			posicionMegaman = (*i)->obtenerPosicion();
+			adentro &= ((posicionMegaman.x > (posicion.x - ancho/2)) && (posicionMegaman.x < (posicion.x + ancho/2)));
+			adentro &= ((posicionMegaman.y > (posicion.y - alto/2)) && (posicionMegaman.y < (posicion.y + alto/2)));
+			i++;
+		}
+
+		if(adentro)
+		{
+
+			std::cout << "Adentro" << std::endl;
+			i = megamanes.begin();
+
+			b2Vec2 spawn(posicion.x-ancho/2+ANCHOSPRITEMEGAMAN/2, posicion.y);
+			real distanciaX = (ancho-ANCHOSPRITEMEGAMAN)/megamanes.size();
+
+			while(i != megamanes.end())
+			{
+				(*i++)->modificarPosicionSpawn(spawn);
+				spawn.x += distanciaX;
+			}
+
+			puerta->cerrar();
+		}
+		
+	}
 }
 
 CajaSpawn::CajaSpawn(Mundo &mundo, b2Vec2 posicion) : CajaAccion(mundo,1,1,posicion), mundo(mundo), posicion(posicion)

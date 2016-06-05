@@ -25,6 +25,7 @@ class Cuerpo;
 class CajaAccion;
 class Interactuable;
 class Enemigo;
+class Puerta;
 
 enum EstadoMundo
 {
@@ -61,8 +62,8 @@ private:
 	std::map<uint, Disparo*> disparos;
 
 	ZonaCamara *camara;
+	Puerta *puerta;
 	
-
 	std::list<CajaAccion*> controladores;
 	std::list<Interactuable*> zonas;
 	std::list<Construccion*> construcciones;
@@ -101,6 +102,8 @@ public:
 	Megaman *agregarMegaman(b2Vec2 posicion);
 	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
 	void agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino);
+	void agregarZonaBoss(real ancho, real alto, b2Vec2 posicion);
+	void agregarPuerta(real ancho, real alto, b2Vec2 posicion);
 
 	void agregarZonaSpawnMet(b2Vec2 posicion);
 	void agregarZonaSpawnBumby(b2Vec2 posicion);
@@ -130,8 +133,9 @@ public:
 	void limpiar(b2Vec2 posicion, real ancho, real alto);
 	std::list<Dibujable *> obtenerElementosCamara();
 
-	void finalizarMundo();
+	void finalizar();
 	EstadoMundo obtenerEstadoMundo();
+	void reiniciar();
 
 	
 	/**

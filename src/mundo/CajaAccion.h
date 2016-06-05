@@ -8,6 +8,7 @@
 #include "Sniper.h"
 #include "JumpingSniper.h"
 #include "Bombman.h"
+#include "Construccion.h"
 
 #include <Box2D/Box2D.h>
 #include "Definiciones.h"
@@ -78,6 +79,25 @@ public:
 	~ZonaTransporte(){};
 
 	void interactuar(Megaman *megaman);
+};
+
+class ZonaBoss : public CajaAccion
+{
+private:
+	Puerta *puerta;
+	real ancho, alto;
+public:
+	ZonaBoss(Mundo &mundo,
+		       real ancho,
+		       real alto,
+		       const b2Vec2 &posicion,
+		       Puerta *puerta
+		);
+
+	~ZonaBoss(){};
+	
+	void actualizar(real deltaT);
+	void interactuar(Megaman *megaman){};
 };
 
 

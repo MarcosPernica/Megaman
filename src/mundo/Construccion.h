@@ -36,4 +36,17 @@ public:
 	CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
 };
 
+class Puerta : public Cuerpo
+{
+private:
+	bool cerrada;
+public:
+	Puerta(uint ID, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion);
+	void cerrar();
+	bool estaCerrada();
+	
+	ushort tipoCuerpo() const {return CONSTRUCCIONES;};
+	void eliminarse(Mundo& de){};
+};
+
 #endif

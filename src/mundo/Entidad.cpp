@@ -31,13 +31,19 @@ Entidad::Entidad(uint ID,
 						gravitacional,
 						velocidad,
 						orientacion),
-			 muerta(muerta)
+			 muerta(false)
 {
 }
 
 bool Entidad::estaMuerta()
 {
 	return muerta;
+}
+
+void Entidad::revivir()
+{
+	muerta = false;
+	energia = energiaMaxima;
 }
 
 uint Entidad::obtenerEnergiaMaxima()

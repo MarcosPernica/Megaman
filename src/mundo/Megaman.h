@@ -40,6 +40,7 @@ private:
 	/*Posicion X de la que megaman puede agarrarse.*/
 	real agarreX;//snapshoteado
 	real topeY;	//snapshoteado
+	b2Vec2 posicionSpawn;
 public:
 	Megaman(uint ID,
 			Mundo &mundo,
@@ -48,6 +49,8 @@ public:
 			Orientaciones orientacion = derecha);
 
 	~Megaman();
+	bool reSpawn();
+	void modificarPosicionSpawn(b2Vec2 spawn);
 	void habilitarSalto();
 	void deshabilitarSalto();
 

@@ -34,6 +34,7 @@ public:
 	uint obtenerEnergiaMaxima();
 	uint obtenerEnergiaActual();
 	bool estaMuerta();
+	void revivir();
 	virtual void atacado(uint danio);
 	virtual void alMorir();
 

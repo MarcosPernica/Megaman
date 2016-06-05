@@ -18,7 +18,7 @@
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
-Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara) : mundo(gravedad), terminado(false)
+Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara) : mundo(gravedad), terminado(false), puerta(NULL)
 {
 	Cadena nombre("nivel.xml");
 	mundo.SetContactListener(&listenerColisiones);
@@ -32,8 +32,15 @@ b2Vec2 Mundo::obtenerPosicionCamara()
 	return camara->obtenerPosicion();
 }
 
+void Mundo::reiniciar()
+{
+	std::map<uint, Megaman*>::const_iterator i = megamanes.begin();
 
-void Mundo::finalizarMundo()
+	while(i != megamanes.end())
+		i->second->reSpawn();
+}
+
+void Mundo::finalizar()
 {
 	terminado = true;
 }
@@ -94,6 +101,10 @@ void Mundo::cargarNivel(Cadena nombre){
 			agregarZonaMortal(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "ZonaTransporte")
 			agregarZonaTransporte(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]),b2Vec2(atributos["destX"],atributos["destY"]));
+		else if(elemento->ValueStr() == "ZonaBoss")
+			agregarZonaBoss(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "Puerta")
+			agregarPuerta(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Puas")
 			agregarPuas(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Escalera")
@@ -244,7 +255,7 @@ void Mundo::agregarEscalera(real alto, b2Vec2 posicion)
 
 Megaman *Mundo::agregarMegaman(b2Vec2 posicion)
 {
-	Megaman *megaman = new Megaman(generarID(),*this, posicion);
+ 	Megaman *megaman = new Megaman(generarID(),*this, posicion);
 	
 	megamanes[megaman->obtenerID()] = megaman;
 
@@ -259,6 +270,17 @@ void Mundo::agregarZonaMortal(real ancho, real alto, b2Vec2 posicion)
 void Mundo::agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino)
 {
 	controladores.push_back(new ZonaTransporte(*this, ancho, alto, posicion, posicionDestino));
+}
+
+void Mundo::agregarZonaBoss(real ancho, real alto, b2Vec2 posicion)
+{
+	controladores.push_back(new ZonaBoss(*this, ancho, alto, posicion, puerta));
+}
+
+void Mundo::agregarPuerta(real ancho, real alto, b2Vec2 posicion)
+{
+	if(!puerta)	
+		puerta = new Puerta(generarID(), *this, ancho, alto, posicion);
 }
 
 void Mundo::agregarZonaSpawnMet(b2Vec2 posicion)

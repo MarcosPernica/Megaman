@@ -63,6 +63,11 @@ Cuerpo::Cuerpo(uint ID,
 	cuerpo->CreateFixture(&unionCuerpo);
 }
 
+void Cuerpo::materializar()
+{	
+	cuerpo->GetFixtureList()->SetSensor(false);
+}
+
 Cuerpo::~Cuerpo()
 {
 	for (b2Fixture* f = cuerpo->GetFixtureList(); f; f = f->GetNext()) 

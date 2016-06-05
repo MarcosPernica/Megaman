@@ -13,13 +13,21 @@
 <CuboMadera ancho="13" alto="1" x="19,5" y="9,5"></CuboMadera>
 <Escalera alto="5" x="28,5" y="11,5"></Escalera>
 <ZonaMortal alto="1" ancho="28" x="27" y="15,5"></ZonaMortal>
-<ZonaTransporte alto="5" ancho="1" x="46,5" y="11,5"></ZonaTransporte>
 <CuboMadera ancho="5" alto="1" x="31,5" y="11,5"></CuboMadera>
 <CuboMadera ancho="1" alto="1" x="35,5" y="11,5"></CuboMadera>
 <CuboMadera ancho="1" alto="1" x="37,5" y="11,5"></CuboMadera>	
 <CuboMadera ancho="1" alto="1" x="39,5" y="11,5"></CuboMadera>	
 <CuboMadera ancho="9" alto="1" x="44,5" y="14,5"></CuboMadera>
-<Megaman x="2" y="0"></Megaman>
+
+<CuboMadera ancho="12" alto="1" x="54" y="14,5"></CuboMadera>
+<CuboMadera ancho="1" alto="13" x="59,5" y="7,5"></CuboMadera>
+<CuboMadera ancho="9" alto="1" x="55" y="0,5"></CuboMadera>
+<CuboMadera ancho="1" alto="4" x="48,5" y="2"></CuboMadera>
+
+<Puerta ancho="1" alto="10" x="48" y="9"></Puerta>
+<ZonaBoss alto="10" ancho="10" x="54" y="10"></ZonaBoss>
+
+<Megaman x="2" y="10"></Megaman>
 <CuboMadera ancho="1" alto="15" x="0" y="14,5"></CuboMadera>
 <Met x="5,5" y="7"></Met>
 <Met x="6,5" y="7"></Met>

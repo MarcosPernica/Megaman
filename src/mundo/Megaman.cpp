@@ -51,8 +51,12 @@ ushort Megaman::tipoCuerpo() const
 
 void Megaman::actualizar(real deltaT)
 {
+	if(estaMuerta())
+		return;
+
 	avanzar(deltaT);//animacion
-	tiempoInmunidad -= deltaT;
+	tiempoInmunidad -= deltaT;	
+
 	if(tiempoInmunidad <= 0)
 		tiempoInmunidad = 0;
 
@@ -167,7 +171,8 @@ Megaman::Megaman(uint ID,
 				animacion_corriendo(ANIM_MEGAM_CORRE,0.1),
 				animacion_saltando(ANIM_MEGAM_SALTA,1),
 				animacion_quieto(ANIM_MEGAM_QUIETO,1),
-				Animado(animacion_quieto)
+				Animado(animacion_quieto),
+				posicionSpawn(posicion)
 				
 {
 	vidas = VIDASINICIALES;
@@ -190,6 +195,24 @@ Megaman::Megaman(uint ID,
 	armaSeleccionada = 0;
 
 	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.5,0.3,b2Vec2(0,ALTOSPRITEMEGAMAN*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
+}
+
+void Megaman::modificarPosicionSpawn(b2Vec2 spawn)
+{
+	posicionSpawn = spawn;
+}
+
+bool Megaman::reSpawn()
+{
+	if(vidas > 0)
+	{
+		vidas--;
+		modificarPosicion(posicionSpawn);
+		modificarVelocidad(b2Vec2_zero);
+		revivir();
+		return true;		
+	}
+	return false;
 }
 
 Megaman::~Megaman()
