@@ -457,7 +457,7 @@ void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 	while(b != enemigos.end())
 	{
 		if((b->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
-			eliminar(b->second), std::cout << "Borrado" << std::endl;
+			eliminar(b->second);//, std::cout << "Borrado" << std::endl;
 		b++;	
 	}
 
@@ -465,7 +465,7 @@ void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 	while(c != disparos.end())
 	{
 		if((c->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
-			eliminar(c->second), std::cout << "Borrado" << std::endl;
+			eliminar(c->second);//, std::cout << "Borrado" << std::endl;
 		c++;	
 	}
 

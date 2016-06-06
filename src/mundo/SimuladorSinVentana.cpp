@@ -62,8 +62,8 @@ void SimuladorSinVentana::run()
 	*/
 	//--------------------------CON CLOKC_GETTIME()--------------------//
 	//primero, determino un factor de escalamiento entre el tiempo real y el 
-	//tiempo que me dicen que es el real. De esta manera, no me boludea linux.
-	
+	//tiempo que me dicen que es el real.
+	/*
 	//primer paso: avanzo hasta el principio del próximo segundo
 	time_t t_inicial;
 	time(&t_inicial);
@@ -77,16 +77,13 @@ void SimuladorSinVentana::run()
 	time_t t_inicial2;
 	time(&t_inicial2);
 	time_t t_final2=t_inicial2;
-	/*
-	while(t_final2-t_inicial2<1){
-		time(&t_final2);
-	}*/
 	usleep(1000000);
 	clock_gettime(CLOCK_REALTIME,&preciso_final);
 	//tercer paso: escalamiento
 	long nanos_por_segundo = abs(preciso_final.tv_nsec-preciso_inicial.tv_nsec);
 	std::cout<<"Nanos por segundo: "<<nanos_por_segundo<<std::endl;
-	nanos_por_segundo=1000000000;
+	*/
+	long nanos_por_segundo=1000000000;
 	//ahora sí, el ciclo
 	int loops_desde_ultimo_envio = 0;
 	double segs_dormi_extra = 0;
@@ -100,7 +97,7 @@ void SimuladorSinVentana::run()
 		mundo.actualizar(segundosPorActualizacion);
 		
 		loops_desde_ultimo_envio += 1;
-		if(loops_desde_ultimo_envio>10){
+		if(loops_desde_ultimo_envio>2){
 			mundo.obtenerSnapshot(a_distribuir);
 			contenedor.distribuir(a_distribuir);
 			loops_desde_ultimo_envio = 0;

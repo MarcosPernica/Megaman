@@ -173,7 +173,7 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	timespec ahora;
 	clock_gettime(CLOCK_REALTIME, &ahora);
 	long nanos_ahora = ahora.tv_nsec;
-	//std::cout<<"Enviando un full snapshot de"<<full_snapshot.obtenerHorarioCreacion()<<" a las "<<clock()<<". Desde el ultimo pasaron: "<< ((double)(nanos_ahora - nanos_ultimo_envio))/1000000000000<<std::endl;
+	std::cout<<"Enviando un full snapshot de"<<full_snapshot.obtenerHorarioCreacion()<<" a las "<<clock()<<". Desde el ultimo pasaron: "<< ((double)(nanos_ahora - nanos_ultimo_envio))/1000000000000<<std::endl;
 	
 	nanos_ultimo_envio = nanos_ahora;
 	emisor.enviar(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT);

@@ -1,1 +1,1 @@
-long tiempo_al_apretar;
+#define DEBUG 1

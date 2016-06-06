@@ -6,6 +6,21 @@
 #include <iostream>
 #include "ChannelSocket.h"
 #include <fcntl.h>
+//esta struct sirve para 
+//transformar los enteros a 
+//strings de forma 
+//conveniente para la 
+//configuración de los sockets
+
+//FUENTE: http://en.cppreference.com/w/cpp/locale/numpunct/thousands_sep
+
+struct PonerNada : std::numpunct<char>{
+	char do_thousands_sep() const { return 'Q';}//separo con Q para que sea obvio si falla
+	std::string do_grouping() const { return "";}//sin grupos
+};
+
+//------------------------
+
 Socket::Socket(){
 	file_descriptor = -1;
 	file_descriptor = socket(AF_INET, SOCK_STREAM, 0);
@@ -42,6 +57,7 @@ void Socket::getAddrinfo(AddressInfo* &set,
 	
 	
 	std::ostringstream ss;
+	ss.imbue(std::locale(ss.getloc(), new PonerNada));
 	ss << port;
 	std::string port_s = ss.str();
 	
