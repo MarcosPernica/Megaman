@@ -29,7 +29,10 @@ Bumby::Bumby(uint ID,
 				   posicion, 
 				   false,
 				   false,
-				   velocidad)
+				   velocidad),
+			animacion_volando(ANIM_BUMBY_VOLANDO,0.1),
+			Animado(animacion_volando)
+				 
 {
 	tiempo = 0;	
 	reflejos = 0;
@@ -40,6 +43,8 @@ Bumby::Bumby(uint ID,
 void Bumby::actualizarMaquinaEstados(real deltaT)
 {	
 	real direccion = megaman->obtenerPosicion().x-obtenerPosicion().x;
+
+	avanzar(deltaT);
 
 	if(abs(direccion) >= DISTANCIAVISION*0.5)
 	{

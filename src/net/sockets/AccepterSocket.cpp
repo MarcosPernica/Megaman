@@ -6,7 +6,7 @@
 #include <iostream>
 void AccepterSocket::open(const unsigned port, const unsigned queue){
 	AddressInfo *info;
-	const char* local = NULL;//"localhost\0";
+	const char* local = "127.0.0.1";//"localhost\0";
 	getAddrinfo(info,local,port);
 	bindS(info);
 	freeaddrinfo(info);

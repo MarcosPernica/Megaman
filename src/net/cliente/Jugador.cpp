@@ -15,7 +15,7 @@ Jugador::Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emi):
 }
 
 bool Jugador::detectarPresionTecla(GdkEventKey* evento){
-	//if(!controlado->estaMuerta()) NO ME PASABA POR ESTA CONDICIÓN NO ESTOY SEGURO POR QUÉ
+	if(!controlado->estaMuerta())
 	{
 		switch(evento->keyval)
 		{
@@ -97,7 +97,7 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 }
 
 bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
-	//if(!controlado->estaMuerta()) NO ME PASABA POR ESTA CONDICIÓN NO ESTOY SEGURO POR QUÉ
+	if(!controlado->estaMuerta())
 	{	
 		switch(evento->keyval)
 		{

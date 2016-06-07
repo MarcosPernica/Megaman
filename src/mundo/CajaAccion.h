@@ -81,20 +81,38 @@ public:
 	void interactuar(Megaman *megaman);
 };
 
-class ZonaBoss : public CajaAccion
+class ZonaGuardado : public CajaAccion
+{
+private:
+	bool tomada;
+	real ancho, alto;
+public:
+	ZonaGuardado(Mundo &mundo,
+		       real ancho,
+		       real alto,
+		       const b2Vec2 &posicion
+		);
+
+	~ZonaGuardado(){};
+	
+	void actualizar(real deltaT);
+	void interactuar(Megaman *megaman){};
+};
+
+class ZonaCerradura : public CajaAccion
 {
 private:
 	Puerta *puerta;
 	real ancho, alto;
 public:
-	ZonaBoss(Mundo &mundo,
+	ZonaCerradura(Mundo &mundo,
 		       real ancho,
 		       real alto,
 		       const b2Vec2 &posicion,
 		       Puerta *puerta
 		);
 
-	~ZonaBoss(){};
+	~ZonaCerradura(){};
 	
 	void actualizar(real deltaT);
 	void interactuar(Megaman *megaman){};
@@ -162,11 +180,12 @@ public:
 class CajaSpawnBombman : public CajaSpawn
 {
 private:
+	Puerta *puerta;
 	bool creado;
 	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
-	CajaSpawnBombman(uint ID, Mundo &mundo, b2Vec2 posicion);
+	CajaSpawnBombman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
 	void interactuar(Megaman *megaman){};
 	void actualizar(real deltaT);
 };
@@ -185,6 +204,7 @@ public:
 		       const b2Vec2 &posicion);
 	~ZonaCamara(){};
 
+	void reiniciar();
 	real obtenerAlto();
 	real obtenerAncho();
 	b2Vec2 obtenerPosicion();

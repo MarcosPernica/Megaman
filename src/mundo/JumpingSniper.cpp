@@ -35,7 +35,11 @@ JumpingSniper::JumpingSniper(uint ID,
 				   posicion, 
 				   false,
 				   true,
-				   velocidad)
+				   velocidad),
+				animacion_protegido(ANIM_JSNIPER_PROTEGIDO,0.1),
+				animacion_disparando(ANIM_JSNIPER_DISPARANDO,0.1),
+				animacion_saltando(ANIM_JSNIPER_SALTANDO,0.1),
+				Animado(animacion_disparando)
 {
 	reflejos = 0;
 	cantidadDisparos = 0;
@@ -47,6 +51,8 @@ JumpingSniper::JumpingSniper(uint ID,
 void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 {
 	reflejos += deltaT;
+
+	avanzar(deltaT);
 
 	if(estadoSniper == CUBIERTO && reflejos >= TIEMPOCUBIERTO)
 	{
@@ -80,6 +86,7 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 	{
 		saltar();
 		estadoSniper &= ~DISPARANDO;
+		cambiar(animacion_saltando);
 	}
 
 	if(cantidadDisparos)
@@ -95,6 +102,7 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 	{
 		estadoSniper = CUBIERTO;
 		cubrirse();
+		cambiar(animacion_protegido);
 	}
 }
 

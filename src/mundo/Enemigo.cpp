@@ -170,9 +170,7 @@ bool Enemigo::puedeSaltar()
 void Enemigo::saltar()
 {
 	if(contadorPiso >= 1 && estadoSalto == PISANDO)
-	{
 		estadoSalto = PORSALTAR;
-	}
 }
 
 void Enemigo::correr()

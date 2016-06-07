@@ -4,12 +4,18 @@
 #include "Enemigo.h"
 #include <Box2D/Box2D.h>
 #include "Disparo.h"
+#include "../graficos/Animado.h"
+#include "../graficos/Animacion.h"
+
 
 class Megaman;
 
-class Met : public Enemigo
+class Met : public Enemigo, public Animado
 {
 private:
+	Animacion animacion_protegido;
+	Animacion animacion_disparando;
+
 	Megaman *megaman;
 	real tiempo;//snapshoteado
 	char estadoMet;//snapshoteado
@@ -31,6 +37,19 @@ public:
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_GET_TIPO(Met);
 	static Met* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
+
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	
+	bool espejado() const{return obtenerOrientacion()==derecha;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOMET/2,
+						obtenerPosicion().y-ALTOMET/2,
+						ANCHOMET,
+						ALTOMET);
+}
 };
 
 #endif

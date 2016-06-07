@@ -93,6 +93,7 @@ bool Bomba::danar(Entidad * entidad)
 	return false;
 }
 
+
 void Bomba::actualizar(real deltaT)
 {
 	tiempoTotal -= deltaT;

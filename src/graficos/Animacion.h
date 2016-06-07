@@ -5,6 +5,7 @@
 #include <gdkmm/general.h>
 #include <map>
 #include <string>
+
 class Animacion{
 	private:
 	std::string nombre;
@@ -18,6 +19,7 @@ class Animacion{
 	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
 	Animacion(const std::string& nombre,float segundos_por_cuadro);
 	void reiniciar();
+	bool operator==(const Animacion& animacion);
 };
 #define ANIM_MEGAM_CORRE 		"imagenes/megaman/megaman corriendo/"
 #define ANIM_MEGAM_CORRE_DISP 	"imagenes/megaman/megaman corriendo disparando/"
@@ -25,4 +27,17 @@ class Animacion{
 #define ANIM_MEGAM_QUIETO_DISP 	"imagenes/megaman/megaman quieto disparando/"
 #define ANIM_MEGAM_SALTA 		"imagenes/megaman/megaman saltando/"
 #define ANIM_MEGAM_SALTA_DISP 	"imagenes/megaman/megaman saltando disparando/"
+
+#define ANIM_MET_PROTEGIDO	"imagenes/met/protegido/"
+#define ANIM_MET_DISPARANDO	"imagenes/met/atacando/"
+
+#define ANIM_BUMBY_VOLANDO	"imagenes/bumby/volando/"
+
+#define ANIM_SNIPER_PROTEGIDO	"imagenes/sniper/cubierto/"
+#define ANIM_SNIPER_DISPARANDO	"imagenes/sniper/descubierto/"
+
+#define ANIM_JSNIPER_PROTEGIDO	"imagenes/jumpingsniper/cubierto/"
+#define ANIM_JSNIPER_DISPARANDO	"imagenes/jumpingsniper/descubierto/"
+#define ANIM_JSNIPER_SALTANDO	"imagenes/jumpingsniper/saltando/"
+
 #endif

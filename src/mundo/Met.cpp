@@ -13,7 +13,7 @@
 
 #define TIEMPOCUBIERTO 5
 #define TIEMPODESCUBIERTO 1
-#define TIEMPODISPARANDO 0
+#define TIEMPODISPARANDO 0.5
 
 Met::Met(uint ID,
 		 Mundo & mundo, 
@@ -35,11 +35,15 @@ Met::Met(uint ID,
 				   posicion, 
 				   false,
 				   true,
-				   velocidad)
+				   velocidad),
+			animacion_protegido(ANIM_MET_PROTEGIDO,1),
+			animacion_disparando(ANIM_MET_DISPARANDO,1),
+			Animado(animacion_protegido)
 {
 	tiempo = 0;
 	estadoMet = CUBIERTO;
 	accionEjecutada = false;
+	
 	
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
 }
@@ -56,6 +60,7 @@ void Met::actualizarMaquinaEstados(real deltaT)
 				tiempo = 0;
 				estadoMet = DESCUBIERTO;
 				exponerse();
+				cambiar(animacion_disparando);
 			}
 			break;
 		case DESCUBIERTO:
@@ -88,6 +93,7 @@ void Met::actualizarMaquinaEstados(real deltaT)
 				tiempo = 0;
 				estadoMet = CUBIERTO;
 				cubrirse();
+				cambiar(animacion_protegido);
 			}
 			break;
 	}
@@ -95,6 +101,8 @@ void Met::actualizarMaquinaEstados(real deltaT)
 
 void Met::actualizar(real deltaT)
 {
+	avanzar(deltaT);
+
 	b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
 	
 	if(orientacion.LengthSquared() >= DISTANCIAVISION*DISTANCIAVISION)

@@ -40,10 +40,12 @@ class Puerta : public Cuerpo
 {
 private:
 	bool cerrada;
+	uint IDInterno;
 public:
-	Puerta(uint ID, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion);
+	Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion);
 	void cerrar();
 	bool estaCerrada();
+	uint obtenerIDInterno();
 	
 	ushort tipoCuerpo() const {return CONSTRUCCIONES;};
 	void eliminarse(Mundo& de){};

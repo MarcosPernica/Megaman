@@ -125,6 +125,9 @@ void Megaman::actualizar(real deltaT)
 		}
 		estadoDisparo = HACIENDONADA;
 	}
+
+	if(estadoDisparo == HACIENDONADA && estadoEscalado == HACIENDONADA && estadoSalto == PISANDO && !corriendo)
+		cambiar(animacion_quieto);
 }
 
 void Megaman::agregarArma(Disparo * disparo, uint cantidadPlasma)
@@ -192,6 +195,7 @@ Megaman::Megaman(uint ID,
 	arma.arma = new Plasma(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS);
 
 	armas.push_back(arma);
+
 	armaSeleccionada = 0;
 
 	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.5,0.3,b2Vec2(0,ALTOSPRITEMEGAMAN*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
@@ -226,6 +230,7 @@ void Megaman::habilitarSalto()
 	puedeSaltar++;
 	estadoSalto = PISANDO;
 	estadoEscalado = HACIENDONADA;
+	cambiar(animacion_quieto);
 }
 
 void Megaman::deshabilitarSalto()
@@ -237,10 +242,6 @@ void Megaman::saltar()
 {
 	if (puedeSaltar >= 1 || estadoEscalado != HACIENDONADA)
 	{
-		timespec ahora;
- 		clock_gettime(CLOCK_REALTIME,&ahora);
-		std::cout<<"Soy Megaman y salto a las: "<<ahora.tv_nsec<<std::endl;
-
 		gravitar();
 		estadoSalto = PORSALTAR;
 		cambiar(animacion_saltando);
@@ -250,7 +251,8 @@ void Megaman::saltar()
 void Megaman::correr()
 {
 	corriendo = true;
-	cambiar(animacion_corriendo);
+	if(estadoSalto == PISANDO)
+		cambiar(animacion_corriendo);
 }
 
 void Megaman::dejarCorrer()
@@ -291,19 +293,28 @@ void Megaman::deshabilitarAgarre()
 void Megaman::subirEscalera()
 {
 	if(puedeSubir)
+	{
+		//cambiar(animacion_moviendoseEscalera);
 		estadoEscalado = SUBIENDOESCALERA;
+	}
 }
 
 void Megaman::bajarEscalera()
 {
 	if(puedeSubir)
+	{
+		//cambiar(animacion_moviendoseEscalera);
 		estadoEscalado = BAJANDOESCALERA;
+	}
 }
 
 void Megaman::pararMovimientoEscalera()
 {
 	if(estadoEscalado != HACIENDONADA)
+	{
+		//cambiar(animacion_agarradoEscalera);
 		estadoEscalado = AGARRADOESCALERA;
+	}
 }
 
 void Megaman::atacado(uint dano)

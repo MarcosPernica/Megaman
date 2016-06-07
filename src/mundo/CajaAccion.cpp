@@ -91,25 +91,25 @@ void ZonaTransporte::interactuar(Megaman *megaman)
 	megaman->modificarPosicion(posicionDestino);
 }
 
-ZonaBoss::ZonaBoss(Mundo &mundo,
+ZonaGuardado::ZonaGuardado(Mundo &mundo,
 		       real ancho,
 		       real alto,
-		       const b2Vec2 &posicion,
-		       Puerta *puerta) :
+		       const b2Vec2 &posicion) :
 		       CajaAccion(mundo,
 			    	  ancho,
 			    	  alto,
 			    	  posicion),
-			puerta(puerta),
 			ancho(ancho),
-			alto(alto)
+			alto(alto),
+			tomada(false)
 			    
 {
 }
 
-void ZonaBoss::actualizar(real deltaT)
+void ZonaGuardado::actualizar(real deltaT)
 {
-	if(!puerta->estaCerrada())
+	/*Posiciona los spawnPoints de los megaman, es un checkpoint.*/
+	if(!tomada)
 	{
 		b2Vec2 posicion = obtenerPosicion(), posicionMegaman;
 		bool adentro = true;
@@ -127,8 +127,6 @@ void ZonaBoss::actualizar(real deltaT)
 
 		if(adentro)
 		{
-
-			std::cout << "Adentro" << std::endl;
 			i = megamanes.begin();
 
 			b2Vec2 spawn(posicion.x-ancho/2+ANCHOSPRITEMEGAMAN/2, posicion.y);
@@ -139,10 +137,47 @@ void ZonaBoss::actualizar(real deltaT)
 				(*i++)->modificarPosicionSpawn(spawn);
 				spawn.x += distanciaX;
 			}
-
-			puerta->cerrar();
+			tomada = true;
 		}
-		
+	}
+}
+
+ZonaCerradura::ZonaCerradura(Mundo &mundo,
+		       real ancho,
+		       real alto,
+		       const b2Vec2 &posicion,
+		       Puerta *puerta) :
+		       CajaAccion(mundo,
+			    	  ancho,
+			    	  alto,
+			    	  posicion),
+			ancho(ancho),
+			alto(alto),
+			puerta(puerta)
+			    
+{
+}
+
+void ZonaCerradura::actualizar(real deltaT)
+{	
+	if(puerta && !puerta->estaCerrada())
+	{
+		b2Vec2 posicion = obtenerPosicion(), posicionMegaman;
+		bool adentro = true;
+
+		std::list<Megaman*> megamanes = obtenerMundo().obtenerMegamanes();
+		std::list<Megaman*>::iterator i = megamanes.begin();
+
+		while(i != megamanes.end() && adentro)
+		{
+			posicionMegaman = (*i)->obtenerPosicion();
+			adentro &= ((posicionMegaman.x > (posicion.x - ancho/2)) && (posicionMegaman.x < (posicion.x + ancho/2)));
+			adentro &= ((posicionMegaman.y > (posicion.y - alto/2)) && (posicionMegaman.y < (posicion.y + alto/2)));
+			i++;
+		}
+
+		if(adentro)
+			puerta->cerrar();
 	}
 }
 
@@ -169,7 +204,7 @@ void CajaSpawnMet::actualizar(real deltaT)
 	}			
 }
 
-CajaSpawnBumby::CajaSpawnBumby(uint ID, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID) 
+CajaSpawnBumby::CajaSpawnBumby(uint ID, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), cuentaRegresiva(0) 
 {
 }
 
@@ -188,7 +223,7 @@ void CajaSpawnBumby::actualizar(real deltaT)
 	}			
 }
 
-CajaSpawnSniper::CajaSpawnSniper(uint ID, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID) 
+CajaSpawnSniper::CajaSpawnSniper(uint ID, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), cuentaRegresiva(0)  
 {
 }
 
@@ -207,7 +242,7 @@ void CajaSpawnSniper::actualizar(real deltaT)
 	}			
 }
 
-CajaSpawnJumpingSniper::CajaSpawnJumpingSniper(uint ID, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID) 
+CajaSpawnJumpingSniper::CajaSpawnJumpingSniper(uint ID, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), cuentaRegresiva(0)  
 {
 }
 
@@ -226,7 +261,7 @@ void CajaSpawnJumpingSniper::actualizar(real deltaT)
 	}			
 }
 
-CajaSpawnBombman::CajaSpawnBombman(uint ID, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), creado(false)
+CajaSpawnBombman::CajaSpawnBombman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), creado(false), puerta(puerta) 
 {
 }
 
@@ -234,8 +269,11 @@ void CajaSpawnBombman::actualizar(real deltaT)
 {
 	if(!creado)
 	{
-		creado = true;
-		obtenerMundo().agregar(new Bombman(ID,obtenerMundo(),obtenerPosicion(),b2Vec2_zero));
+		if(puerta->estaCerrada())
+		{
+			creado = true;
+			obtenerMundo().agregar(new Bombman(ID,obtenerMundo(),obtenerPosicion(),b2Vec2_zero));
+		}
 	}			
 }
 
@@ -264,6 +302,24 @@ b2Vec2 ZonaCamara::obtenerPosicion()
 {
 	return posicion;
 }
+
+void ZonaCamara::reiniciar()
+{
+	b2Vec2 posicionPromedio = b2Vec2_zero;
+
+	std::list<Megaman*> megamanes = mundo.obtenerMegamanes();
+
+	std::list<Megaman*>::iterator i = megamanes.begin();
+
+	while(i != megamanes.end())
+		posicionPromedio = (*i++)->obtenerPosicion();
+
+	posicionPromedio = (1/(real)megamanes.size()) * posicionPromedio;
+	posicionPromedio -= b2Vec2(ancho/2,alto/2);
+
+	posicion.x = posicionPromedio.x;
+}
+
 
 void ZonaCamara::actualizarRecinto(real deltaT)
 {

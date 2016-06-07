@@ -60,9 +60,9 @@ private:
 	std::map<uint, Enemigo*> enemigos;
 	std::map<uint, PowerUp*> powerUps;
 	std::map<uint, Disparo*> disparos;
+	std::map<uint, Puerta*> puertas;
 
 	ZonaCamara *camara;
-	Puerta *puerta;
 	
 	std::list<CajaAccion*> controladores;
 	std::list<Interactuable*> zonas;
@@ -102,15 +102,16 @@ public:
 	Megaman *agregarMegaman(b2Vec2 posicion);
 	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
 	void agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino);
-	void agregarZonaBoss(real ancho, real alto, b2Vec2 posicion);
-	void agregarPuerta(real ancho, real alto, b2Vec2 posicion);
+	void agregarZonaGuardado(real ancho, real alto, b2Vec2 posicion);
+	void agregarZonaCerradura(uint IDPuerta, real ancho, real alto, b2Vec2 posicion);
+	void agregarPuerta(uint IDInterno, real ancho, real alto, b2Vec2 posicion);
 
 	void agregarZonaSpawnMet(b2Vec2 posicion);
 	void agregarZonaSpawnBumby(b2Vec2 posicion);
 	void agregarZonaSpawnSniper(b2Vec2 posicion);
 	void agregarZonaSpawnJumpingSniper(b2Vec2 posicion);
 
-	void agregarZonaSpawnBombman(b2Vec2 posicion);
+	void agregarZonaSpawnBombman(uint IDPuerta, b2Vec2 posicion);
 	void agregarZonaSpawnMagnetman(b2Vec2 posicion);
 	void agregarZonaSpawnSparkman(b2Vec2 posicion);
 	void agregarZonaSpawnRingman(b2Vec2 posicion);
@@ -132,6 +133,7 @@ public:
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
 	void limpiar(b2Vec2 posicion, real ancho, real alto);
 	std::list<Dibujable *> obtenerElementosCamara();
+	Puerta *obtenerPuerta(uint IDInterno);
 
 	void finalizar();
 	EstadoMundo obtenerEstadoMundo();

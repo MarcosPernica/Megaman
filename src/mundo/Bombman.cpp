@@ -13,11 +13,11 @@
 
 #define REFLEJOS 0.5
 #define TIEMPOCORRIENDO 1
-#define TIEMPODISPARO 1
 
 void Bombman::alMorir()
 {
 	obtenerMundo().agregarTareaDiferida(new CallbackHabilitadorArma(obtenerMundo().generarID(),obtenerMundo(),obtenerPosicion(),BOMBA));
+	eliminarse(obtenerMundo());
 }
 
 Bombman::Bombman(uint ID,
@@ -56,31 +56,23 @@ void Bombman::actualizarMaquinaEstados(real deltaT)
 
 	switch(estadoBombman)
 	{
-		case DISPARANDO | SALTANDO:
+		case DISPARANDO:
 		{
-			if(reflejos >= TIEMPODISPARO)
-			{		
-				reflejos = 0;
-				disparar(megaman->obtenerPosicion()-obtenerPosicion());
-				estadoBombman &= ~DISPARANDO;
-			}
+			disparar(megaman->obtenerPosicion()-obtenerPosicion());
+			estadoBombman = QUIETO;
+			
 			break;
 		}
 		case SALTANDO:
 		{
-			if(puedeSaltar())
-				estadoBombman = QUIETO;
-			break;
-		}
-		case CORRIENDO:
-		{
-			if(!puedeCorrer() || reflejos >= TIEMPOCORRIENDO)
+			if(reflejos >= TIEMPOCORRIENDO)
 			{
 				reflejos = 0;
 				dejarCorrer();
-				estadoBombman = QUIETO;
 			}
 
+			if(puedeSaltar())
+				estadoBombman = QUIETO;
 			break;
 		}
 		case QUIETO:
@@ -89,26 +81,33 @@ void Bombman::actualizarMaquinaEstados(real deltaT)
 
 			if(aleatorio < 0.4)
 			{
+				correr();
 				saltar();
-				estadoBombman = SALTANDO | DISPARANDO;
+				estadoBombman = SALTANDO;
 			}
 			else
 			{
-				if(!puedeCorrer())
-					virar();
-
-				correr();
-				estadoBombman = CORRIENDO;
+				estadoBombman = DISPARANDO;
 			}
 			reflejos = 0;
 			break;
 		}
 	}
-
 }
 
 void Bombman::actualizar(real deltaT)
 {
+	b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
+	
+	if(orientacion.LengthSquared() >= DISTANCIAVISION*DISTANCIAVISION)
+		return;
+
+	if(b2Dot(orientacion,Cuerpo::versorIzquierda) > 0)
+		modificarOrientacion(izquierda);
+	else 
+		modificarOrientacion(derecha);
+
+
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }

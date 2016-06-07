@@ -1,5 +1,5 @@
 #include "Construccion.h"
-
+#include <iostream>
 Construccion::Construccion(uint ID,
 						   Mundo &mundo, 
 						   const b2Vec2 &posicion, 
@@ -63,7 +63,7 @@ CuboTierra::CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 {
 }
 
-Puerta::Puerta(uint ID, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion):
+Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion):
 			Cuerpo(ID,
 							  mundo,
 							  ancho,
@@ -77,12 +77,19 @@ Puerta::Puerta(uint ID, Mundo &mundo, real ancho, real alto, const b2Vec2 &posic
 							  b2Vec2_zero,
 							  izquierda,
 							  true),
-							  cerrada(false)
+							  cerrada(false),
+							  IDInterno(IDInterno)
 {
+}
+
+uint Puerta::obtenerIDInterno()
+{
+	return IDInterno;
 }
 
 void Puerta::cerrar()
 {
+	std::cout << "Cerrada" << std::endl;
 	cerrada = true;
 	materializar();	
 }

@@ -168,7 +168,7 @@ public:
 	uint obtenerMultiplicadorVelocidad() const;
 
 	bool lanzable();
-	void alColisionar(){};
+	void alColisionar(Cuerpo *cuerpo){};
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);

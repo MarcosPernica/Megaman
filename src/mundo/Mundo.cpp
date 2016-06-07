@@ -18,13 +18,14 @@
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
-Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara) : mundo(gravedad), terminado(false), puerta(NULL)
+Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara) : mundo(gravedad), terminado(false)
 {
 	Cadena nombre("nivel.xml");
 	mundo.SetContactListener(&listenerColisiones);
 	camara = new ZonaCamara(*this,anchoCamara, altoCamara, posicionCamara);
 
 	cargarNivel(nombre);	
+	camara->reiniciar();
 }
 
 b2Vec2 Mundo::obtenerPosicionCamara()
@@ -37,7 +38,9 @@ void Mundo::reiniciar()
 	std::map<uint, Megaman*>::const_iterator i = megamanes.begin();
 
 	while(i != megamanes.end())
-		i->second->reSpawn();
+		i++->second->reSpawn();
+
+	camara->reiniciar();
 }
 
 void Mundo::finalizar()
@@ -55,7 +58,7 @@ EstadoMundo Mundo::obtenerEstadoMundo()
 	std::map<uint, Megaman*>::const_iterator i = megamanes.begin();
 
 	while(i != megamanes.end())
-		muertos |= i->second->estaMuerta();
+		muertos &= (i++)->second->estaMuerta();
 
 	if(muertos)
 	{
@@ -101,10 +104,12 @@ void Mundo::cargarNivel(Cadena nombre){
 			agregarZonaMortal(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "ZonaTransporte")
 			agregarZonaTransporte(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]),b2Vec2(atributos["destX"],atributos["destY"]));
-		else if(elemento->ValueStr() == "ZonaBoss")
-			agregarZonaBoss(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "ZonaGuardado")
+			agregarZonaGuardado(atributos["ancho"], atributos["alto"], b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "ZonaCerradura")
+			agregarZonaCerradura(atributos["idPuerta"], atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Puerta")
-			agregarPuerta(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+			agregarPuerta(atributos["id"], atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Puas")
 			agregarPuas(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Escalera")
@@ -119,6 +124,8 @@ void Mundo::cargarNivel(Cadena nombre){
 			agregarZonaSpawnSniper(b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "JumpingSniper")
 			agregarZonaSpawnJumpingSniper(b2Vec2(atributos["x"], atributos["y"]));
+		else if(elemento->ValueStr() == "Bombman")
+			agregarZonaSpawnBombman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
 
        		elemento = elemento->NextSiblingElement();
     	}
@@ -272,15 +279,37 @@ void Mundo::agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2
 	controladores.push_back(new ZonaTransporte(*this, ancho, alto, posicion, posicionDestino));
 }
 
-void Mundo::agregarZonaBoss(real ancho, real alto, b2Vec2 posicion)
+void Mundo::agregarZonaGuardado(real ancho, real alto, b2Vec2 posicion)
 {
-	controladores.push_back(new ZonaBoss(*this, ancho, alto, posicion, puerta));
+	controladores.push_back(new ZonaGuardado(*this, ancho, alto, posicion));
 }
 
-void Mundo::agregarPuerta(real ancho, real alto, b2Vec2 posicion)
+void Mundo::agregarZonaCerradura(uint IDPuerta, real ancho, real alto, b2Vec2 posicion)
 {
-	if(!puerta)	
-		puerta = new Puerta(generarID(), *this, ancho, alto, posicion);
+	Puerta *puerta = obtenerPuerta(IDPuerta);
+
+	controladores.push_back(new ZonaCerradura(*this, ancho, alto, posicion, puerta));
+}
+
+void Mundo::agregarPuerta(uint IDInterno, real ancho, real alto, b2Vec2 posicion)
+{
+	uint ID = generarID();
+
+	puertas[ID] = (new Puerta(ID, IDInterno, *this, ancho, alto, posicion));
+}
+
+Puerta *Mundo::obtenerPuerta(uint IDInterno)
+{
+	std::map<uint, Puerta*>::iterator i = puertas.begin();
+
+	while (i != puertas.end())
+	{
+		if(i->second->obtenerIDInterno() == IDInterno)
+			return i->second;
+		i++;
+	}
+
+	return NULL;
 }
 
 void Mundo::agregarZonaSpawnMet(b2Vec2 posicion)
@@ -303,29 +332,29 @@ void Mundo::agregarZonaSpawnJumpingSniper(b2Vec2 posicion)
 	controladores.push_back(new CajaSpawnJumpingSniper(generarID(),*this, posicion));
 }
 
-void Mundo::agregarZonaSpawnBombman(b2Vec2 posicion)
+void Mundo::agregarZonaSpawnBombman(uint IDPuerta, b2Vec2 posicion)
 {
-	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+	controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
 void Mundo::agregarZonaSpawnMagnetman(b2Vec2 posicion)
 {
-	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
 void Mundo::agregarZonaSpawnSparkman(b2Vec2 posicion)
 {
-	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
 void Mundo::agregarZonaSpawnRingman(b2Vec2 posicion)
 {
-	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
 void Mundo::agregarZonaSpawnFireman(b2Vec2 posicion)
 {
-	controladores.push_back(new CajaSpawnBombman(generarID(),*this, posicion));
+	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
 void Mundo::destruirCuerpos()
@@ -383,6 +412,14 @@ bool Mundo::existeElemento(uint ID)
 
 void Mundo::actualizarCuerpos(real deltaT)
 {
+	//Solo como parche es esto proximo.
+	if(obtenerEstadoMundo() == perdido)
+		reiniciar();
+	else if(obtenerEstadoMundo() == ganado)
+		exit(0);
+	
+	//Fin parche
+
 	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
 	while(a != megamanes.end())
 		(a++)->second->actualizar(deltaT);	

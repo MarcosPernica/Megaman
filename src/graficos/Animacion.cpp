@@ -30,6 +30,11 @@ Glib::RefPtr<Gdk::Pixbuf> Animacion::a_dibujar(){
 	return cargadas[cuadro_actual];
 }
 
+bool Animacion::operator==(const Animacion& animacion)
+{
+	return this->nombre == animacion.nombre;
+}
+
 Animacion::Animacion(const std::string& nom, float s):
 						segundos_por_cuadro(s),
 						segundos_desde_cambio(0),

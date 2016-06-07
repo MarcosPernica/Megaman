@@ -34,7 +34,11 @@ Sniper::Sniper(uint ID,
 				   posicion, 
 				   false,
 				   true,
-				   velocidad)
+				   velocidad),
+				animacion_protegido(ANIM_SNIPER_PROTEGIDO,0.1),
+				animacion_disparando(ANIM_SNIPER_DISPARANDO,0.1),
+				Animado(animacion_disparando)
+			
 {
 	reflejos = 0;
 	cantidadDisparos = 0;
@@ -47,11 +51,14 @@ void Sniper::actualizarMaquinaEstados(real deltaT)
 {
 	reflejos += deltaT;
 
+	avanzar(deltaT);
+	
 	if(estadoSniper == CUBIERTO && reflejos >= TIEMPOCUBIERTO)
 	{
 		reflejos = 0;
 		exponerse();
 		estadoSniper = DESCUBRIENDOSE;
+		cambiar(animacion_disparando);
 	}
 	
 	if(estadoSniper == DESCUBRIENDOSE)
@@ -81,11 +88,14 @@ void Sniper::actualizarMaquinaEstados(real deltaT)
 	{
 		estadoSniper = CUBIERTO;
 		cubrirse();
+		cambiar(animacion_protegido);
 	}
 }
 
 void Sniper::actualizar(real deltaT)
 {
+	avanzar(deltaT);
+
 	b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
 
 	if(orientacion.LengthSquared() >= DISTANCIAVISION)
