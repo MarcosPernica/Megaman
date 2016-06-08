@@ -91,7 +91,7 @@ void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::st
 		Lock l(m_id);
 		id_usuario = resto_mensaje;
 	}else if(tipo_mensaje == MENSAJE_INICIAR){
-		setQuiereIniciarPartida();
+		setQuiereIniciarPartida(resto_mensaje[0]);//no es el número de nivel, sino el caracter que lo representa!
 	}else if(controlado != NULL){
 		if(tipo_mensaje == MENSAJE_KEY_Z){
 			timespec ahora;
@@ -108,7 +108,7 @@ ProxyJugador::ProxyJugador(ChannelSocket* chan)
 							:Receptor(*chan),
 							 channel(chan),
 							 conexion_sana(true),
-							 quiero_iniciar(false),
+							 quiero_iniciar('0'),
 							 emisor(*chan){
 	controlado = NULL;
 }
@@ -141,11 +141,18 @@ void ProxyJugador::informarEstaRota(){
 }
 bool ProxyJugador::quiereIniciarPartida(){
 	Lock l(m_quiero_iniciar);
+	return quiero_iniciar!='0';
+}
+char ProxyJugador::nivelQueEligio(){
+	if(!quiereIniciarPartida()) throw CustomException("Este jugador no quiere iniciar la partida entonces no eligio ningun nivel");
+	Lock l(m_quiero_iniciar);
 	return quiero_iniciar;
 }
-void ProxyJugador::setQuiereIniciarPartida(){
+
+void ProxyJugador::setQuiereIniciarPartida(char nivel){
+	if(!(nivel>='1' && nivel <='5')) throw CustomException("El nivel recibido no es válido");
 	Lock l(m_quiero_iniciar);
-	quiero_iniciar = true;
+	quiero_iniciar = nivel;
 }
 void ProxyJugador::notificarInicio(){
 	emisor.enviar(MENSAJE_INICIAR);
@@ -185,4 +192,8 @@ void ProxyJugador::enviarPosicion(uint posicion){
 }
 uint ProxyJugador::obtenerPosicion(){
 	return posicion;
+}
+
+void ProxyJugador::enviarNivel(char nivel){
+	emisor.enviarNivel(nivel);//queda abierta la posibilidad de que el emisor sea un thread
 }

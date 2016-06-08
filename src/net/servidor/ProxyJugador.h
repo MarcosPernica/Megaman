@@ -28,13 +28,13 @@ class ProxyJugador: public Receptor{
 	
 	std::string id_usuario;
 	bool conexion_sana;
-	bool quiero_iniciar;
+	char quiero_iniciar;//es el CARACTER que representa el nivel: no es 1...5 sino '1'...'5', '0' significa no quiere iniciar
 	
 	ChannelSocket* channel;
 	
 	bool tengoUsuario();
 	void informarEstaRota();
-	void setQuiereIniciarPartida();
+	void setQuiereIniciarPartida(char nivel);
 	Emisor emisor;
 	public:
 	//ProxyJugador(const std::string& id_usuario, ChannelSocket* channel);
@@ -49,7 +49,9 @@ class ProxyJugador: public Receptor{
 	void enviar(const FullSnapshot& full_snapshot);
 	
 	bool quiereIniciarPartida();
+	char nivelQueEligio();
 	void notificarInicio();
+	void enviarNivel(char nivel);
 	
 	~ProxyJugador();
 	

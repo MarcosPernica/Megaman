@@ -9,12 +9,31 @@
 #include "../../mundo/Mundo.h"
 #include "../../common/Lock.h"
 #include <ctime>
+#include <fstream>
 class ReceptorCliente: public Receptor{
 	private:
 	clock_t horario_ultimo_inyectado;
 	clock_t horario_ultima_inyeccion;
 	bool inyectado;
 	Cliente& cliente;
+	
+	std::ofstream stream_nivel;
+	
+	
+	 /**
+	  * iniciar descarga del nivel
+	  * */
+	void iniciarDescargaNivel();
+	 /**
+	  * Agregar la línea recibida al nivel
+	  * */
+	void recibirDatosNivel(const std::string& datos);
+	  /**
+	   * Terminar la descarga del nivel
+	* */
+	void terminarDescargaNivel();
+	
+	
 	/**
 	 * Recibidas contiene la lista de snapshots recibida hasta ahora
 	 * */
@@ -35,8 +54,9 @@ class ReceptorCliente: public Receptor{
 	 * */ 
 	 void inyectarFullSnapshotsA(Mundo* a);
 	 /**
-	  * callback de idle, inyectar el snapshot
+	  * callback de timeout, inyectar el snapshot
 	  * */
 	 bool onInyectar();
+	 
 };
 #endif

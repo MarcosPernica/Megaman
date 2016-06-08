@@ -45,11 +45,18 @@ class Servidor{
 	 * */
 	void matarConexiones();
 	
+	/**
+	 * Le envia el nive (el archivo!) a todos los clientes
+	 * */
+	void enviarNivel(char nivel);
+	
 	public:
 	
 	/**Ejecuta todo
 	 * */
 	void correr();
+	
+	
 	
 	~Servidor();
 	

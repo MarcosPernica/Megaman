@@ -4,6 +4,7 @@
 #include <string>
 #include "../defines_protocolo.h"
 #include <glibmm/main.h>
+#include <fstream>
 
 ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 								Receptor(chan),
@@ -18,7 +19,7 @@ ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 
 
 void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	//std::cout<<"estoy recibiendo un mensaje "<<tipo_mensaje<<std::endl;
+	
 	if(tipo_mensaje==MENSAJE_ESTABA){
 		cliente.agregarEstaba(resto_mensaje);
 	}else if(tipo_mensaje==MENSAJE_LLEGA){
@@ -61,6 +62,12 @@ void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std:
 			*/
 			//a_punto_de_inyectar.mostrar();
 		}
+	}else if(tipo_mensaje==MENSAJE_INICIAR_ENVIO_NIVEL){
+		iniciarDescargaNivel();
+	}else if(tipo_mensaje==MENSAJE_ENVIO_NIVEL){
+		recibirDatosNivel(resto_mensaje);
+	}else if(tipo_mensaje==MENSAJE_TERMINAR_ENVIO_NIVEL){
+		terminarDescargaNivel();
 	}
 }
 
@@ -95,4 +102,15 @@ bool ReceptorCliente::onInyectar(){
 		}
 	}
 	return true;
+}
+void ReceptorCliente::iniciarDescargaNivel(){
+	stream_nivel.open("nivel.xml",std::ios_base::out|std::ios_base::trunc);//out:salida trunc:elimina todo lo que había antes
+}
+void ReceptorCliente::terminarDescargaNivel(){
+	stream_nivel.close();
+}
+
+void ReceptorCliente::recibirDatosNivel(const std::string& datos){
+	std::cout<<"agregando cosas al nivel"<<std::endl;
+	stream_nivel<<datos<<std::endl;
 }

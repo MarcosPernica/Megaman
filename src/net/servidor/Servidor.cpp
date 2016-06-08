@@ -14,6 +14,7 @@ void Servidor::correr(){
 	conectar();
 	ProxyJugador* primero = agregarJugadores();
 	esperarAlPrimero(primero);
+	//enviarNivel(primero->nivelQueEligio());
 	notificarInicio();
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
 	
@@ -54,12 +55,9 @@ ProxyJugador* Servidor::agregarJugadores(){
 			
 			if(primero==NULL){
 				primero=nuevo;
-				//primero->enviarSosPrimero();
-			}else{
-				//nuevo->enviarNoSosPrimero();
 			}
 			nuevo->enviarPosicion(proxies.size());
-			sleep(1);
+			//sleep(1);
 			
 			nuevo->enviarListaJugadores(proxies);//se le envían los que ya estaban
 			notificarLlegada(nuevo);//se notifica a los que ya estaban
@@ -76,7 +74,6 @@ ProxyJugador* Servidor::agregarJugadores(){
 			std::cout<<"El primer jugador decidio iniciar"<<std::endl;
 		}
 	}
-	std::cout<<"---agregarJugadores termina----"<<std::endl;
 	return primero;
 }
 void Servidor::notificarLlegada(ProxyJugador* jugador){
@@ -107,5 +104,15 @@ void Servidor::notificarInicio(){
 	std::set<ProxyJugador*>::iterator it;
 	for(it = proxies.begin(); it!=proxies.end(); ++it){
 		(*it)->notificarInicio();
+	}
+}
+
+void Servidor::enviarNivel(char nivel){
+	/*
+	std::cout<<"----------------------ENVIO EL  NIVEL"<<nivel<<"A TODOS----------"<<std::endl;
+	* */
+	std::set<ProxyJugador*>::iterator it;
+	for(it = proxies.begin(); it!=proxies.end(); ++it){
+		(*it)->enviarNivel(nivel);
 	}
 }

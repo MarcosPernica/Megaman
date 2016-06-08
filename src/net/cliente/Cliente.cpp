@@ -36,13 +36,14 @@ void Cliente::correr(){
 		
 		//comentar esto de abajo hace que se deje de esperar la i
 		char respuesta='0';
-		while(obtenerPosicion()==0 && respuesta!='i'){
-			std::cout<<"Usted es el primero. Ingrese i para iniciar la partida"<<std::endl;
+		while(obtenerPosicion()==0 && !(respuesta>='1' && respuesta<='5')){
+			std::cout<<"Usted es el primero. Ingrese un número entre 1 y 5 inclusive para iniciar ese nivel"<<std::endl;
 			std::cin>>respuesta;
 		}
 		//(comentar hasta acá)
-		
-		emisor.enviar(MENSAJE_INICIAR);//acá hay que meter la información del nivel
+		std::string nivel_enviar;
+		nivel_enviar+=respuesta;
+		emisor.enviar(MENSAJE_INICIAR,nivel_enviar);
 	}
 	
 	while(!iniciado()){//ahora, seas segundo o primero, te bloqueo hasta que recibis el iniciar
@@ -53,7 +54,7 @@ void Cliente::correr(){
 
 	std::cout<<"Se lanza la partida y la ventana aca!"<<std::endl;	
 	iniciarVentana(emisor, receptor);
-	//------------------ACÁ SE LANZA LA VENTANA Y LOS COHETES----------//
+	//terminó la ventana...
 	socket.closeS();
 	
 }
