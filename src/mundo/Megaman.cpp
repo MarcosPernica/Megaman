@@ -361,6 +361,9 @@ void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	SN_AGREGAR_PROPIEDAD(agarreX);
 	SN_AGREGAR_PROPIEDAD(topeY);
 	
+	unsigned int tam = armas.size();
+	
+	/* SNAPSHOTEAR LAS ARMAS ES UN POCO MÁS COMPLICADO PQ EL TAMANIO DEL VECTOR VARÍA MARCOS REVISALO
 	SN_AGREGAR_PROPIEDAD(armas[0].plasma);
 	//SN_AGREGAR_PROPIEDAD(armas[0].arma);
 	SN_AGREGAR_PROPIEDAD(armas[1].plasma);
@@ -371,8 +374,7 @@ void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	//SN_AGREGAR_PROPIEDAD(armas[3].arma);
 	SN_AGREGAR_PROPIEDAD(armas[4].plasma);
 	//SN_AGREGAR_PROPIEDAD(armas[4].arma);
-	SN_AGREGAR_PROPIEDAD(armas[5].plasma);
-	//SN_AGREGAR_PROPIEDAD(armas[5].arma);
+	*/
 }
 void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	Entidad::setStateFromSnapshot(sn);
@@ -386,6 +388,7 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	SN_OBTENER_PROPIEDAD(agarreX);
 	SN_OBTENER_PROPIEDAD(topeY);
 	
+	/* SNAPSHOTEAR LAS ARMAS ES UN POCO MÁS COMPLICADO PQ EL TAMANIO DEL VECTOR VARÍA MARCOS REVISALO
 	SN_OBTENER_PROPIEDAD(armas[0].plasma);
 	//SN_OBTENER_PROPIEDAD(armas[0].arma);
 	SN_OBTENER_PROPIEDAD(armas[1].plasma);
@@ -396,8 +399,7 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	//SN_OBTENER_PROPIEDAD(armas[3].arma);
 	SN_OBTENER_PROPIEDAD(armas[4].plasma);
 	//SN_OBTENER_PROPIEDAD(armas[4].arma);
-	SN_OBTENER_PROPIEDAD(armas[5].plasma);
-	//SN_OBTENER_PROPIEDAD(armas[5].arma);
+	*/
 }
 
 //------------------------------------------------------------------

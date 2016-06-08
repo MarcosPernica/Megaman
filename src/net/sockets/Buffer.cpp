@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 Buffer::Buffer(unsigned size){
 	len = size;
-	data = (char*) malloc(size);
+	data = (char*) malloc(size*sizeof(char));
 	memset(data,0,size);
 }
 Buffer::Buffer(){
@@ -49,9 +49,17 @@ CommonNumber Buffer::asNumber() const{
 }
 
 std::string Buffer::asString() const{
+	/*
 	std::string ret = std::string(data);
 	if(ret.size() > len){
 		ret.erase(len,std::string::npos);
 	}
-	return ret;
+	* */
+	/*
+	std::string ret;
+	for(unsigned int i = 0; i<len; i++){
+		ret+=data[i];
+	}
+	*/
+	return std::string(data,len);
 }
