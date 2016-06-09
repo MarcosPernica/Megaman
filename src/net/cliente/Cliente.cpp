@@ -107,11 +107,14 @@ bool Cliente::iniciado(){
 	Lock l(m_iniciado);
 	return flag_iniciado;
 }
+const std::string& Cliente::obtenerNombre(){
+	return nombre;
+}
 
 void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	char* argv1 = "./holi";
 	char** argv = &argv1;
-	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0));
+	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml");
 	VentanaJuego ventana(1,argv,"1", mundo);
 	
 	

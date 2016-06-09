@@ -6,20 +6,39 @@
 #include "../../mundo/SimuladorSinVentana.h"
 #include "ContenedorProxies.h"
 #include "../../graficos/Dibujable.h" 
-
+#include <fstream>
 void Servidor::conectar(){
 	accepter.open(10020,4);
 }
+void Servidor::copiarParaTiny(char nivel){
+	std::string nombre_nivel("niveles/nivel");
+	nombre_nivel+=nivel;
+	nombre_nivel+=".xml";
+	
+	std::ifstream src(nombre_nivel.c_str(),std::ios::binary);
+	std::ofstream dst("nivel_tiny.xml",std::ios::binary);
+	dst<<src.rdbuf();
+	dst.close();
+}
+
 void Servidor::correr(){
 	conectar();
 	ProxyJugador* primero = agregarJugadores();
 	esperarAlPrimero(primero);
-	//enviarNivel(primero->nivelQueEligio());
+	char elegido = primero->nivelQueEligio();
+	enviarNivel(elegido);
+	std::cout<<elegido<<std::endl;
 	notificarInicio();
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
-	
+	//copiarParaTiny(primero->nivelQueEligio());
+	std::ostringstream nombre_nivel;
+	nombre_nivel<<"niveles/nivel";
+	nombre_nivel<<(char)elegido;
+	nombre_nivel<< ".xml";
+	std::cout<<"El nombre del nivel es: "<<nombre_nivel.str()<<std::endl;
 	ContenedorProxies distribuidor(proxies);
-	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0));
+	//Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.c_str());
+	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str());
 	//(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
 	std::set<ProxyJugador*>::iterator it;
 	for(it=proxies.begin(); it != proxies.end(); ++it){

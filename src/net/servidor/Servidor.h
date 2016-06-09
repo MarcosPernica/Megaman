@@ -50,6 +50,11 @@ class Servidor{
 	 * */
 	void enviarNivel(char nivel);
 	
+	/**
+	 * Copia el archivo para que pueda usarse con tinyXML
+	 * */ 
+	void copiarParaTiny(char nivel);
+	
 	public:
 	
 	/**Ejecuta todo

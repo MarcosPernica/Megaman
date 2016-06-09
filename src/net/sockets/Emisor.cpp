@@ -82,4 +82,5 @@ void Emisor::enviarNivel(char nivel) const{
 		enviar(MENSAJE_ENVIO_NIVEL,enviando);
 	}
 	enviar(MENSAJE_TERMINAR_ENVIO_NIVEL);
+	archivo_nivel.close();
 }

@@ -104,7 +104,8 @@ bool ReceptorCliente::onInyectar(){
 	return true;
 }
 void ReceptorCliente::iniciarDescargaNivel(){
-	stream_nivel.open("nivel.xml",std::ios_base::out|std::ios_base::trunc);//out:salida trunc:elimina todo lo que había antes
+	std::string nombre_archivo = cliente.obtenerNombre()+"nivel.xml";
+	stream_nivel.open(nombre_archivo.c_str(),std::ios_base::out|std::ios_base::trunc);//out:salida trunc:elimina todo lo que había antes
 }
 void ReceptorCliente::terminarDescargaNivel(){
 	stream_nivel.close();

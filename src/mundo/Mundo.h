@@ -73,9 +73,10 @@ private:
 	bool terminado;
 	
 	void cargarNivel(Cadena nombre);
+	std::string nombre_nivel;
 public:
 	uint generarID(){static uint ID = 0; return ++ID;};
-	Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara);
+	Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& nombre_nivel = "nivel.xml");
 	b2World &obtenerMundo();
 
 	b2Vec2 obtenerPosicionCamara();

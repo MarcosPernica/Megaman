@@ -49,6 +49,7 @@ class Cliente{
 	bool iniciado();
 	
 	void iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor);
+	const std::string& obtenerNombre();
 	Cliente(std::string nombre = std::string("anon"));
 	
 };

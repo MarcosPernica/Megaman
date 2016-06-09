@@ -18,9 +18,11 @@
 
 const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
 
-Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara) : mundo(gravedad), terminado(false)
+Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& n) : mundo(gravedad), terminado(false)
 {
-	Cadena nombre("nivel.xml");
+	nombre_nivel = n;
+	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
+	Cadena nombre(nombre_nivel);
 	mundo.SetContactListener(&listenerColisiones);
 	camara = new ZonaCamara(*this,anchoCamara, altoCamara, posicionCamara);
 
@@ -82,10 +84,11 @@ void Mundo::obtenerAtributosXML(TiXmlAttribute *atributo, std::map<std::string,r
 
 void Mundo::cargarNivel(Cadena nombre){
 
-	TiXmlDocument doc( "nivel.xml" );
+	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
+	TiXmlDocument doc( nombre_nivel );
 	if(!doc.LoadFile())
-		exit(0); //Poner excepcion
-
+		throw CustomException("Tiny XML no cargó el archivo");
+		
     	TiXmlElement *elemento = doc.RootElement()->FirstChildElement();
    	while(elemento)
     	{
@@ -416,7 +419,7 @@ void Mundo::actualizarCuerpos(real deltaT)
 	if(obtenerEstadoMundo() == perdido)
 		reiniciar();
 	else if(obtenerEstadoMundo() == ganado)
-		exit(0);
+		throw CustomException("Se gano el nivel, todavía no está implementado lo que sigue");
 	
 	//Fin parche
 
