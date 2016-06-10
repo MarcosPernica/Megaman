@@ -12,6 +12,7 @@
 #include "Cadena.h"
 #include "../common/exceptions.h"
 #include <tinyxml.h>
+#include "../net/Debug.h"
 
 #define MUNDOVIVO 0
 #define MUNDOTERMINADO 1
@@ -491,13 +492,15 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 {
+	/* Limpia lo que esta fuera del area circular que pasa por todos los vertices del area cuadrada.*/
+
 	real radio = (posicion.x+ancho)*(posicion.x+ancho) +  (posicion.y+alto)*(posicion.y+alto);
 
 	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
 	while(b != enemigos.end())
 	{
 		if((b->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
-			eliminar(b->second);//, std::cout << "Borrado" << std::endl;
+			eliminar(b->second);
 		b++;	
 	}
 
@@ -505,7 +508,7 @@ void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 	while(c != disparos.end())
 	{
 		if((c->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
-			eliminar(c->second);//, std::cout << "Borrado" << std::endl;
+			eliminar(c->second);
 		c++;	
 	}
 

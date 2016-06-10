@@ -55,12 +55,23 @@ Cuerpo::Cuerpo(uint ID,
 	unionCuerpo.filter.categoryBits = categoria;
 	unionCuerpo.filter.maskBits = colisionaCon;
 	unionCuerpo.isSensor = fantasma;
+	unionCuerpo.friction = 0;
 
 	datos.push_back(new DatosColisionCuerpo(this,CUERPOPRINCIPAL,Rectangulo(posicion.x,posicion.y,ancho,alto)));
 
 	unionCuerpo.userData = datos.at(0);
 
 	cuerpo->CreateFixture(&unionCuerpo);
+}
+
+real Cuerpo::obtenerAncho() const
+{
+	return ancho;
+}
+	
+real Cuerpo::obtenerAlto() const
+{
+	return alto;
 }
 
 void Cuerpo::materializar()

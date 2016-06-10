@@ -40,4 +40,9 @@ class Animacion{
 #define ANIM_JSNIPER_DISPARANDO	"imagenes/jumpingsniper/descubierto/"
 #define ANIM_JSNIPER_SALTANDO	"imagenes/jumpingsniper/saltando/"
 
+#define ANIM_CUBOMADERA	"imagenes/cuboMadera/"
+#define ANIM_CUBOTIERRA "imagenes/cuboTierra/"
+#define ANIM_CUBOMETAL "imagenes/cuboMetal/"
+#define ANIM_CUBOLADRILLO "imagenes/cuboLadrillo/"
+
 #endif

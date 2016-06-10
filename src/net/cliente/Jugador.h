@@ -24,6 +24,7 @@ typedef char CodigoEvento;
 
 class Jugador{
 	private:
+	unsigned int ultimaTecla;
 	Megaman* controlado;
 	const Emisor& emisor;
 	public:

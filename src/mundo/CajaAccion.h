@@ -193,7 +193,7 @@ public:
 class ZonaCamara
 {
 private:
-	b2Vec2 posicion;
+	b2Vec2 posicion, posicionCentral;
 	real ancho, alto;
 	Mundo& mundo;
 

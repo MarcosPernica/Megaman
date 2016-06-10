@@ -53,6 +53,7 @@ void ChannelSocket::receiveFixed(Buffer& into) const{
 		left -= received;
 	}
 	if(received<0){
+		std::cout << errno << std::endl;
 		throw CException("hubo un error al recibir datos (receive Fifex)");
 	}
 }

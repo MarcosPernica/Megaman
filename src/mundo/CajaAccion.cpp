@@ -315,6 +315,9 @@ void ZonaCamara::reiniciar()
 		posicionPromedio = (*i++)->obtenerPosicion();
 
 	posicionPromedio = (1/(real)megamanes.size()) * posicionPromedio;
+
+	posicionCentral.x = posicionPromedio.x;
+
 	posicionPromedio -= b2Vec2(ancho/2,alto/2);
 
 	posicion.x = posicionPromedio.x;
@@ -354,31 +357,16 @@ void ZonaCamara::actualizarRecinto(real deltaT)
 	}
 
 	posicionPromedio = (1/(real)megamanes.size()) * posicionPromedio;
+
+	posicionCentral.x = posicionPromedio.x;
+
 	posicionPromedio -= b2Vec2(ancho/2,alto/2);
 
-	lateralIzquierdo = posicionPromedio.x - ancho/2;
-	lateralDerecho = posicionPromedio.x + ancho/2;
-
-	i = megamanes.begin();
-
-	real posicionXMegaman, maximoAfuera = 0;
-	
-	while(i != megamanes.end())
-	{
-		posicionXMegaman = (*i)->obtenerPosicion().x;
-		if(posicionXMegaman < lateralIzquierdo && -(posicionXMegaman-lateralIzquierdo) > abs(maximoAfuera))
-			maximoAfuera = posicionXMegaman-lateralIzquierdo;
-		else if(posicionXMegaman > lateralDerecho && (posicionXMegaman-lateralDerecho) > abs(maximoAfuera))
-			maximoAfuera = (posicionXMegaman-lateralDerecho);
-		i++;
-	}
-
-	posicionPromedio.x += maximoAfuera;
 	posicion.x = posicionPromedio.x;
 }
 
 void ZonaCamara::actualizar(real deltaT)
 {
 	actualizarRecinto(deltaT);
-	mundo.limpiar(posicion, ancho, alto);
+	mundo.limpiar(posicionCentral, ancho, alto);
 }

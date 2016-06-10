@@ -5,6 +5,7 @@
 #include "../defines_protocolo.h"
 
 Jugador::Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emi):
+					ultimaTecla(0),
 					controlado(controlado),
 					emisor(emi){
 	ventana.getWindow().signal_key_press_event().connect(
@@ -15,8 +16,9 @@ Jugador::Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emi):
 }
 
 bool Jugador::detectarPresionTecla(GdkEventKey* evento){
-	if(!controlado->estaMuerta())
+	if(!controlado->estaMuerta() && evento->keyval != ultimaTecla)
 	{
+		ultimaTecla = evento->keyval;
 		switch(evento->keyval)
 		{
 			case GDK_KEY_1: 
@@ -97,8 +99,9 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 }
 
 bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
-	if(!controlado->estaMuerta())
+	if(!controlado->estaMuerta() && evento->keyval)
 	{	
+		ultimaTecla = 0;
 		switch(evento->keyval)
 		{
 			case GDK_KEY_Up:

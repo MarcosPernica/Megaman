@@ -258,6 +258,13 @@ void Megaman::correr()
 void Megaman::dejarCorrer()
 {
 	corriendo = false;
+
+	if(estadoSalto == PISANDO)
+	{
+		b2Vec2 velocidad = obtenerVelocidad();
+		velocidad.x = 0;
+		modificarVelocidad(velocidad);
+	}
 }
 
 void Megaman::mirarDerecha()

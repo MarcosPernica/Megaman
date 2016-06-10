@@ -54,6 +54,8 @@ public:
 
 	void finalizarCreacion();
 	Rectangulo obtenerCajaMagnificada(uint magnificador) const;
+	real obtenerAncho() const;
+	real obtenerAlto() const;
 
 	void modificarVelocidad(const b2Vec2 &velocidad);
 	void modificarOrientacion(Orientaciones orientacion);
