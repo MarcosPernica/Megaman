@@ -12,6 +12,7 @@
 #include "../snapshots/FullSnapshot.h"
 #include <queue>
 #include "../sockets/Emisor.h"
+#include <iostream>
 class ProxyJugador: public Receptor{
 	private:
 	uint posicion;
@@ -43,7 +44,7 @@ class ProxyJugador: public Receptor{
 	void enviarListaJugadores(const std::set<ProxyJugador*>& lista);
 	void notificarLlegada(ProxyJugador* jugador);
 	void notificarEstaba(ProxyJugador* jugador);
-	void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje);
+	virtual void recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje);
 	const std::string& getUsuario();
 	bool getEstaSana();
 	void enviar(const FullSnapshot& full_snapshot);
@@ -75,5 +76,16 @@ class ProxyJugador: public Receptor{
 	 * Desacola algún control recibido y apreta los botones del Megaman correspondiente
 	 * */
 	 void ejecutarControlSobreMegaman();
+};
+
+class CallbackProxyJugador : public CallbackReceptor {
+	private:
+	ProxyJugador& proxy;
+	public:
+	CallbackProxyJugador(ProxyJugador& p):proxy(p){};
+	void recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
+		std::cout<<"Me llegan cosas"<<std::endl;
+		proxy.recepcion(tipo_mensaje,resto_mensaje);
+	};
 };
 #endif

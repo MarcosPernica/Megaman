@@ -5,29 +5,25 @@
 #include <string>
 #include "../../common/Mutex.h"
 #include "../sockets/Emisor.h"
-class ReceptorCliente;
-
+class VentanaJuego;
+#include "ReceptorCliente.h"
+class Jugador;
 /**
- * "Singleton" que representa la aplicación cliente
+ * "Singleton-no-Signleton" que representa la aplicación cliente
  * */
 class Cliente{
 	private:
 	Mutex m_pantalla;
 	Mutex m_posicion;
 	Mutex m_iniciado;
+	VentanaJuego& ventana;
 	
 	ChannelSocket socket;
 	int posicion;
 	bool flag_iniciado;
 	
-	/**
-	 * Pide ip y port por cmd, y conecta el Socket
-	 * */
-	void conectarse();
-	/**
-	 * Pide ID y lo envía al server
-	 * */
-	void enviarID(const Emisor& emisor);
+	ReceptorCliente receptor;
+	Emisor emisor;
 	
 	
 	/**
@@ -50,7 +46,22 @@ class Cliente{
 	
 	void iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor);
 	const std::string& obtenerNombre();
-	Cliente(std::string nombre = std::string("anon"));
+	Cliente(VentanaJuego &ventana);
+	
+	/**
+	 * Pide ip y port por cmd, y conecta el Socket
+	 * */
+	void conectarse(const std::string& nombre);
+	
+	/**
+	 * Le agrega un callback al receptor, 
+	 * de esta forma la Ventana puede recibir "eventos" del socket
+	 * */
+	void agregarCallback(const std::string& tipo_mensaje, CallbackReceptor* callback);
+	
+	void enviarIniciar(int nivel);
+	
+	Jugador* configurarNivel(VentanaJuego& ventana ,Mundo& mundo);
 	
 };
 #endif

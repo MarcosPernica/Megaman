@@ -5,30 +5,28 @@
 #include "ChannelSocket.h"
 #include <map>
 #include "../../common/Mutex.h"
-class EventoReceptor{
-	public:
-	virtual void operator()(const std::string& mensaje){};
-};
-
+#include "CallbackReceptor.h"
 /**
  * Es un hilo que responde con eventos cuando recibe mensajes.
  * Advertencia 1: los mensajes se llaman en el hilo correspondiente a esta instancia
  * Advertencia 2: el hilo no termina hasta que no se cierre el socket correspondiente.
  * */
-class Receptor: private Thread{
+class Receptor: public Thread{
 	private:
 	bool recibiendo;
 	Mutex m_recibir;
+	std::map<std::string,CallbackReceptor*> callbacks;
+	Mutex m_callbacks;
 	
 	bool recepcion_sana;
 	Mutex m_recepcion_sana;
 	
 	const ChannelSocket& channel;
-	
+	void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje);
 	protected:
 	
 	Receptor(const ChannelSocket& channel);
-	virtual void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje) = 0;
+	
 	
 	
 	private:
@@ -56,5 +54,9 @@ class Receptor: private Thread{
 	public:
 	~Receptor();
 	bool getRecepcionSana();
+	/**
+	 * el Receptor borrará los callbacks al borrarse
+	 * */
+	void agregarCallback(const std::string& tipo_mensaje,CallbackReceptor* callback);
 };
 #endif

@@ -167,9 +167,8 @@ int main(int argc, char *argv[])
 */
 //-------------MAIN CLI/SERV con complejidad-------------
 
-#include "net/servidor/Servidor.h"
-#include "net/cliente/Cliente.h"
-#ifndef compiling_server
+
+
 
 /**
  * El juego va a tener las sig. etapas:
@@ -186,17 +185,26 @@ int main(int argc, char *argv[])
  * 
  * y así...
  * */
-
+#ifndef compiling_server
+#include <gtkmm/application.h>
+#include "graficos/VentanaJuego.h"
 int main(int argc, char *argv[])
 {
 	std::locale::global( std::locale( "" ) );
+	Glib::RefPtr<Gtk::Application> app =Gtk::Application::create(argc,argv,"pepenachohacejuegos.fi.uba");
+	VentanaJuego ventana;
+	return app->run(ventana);
+	/*
 	if(argc>1){
 		std::string n(argv[1]);
 		Cliente cli(n);
 		cli.correr();
 	}
+	*/
+	
 }
 #else
+#include "net/servidor/Servidor.h"
 int main(int argc, char *argv[])
 {
 	std::locale::global( std::locale( "" ) );

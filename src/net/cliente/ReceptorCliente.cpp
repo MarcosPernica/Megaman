@@ -5,6 +5,13 @@
 #include "../defines_protocolo.h"
 #include <glibmm/main.h>
 #include <fstream>
+#include "Cliente.h"
+
+#define IMPLEMENTAR_CALL(tipo_mensaje) void ReceptorCliente::call ## tipo_mensaje(const std::string resto_mensaje)
+#define AGREGAR_CALLBACK(tipo_mensaje) \
+std::string mensaje_##tipo_mensaje(MENSAJE_##tipo_mensaje);\
+Callback##tipo_mensaje* c_##tipo_mensaje = new Callback##tipo_mensaje(*this);\
+agregarCallback(mensaje_##tipo_mensaje, c_##tipo_mensaje)
 
 ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 								Receptor(chan),
@@ -15,60 +22,75 @@ ReceptorCliente::ReceptorCliente(const ChannelSocket& chan, Cliente& cli):
 	inyectado = true;
 	//agrego la señal de timeout, porque idle es poco confiable/inestable
 	Glib::signal_timeout().connect(sigc::mem_fun(*this, &ReceptorCliente::onInyectar),100);//los milis son arbitrarios
+	//configurar callbacks
+	configurarCallbacks();
+}
+void ReceptorCliente::configurarCallbacks(){
+	AGREGAR_CALLBACK(ESTABA);
+	AGREGAR_CALLBACK(LLEGA);
+	AGREGAR_CALLBACK(POSICION);
+	AGREGAR_CALLBACK(INICIAR);
+	AGREGAR_CALLBACK(INICIAR_ENVIO_FULLSNAPSHOT);
+	AGREGAR_CALLBACK(ENVIO_SNAPSHOT);
+	AGREGAR_CALLBACK(TERMINAR_ENVIO_FULLSNAPSHOT);
+	AGREGAR_CALLBACK(INICIAR_ENVIO_NIVEL);
+	AGREGAR_CALLBACK(ENVIO_NIVEL);
+	AGREGAR_CALLBACK(TERMINAR_ENVIO_NIVEL);
+}
+IMPLEMENTAR_CALL(ESTABA){
+	cliente.agregarEstaba(resto_mensaje);
 }
 
-
-void ReceptorCliente::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	
-	if(tipo_mensaje==MENSAJE_ESTABA){
-		cliente.agregarEstaba(resto_mensaje);
-	}else if(tipo_mensaje==MENSAJE_LLEGA){
-		cliente.agregarLlega(resto_mensaje);
-	}else if(tipo_mensaje==MENSAJE_POSICION){
-		std::istringstream ss(resto_mensaje);
-		int posicion;
-		ss>>posicion;
-		cliente.definirPosicion(posicion);
-	}else if(tipo_mensaje==MENSAJE_INICIAR){
-		cliente.iniciar();
-	}else if(tipo_mensaje==MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT){
-		//std::cout<<"----------------me llega un fulls"<<std::endl;
-		
-		std::cout<<"----------------me llega un fulls de"<<resto_mensaje<<" a las "<<clock()<<std::endl;
-		recibidas.clear();
-	}else if(tipo_mensaje==MENSAJE_ENVIO_SNAPSHOT){
-		//std::cout<<resto_mensaje<<std::endl;
-		
-		recibidas.push_back(resto_mensaje);
-	}else if(tipo_mensaje==MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT){
-		if(a_inyectar!=NULL){
-			//inyectar el full snapshot en cuanto pueda!
-			Lock l(m_a_punto);
-			/*
-			std::vector<SnapshotSerializada>::iterator it;
-			std::cout<<"----------mostrando fs recibida"<<std::endl;
-			for(it = recibidas.begin(); it != recibidas.end(); ++it){
-				std::cout<<*it<<std::endl;
-			}
-			std::cout<<"--------------finfs recibida"<<std::endl;
-			*/
-			//horario_ultima_recepcion=clock();
-			a_punto_de_inyectar = FullSnapshot::desdeSerializada(recibidas);
-			/*
-			if(inyectado){
-				Glib::signal_idle().connect(sigc::mem_fun(*this, &ReceptorCliente::onInyectar));
-				inyectado = false;
-			}
-			*/
-			//a_punto_de_inyectar.mostrar();
+IMPLEMENTAR_CALL(LLEGA){
+	cliente.agregarLlega(resto_mensaje);
+}
+IMPLEMENTAR_CALL(POSICION){
+	std::istringstream ss(resto_mensaje);
+	int posicion;
+	ss>>posicion;
+	cliente.definirPosicion(posicion);
+}
+IMPLEMENTAR_CALL(INICIAR){
+	cliente.iniciar();
+}
+IMPLEMENTAR_CALL(INICIAR_ENVIO_FULLSNAPSHOT){
+	std::cout<<"----------------me llega un fulls de"<<resto_mensaje<<" a las "<<clock()<<std::endl;
+	recibidas.clear();
+}
+IMPLEMENTAR_CALL(ENVIO_SNAPSHOT){
+	recibidas.push_back(resto_mensaje);
+}
+IMPLEMENTAR_CALL(TERMINAR_ENVIO_FULLSNAPSHOT){
+	if(a_inyectar!=NULL){
+		//inyectar el full snapshot en cuanto pueda!
+		Lock l(m_a_punto);
+		/*
+		std::vector<SnapshotSerializada>::iterator it;
+		std::cout<<"----------mostrando fs recibida"<<std::endl;
+		for(it = recibidas.begin(); it != recibidas.end(); ++it){
+			std::cout<<*it<<std::endl;
 		}
-	}else if(tipo_mensaje==MENSAJE_INICIAR_ENVIO_NIVEL){
-		iniciarDescargaNivel();
-	}else if(tipo_mensaje==MENSAJE_ENVIO_NIVEL){
-		recibirDatosNivel(resto_mensaje);
-	}else if(tipo_mensaje==MENSAJE_TERMINAR_ENVIO_NIVEL){
-		terminarDescargaNivel();
+		std::cout<<"--------------finfs recibida"<<std::endl;
+		*/
+		//horario_ultima_recepcion=clock();
+		a_punto_de_inyectar = FullSnapshot::desdeSerializada(recibidas);
+		/*
+		if(inyectado){
+			Glib::signal_idle().connect(sigc::mem_fun(*this, &ReceptorCliente::onInyectar));
+			inyectado = false;
+		}
+		*/
+		//a_punto_de_inyectar.mostrar();
 	}
+}
+IMPLEMENTAR_CALL(INICIAR_ENVIO_NIVEL){
+	iniciarDescargaNivel();
+}
+IMPLEMENTAR_CALL(ENVIO_NIVEL){
+	recibirDatosNivel(resto_mensaje);
+}
+IMPLEMENTAR_CALL(TERMINAR_ENVIO_NIVEL){
+	terminarDescargaNivel();
 }
 
 void ReceptorCliente::inyectarFullSnapshotsA(Mundo* a){

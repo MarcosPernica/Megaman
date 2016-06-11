@@ -8,10 +8,10 @@ Jugador::Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emi):
 					ultimaTecla(0),
 					controlado(controlado),
 					emisor(emi){
-	ventana.getWindow().signal_key_press_event().connect(
+	ventana.signal_key_press_event().connect(
 			sigc::mem_fun(*this, &Jugador::detectarPresionTecla),false);
 
-	ventana.getWindow().signal_key_release_event().connect(
+	ventana.signal_key_release_event().connect(
 			sigc::mem_fun(*this, &Jugador::detectarLiberacionTecla),false);
 }
 

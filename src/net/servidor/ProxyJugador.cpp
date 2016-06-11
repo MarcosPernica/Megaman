@@ -84,9 +84,8 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 	}
 }
 
-void ProxyJugador::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	//std::cout<<"el mensaje que llega es: "<<tipo_mensaje<<std::endl;
-	
+void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
+	std::cout<<"MMe llega: "<<tipo_mensaje<<" "<<resto_mensaje<<std::endl;
 	if(tipo_mensaje == MENSAJE_ID){
 		Lock l(m_id);
 		id_usuario = resto_mensaje;
@@ -109,8 +108,31 @@ ProxyJugador::ProxyJugador(ChannelSocket* chan)
 							 channel(chan),
 							 conexion_sana(true),
 							 quiero_iniciar('0'),
-							 emisor(*chan){
-	controlado = NULL;
+							 emisor(*chan),
+							 controlado(NULL){
+	CallbackProxyJugador* callback=new CallbackProxyJugador(*this);
+	
+	agregarCallback(MENSAJE_ID,callback);
+	agregarCallback(MENSAJE_INICIAR,callback);
+	
+	agregarCallback(MENSAJE_KEY_1,callback);
+	agregarCallback(MENSAJE_KEY_2,callback);
+	agregarCallback(MENSAJE_KEY_3,callback);
+	agregarCallback(MENSAJE_KEY_4,callback);
+	agregarCallback(MENSAJE_KEY_5,callback);
+	agregarCallback(MENSAJE_KEY_UP,callback);
+	agregarCallback(MENSAJE_KEY_DN,callback);
+	agregarCallback(MENSAJE_KEY_RIGHT,callback);
+	agregarCallback(MENSAJE_KEY_LEFT,callback);
+	agregarCallback(MENSAJE_KEY_Z,callback);
+	agregarCallback(MENSAJE_KEY_X,callback);
+	
+	agregarCallback(MENSAJE_KEY_UP_LIBERADA,callback);
+	agregarCallback(MENSAJE_KEY_DN_LIBERADA,callback);
+	agregarCallback(MENSAJE_KEY_RIGHT_LIBERADA,callback);
+	agregarCallback(MENSAJE_KEY_LEFT_LIBERADA,callback);
+	
+	start();
 }
 							 
 bool ProxyJugador::tengoUsuario(){

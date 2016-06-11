@@ -53,12 +53,13 @@ void ChannelSocket::receiveFixed(Buffer& into) const{
 		left -= received;
 	}
 	if(received<0){
-		std::cout << errno << std::endl;
-		throw CException("hubo un error al recibir datos (receive Fifex)");
+		throw CException("hubo un error al recibir datos (receive fixed)");
 	}
 }
 
-
+/**
+ * No se usa en la última versión del protocolo
+ * */
 std::string ChannelSocket::receiveUntilNl(float seconds) const{
 	if(seconds>10){
 		throw CustomException("No se permiten timeout de más de 10 segundos");

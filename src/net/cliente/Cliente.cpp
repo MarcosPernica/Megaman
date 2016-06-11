@@ -1,7 +1,6 @@
 #include "Cliente.h"
 #include <iostream>
 #include "../sockets/Buffer.h"
-#include "ReceptorCliente.h"
 #include <cstdlib>
 #include "../defines_protocolo.h"
 #include "../../common/Lock.h"
@@ -12,24 +11,28 @@
 #include "Jugador.h"
 #include "../../common/exceptions.h"
 #include "../Debug.h"
-
-//Cliente::Cliente(){}
-void Cliente::correr(){
-	posicion=-1;
-	flag_iniciado=false;
-	
-	
-	conectarse();
-	
+#include "../../graficos/VentanaJuego.h"
+void Cliente::conectarse(const std::string& nombre){
+	#ifndef DEBUG
+	socket.connectTo("127.0.0.1",10020);
+	#endif
+	/*
 	ReceptorCliente receptor(socket,*this);
 	Emisor emisor(socket);
-	enviarID(emisor);
+	* */
+	emisor.enviar(MENSAJE_ID,nombre);
+	this->nombre = nombre;
+	receptor.start();
+}
+//Cliente::Cliente(){}
+void Cliente::correr(){
+	
 
 	#ifndef DEBUG
 	while(obtenerPosicion()==-1){
 		//detener
 	}
-	//std::cout<<"La posicion  que vino es: "<<obtenerPosicion()<<std::endl;
+	
 	if(obtenerPosicion()>0){
 		std::cout<<"No sos el primero"<<std::endl;
 	}else{
@@ -57,22 +60,6 @@ void Cliente::correr(){
 	//terminó la ventana...
 	socket.closeS();
 	
-}
-void Cliente::conectarse(){
-	#ifndef DEBUG
-	socket.connectTo("127.0.0.1",10020);
-	#endif
-}
-void Cliente::enviarID(const Emisor& emisor){
-	std::string id;
-	//std::cout<<"Introduzca su ID unica. Confio en usted"<<std::endl;
-	//std::cin>>id;
-	id = nombre;
-	emisor.enviar(MENSAJE_ID,id);
-	/*
-	Buffer id_buf = Buffer::createString(std::string(MENSAJE_ID)+" " + id + "\n");
-	socket.sendFixed(id_buf);
-	* */
 }
 
 void Cliente::agregarEstaba(const std::string& usuario){
@@ -110,23 +97,41 @@ bool Cliente::iniciado(){
 const std::string& Cliente::obtenerNombre(){
 	return nombre;
 }
-
+//VUELA
 void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
 	char* argv1 = "./holi";
 	char** argv = &argv1;
 	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml");
-	VentanaJuego ventana(1,argv,"1", mundo);
-	
+	//VentanaJuego ventana(1,argv,"1", mundo);
 	
 	Jugador jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);
 	#ifndef DEBUG
 	receptor.inyectarFullSnapshotsA(&mundo);
 	#endif
 	Simulador simulador(mundo,33);
-	ventana.ejecutar();//se lanza la ventana
+	//ventana.simularMundo(mundo);//se lanza(ba) la ventana, "bloquea" este hilo hasta que termina ese mundo
 	receptor.inyectarFullSnapshotsA(NULL);
 }
+Jugador* Cliente::configurarNivel(VentanaJuego& ventana ,Mundo& mundo){
+	Jugador* jugador = new Jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);
+	#ifndef DEBUG
+	receptor.inyectarFullSnapshotsA(&mundo);
+	#endif
+	return jugador;
+}
 
-Cliente::Cliente(std::string n){
-	nombre = n;
+Cliente::Cliente(VentanaJuego &vent):
+							ventana(vent),
+							receptor(socket,*this),
+							emisor(socket){
+	posicion=-1;
+	flag_iniciado=false;
+}
+
+void Cliente::agregarCallback(const std::string& tipo_mensaje, CallbackReceptor* callback){
+	receptor.agregarCallback(tipo_mensaje, callback);
+}
+
+void Cliente::enviarIniciar(int nivel){
+	emisor.enviar(MENSAJE_INICIAR,'0'+(char)nivel);
 }
