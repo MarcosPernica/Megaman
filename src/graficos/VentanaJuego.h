@@ -25,6 +25,8 @@ class VentanaJuego : public Gtk::Window{
 	Gtk::VBox cajaSplash;
 	Gtk::Entry entry;
 	
+	Gtk::Label lobby;
+	
 	Gtk::HBox malos;
 	std::vector<Gtk::Button*> botonesMalos;
 	

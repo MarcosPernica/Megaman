@@ -33,8 +33,7 @@ CuboMadera::CuboMadera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 				     posicion,
 				     ancho,
 				     alto),
-			textura(ANIM_CUBOMADERA,1),
-			Animado(textura)
+			textura(NULL)
 {
 }
 

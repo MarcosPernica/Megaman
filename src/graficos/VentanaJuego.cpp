@@ -23,6 +23,7 @@ VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),
 	set_default_size(800, 600);
 	
 	estado.set_text("Introduzca nombre de usuario");
+	lobby.set_text("JUGADORES:\n");
 	
 	add(cajaSplash);
 	cajaSplash.add(estado);
@@ -35,7 +36,7 @@ VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),
 		oss<<"nivel: ";
 		oss<<i+1;
 		Gtk::Button* b = new Gtk::Button(oss.str());
-		b->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this,&VentanaJuego::on_button_clicked),i+1));//esto anda mal. Lo reviso después de la preentrega
+		b->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this,&VentanaJuego::on_button_clicked),i+1));
 		botonesMalos.push_back(b);
 		malos.add(*b);
 		b->show();
@@ -43,6 +44,8 @@ VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),
 	cajaSplash.add(malos);
 	malos.show();
 	malos.set_sensitive(false);
+	cajaSplash.add(lobby);
+	lobby.show();
 	
 	entry.signal_activate().connect(
 			sigc::mem_fun(*this, &VentanaJuego::on_intro_nombre));
@@ -91,23 +94,26 @@ void VentanaJuego::on_intro_nombre(){
 	estado.set_text("Conectando...");
 	entry.set_sensitive(false);
 	cliente.conectarse(nombre);
+	agregarJugador(nombre);
 }
 void VentanaJuego::setPrimero(bool primero){
-	std::cout<<"Soy primero es "<<primero<<std::endl;
 	if(primero){
-		
 		malos.set_sensitive(true);
+		estado.set_text("Sos el primero, elegí un nivel para iniciar la partida.");
+	}else{
+		estado.set_text("No sos el primero, esperando a que el primero elija un nivel.");
 	}
 }
 
 void VentanaJuego::agregarJugador(const std::string& nombre){
 	std::cout<<"Se agrega al lobby: "<<nombre<<std::endl;
+	Glib::ustring texto_lobby = lobby.get_text();
+	texto_lobby+=nombre+"\n";
+	lobby.set_text(texto_lobby);
 }
 
 void VentanaJuego::on_button_clicked(int cual){
-	std::cout<<"elegiste iniciar"<<cual<<std::endl;
 	cliente.enviarIniciar(cual);
-	
 }
 
 VentanaJuego::~VentanaJuego(){

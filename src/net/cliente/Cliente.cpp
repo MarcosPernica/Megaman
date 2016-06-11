@@ -133,5 +133,7 @@ void Cliente::agregarCallback(const std::string& tipo_mensaje, CallbackReceptor*
 }
 
 void Cliente::enviarIniciar(int nivel){
-	emisor.enviar(MENSAJE_INICIAR,'0'+(char)nivel);
+	std::ostringstream oss;
+	oss<<nivel;
+	emisor.enviar(MENSAJE_INICIAR,oss.str());
 }

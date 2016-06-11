@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 #include <iostream>
 #include "../graficos/Animado.h"
+#include "../graficos/ImagenEscalada.h"
 #include "../graficos/Animacion.h"
 
 class Construccion: public Cuerpo
@@ -15,16 +16,22 @@ public:
 	void eliminarse(Mundo& de){};
 };
 
-class CuboMadera : public Construccion, public Animado
+class CuboMadera : public Construccion, public ImagenEscalada
 {
 private:
-	Animacion textura;
+	Glib::RefPtr<Gdk::Pixbuf> textura;
 public:
 	CuboMadera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
 	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);}
 
 	bool espejado() const{return obtenerOrientacion()==derecha;};
+	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar(){
+		if(textura == NULL){
+			textura = Gdk::Pixbuf::create_from_file("imagenes/cuboMadera/1.png");
+		}
+		return textura;
+	}
 
 	const Rectangulo obtenerRepresentacion() const{
 	return Rectangulo(	obtenerPosicion().x-obtenerAncho()/2,
