@@ -65,17 +65,26 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 	}else{
 		cr->scale(escala_x,escala_y);
 	}
+	
 	Gdk::Cairo::set_source_pixbuf(cr, 
 						imagen,
 						0,0);
 	
+	/*
 	cr->rectangle(0, 
 		      0, 
 		      ancho_def, 
 		      alto_def);
+	*/
+	cr->rectangle(0, 
+		      0, 
+		      imagen->get_width(), 
+		      imagen->get_height());
 	
 	cr->clip();
 	
 	cr->paint();
+	
+	//cr->stroke();
 	cr->restore();
 }

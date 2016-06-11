@@ -43,8 +43,7 @@ CuboMetal::CuboMetal(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, 
 				     posicion,
 				     ancho,
 				     alto),
-				textura(ANIM_CUBOMETAL,1),
-				Animado(textura)
+				textura(NULL)
 {
 }
 
