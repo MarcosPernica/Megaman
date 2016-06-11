@@ -32,8 +32,7 @@ CuboMadera::CuboMadera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto),
-			textura(NULL)
+				     alto)
 {
 }
 
@@ -42,8 +41,7 @@ CuboMetal::CuboMetal(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, 
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto),
-				textura(NULL)
+				     alto)
 {
 }
 
@@ -52,9 +50,7 @@ CuboLadrillo::CuboLadrillo(uint ID, Mundo &mundo, const b2Vec2 &posicion, real a
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto),
-				textura(ANIM_CUBOLADRILLO,1),
-				Animado(textura)
+				     alto)
 {
 }
 
@@ -63,9 +59,7 @@ CuboTierra::CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto),
-				textura(ANIM_CUBOTIERRA,1),
-				Animado(textura)
+				     alto)
 {
 }
 
@@ -84,9 +78,7 @@ Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, con
 							  izquierda,
 							  true),
 							  cerrada(false),
-							  IDInterno(IDInterno),
-						textura(ANIM_CUBOMETAL,0.1),
-						Animado(textura)
+							  IDInterno(IDInterno)
 {
 }
 
@@ -97,6 +89,7 @@ uint Puerta::obtenerIDInterno()
 
 void Puerta::cerrar()
 {
+	std::cout << "Cerrada" << std::endl;
 	cerrada = true;
 	materializar();	
 }
