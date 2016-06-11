@@ -84,7 +84,6 @@ class CallbackProxyJugador : public CallbackReceptor {
 	public:
 	CallbackProxyJugador(ProxyJugador& p):proxy(p){};
 	void recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-		std::cout<<"Me llegan cosas"<<std::endl;
 		proxy.recepcion(tipo_mensaje,resto_mensaje);
 	};
 };

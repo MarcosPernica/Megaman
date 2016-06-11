@@ -134,6 +134,5 @@ void ReceptorCliente::terminarDescargaNivel(){
 }
 
 void ReceptorCliente::recibirDatosNivel(const std::string& datos){
-	std::cout<<"agregando cosas al nivel"<<std::endl;
 	stream_nivel<<datos<<std::endl;
 }

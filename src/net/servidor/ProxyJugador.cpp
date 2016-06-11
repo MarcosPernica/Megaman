@@ -85,7 +85,6 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 }
 
 void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	std::cout<<"MMe llega: "<<tipo_mensaje<<" "<<resto_mensaje<<std::endl;
 	if(tipo_mensaje == MENSAJE_ID){
 		Lock l(m_id);
 		id_usuario = resto_mensaje;

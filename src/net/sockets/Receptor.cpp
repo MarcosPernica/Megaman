@@ -14,7 +14,6 @@ Receptor::Receptor(const ChannelSocket& chan):
 void Receptor::ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje){
 	if(callbacks.count(tipo_mensaje)==0)
 		throw CustomException("No hay un callback para el tipo de mensaje "+tipo_mensaje);
-	std::cout<<tipo_mensaje<<std::endl;
 	callbacks[tipo_mensaje]->recepcion(tipo_mensaje,resto_mensaje);
 }
 void Receptor::run(){
