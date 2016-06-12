@@ -8,6 +8,10 @@
 #include "Sniper.h"
 #include "JumpingSniper.h"
 #include "Bombman.h"
+#include "Sparkman.h"
+#include "Magnetman.h"
+#include "Ringman.h"
+#include "Fireman.h"
 #include "Construccion.h"
 
 #include <Box2D/Box2D.h>
@@ -186,6 +190,58 @@ private:
 	uint ID;
 public:
 	CajaSpawnBombman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnSparkman : public CajaSpawn
+{
+private:
+	Puerta *puerta;
+	bool creado;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnSparkman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnMagnetman : public CajaSpawn
+{
+private:
+	Puerta *puerta;
+	bool creado;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnMagnetman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnRingman : public CajaSpawn
+{
+private:
+	Puerta *puerta;
+	bool creado;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnRingman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
+	void interactuar(Megaman *megaman){};
+	void actualizar(real deltaT);
+};
+
+class CajaSpawnFireman : public CajaSpawn
+{
+private:
+	Puerta *puerta;
+	bool creado;
+	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	uint ID;
+public:
+	CajaSpawnFireman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
 	void interactuar(Megaman *megaman){};
 	void actualizar(real deltaT);
 };

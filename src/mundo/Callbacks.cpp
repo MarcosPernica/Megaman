@@ -42,7 +42,19 @@ void CallbackHabilitadorArma::ejecutar()
 	{
 		case BOMBA:
 			mundo.agregar(new HabilitadorBomba(ID,mundo,posicion));
-		break;
+			break;
+		case CHISPA:
+			mundo.agregar(new HabilitadorChispa(ID,mundo,posicion));
+			break;
+		case IMAN:
+			mundo.agregar(new HabilitadorIman(ID,mundo,posicion));
+			break;
+		case ANILLO:
+			mundo.agregar(new HabilitadorAnillo(ID,mundo,posicion));
+			break;
+		case FUEGO:
+			mundo.agregar(new HabilitadorFuego(ID,mundo,posicion));
+			break;
 	}
 }
 

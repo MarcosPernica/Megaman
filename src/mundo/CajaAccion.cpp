@@ -277,6 +277,71 @@ void CajaSpawnBombman::actualizar(real deltaT)
 	}			
 }
 
+CajaSpawnSparkman::CajaSpawnSparkman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), creado(false), puerta(puerta) 
+{
+}
+
+void CajaSpawnSparkman::actualizar(real deltaT)
+{
+	if(!creado)
+	{
+		if(puerta->estaCerrada())
+		{
+			creado = true;
+			obtenerMundo().agregar(new Sparkman(ID,obtenerMundo(),obtenerPosicion(),b2Vec2_zero));
+		}
+	}			
+}
+
+
+CajaSpawnMagnetman::CajaSpawnMagnetman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), creado(false), puerta(puerta) 
+{
+}
+
+void CajaSpawnMagnetman::actualizar(real deltaT)
+{
+	if(!creado)
+	{
+		if(puerta->estaCerrada())
+		{
+			creado = true;
+			obtenerMundo().agregar(new Magnetman(ID,obtenerMundo(),obtenerPosicion(),b2Vec2_zero));
+		}
+	}			
+}
+
+CajaSpawnRingman::CajaSpawnRingman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), creado(false), puerta(puerta) 
+{
+}
+
+void CajaSpawnRingman::actualizar(real deltaT)
+{
+	if(!creado)
+	{
+		if(puerta->estaCerrada())
+		{
+			creado = true;
+			obtenerMundo().agregar(new Ringman(ID,obtenerMundo(),obtenerPosicion(),b2Vec2_zero));
+		}
+	}			
+}
+
+CajaSpawnFireman::CajaSpawnFireman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion) : CajaSpawn(mundo,posicion), ID(ID), creado(false), puerta(puerta) 
+{
+}
+
+void CajaSpawnFireman::actualizar(real deltaT)
+{
+	if(!creado)
+	{
+		if(puerta->estaCerrada())
+		{
+			creado = true;
+			obtenerMundo().agregar(new Fireman(ID,obtenerMundo(),obtenerPosicion(),b2Vec2_zero));
+		}
+	}			
+}
+
 ZonaCamara::ZonaCamara(Mundo &mundo,
 		       real ancho,
 		       real alto,

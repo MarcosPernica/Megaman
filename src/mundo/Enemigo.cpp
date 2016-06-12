@@ -67,8 +67,8 @@ Enemigo::Enemigo(uint ID,
 	this->arma = arma;
 
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(0,alto*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
-	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(-ancho/2,0), LEFTBOX, LEFTBOX, CONSTRUCCIONES | PERSONAJES);
-	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(+ancho/2,0), RIGHTBOX, RIGHTBOX, CONSTRUCCIONES | PERSONAJES);
+	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(-ancho/2,0), LEFTBOX, LEFTBOX, CONSTRUCCIONES);
+	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(+ancho/2,0), RIGHTBOX, RIGHTBOX, CONSTRUCCIONES);
 	agregarCuerpoInmaterial(ancho,alto,b2Vec2(0,0), AURAENEMIGOS, AURAENEMIGOS, PERSONAJES);
 }
 
@@ -137,16 +137,9 @@ bool Enemigo::puedeIrIzquierda()
 bool Enemigo::puedeCorrer()
 {
 	if(obtenerOrientacion() == derecha)
-	{
-		if(!puedeIrDerecha())
-			return false;
-	}
+		return puedeIrDerecha();
 	else if(obtenerOrientacion() == izquierda)
-	{
-		if(!puedeIrIzquierda())
-			return false;
-	}
-	return true;	
+		return puedeIrIzquierda();	
 }
 
 void Enemigo::alMorir()

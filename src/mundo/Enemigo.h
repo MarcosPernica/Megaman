@@ -19,7 +19,7 @@ private:
 	/*Variable de estado.*/
 	char estadoSalto, estadoDisparo;//snapshoteados
 	bool corriendo;//snapshoteado
-	char tocandoIzquierda, tocandoDerecha;//snapshoteados
+	int tocandoIzquierda, tocandoDerecha;//snapshoteados
 	uint escudo;//snapshoteado
 	bool cubierto;//snapshoteado
 
@@ -83,7 +83,6 @@ public:
 	void eliminarse(Mundo& de);
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
-	//virtual int getTipo(){return TIPO_PROTEGIDO;};
 	
 private:
 	void ruletaPowerUp(uint ID, Mundo &mundo, const b2Vec2 &posicion);

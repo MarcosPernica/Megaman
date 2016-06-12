@@ -26,7 +26,12 @@
 
 #define CUERPOPRINCIPAL 0
 #define MEGAMANJUMPBOX 1
+
 #define BOMBA 1
+#define IMAN 2
+#define ANILLO 3
+#define FUEGO 4
+#define CHISPA 5
 
 #define IDCONSTRUCCIONES 0
 #define MAXIMALONGITUDBUFFER 1000
@@ -118,6 +123,39 @@ namespace SJuego
 		 real altobombman;
 		 real velocidadsaltobombman;
 		 real velocidadcorrerbombman;
+
+		 real energiamaximasparkman;
+		 real masasparkman;
+		 real escudosparkman;
+		 real anchosparkman;
+		 real altosparkman;
+		 real velocidadsaltosparkman;
+		 real velocidadcorrersparkman;
+
+		 real energiamaximamagnetman;
+		 real masamagnetman;
+		 real escudomagnetman;
+		 real anchomagnetman;
+		 real altomagnetman;
+		 real velocidadsaltomagnetman;
+		 real velocidadcorrermagnetman;
+
+		 real energiamaximaringman;
+		 real masaringman;
+		 real escudoringman;
+		 real anchoringman;
+		 real altoringman;
+		 real velocidadsaltoringman;
+		 real velocidadcorrerringman;
+
+		 real energiamaximafireman;
+		 real masafireman;
+		 real escudofireman;
+		 real anchofireman;
+		 real altofireman;
+		 real velocidadsaltofireman;
+		 real velocidadcorrerfireman;
+
 		 real probanuevavida;
 		 real probaenergiachica;
 		 real probaenergiagrande;
@@ -230,6 +268,39 @@ namespace SJuego
 #define ALTOBOMBMAN SJuego::attr.altobombman
 #define VELOCIDADSALTOBOMBMAN SJuego::attr.velocidadsaltobombman
 #define VELOCIDADCORRERBOMBMAN SJuego::attr.velocidadcorrerbombman
+
+#define ENERGIAMAXIMASPARKMAN SJuego::attr.energiamaximasparkman
+#define MASASPARKMAN SJuego::attr.masasparkman
+#define ESCUDOSPARKMAN SJuego::attr.escudosparkman
+#define ANCHOSPARKMAN SJuego::attr.anchosparkman
+#define ALTOSPARKMAN SJuego::attr.altosparkman
+#define VELOCIDADSALTOSPARKMAN SJuego::attr.velocidadsaltosparkman
+#define VELOCIDADCORRERSPARKMAN SJuego::attr.velocidadcorrersparkman
+
+#define ENERGIAMAXIMAMAGNETMAN SJuego::attr.energiamaximamagnetman
+#define MASAMAGNETMAN SJuego::attr.masamagnetman
+#define ESCUDOMAGNETMAN SJuego::attr.escudomagnetman
+#define ANCHOMAGNETMAN SJuego::attr.anchomagnetman
+#define ALTOMAGNETMAN SJuego::attr.altomagnetman
+#define VELOCIDADSALTOMAGNETMAN SJuego::attr.velocidadsaltomagnetman
+#define VELOCIDADCORRERMAGNETMAN SJuego::attr.velocidadcorrermagnetman
+
+#define ENERGIAMAXIMARINGMAN SJuego::attr.energiamaximaringman
+#define MASARINGMAN SJuego::attr.masaringman
+#define ESCUDORINGMAN SJuego::attr.escudoringman
+#define ANCHORINGMAN SJuego::attr.anchoringman
+#define ALTORINGMAN SJuego::attr.altoringman
+#define VELOCIDADSALTORINGMAN SJuego::attr.velocidadsaltoringman
+#define VELOCIDADCORRERRINGMAN SJuego::attr.velocidadcorrerringman
+
+#define ENERGIAMAXIMAFIREMAN SJuego::attr.energiamaximafireman
+#define MASAFIREMAN SJuego::attr.masafireman
+#define ESCUDOFIREMAN SJuego::attr.escudofireman
+#define ANCHOFIREMAN SJuego::attr.anchofireman
+#define ALTOFIREMAN SJuego::attr.altofireman
+#define VELOCIDADSALTOFIREMAN SJuego::attr.velocidadsaltofireman
+#define VELOCIDADCORRERFIREMAN SJuego::attr.velocidadcorrerfireman
+
 #define PROBANUEVAVIDA SJuego::attr.probanuevavida
 #define PROBAENERGIACHICA SJuego::attr.probaenergiachica
 #define PROBAENERGIAGRANDE SJuego::attr.probaenergiagrande

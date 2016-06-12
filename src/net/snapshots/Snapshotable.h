@@ -47,6 +47,10 @@ class Mundo;
 #define TIPO_JumpingSniper	25
 #define TIPO_Sniper			26
 #define TIPO_Bombman		27
+#define TIPO_Sparkman		28
+#define TIPO_Ringman		29
+#define TIPO_Fireman		30
+#define TIPO_Magnetman		31
 
 #define GENERAR_GET_TIPO(clase) virtual int getTipo() const {return TIPO_ ## clase;}
 

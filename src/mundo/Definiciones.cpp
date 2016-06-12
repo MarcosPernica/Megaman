@@ -69,6 +69,37 @@ namespace SJuego
 		 AGREGARMAPA(altobombman)
 		 AGREGARMAPA(velocidadsaltobombman)
 		 AGREGARMAPA(velocidadcorrerbombman)
+		 AGREGARMAPA(energiamaximasparkman)
+		 AGREGARMAPA(masasparkman)
+		 AGREGARMAPA(escudosparkman)
+		 AGREGARMAPA(anchosparkman)
+		 AGREGARMAPA(altosparkman)
+		 AGREGARMAPA(velocidadsaltosparkman)
+		 AGREGARMAPA(velocidadcorrersparkman)
+ 		 AGREGARMAPA(energiamaximamagnetman)
+		 AGREGARMAPA(masamagnetman)
+		 AGREGARMAPA(escudomagnetman)
+		 AGREGARMAPA(anchomagnetman)
+		 AGREGARMAPA(altomagnetman)
+		 AGREGARMAPA(velocidadsaltomagnetman)
+		 AGREGARMAPA(velocidadcorrermagnetman)
+
+		 AGREGARMAPA(energiamaximaringman)
+		 AGREGARMAPA(masaringman)
+		 AGREGARMAPA(escudoringman)
+		 AGREGARMAPA(anchoringman)
+		 AGREGARMAPA(altoringman)
+		 AGREGARMAPA(velocidadsaltoringman)
+		 AGREGARMAPA(velocidadcorrerringman)
+
+	 	 AGREGARMAPA(energiamaximafireman)
+		 AGREGARMAPA(masafireman)
+		 AGREGARMAPA(escudofireman)
+		 AGREGARMAPA(anchofireman)
+		 AGREGARMAPA(altofireman)
+		 AGREGARMAPA(velocidadsaltofireman)
+		 AGREGARMAPA(velocidadcorrerfireman)
+
 		 AGREGARMAPA(probanuevavida)
 		 AGREGARMAPA(probaenergiachica)
 		 AGREGARMAPA(probaenergiagrande)
@@ -120,6 +151,7 @@ namespace SJuego
 		{
 			archivo >> linea;
 			partes = linea.partir(Cadena("="));
+			
 			*punteros[partes.at(0)] = (double)partes.at(2);
 		}
 

@@ -128,6 +128,14 @@ void Mundo::cargarNivel(Cadena nombre){
 			agregarZonaSpawnJumpingSniper(b2Vec2(atributos["x"], atributos["y"]));
 		else if(elemento->ValueStr() == "Bombman")
 			agregarZonaSpawnBombman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
+		else if(elemento->ValueStr() == "Sparkman")
+			agregarZonaSpawnSparkman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
+		else if(elemento->ValueStr() == "Magnetman")
+			agregarZonaSpawnMagnetman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
+		else if(elemento->ValueStr() == "Ringman")
+			agregarZonaSpawnRingman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
+		else if(elemento->ValueStr() == "Fireman")
+			agregarZonaSpawnFireman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
 
        		elemento = elemento->NextSiblingElement();
     	}
@@ -339,24 +347,24 @@ void Mundo::agregarZonaSpawnBombman(uint IDPuerta, b2Vec2 posicion)
 	controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
-void Mundo::agregarZonaSpawnMagnetman(b2Vec2 posicion)
+void Mundo::agregarZonaSpawnMagnetman(uint IDPuerta, b2Vec2 posicion)
 {
-	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
+	controladores.push_back(new CajaSpawnMagnetman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
-void Mundo::agregarZonaSpawnSparkman(b2Vec2 posicion)
+void Mundo::agregarZonaSpawnSparkman(uint IDPuerta, b2Vec2 posicion)
 {
-	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
+	controladores.push_back(new CajaSpawnSparkman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
-void Mundo::agregarZonaSpawnRingman(b2Vec2 posicion)
+void Mundo::agregarZonaSpawnRingman(uint IDPuerta, b2Vec2 posicion)
 {
-	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
+	controladores.push_back(new CajaSpawnRingman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
-void Mundo::agregarZonaSpawnFireman(b2Vec2 posicion)
+void Mundo::agregarZonaSpawnFireman(uint IDPuerta, b2Vec2 posicion)
 {
-	//controladores.push_back(new CajaSpawnBombman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
+	controladores.push_back(new CajaSpawnFireman(generarID(), obtenerPuerta(IDPuerta),*this, posicion));
 }
 
 void Mundo::destruirCuerpos()

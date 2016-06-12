@@ -113,10 +113,10 @@ public:
 	void agregarZonaSpawnJumpingSniper(b2Vec2 posicion);
 
 	void agregarZonaSpawnBombman(uint IDPuerta, b2Vec2 posicion);
-	void agregarZonaSpawnMagnetman(b2Vec2 posicion);
-	void agregarZonaSpawnSparkman(b2Vec2 posicion);
-	void agregarZonaSpawnRingman(b2Vec2 posicion);
-	void agregarZonaSpawnFireman(b2Vec2 posicion);
+	void agregarZonaSpawnMagnetman(uint IDPuerta, b2Vec2 posicion);
+	void agregarZonaSpawnSparkman(uint IDPuerta, b2Vec2 posicion);
+	void agregarZonaSpawnRingman(uint IDPuerta, b2Vec2 posicion);
+	void agregarZonaSpawnFireman(uint IDPuerta, b2Vec2 posicion);
 
 	bool existeElemento(uint ID);
 

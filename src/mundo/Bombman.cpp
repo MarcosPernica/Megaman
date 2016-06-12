@@ -12,7 +12,7 @@
 #define DISPARANDO 4
 
 #define REFLEJOS 0.5
-#define TIEMPOCORRIENDO 1
+#define TIEMPOCORRIENDO 3
 
 void Bombman::alMorir()
 {
@@ -73,10 +73,22 @@ void Bombman::actualizarMaquinaEstados(real deltaT)
 
 			if(puedeSaltar())
 				estadoBombman = QUIETO;
+			
 			break;
 		}
 		case QUIETO:
 		{
+
+			b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
+	
+			if(orientacion.LengthSquared() >= DISTANCIAVISION*DISTANCIAVISION)
+				return;
+
+			if(b2Dot(orientacion,Cuerpo::versorIzquierda) > 0)
+				modificarOrientacion(izquierda);
+			else 
+				modificarOrientacion(derecha);
+
 			real aleatorio = numeroAleatorio(0,1);
 
 			if(aleatorio < 0.4)
@@ -97,17 +109,6 @@ void Bombman::actualizarMaquinaEstados(real deltaT)
 
 void Bombman::actualizar(real deltaT)
 {
-	b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
-	
-	if(orientacion.LengthSquared() >= DISTANCIAVISION*DISTANCIAVISION)
-		return;
-
-	if(b2Dot(orientacion,Cuerpo::versorIzquierda) > 0)
-		modificarOrientacion(izquierda);
-	else 
-		modificarOrientacion(derecha);
-
-
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }

@@ -214,10 +214,9 @@ void Anillo::alColisionar(Cuerpo *cuerpo)
 
 void Anillo::actualizar(real deltaT)
 {
-	tiempo -= deltaT;
-	aplicarImpulso(b2Vec2(0,-0.2));
+	tiempo -= deltaT;	
 
-	if(deltaT <= 0)
+	if(tiempo <= 0)
 		eliminarse(obtenerMundo());
 }
 
