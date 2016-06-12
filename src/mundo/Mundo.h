@@ -125,8 +125,6 @@ public:
 	void destruirCuerpos();
 	void agregarTareaDiferida(Callback *callback);
 	void ejecutarTareasDiferidas();
-
-	static const b2Vec2 gravedad;
 	
 	void actualizar(real segundosDesdeUltima);
 

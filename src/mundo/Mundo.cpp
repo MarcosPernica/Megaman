@@ -17,9 +17,7 @@
 #define MUNDOVIVO 0
 #define MUNDOTERMINADO 1
 
-const b2Vec2 Mundo::gravedad(0, GRAVEDAD);
-
-Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& n) : mundo(gravedad), terminado(false)
+Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& n) : mundo(b2Vec2(0,GRAVEDAD)), terminado(false)
 {
 	nombre_nivel = n;
 	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;

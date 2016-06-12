@@ -178,6 +178,7 @@ Megaman::Megaman(uint ID,
 				posicionSpawn(posicion)
 				
 {
+	deshabilitarFriccion();
 	vidas = VIDASINICIALES;
 	tiempoInmunidad = 0;
 

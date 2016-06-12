@@ -19,9 +19,12 @@
 #include "../mundo/Simulador.h"
 #include "../net/cliente/Jugador.h"
 #include <glibmm/main.h>
+#include "../net/Debug.h"
+
 VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),jugador(NULL),mundo(NULL),simulador(NULL){
 	set_default_size(800, 600);
 	
+	#ifndef DEBUG
 	estado.set_text("Introduzca nombre de usuario");
 	lobby.set_text("JUGADORES:\n");
 	
@@ -61,6 +64,10 @@ VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),
 	cliente.agregarCallback(MENSAJE_ESTABA,new CallbackEstabaLlega(*this,cliente));
 	cliente.agregarCallback(MENSAJE_LLEGA,new CallbackEstabaLlega(*this,cliente));
 	cliente.agregarCallback(MENSAJE_INICIAR,new CallbackIniciar(*this,cliente));
+
+	#else
+		iniciarNivel();
+	#endif
 }
 
 bool VentanaJuego::mi_on_draw(const Cairo::RefPtr<Cairo::Context>& cr){

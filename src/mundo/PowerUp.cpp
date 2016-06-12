@@ -157,7 +157,7 @@ PowerUp::PowerUp(uint ID, Mundo &mundo,
 						posicion,	
 						false,
 						true,	
-						b2Vec2 VELOCIDADPOWERUP)
+						b2Vec2 (0,VELOCIDADPOWERUP))
 			     
 {
 	if (probabilidadAparicion < 0 || probabilidadAparicion > 1)

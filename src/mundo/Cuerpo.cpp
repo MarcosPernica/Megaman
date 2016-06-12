@@ -55,13 +55,24 @@ Cuerpo::Cuerpo(uint ID,
 	unionCuerpo.filter.categoryBits = categoria;
 	unionCuerpo.filter.maskBits = colisionaCon;
 	unionCuerpo.isSensor = fantasma;
-	unionCuerpo.friction = 0;
 
 	datos.push_back(new DatosColisionCuerpo(this,CUERPOPRINCIPAL,Rectangulo(posicion.x,posicion.y,ancho,alto)));
 
 	unionCuerpo.userData = datos.at(0);
 
 	cuerpo->CreateFixture(&unionCuerpo);
+}
+
+void Cuerpo::habilitarFriccion()
+{
+	for(b2Fixture* i = cuerpo->GetFixtureList(); i; i = i->GetNext())
+		i->SetFriction(0.2f);
+}
+
+void Cuerpo::deshabilitarFriccion()
+{
+	for(b2Fixture* i = cuerpo->GetFixtureList(); i; i = i->GetNext())
+		i->SetFriction(0);
 }
 
 real Cuerpo::obtenerAncho() const

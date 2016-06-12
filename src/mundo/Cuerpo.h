@@ -65,6 +65,9 @@ public:
 	void gravitar();
 	void ingravitar();
 	
+	void habilitarFriccion();
+	void deshabilitarFriccion();
+	
 	void materializar();
 
 	

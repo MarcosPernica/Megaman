@@ -3,8 +3,11 @@
 
 #include <exception>
 #include "Cadena.h"
-
-#define DISTANCIAVISION 15
+#include <string>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <iostream>
 
 #define NULO 0
 
@@ -21,133 +24,252 @@
 #define RIGHTBOX 512
 #define AURAENEMIGOS 1024
 
+#define CUERPOPRINCIPAL 0
+#define MEGAMANJUMPBOX 1
 #define BOMBA 1
 
 #define IDCONSTRUCCIONES 0
-
 #define MAXIMALONGITUDBUFFER 1000
-
-#define GRAVEDAD 10
-#define ANCHOESCALERA 1.1
-#define ANCHOPUERTA 0.25
-#define ALTOPUERTA 15.0
-
-#define ENERGIAMEGAMAN 200
-#define MASAMEGAMAN 57
-#define MAXIMACANTIDADPLASMA 50
-#define CANTIDADINFINITAPLASMA -1
-#define MAXIMACANTIDADVIDAS 127
-#define VIDASINICIALES 3
-#define DANOPORCONTACTO 5
-
-#define CUERPOPRINCIPAL 0
-#define MEGAMANJUMPBOX 1
-
-#define VELOCIDADMEGAMANCORRIENDO 2
-#define VELOCIDADMEGAMANESCALERA 2
-#define POSICIONDISPAROMEGAMAN 0.8
-#define POSICIONLANZAMIENTOMEGAMAN 1.6
-#define VELOCIDADSALTOMEGAMAN 6
-#define TIEMPOINMUNIDADMEGAMAN 3
-
-#define ANCHOSPRITEMEGAMAN 0.8
-#define ALTOSPRITEMEGAMAN 1.6
-
-#define MASAPOWERUP 10
-#define VELOCIDADPOWERUP (0,-5)
-#define ANCHOSPRITEPOWERUP 0.5
-#define ALTOSPRITEPOWERUP 0.5
-
-#define ENERGIAMAXIMABUMBY 10
-#define MASABUMBY 50
-#define ANCHOBUMBY 1
-#define ALTOBUMBY 1
-#define VELOCIDADSALTOBUMBY 0
-#define VELOCIDADCORRERBUMBY 1
-
-#define ENERGIAMAXIMAMET 100
-#define MASAMET 50
-#define ESCUDOMET 50
-#define ANCHOMET 0.75
-#define ALTOMET 0.75
-#define VELOCIDADSALTOMET 0
-#define VELOCIDADCORRERMET 0
-
-#define ENERGIAMAXIMASNIPER 100
-#define MASASNIPER 50
-#define ESCUDOSNIPER 50
-#define ANCHOSNIPER 1.15
-#define ALTOSNIPER 1.23
-#define VELOCIDADSALTOSNIPER 0
-#define VELOCIDADCORRERSNIPER 0
-
-#define ENERGIAMAXIMAJUMPINGSNIPER 100
-#define MASAJUMPINGSNIPER 50
-#define ESCUDOJUMPINGSNIPER 50
-#define ANCHOJUMPINGSNIPER 1.15
-#define ALTOJUMPINGSNIPER 1.23
-#define VELOCIDADSALTOJUMPINGSNIPER 5
-#define VELOCIDADCORRERJUMPINGSNIPER 0
-
-#define ENERGIAMAXIMABOMBMAN 100
-#define MASABOMBMAN 50
-#define ESCUDOBOMBMAN 0
-#define ANCHOBOMBMAN 1
-#define ALTOBOMBMAN 2
-#define VELOCIDADSALTOBOMBMAN 10
-#define VELOCIDADCORRERBOMBMAN 2
-
-
-#define PROBANUEVAVIDA 0.01f
-#define PROBAENERGIACHICA 0.1f
-#define PROBAENERGIAGRANDE 0.05f
-#define PROBAPLASMACHICA 0.1f
-#define PROBAPLASMAGRANDE 0.05f
-
-#define RADIOEXPLOSION 1.5
-#define TIEMPOEXPLOSIONBOMBA 5
-#define DANOBOMBA 20
-#define MASABOMBA 5
-#define MULTIPLICADORVELOCIDADBOMBA 3
-#define ANCHOSPRITEBOMBA 0.5
-#define ALTOSPRITEBOMBA 0.5
-
-#define DANOPLASMA 15
-#define MASAPLASMA 1
-#define MULTIPLICADORVELOCIDADPLASMA 7
-#define ANCHOSPRITEPLASMA 0.2
-#define ALTOSPRITEPLASMA 0.2
-
-#define DANOCHISPA 15
-#define MASACHISPA 1
-#define MULTIPLICADORVELOCIDADCHISPA 7
-#define ANCHOSPRITECHISPA 1
-#define ALTOSPRITECHISPA 1
-
-#define DANOANILLO 15
-#define MASAANILLO 1
-#define MULTIPLICADORVELOCIDADANILLO 7
-#define ANCHOSPRITEANILLO 1
-#define ALTOSPRITEANILLO 1
-#define TIEMPOANILLO 5
-
-#define DANOFUEGO 15
-#define MASAFUEGO 1
-#define MULTIPLICADORVELOCIDADFUEGO 7
-#define ANCHOSPRITEFUEGO 1
-#define ALTOSPRITEFUEGO 1
-
-#define DANOIMAN 15
-#define MASAIMAN 1
-#define MULTIPLICADORVELOCIDADIMAN 7
-#define ANCHOSPRITEIMAN 0.25
-#define ALTOSPRITEIMAN 0.25
-#define IMPULSOIMAN 1
 
 typedef unsigned int uint;
 typedef float real;
 typedef unsigned short ushort;
-/////////////////////////////////////////////////////////////////////////
+
+/*Me fabrico un RTT para esto sino me vuelvo viejo cargando 105 constantes a mano y dependiendo del orden x.x */
+#define AGREGARMAPA(S) punteros[#S] = &S;
+
+namespace SJuego
+{
+	struct Constantes
+	{
+		 real distanciavision;
+		 real nulo;
+		 real fantasmas ;
+		 real construcciones;
+		 real enemigos;
+		 real personajes;
+		 real powerups;
+		 real disparos;
+		 real escaleras;
+		 real jumpbox;
+		 real cajasaccion;
+		 real leftbox;
+		 real rightbox;
+		 real auraenemigos;
+		 real bomba;
+		 real idconstrucciones;
+		 real maximalongitudbuffer;
+		 real gravedad;
+		 real anchoescalera;
+		 real anchopuerta;
+		 real altopuerta;
+		 real energiamegaman;
+		 real masamegaman;
+		 real maximacantidadplasma;
+		 real cantidadinfinitaplasma;
+		 real maximacantidadvidas;
+		 real vidasiniciales;
+		 real danoporcontacto;
+		 real cuerpoprincipal;
+		 real megamanjumpbox;
+		 real velocidadmegamancorriendo;
+		 real velocidadmegamanescalera;
+		 real posiciondisparomegaman;
+		 real posicionlanzamientomegaman;
+		 real velocidadsaltomegaman;
+		 real tiempoinmunidadmegaman;
+		 real anchospritemegaman;
+		 real altospritemegaman;
+		 real masapowerup;
+		 real velocidadpowerup;
+		 real anchospritepowerup;
+		 real altospritepowerup;
+		 real energiamaximabumby;
+		 real masabumby;
+		 real anchobumby;
+		 real altobumby;
+		 real velocidadsaltobumby;
+		 real velocidadcorrerbumby;
+		 real energiamaximamet;
+		 real masamet;
+		 real escudomet;
+		 real anchomet;
+		 real altomet;
+		 real velocidadsaltomet;
+		 real velocidadcorrermet;
+		 real energiamaximasniper;
+		 real masasniper;
+		 real escudosniper;
+		 real anchosniper;
+		 real altosniper;
+		 real velocidadsaltosniper;
+		 real velocidadcorrersniper;
+		 real energiamaximajumpingsniper;
+		 real masajumpingsniper;
+		 real escudojumpingsniper;
+		 real anchojumpingsniper;
+		 real altojumpingsniper;
+		 real velocidadsaltojumpingsniper;
+		 real velocidadcorrerjumpingsniper;
+		 real energiamaximabombman;
+		 real masabombman;
+		 real escudobombman;
+		 real anchobombman;
+		 real altobombman;
+		 real velocidadsaltobombman;
+		 real velocidadcorrerbombman;
+		 real probanuevavida;
+		 real probaenergiachica;
+		 real probaenergiagrande;
+		 real probaplasmachica;
+		 real probaplasmagrande;
+		 real radioexplosion;
+		 real tiempoexplosionbomba;
+		 real danobomba;
+		 real masabomba;
+		 real multiplicadorvelocidadbomba;
+		 real anchospritebomba;
+		 real altospritebomba;
+		 real danoplasma;
+		 real masaplasma;
+		 real multiplicadorvelocidadplasma;
+		 real anchospriteplasma;
+		 real altospriteplasma;
+		 real danochispa;
+		 real masachispa;
+		 real multiplicadorvelocidadchispa;
+		 real anchospritechispa;
+		 real altospritechispa;
+		 real danoanillo;
+		 real masaanillo;
+		 real multiplicadorvelocidadanillo;
+		 real anchospriteanillo;
+		 real altospriteanillo;
+		 real tiempoanillo;
+		 real danofuego;
+		 real masafuego;
+		 real multiplicadorvelocidadfuego;
+		 real anchospritefuego;
+		 real altospritefuego;
+		 real danoiman;
+		 real masaiman;
+		 real multiplicadorvelocidadiman;
+		 real anchospriteiman;
+		 real altospriteiman;
+		 real impulsoiman;
+
+		std::map<std::string, real*> punteros;
+
+		Constantes(){};
+
+		void cargar(std::string nombreArchivo);
+
+	};
+
+	extern Constantes attr;
+}
+
+
+/*Las remapeo para no tener que cambiar todo el codigo. Que el Preprocesador sirva para lo que fue creado.*/
+
+#define DISTANCIAVISION SJuego::attr.distanciavision
+#define GRAVEDAD SJuego::attr.gravedad
+#define ANCHOESCALERA SJuego::attr.anchoescalera
+#define ANCHOPUERTA SJuego::attr.anchopuerta
+#define ALTOPUERTA SJuego::attr.altopuerta
+#define ENERGIAMEGAMAN SJuego::attr.energiamegaman
+#define MASAMEGAMAN SJuego::attr.masamegaman
+#define MAXIMACANTIDADPLASMA SJuego::attr.maximacantidadplasma
+#define CANTIDADINFINITAPLASMA SJuego::attr.cantidadinfinitaplasma
+#define MAXIMACANTIDADVIDAS SJuego::attr.maximacantidadvidas
+#define VIDASINICIALES SJuego::attr.vidasiniciales
+#define DANOPORCONTACTO SJuego::attr.danoporcontacto
+#define VELOCIDADMEGAMANCORRIENDO SJuego::attr.velocidadmegamancorriendo
+#define VELOCIDADMEGAMANESCALERA SJuego::attr.velocidadmegamanescalera
+#define POSICIONDISPAROMEGAMAN SJuego::attr.posiciondisparomegaman
+#define POSICIONLANZAMIENTOMEGAMAN SJuego::attr.posicionlanzamientomegaman
+#define VELOCIDADSALTOMEGAMAN SJuego::attr.velocidadsaltomegaman
+#define TIEMPOINMUNIDADMEGAMAN SJuego::attr.tiempoinmunidadmegaman
+#define ANCHOSPRITEMEGAMAN SJuego::attr.anchospritemegaman
+#define ALTOSPRITEMEGAMAN SJuego::attr.altospritemegaman
+#define MASAPOWERUP SJuego::attr.masapowerup
+#define VELOCIDADPOWERUP SJuego::attr.velocidadpowerup
+#define ANCHOSPRITEPOWERUP SJuego::attr.anchospritepowerup
+#define ALTOSPRITEPOWERUP SJuego::attr.altospritepowerup
+#define ENERGIAMAXIMABUMBY SJuego::attr.energiamaximabumby
+#define MASABUMBY SJuego::attr.masabumby
+#define ANCHOBUMBY SJuego::attr.anchobumby
+#define ALTOBUMBY SJuego::attr.altobumby
+#define VELOCIDADSALTOBUMBY SJuego::attr.velocidadsaltobumby
+#define VELOCIDADCORRERBUMBY SJuego::attr.velocidadcorrerbumby
+#define ENERGIAMAXIMAMET SJuego::attr.energiamaximamet
+#define MASAMET SJuego::attr.masamet
+#define ESCUDOMET SJuego::attr.escudomet
+#define ANCHOMET SJuego::attr.anchomet
+#define ALTOMET SJuego::attr.altomet
+#define VELOCIDADSALTOMET SJuego::attr.velocidadsaltomet
+#define VELOCIDADCORRERMET SJuego::attr.velocidadcorrermet
+#define ENERGIAMAXIMASNIPER SJuego::attr.energiamaximasniper
+#define MASASNIPER SJuego::attr.masasniper
+#define ESCUDOSNIPER SJuego::attr.escudosniper
+#define ANCHOSNIPER SJuego::attr.anchosniper
+#define ALTOSNIPER SJuego::attr.altosniper
+#define VELOCIDADSALTOSNIPER SJuego::attr.velocidadsaltosniper
+#define VELOCIDADCORRERSNIPER SJuego::attr.velocidadcorrersniper
+#define ENERGIAMAXIMAJUMPINGSNIPER SJuego::attr.energiamaximajumpingsniper
+#define MASAJUMPINGSNIPER SJuego::attr.masajumpingsniper
+#define ESCUDOJUMPINGSNIPER SJuego::attr.escudojumpingsniper
+#define ANCHOJUMPINGSNIPER SJuego::attr.anchojumpingsniper
+#define ALTOJUMPINGSNIPER SJuego::attr.altojumpingsniper
+#define VELOCIDADSALTOJUMPINGSNIPER SJuego::attr.velocidadsaltojumpingsniper
+#define VELOCIDADCORRERJUMPINGSNIPER SJuego::attr.velocidadcorrerjumpingsniper
+#define ENERGIAMAXIMABOMBMAN SJuego::attr.energiamaximabombman
+#define MASABOMBMAN SJuego::attr.masabombman
+#define ESCUDOBOMBMAN SJuego::attr.escudobombman
+#define ANCHOBOMBMAN SJuego::attr.anchobombman
+#define ALTOBOMBMAN SJuego::attr.altobombman
+#define VELOCIDADSALTOBOMBMAN SJuego::attr.velocidadsaltobombman
+#define VELOCIDADCORRERBOMBMAN SJuego::attr.velocidadcorrerbombman
+#define PROBANUEVAVIDA SJuego::attr.probanuevavida
+#define PROBAENERGIACHICA SJuego::attr.probaenergiachica
+#define PROBAENERGIAGRANDE SJuego::attr.probaenergiagrande
+#define PROBAPLASMACHICA SJuego::attr.probaplasmachica
+#define PROBAPLASMAGRANDE SJuego::attr.probaplasmagrande
+#define RADIOEXPLOSION SJuego::attr.radioexplosion
+#define TIEMPOEXPLOSIONBOMBA SJuego::attr.tiempoexplosionbomba
+#define DANOBOMBA SJuego::attr.danobomba
+#define MASABOMBA SJuego::attr.masabomba
+#define MULTIPLICADORVELOCIDADBOMBA SJuego::attr.multiplicadorvelocidadbomba
+#define ANCHOSPRITEBOMBA SJuego::attr.anchospritebomba
+#define ALTOSPRITEBOMBA SJuego::attr.altospritebomba
+#define DANOPLASMA SJuego::attr.danoplasma
+#define MASAPLASMA SJuego::attr.masaplasma
+#define MULTIPLICADORVELOCIDADPLASMA SJuego::attr.multiplicadorvelocidadplasma
+#define ANCHOSPRITEPLASMA SJuego::attr.anchospriteplasma
+#define ALTOSPRITEPLASMA SJuego::attr.altospriteplasma
+#define DANOCHISPA SJuego::attr.danochispa
+#define MASACHISPA SJuego::attr.masachispa
+#define MULTIPLICADORVELOCIDADCHISPA SJuego::attr.multiplicadorvelocidadchispa
+#define ANCHOSPRITECHISPA SJuego::attr.anchospritechispa
+#define ALTOSPRITECHISPA SJuego::attr.altospritechispa
+#define DANOANILLO SJuego::attr.danoanillo
+#define MASAANILLO SJuego::attr.masaanillo
+#define MULTIPLICADORVELOCIDADANILLO SJuego::attr.multiplicadorvelocidadanillo
+#define ANCHOSPRITEANILLO SJuego::attr.anchospriteanillo
+#define ALTOSPRITEANILLO SJuego::attr.altospriteanillo
+#define TIEMPOANILLO SJuego::attr.tiempoanillo
+#define DANOFUEGO SJuego::attr.danofuego
+#define MASAFUEGO SJuego::attr.masafuego
+#define MULTIPLICADORVELOCIDADFUEGO SJuego::attr.multiplicadorvelocidadfuego
+#define ANCHOSPRITEFUEGO SJuego::attr.anchospritefuego
+#define ALTOSPRITEFUEGO SJuego::attr.altospritefuego
+#define DANOIMAN SJuego::attr.danoiman
+#define MASAIMAN SJuego::attr.masaiman
+#define MULTIPLICADORVELOCIDADIMAN SJuego::attr.multiplicadorvelocidadiman
+#define ANCHOSPRITEIMAN SJuego::attr.anchospriteiman
+#define ALTOSPRITEIMAN SJuego::attr.altospriteiman
+#define IMPULSOIMAN SJuego::attr.impulsoiman
+
 class NoPudoCrearseConexion : public std::exception {};
 class NoHayConexion : public std::exception {};
 class ErrorEnLaConexion : public std::exception {};
