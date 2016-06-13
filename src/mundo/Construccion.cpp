@@ -18,9 +18,29 @@ Construccion::Construccion(uint ID,
 							  false,
 							  b2Vec2_zero,
 							  izquierda,
-							  fantasma)
+							  fantasma),
+							 textura(NULL)
 {
 }
+
+void Construccion::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+		
+}
+Glib::RefPtr<Gdk::Pixbuf> Construccion::a_dibujar(){
+	if(textura == NULL){
+		textura = Gdk::Pixbuf::create_from_file(nombreImagen());
+	}
+	return textura;
+}
+const Rectangulo Construccion::obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-obtenerAncho()/2,
+						obtenerPosicion().y-obtenerAlto()/2,
+						obtenerAncho(),
+						obtenerAlto()
+					);
+}
+
 
 ushort Construccion::tipoCuerpo() const
 {
@@ -32,9 +52,7 @@ CuboMadera::CuboMadera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto)/*,
-			textura(ANIM_CUBOMADERA,1),
-			Animado(textura)*/
+				     alto)
 {
 }
 
@@ -43,9 +61,7 @@ CuboMetal::CuboMetal(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, 
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto),
-				textura(ANIM_CUBOMETAL,1),
-				Animado(textura)
+				     alto)
 {
 }
 
@@ -54,9 +70,7 @@ CuboLadrillo::CuboLadrillo(uint ID, Mundo &mundo, const b2Vec2 &posicion, real a
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto),
-				textura(ANIM_CUBOLADRILLO,1),
-				Animado(textura)
+				     alto)
 {
 }
 
@@ -65,9 +79,7 @@ CuboTierra::CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 				     mundo,
 				     posicion,
 				     ancho,
-				     alto),
-				textura(ANIM_CUBOTIERRA,1),
-				Animado(textura)
+				     alto)
 {
 }
 
@@ -86,9 +98,7 @@ Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, con
 							  izquierda,
 							  true),
 							  cerrada(false),
-							  IDInterno(IDInterno),
-						textura(ANIM_CUBOMETAL,0.1),
-						Animado(textura)
+							  IDInterno(IDInterno)
 {
 }
 

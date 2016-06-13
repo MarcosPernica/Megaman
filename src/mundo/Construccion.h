@@ -6,98 +6,61 @@
 #include <iostream>
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
+#include "../graficos/ImagenEscalada.h"
 
-class Construccion: public Cuerpo
-{	
+class Construccion: public Cuerpo, public ImagenEscalada
+{
+private:
+	Glib::RefPtr<Gdk::Pixbuf> textura;
 public:
 	Construccion(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto, bool fantasma = false);
 	virtual ushort tipoCuerpo() const;
 	void eliminarse(Mundo& de){};
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
+	const Rectangulo obtenerRepresentacion() const;
+	virtual std::string nombreImagen() = 0;
 };
 
 class CuboMadera : public Construccion//, public Animado
 {
-private:
-	//Animacion textura;
 public:
 	CuboMadera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
-	/*virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerOrientacion()==derecha;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-obtenerAncho()/2,
-						obtenerPosicion().y-obtenerAlto()/2,
-						obtenerAncho(),
-						obtenerAlto());}*/
+	virtual std::string nombreImagen(){return "imagenes/cuboMadera/1.png";};
 };
 
-class CuboMetal : public Construccion, public Animado
+class CuboMetal : public Construccion
 {
-private:
-	Animacion textura;
 public:
 	CuboMetal(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerOrientacion()==derecha;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-obtenerAncho()/2,
-						obtenerPosicion().y-obtenerAlto()/2,
-						obtenerAncho(),
-						obtenerAlto());}
+	virtual std::string nombreImagen(){return "imagenes/cuboMetal/1.png";};
 };
 
 
-class CuboLadrillo : public Construccion, public Animado
+class CuboLadrillo : public Construccion
 {
-private:
-	Animacion textura;
 public:
 	CuboLadrillo(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerOrientacion()==derecha;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-obtenerAncho()/2,
-						obtenerPosicion().y-obtenerAlto()/2,
-						obtenerAncho(),
-						obtenerAlto());}
+	virtual std::string nombreImagen(){return "imagenes/cuboLadrillo/1.png";};
 };
 
 
-class CuboTierra : public Construccion, public Animado
+class CuboTierra : public Construccion
 {
-private:
-	Animacion textura;
 public:
 	CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerOrientacion()==derecha;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-obtenerAncho()/2,
-						obtenerPosicion().y-obtenerAlto()/2,
-						obtenerAncho(),
-						obtenerAlto());}
+	virtual std::string nombreImagen(){return "imagenes/cuboTierra/1.png";};
 };
 
 
-class Puerta : public Cuerpo, public Animado
+class Puerta : public Cuerpo
 {
 private:
-	Animacion textura;
 	bool cerrada;
 	uint IDInterno;
 public:
 	Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion);
+	virtual std::string nombreImagen(){return "imagenes/cuboMetal/1.png";};
 	void cerrar();
 	bool estaCerrada();
 	uint obtenerIDInterno();
@@ -105,17 +68,5 @@ public:
 	ushort tipoCuerpo() const {return CONSTRUCCIONES;};
 	void eliminarse(Mundo& de){};
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerOrientacion()==derecha;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-obtenerAncho()/2,
-						obtenerPosicion().y-obtenerAlto()/2,
-						obtenerAncho(),
-						obtenerAlto());}
 };
-
-
 #endif

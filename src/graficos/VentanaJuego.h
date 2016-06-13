@@ -14,9 +14,6 @@
 class Mundo;
 class Jugador;
 class Simulador;
-/**
- * No se removió la herencia de Thread por las dudas
- * */
 class VentanaJuego : public Gtk::Window{
 	private:
 	std::string nombre;

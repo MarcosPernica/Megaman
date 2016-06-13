@@ -119,7 +119,7 @@ namespace SJuego
 		std::vector<Cadena> partes;
 
 		std::fstream archivo;
-		archivo.open(nombreArchivo, std::ios::in);
+		archivo.open(nombreArchivo.c_str(), std::ios::in);
 
 		while(!archivo.eof())
 		{
