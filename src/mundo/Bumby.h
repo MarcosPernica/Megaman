@@ -15,6 +15,7 @@ private:
 	Animacion animacion_volando;
 
 	Megaman *megaman;
+	uint IDTarget;
 	real tiempo, reflejos;//snapshotados
 	bool quieto;//snapshotado
 	Plasma arma;

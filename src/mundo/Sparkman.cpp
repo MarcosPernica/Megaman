@@ -36,13 +36,15 @@ Sparkman::Sparkman(uint ID,
 				   VELOCIDADSALTOSPARKMAN,
 				   VELOCIDADCORRERSPARKMAN,
 				   ENEMIGOS,
-				   CONSTRUCCIONES | DISPAROS,
+				   CONSTRUCCIONES,
 				   posicion, 
 				   false,
 				   true,
 				   velocidad,
 				   izquierda,
-				   false)
+				   false),
+    			  	   megaman(NULL),
+				   IDTarget(0)
 {
 	reflejos = 0;
 	estadoSparkman = QUIETO;
@@ -54,6 +56,12 @@ Sparkman::Sparkman(uint ID,
 
 void Sparkman::actualizarMaquinaEstados(real deltaT)
 {
+	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
+	{
+		megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+		IDTarget = megaman->obtenerID();
+	}
+
 	reflejos += deltaT;
 
 	switch(estadoSparkman)

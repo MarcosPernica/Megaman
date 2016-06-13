@@ -16,6 +16,11 @@ private:
 	Animacion animacion_corriendo;
 	Animacion animacion_saltando;
 	Animacion animacion_quieto;
+	Animacion animacion_subiendo;
+	Animacion animacion_disparando;
+	Animacion animacion_disparandoCorriendo;
+	Animacion animacion_disparandoSaltando;
+	Animacion animacion_disparandoSubiendo;
 
 	struct Arma
 	{
@@ -26,6 +31,7 @@ private:
 	unsigned char armaSeleccionada;//lo snaphoteo cuando tenga las armas
 
 	uint vidas;//snapshoteado
+	real timeoutDisparo;
 
 	/*Algebra de colisiones*/
 	int puedeSaltar;//snapshoteado
@@ -73,7 +79,7 @@ public:
 	void recuperarPlasma(int cantidadPlasma);
 	char obtenerCantidadPlasma();
 	uint obtenerCantidadVidas();
-	void atacado(uint dano);
+	void atacado(uint dano, Disparo *disparo);
 	void inmovilizar(); //Por un cuadro no puede caminar
 
 	ushort tipoCuerpo() const;

@@ -71,7 +71,7 @@ public:
 	void mirarDerecha();	
 	void virar();
 
-	void atacado(uint danio);
+	virtual void atacado(uint danio, Disparo *disparo);
 
 	void cubrirse();
 	void exponerse();

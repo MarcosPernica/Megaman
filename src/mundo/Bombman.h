@@ -11,6 +11,7 @@ class Bombman : public Enemigo
 {
 private:
 	Megaman *megaman;
+	uint IDTarget;
 	char estadoBombman;
 	real reflejos;
 	Bomba arma;

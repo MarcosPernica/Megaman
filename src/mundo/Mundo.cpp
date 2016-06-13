@@ -202,9 +202,9 @@ Entidad *Mundo::obtenerEntidad(uint ID)
 	return NULL;	
 }
 
-void Mundo::danarZona(b2AABB zona, uint dano)
+void Mundo::danarZona(b2AABB zona, uint dano, Bomba *bomba)
 {
-	DanarRadio danoRadio(dano);
+	DanarRadio danoRadio(dano, bomba);
 	
 	mundo.QueryAABB(&danoRadio, zona);
 }
@@ -411,6 +411,20 @@ void Mundo::ejecutarTareasDiferidas()
 	}
 
 	tareasDiferidas.clear();
+}
+
+bool Mundo::existeMegaman(uint ID)
+{
+	if(megamanes.find(ID) != megamanes.end())
+		return true;
+	return false;
+}
+
+bool Mundo::existeEnemigo(uint ID)
+{
+	if(enemigos.find(ID) != enemigos.end())
+		return true;
+	return false;
 }
 
 bool Mundo::existeElemento(uint ID)

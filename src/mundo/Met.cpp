@@ -31,11 +31,13 @@ Met::Met(uint ID,
 				   VELOCIDADSALTOMET,
 				   VELOCIDADCORRERMET,
 				   ENEMIGOS,
-				   CONSTRUCCIONES | DISPAROS,
+				   CONSTRUCCIONES,
 				   posicion, 
 				   false,
 				   true,
 				   velocidad),
+				   megaman(NULL),
+				   IDTarget(0),
 			animacion_protegido(ANIM_MET_PROTEGIDO,1),
 			animacion_disparando(ANIM_MET_DISPARANDO,1),
 			Animado(animacion_protegido)
@@ -46,6 +48,19 @@ Met::Met(uint ID,
 	
 	
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+}
+
+void Met::atacado(uint dano, Disparo *disparo)
+{
+	if(estadoMet == CUBIERTO)
+	{
+		if(disparo->tipoDisparo() == BOMBA || disparo->tipoDisparo() == CHISPA)
+			Enemigo::atacado(ENERGIAMAXIMAMET/2+ESCUDOMET, disparo);
+		else if(disparo->tipoDisparo() != PLASMA)
+			Enemigo::atacado(ENERGIAMAXIMAMET+ESCUDOMET, disparo);		
+	}
+	else
+		Enemigo::atacado(dano, disparo);
 }
 
 void Met::actualizarMaquinaEstados(real deltaT)
@@ -102,6 +117,12 @@ void Met::actualizarMaquinaEstados(real deltaT)
 void Met::actualizar(real deltaT)
 {
 	avanzar(deltaT);
+
+	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
+	{
+		megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+		IDTarget = megaman->obtenerID();
+	}
 
 	b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
 	

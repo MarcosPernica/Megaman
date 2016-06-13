@@ -14,5 +14,5 @@ Puas::Puas(Mundo &mundo,
 
 void Puas::interactuar(Megaman *megaman)
 {
-	megaman->atacado(megaman->obtenerEnergiaMaxima());
+	megaman->atacado(megaman->obtenerEnergiaMaxima(), NULL);
 }

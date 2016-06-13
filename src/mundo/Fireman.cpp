@@ -36,20 +36,21 @@ Fireman::Fireman(uint ID,
 				   VELOCIDADSALTOFIREMAN,
 				   VELOCIDADCORRERFIREMAN,
 				   ENEMIGOS,
-				   CONSTRUCCIONES | DISPAROS,
+				   CONSTRUCCIONES,
 				   posicion, 
 				   false,
 				   true,
 				   velocidad,
 				   izquierda,
-				   false)
+				   false),
+			animacion_saltando(ANIM_FIREMAN_SALTANDO,1),
+			animacion_corriendo(ANIM_FIREMAN_CORRIENDO,0.1),
+			Animado(animacion_saltando)
 {
 	reflejos = 0;
 	estadoFireman = QUIETO;
 	
 	deshabilitarFriccion();
-	
-	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
 }
 
 void Fireman::actualizarMaquinaEstados(real deltaT)
@@ -88,9 +89,6 @@ void Fireman::actualizarMaquinaEstados(real deltaT)
 		}
 		case QUIETO:
 		{
-
-			b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
-
 			real aleatorio = numeroAleatorio(0,1);
 
 			if(aleatorio < 0.2)
@@ -98,11 +96,13 @@ void Fireman::actualizarMaquinaEstados(real deltaT)
 				correr();
 				saltar();
 				estadoFireman = SALTANDO;
+				cambiar(animacion_saltando);
 			}
 			else
 			{
 				correr();
 				estadoFireman = CORRIENDO;
+				cambiar(animacion_corriendo);
 			}
 			reflejos = 0;
 			break;
@@ -112,6 +112,7 @@ void Fireman::actualizarMaquinaEstados(real deltaT)
 
 void Fireman::actualizar(real deltaT)
 {
+	avanzar(deltaT);
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }

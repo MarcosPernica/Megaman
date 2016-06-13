@@ -12,6 +12,7 @@ class Sparkman : public Enemigo
 {
 private:
 	Megaman *megaman;
+	uint IDTarget;
 	char estadoSparkman;
 	real reflejos;
 	Chispa arma;

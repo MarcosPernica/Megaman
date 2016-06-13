@@ -25,11 +25,13 @@ Bumby::Bumby(uint ID,
 				   VELOCIDADSALTOBUMBY,
 				   VELOCIDADCORRERBUMBY, 
 				   ENEMIGOS,
-				   CONSTRUCCIONES | DISPAROS,
+				   CONSTRUCCIONES,
 				   posicion, 
 				   false,
 				   false,
 				   velocidad),
+				   megaman(NULL),
+				   IDTarget(0),
 			animacion_volando(ANIM_BUMBY_VOLANDO,0.1),
 			Animado(animacion_volando)
 				 
@@ -37,11 +39,17 @@ Bumby::Bumby(uint ID,
 	tiempo = 0;	
 	reflejos = 0;
 	quieto = true;
-	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
 }
 
 void Bumby::actualizarMaquinaEstados(real deltaT)
 {	
+
+	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
+	{
+		megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+		IDTarget = megaman->obtenerID();
+	}
+
 	real direccion = megaman->obtenerPosicion().x-obtenerPosicion().x;
 
 	avanzar(deltaT);

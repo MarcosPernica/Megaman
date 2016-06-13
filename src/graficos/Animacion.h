@@ -27,6 +27,8 @@ class Animacion{
 #define ANIM_MEGAM_QUIETO_DISP 	"imagenes/megaman/megaman quieto disparando/"
 #define ANIM_MEGAM_SALTA 		"imagenes/megaman/megaman saltando/"
 #define ANIM_MEGAM_SALTA_DISP 	"imagenes/megaman/megaman saltando disparando/"
+#define ANIM_MEGAM_SUBIENDO 	"imagenes/megaman/megaman subiendo escalera/"
+#define ANIM_MEGAM_SUBIENDO_DISP 	"imagenes/megaman/megaman subiendo escalera disparando/"
 
 #define ANIM_MET_PROTEGIDO	"imagenes/met/protegido/"
 #define ANIM_MET_DISPARANDO	"imagenes/met/atacando/"
@@ -44,5 +46,8 @@ class Animacion{
 #define ANIM_CUBOTIERRA "imagenes/cuboTierra/"
 #define ANIM_CUBOMETAL "imagenes/cuboMetal/"
 #define ANIM_CUBOLADRILLO "imagenes/cuboLadrillo/"
+
+#define ANIM_FIREMAN_SALTANDO	"imagenes/megamanrojo/saltando/"
+#define ANIM_FIREMAN_CORRIENDO	"imagenes/megamanrojo/corriendo/"
 
 #endif

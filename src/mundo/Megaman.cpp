@@ -5,6 +5,9 @@
 #include "../net/snapshots/Snapshot.h"
 #include <ctime>
 
+#define TIEMPODISPARO 1
+
+
 #define HACIENDONADA 0
 
 #define PISANDO 1
@@ -51,10 +54,15 @@ ushort Megaman::tipoCuerpo() const
 
 void Megaman::actualizar(real deltaT)
 {
+	if(timeoutDisparo >= 0)
+		timeoutDisparo -= deltaT;
+
 	if(estaMuerta())
 		return;
 
-	avanzar(deltaT);//animacion
+	if(estadoEscalado != AGARRADOESCALERA)
+		avanzar(deltaT);
+
 	tiempoInmunidad -= deltaT;	
 
 	if(tiempoInmunidad <= 0)
@@ -84,6 +92,11 @@ void Megaman::actualizar(real deltaT)
 		estadoEscalado = HACIENDONADA;
 		estadoSalto = ENELAIRE;
 	}
+	else if(estadoSalto == ENELAIRE)
+	{
+		if(timeoutDisparo)
+			cambiar(animacion_disparandoSaltando);
+	}
 
 	if(estadoEscalado != HACIENDONADA)
 	{
@@ -101,11 +114,17 @@ void Megaman::actualizar(real deltaT)
 
 			ingravitar();
 		}
+		else
+		{
+			if(timeoutDisparo)
+				cambiar(animacion_disparandoSubiendo);
+		}
 			modificarVelocidad(velocidad);
 	}
 	
 	if (estadoDisparo != HACIENDONADA)
 	{
+		timeoutDisparo = TIEMPODISPARO;
 		if (armas.at(armaSeleccionada).plasma)
 		{
 			b2Vec2 posicion, orientacion, velocidad;
@@ -127,7 +146,10 @@ void Megaman::actualizar(real deltaT)
 	}
 
 	if(estadoDisparo == HACIENDONADA && estadoEscalado == HACIENDONADA && estadoSalto == PISANDO && !corriendo)
-		cambiar(animacion_quieto);
+		if(!timeoutDisparo)
+			cambiar(animacion_quieto);
+		else
+			cambiar(animacion_disparando);
 }
 
 void Megaman::agregarArma(Disparo * disparo, uint cantidadPlasma)
@@ -165,15 +187,20 @@ Megaman::Megaman(uint ID,
 					     ENERGIAMEGAMAN,
 						 MASAMEGAMAN,
 						 PERSONAJES,
-					     CONSTRUCCIONES | POWERUPS | AURAENEMIGOS | DISPAROS | CAJASACCION | LEFTBOX | RIGHTBOX,
+					     CONSTRUCCIONES | POWERUPS | AURAENEMIGOS | DISPAROS | CAJASACCION,
 						 posicion,
 					     false,
 					     true,
 					     velocidad,
 					     orientacion),
 				animacion_corriendo(ANIM_MEGAM_CORRE,0.1),
+				animacion_subiendo(ANIM_MEGAM_SUBIENDO,0.1),
 				animacion_saltando(ANIM_MEGAM_SALTA,1),
 				animacion_quieto(ANIM_MEGAM_QUIETO,1),
+				animacion_disparando(ANIM_MEGAM_QUIETO_DISP, 0.1),
+				animacion_disparandoCorriendo(ANIM_MEGAM_CORRE_DISP, 0.1),
+				animacion_disparandoSaltando(ANIM_MEGAM_SALTA_DISP, 0.1),
+				animacion_disparandoSubiendo(ANIM_MEGAM_SUBIENDO_DISP, 0.1),
 				Animado(animacion_quieto),
 				posicionSpawn(posicion)
 				
@@ -193,11 +220,33 @@ Megaman::Megaman(uint ID,
 	Arma arma;
 
 	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Plasma(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS);
+	arma.arma = new Plasma(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
 
 	armas.push_back(arma);
 
-	armaSeleccionada = 0;
+	arma.plasma = CANTIDADINFINITAPLASMA;
+	arma.arma = new Bomba(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
+
+	armas.push_back(arma);
+
+	arma.plasma = CANTIDADINFINITAPLASMA;
+	arma.arma = new Iman(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
+
+	armas.push_back(arma);
+
+
+	arma.plasma = CANTIDADINFINITAPLASMA;
+	arma.arma = new Fuego(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
+
+	armas.push_back(arma);
+
+	arma.plasma = CANTIDADINFINITAPLASMA;
+	arma.arma = new Anillo(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
+
+	armas.push_back(arma);
+
+
+	armaSeleccionada = 3;
 
 	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.5,0.3,b2Vec2(0,ALTOSPRITEMEGAMAN*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
 }
@@ -253,7 +302,12 @@ void Megaman::correr()
 {
 	corriendo = true;
 	if(estadoSalto == PISANDO)
-		cambiar(animacion_corriendo);
+	{
+		if(!timeoutDisparo)
+			cambiar(animacion_corriendo);
+		else 
+			cambiar(animacion_disparandoCorriendo);
+	}
 }
 
 void Megaman::dejarCorrer()
@@ -302,7 +356,8 @@ void Megaman::subirEscalera()
 {
 	if(puedeSubir)
 	{
-		//cambiar(animacion_moviendoseEscalera);
+		estadoSalto = HACIENDONADA;
+		cambiar(animacion_subiendo);
 		estadoEscalado = SUBIENDOESCALERA;
 	}
 }
@@ -311,7 +366,8 @@ void Megaman::bajarEscalera()
 {
 	if(puedeSubir)
 	{
-		//cambiar(animacion_moviendoseEscalera);
+		estadoSalto = HACIENDONADA;
+		cambiar(animacion_subiendo);
 		estadoEscalado = BAJANDOESCALERA;
 	}
 }
@@ -319,17 +375,14 @@ void Megaman::bajarEscalera()
 void Megaman::pararMovimientoEscalera()
 {
 	if(estadoEscalado != HACIENDONADA)
-	{
-		//cambiar(animacion_agarradoEscalera);
 		estadoEscalado = AGARRADOESCALERA;
-	}
 }
 
-void Megaman::atacado(uint dano)
+void Megaman::atacado(uint dano, Disparo *disparo)
 {
 	if(!tiempoInmunidad)
 	{
-		Entidad::atacado(dano);
+		Entidad::atacado(dano, disparo);
 		tiempoInmunidad = TIEMPOINMUNIDADMEGAMAN;
 	}
 }

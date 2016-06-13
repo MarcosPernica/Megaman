@@ -66,16 +66,16 @@ Enemigo::Enemigo(uint ID,
 
 	this->arma = arma;
 
-	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(0,alto*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
+	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(0,alto*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES);
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(-ancho/2,0), LEFTBOX, LEFTBOX, CONSTRUCCIONES);
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(+ancho/2,0), RIGHTBOX, RIGHTBOX, CONSTRUCCIONES);
-	agregarCuerpoInmaterial(ancho,alto,b2Vec2(0,0), AURAENEMIGOS, AURAENEMIGOS, PERSONAJES);
+	agregarCuerpoInmaterial(ancho,alto,b2Vec2(0,0), AURAENEMIGOS, AURAENEMIGOS, PERSONAJES | DISPAROS);
 }
 
-void Enemigo::atacado(uint dano)
+void Enemigo::atacado(uint dano, Disparo *disparo)
 {
 	if (!cubierto || escudo < dano)
-		Entidad::atacado(dano - escudo*cubierto);
+		Entidad::atacado(dano - escudo*cubierto, disparo);
 }
 
 void Enemigo::cubrirse()

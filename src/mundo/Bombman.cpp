@@ -42,16 +42,22 @@ Bombman::Bombman(uint ID,
 				   true,
 				   velocidad,
 				   izquierda,
-				   false)
+				   false),
+				   megaman(NULL),
+				   IDTarget(0)
 {
 	reflejos = 0;
 	estadoBombman = QUIETO;
-	
-	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
 }
 
 void Bombman::actualizarMaquinaEstados(real deltaT)
 {
+	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
+	{
+		megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+		IDTarget = megaman->obtenerID();
+	}
+
 	reflejos += deltaT;
 
 	switch(estadoBombman)

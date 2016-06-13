@@ -8,6 +8,7 @@
 class Dibujable;
 class Mundo;
 class PowerUp;
+class Bomba;
 
 class Callback
 {	
@@ -51,8 +52,9 @@ class DanarRadio : public b2QueryCallback
 {
 private:
 	uint dano;
+	Bomba *bomba;
 public:
-	DanarRadio(uint dano);
+	DanarRadio(uint dano, Bomba *Bomba);
 	bool ReportFixture(b2Fixture *fixture);
 };
 

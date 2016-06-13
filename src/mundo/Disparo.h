@@ -34,7 +34,6 @@ public:
 			bool gravitacional, 
 			const b2Vec2 &velocidad);
 
-	virtual bool danar(Entidad *entidad);
 	virtual void actualizar(real deltaT);
 	virtual void alColisionar(Cuerpo *cuerpo);
 	~Disparo(){};
@@ -43,6 +42,7 @@ public:
 	virtual bool lanzable();
 	virtual uint obtenerMultiplicadorVelocidad() const = 0;
 	ushort tipoCuerpo() const;
+	virtual ushort tipoDisparo() const = 0;
 	ushort obtenerCategoriaTarget();
 	void eliminarse(Mundo& de);
 
@@ -65,6 +65,7 @@ public:
 	~Plasma(){};
 
 	uint obtenerMultiplicadorVelocidad() const;
+	ushort tipoDisparo() const;
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	
@@ -85,6 +86,7 @@ public:
 	~Chispa(){};
 
 	uint obtenerMultiplicadorVelocidad() const;
+	ushort tipoDisparo() const;
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	GENERAR_GET_TIPO(Chispa);
@@ -104,6 +106,7 @@ public:
 		   const b2Vec2 &velocidad = b2Vec2_zero);
 	~Anillo(){};
 
+	ushort tipoDisparo() const;
 	uint obtenerMultiplicadorVelocidad() const;
 	void actualizar(real deltaT);
 	void alColisionar(Cuerpo *cuerpo);
@@ -127,6 +130,8 @@ public:
 		   const b2Vec2 &velocidad = b2Vec2_zero);
 	~Fuego(){};
 
+	ushort tipoDisparo() const;
+
 	uint obtenerMultiplicadorVelocidad() const;
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
@@ -136,9 +141,8 @@ public:
 class Iman : public Disparo
 {
 private:
-	Entidad *target;//no puedo snapshotear esto!!! sino guarda el ID!
-					//no estoy seguro si se puede pedir una Entidad por ID, 
-					//por eso no lo implemento todavía, cuando leas esto decime!!
+	Entidad *target;
+	uint IDTarget;
 public:
 	GENERAR_GET_TIPO(Iman);
 	Iman(uint ID, 
@@ -148,6 +152,7 @@ public:
 		   const b2Vec2 &velocidad = b2Vec2_zero);
 	~Iman(){};
 
+	ushort tipoDisparo() const;
 	uint obtenerMultiplicadorVelocidad() const;
 	void actualizar(real deltaT);
 
@@ -163,7 +168,9 @@ public:
 	GENERAR_GET_TIPO(Bomba);
 	Bomba(uint ID, Mundo &mundo, ushort categoriaTarget, const b2Vec2 &posicion = b2Vec2(-1000,-1000), const b2Vec2 &velocidad = b2Vec2_zero);
 	~Bomba(){};
-	bool danar(Entidad *entidad);
+
+	ushort tipoDisparo() const;
+
 	void actualizar(real deltaT);
 	uint obtenerMultiplicadorVelocidad() const;
 

@@ -69,7 +69,7 @@ ZonaMortal::ZonaMortal(Mundo &mundo,
 
 void ZonaMortal::interactuar(Megaman *megaman)
 {
-	megaman->atacado(megaman->obtenerEnergiaMaxima());
+	megaman->atacado(megaman->obtenerEnergiaMaxima(), NULL);
 }
 
 ZonaTransporte::ZonaTransporte(Mundo &mundo,

@@ -69,10 +69,8 @@ void Entidad::alMorir()
 	eliminarse(obtenerMundo());
 }
 
-void Entidad::atacado(uint danio)
+void Entidad::atacado(uint danio, Disparo *disparo)
 {
-	std::cout << danio << std::endl;
-	PowerUp *powerUp;
 
 	if (danio < energia)
 		energia -= danio;

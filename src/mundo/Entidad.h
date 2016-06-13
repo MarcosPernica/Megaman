@@ -8,6 +8,8 @@
 #include <Box2D/Box2D.h>
 #include "Cuerpo.h"
 
+class Disparo;
+
 class Entidad : public Cuerpo, public Actualizable
 {
 private:
@@ -35,7 +37,7 @@ public:
 	uint obtenerEnergiaActual();
 	bool estaMuerta();
 	void revivir();
-	virtual void atacado(uint danio);
+	virtual void atacado(uint danio, Disparo *disparo);
 	virtual void alMorir();
 
 

@@ -16,6 +16,7 @@ private:
 	Animacion animacion_disparando;
 
 	Megaman *megaman;
+	uint IDTarget;
 	char estadoSniper;
 	real reflejos;
 	char cantidadDisparos;
@@ -26,6 +27,8 @@ public:
 		const b2Vec2 &posicion,
 		const b2Vec2 &velocidad = b2Vec2_zero);
 	~Sniper(){};
+
+	void atacado(uint dano, Disparo *disparo);
 
 	void actualizarMaquinaEstados(real deltaT);
 	void actualizar(real deltaT);

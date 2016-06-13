@@ -27,6 +27,7 @@
 #define CUERPOPRINCIPAL 0
 #define MEGAMANJUMPBOX 1
 
+#define PLASMA 0
 #define BOMBA 1
 #define IMAN 2
 #define ANILLO 3
@@ -35,6 +36,37 @@
 
 #define IDCONSTRUCCIONES 0
 #define MAXIMALONGITUDBUFFER 1000
+
+#define DANOPLASMA 15
+#define DANOIMAN 30
+#define DANOBOMBA 70
+#define DANOCHISPA 30
+#define DANOANILLO 30
+#define DANOFUEGO 40
+
+#define ENERGIAMAXIMABUMBY 10
+#define ESCUDOBUMBY 0
+#define ENERGIAMAXIMAMET 10
+#define ESCUDOMET 50
+#define ENERGIAMAXIMAJUMPINGSNIPER 29
+#define ESCUDOJUMPINGSNIPER 50
+#define ENERGIAMAXIMASNIPER 29
+#define ESCUDOSNIPER 50
+
+#define ENERGIAMAXIMAMAGNETMAN 500
+#define ESCUDOMAGNETMAN 0
+
+#define ENERGIAMAXIMABOMBMAN 500
+#define ESCUDOBOMBMAN 0
+
+#define ENERGIAMAXIMARINGMAN 500
+#define ESCUDORINGMAN 0
+
+#define ENERGIAMAXIMAFIREMAN 500
+#define ESCUDOFIREMAN 0
+
+#define ENERGIAMAXIMASPARKMAN 500
+#define ESCUDOSPARKMAN 0
 
 typedef unsigned int uint;
 typedef float real;
@@ -48,22 +80,6 @@ namespace SJuego
 	struct Constantes
 	{
 		 real distanciavision;
-		 real nulo;
-		 real fantasmas ;
-		 real construcciones;
-		 real enemigos;
-		 real personajes;
-		 real powerups;
-		 real disparos;
-		 real escaleras;
-		 real jumpbox;
-		 real cajasaccion;
-		 real leftbox;
-		 real rightbox;
-		 real auraenemigos;
-		 real bomba;
-		 real idconstrucciones;
-		 real maximalongitudbuffer;
 		 real gravedad;
 		 real anchoescalera;
 		 real anchopuerta;
@@ -89,68 +105,51 @@ namespace SJuego
 		 real velocidadpowerup;
 		 real anchospritepowerup;
 		 real altospritepowerup;
-		 real energiamaximabumby;
 		 real masabumby;
 		 real anchobumby;
 		 real altobumby;
 		 real velocidadsaltobumby;
 		 real velocidadcorrerbumby;
-		 real energiamaximamet;
 		 real masamet;
-		 real escudomet;
 		 real anchomet;
 		 real altomet;
 		 real velocidadsaltomet;
 		 real velocidadcorrermet;
-		 real energiamaximasniper;
 		 real masasniper;
-		 real escudosniper;
 		 real anchosniper;
 		 real altosniper;
 		 real velocidadsaltosniper;
 		 real velocidadcorrersniper;
-		 real energiamaximajumpingsniper;
 		 real masajumpingsniper;
-		 real escudojumpingsniper;
 		 real anchojumpingsniper;
 		 real altojumpingsniper;
 		 real velocidadsaltojumpingsniper;
 		 real velocidadcorrerjumpingsniper;
-		 real energiamaximabombman;
 		 real masabombman;
-		 real escudobombman;
 		 real anchobombman;
 		 real altobombman;
 		 real velocidadsaltobombman;
 		 real velocidadcorrerbombman;
 
-		 real energiamaximasparkman;
 		 real masasparkman;
-		 real escudosparkman;
 		 real anchosparkman;
 		 real altosparkman;
 		 real velocidadsaltosparkman;
 		 real velocidadcorrersparkman;
 
-		 real energiamaximamagnetman;
 		 real masamagnetman;
-		 real escudomagnetman;
 		 real anchomagnetman;
 		 real altomagnetman;
 		 real velocidadsaltomagnetman;
 		 real velocidadcorrermagnetman;
 
-		 real energiamaximaringman;
 		 real masaringman;
-		 real escudoringman;
 		 real anchoringman;
 		 real altoringman;
 		 real velocidadsaltoringman;
 		 real velocidadcorrerringman;
 
-		 real energiamaximafireman;
 		 real masafireman;
-		 real escudofireman;
 		 real anchofireman;
 		 real altofireman;
 		 real velocidadsaltofireman;
@@ -163,33 +162,27 @@ namespace SJuego
 		 real probaplasmagrande;
 		 real radioexplosion;
 		 real tiempoexplosionbomba;
-		 real danobomba;
 		 real masabomba;
 		 real multiplicadorvelocidadbomba;
 		 real anchospritebomba;
 		 real altospritebomba;
-		 real danoplasma;
 		 real masaplasma;
 		 real multiplicadorvelocidadplasma;
 		 real anchospriteplasma;
 		 real altospriteplasma;
-		 real danochispa;
 		 real masachispa;
 		 real multiplicadorvelocidadchispa;
 		 real anchospritechispa;
 		 real altospritechispa;
-		 real danoanillo;
 		 real masaanillo;
 		 real multiplicadorvelocidadanillo;
 		 real anchospriteanillo;
 		 real altospriteanillo;
 		 real tiempoanillo;
-		 real danofuego;
 		 real masafuego;
 		 real multiplicadorvelocidadfuego;
 		 real anchospritefuego;
 		 real altospritefuego;
-		 real danoiman;
 		 real masaiman;
 		 real multiplicadorvelocidadiman;
 		 real anchospriteiman;
@@ -234,68 +227,51 @@ namespace SJuego
 #define VELOCIDADPOWERUP SJuego::attr.velocidadpowerup
 #define ANCHOSPRITEPOWERUP SJuego::attr.anchospritepowerup
 #define ALTOSPRITEPOWERUP SJuego::attr.altospritepowerup
-#define ENERGIAMAXIMABUMBY SJuego::attr.energiamaximabumby
 #define MASABUMBY SJuego::attr.masabumby
 #define ANCHOBUMBY SJuego::attr.anchobumby
 #define ALTOBUMBY SJuego::attr.altobumby
 #define VELOCIDADSALTOBUMBY SJuego::attr.velocidadsaltobumby
 #define VELOCIDADCORRERBUMBY SJuego::attr.velocidadcorrerbumby
-#define ENERGIAMAXIMAMET SJuego::attr.energiamaximamet
 #define MASAMET SJuego::attr.masamet
-#define ESCUDOMET SJuego::attr.escudomet
 #define ANCHOMET SJuego::attr.anchomet
 #define ALTOMET SJuego::attr.altomet
 #define VELOCIDADSALTOMET SJuego::attr.velocidadsaltomet
 #define VELOCIDADCORRERMET SJuego::attr.velocidadcorrermet
-#define ENERGIAMAXIMASNIPER SJuego::attr.energiamaximasniper
 #define MASASNIPER SJuego::attr.masasniper
-#define ESCUDOSNIPER SJuego::attr.escudosniper
 #define ANCHOSNIPER SJuego::attr.anchosniper
 #define ALTOSNIPER SJuego::attr.altosniper
 #define VELOCIDADSALTOSNIPER SJuego::attr.velocidadsaltosniper
 #define VELOCIDADCORRERSNIPER SJuego::attr.velocidadcorrersniper
-#define ENERGIAMAXIMAJUMPINGSNIPER SJuego::attr.energiamaximajumpingsniper
 #define MASAJUMPINGSNIPER SJuego::attr.masajumpingsniper
-#define ESCUDOJUMPINGSNIPER SJuego::attr.escudojumpingsniper
 #define ANCHOJUMPINGSNIPER SJuego::attr.anchojumpingsniper
 #define ALTOJUMPINGSNIPER SJuego::attr.altojumpingsniper
 #define VELOCIDADSALTOJUMPINGSNIPER SJuego::attr.velocidadsaltojumpingsniper
 #define VELOCIDADCORRERJUMPINGSNIPER SJuego::attr.velocidadcorrerjumpingsniper
-#define ENERGIAMAXIMABOMBMAN SJuego::attr.energiamaximabombman
 #define MASABOMBMAN SJuego::attr.masabombman
-#define ESCUDOBOMBMAN SJuego::attr.escudobombman
 #define ANCHOBOMBMAN SJuego::attr.anchobombman
 #define ALTOBOMBMAN SJuego::attr.altobombman
 #define VELOCIDADSALTOBOMBMAN SJuego::attr.velocidadsaltobombman
 #define VELOCIDADCORRERBOMBMAN SJuego::attr.velocidadcorrerbombman
 
-#define ENERGIAMAXIMASPARKMAN SJuego::attr.energiamaximasparkman
 #define MASASPARKMAN SJuego::attr.masasparkman
-#define ESCUDOSPARKMAN SJuego::attr.escudosparkman
 #define ANCHOSPARKMAN SJuego::attr.anchosparkman
 #define ALTOSPARKMAN SJuego::attr.altosparkman
 #define VELOCIDADSALTOSPARKMAN SJuego::attr.velocidadsaltosparkman
 #define VELOCIDADCORRERSPARKMAN SJuego::attr.velocidadcorrersparkman
 
-#define ENERGIAMAXIMAMAGNETMAN SJuego::attr.energiamaximamagnetman
 #define MASAMAGNETMAN SJuego::attr.masamagnetman
-#define ESCUDOMAGNETMAN SJuego::attr.escudomagnetman
 #define ANCHOMAGNETMAN SJuego::attr.anchomagnetman
 #define ALTOMAGNETMAN SJuego::attr.altomagnetman
 #define VELOCIDADSALTOMAGNETMAN SJuego::attr.velocidadsaltomagnetman
 #define VELOCIDADCORRERMAGNETMAN SJuego::attr.velocidadcorrermagnetman
 
-#define ENERGIAMAXIMARINGMAN SJuego::attr.energiamaximaringman
 #define MASARINGMAN SJuego::attr.masaringman
-#define ESCUDORINGMAN SJuego::attr.escudoringman
 #define ANCHORINGMAN SJuego::attr.anchoringman
 #define ALTORINGMAN SJuego::attr.altoringman
 #define VELOCIDADSALTORINGMAN SJuego::attr.velocidadsaltoringman
 #define VELOCIDADCORRERRINGMAN SJuego::attr.velocidadcorrerringman
 
-#define ENERGIAMAXIMAFIREMAN SJuego::attr.energiamaximafireman
 #define MASAFIREMAN SJuego::attr.masafireman
-#define ESCUDOFIREMAN SJuego::attr.escudofireman
 #define ANCHOFIREMAN SJuego::attr.anchofireman
 #define ALTOFIREMAN SJuego::attr.altofireman
 #define VELOCIDADSALTOFIREMAN SJuego::attr.velocidadsaltofireman
@@ -308,33 +284,27 @@ namespace SJuego
 #define PROBAPLASMAGRANDE SJuego::attr.probaplasmagrande
 #define RADIOEXPLOSION SJuego::attr.radioexplosion
 #define TIEMPOEXPLOSIONBOMBA SJuego::attr.tiempoexplosionbomba
-#define DANOBOMBA SJuego::attr.danobomba
 #define MASABOMBA SJuego::attr.masabomba
 #define MULTIPLICADORVELOCIDADBOMBA SJuego::attr.multiplicadorvelocidadbomba
 #define ANCHOSPRITEBOMBA SJuego::attr.anchospritebomba
 #define ALTOSPRITEBOMBA SJuego::attr.altospritebomba
-#define DANOPLASMA SJuego::attr.danoplasma
 #define MASAPLASMA SJuego::attr.masaplasma
 #define MULTIPLICADORVELOCIDADPLASMA SJuego::attr.multiplicadorvelocidadplasma
 #define ANCHOSPRITEPLASMA SJuego::attr.anchospriteplasma
 #define ALTOSPRITEPLASMA SJuego::attr.altospriteplasma
-#define DANOCHISPA SJuego::attr.danochispa
 #define MASACHISPA SJuego::attr.masachispa
 #define MULTIPLICADORVELOCIDADCHISPA SJuego::attr.multiplicadorvelocidadchispa
 #define ANCHOSPRITECHISPA SJuego::attr.anchospritechispa
 #define ALTOSPRITECHISPA SJuego::attr.altospritechispa
-#define DANOANILLO SJuego::attr.danoanillo
 #define MASAANILLO SJuego::attr.masaanillo
 #define MULTIPLICADORVELOCIDADANILLO SJuego::attr.multiplicadorvelocidadanillo
 #define ANCHOSPRITEANILLO SJuego::attr.anchospriteanillo
 #define ALTOSPRITEANILLO SJuego::attr.altospriteanillo
 #define TIEMPOANILLO SJuego::attr.tiempoanillo
-#define DANOFUEGO SJuego::attr.danofuego
 #define MASAFUEGO SJuego::attr.masafuego
 #define MULTIPLICADORVELOCIDADFUEGO SJuego::attr.multiplicadorvelocidadfuego
 #define ANCHOSPRITEFUEGO SJuego::attr.anchospritefuego
 #define ALTOSPRITEFUEGO SJuego::attr.altospritefuego
-#define DANOIMAN SJuego::attr.danoiman
 #define MASAIMAN SJuego::attr.masaiman
 #define MULTIPLICADORVELOCIDADIMAN SJuego::attr.multiplicadorvelocidadiman
 #define ANCHOSPRITEIMAN SJuego::attr.anchospriteiman

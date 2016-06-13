@@ -31,11 +31,13 @@ JumpingSniper::JumpingSniper(uint ID,
 				   VELOCIDADSALTOJUMPINGSNIPER,
 				   VELOCIDADCORRERJUMPINGSNIPER,
 				   ENEMIGOS,
-				   CONSTRUCCIONES | DISPAROS,
+				   CONSTRUCCIONES,
 				   posicion, 
 				   false,
 				   true,
-				   velocidad),
+				   velocidad), 
+				   megaman(NULL),
+				   IDTarget(0),
 				animacion_protegido(ANIM_JSNIPER_PROTEGIDO,0.1),
 				animacion_disparando(ANIM_JSNIPER_DISPARANDO,0.1),
 				animacion_saltando(ANIM_JSNIPER_SALTANDO,0.1),
@@ -46,6 +48,18 @@ JumpingSniper::JumpingSniper(uint ID,
 	estadoSniper = DESCUBRIENDOSE;
 	
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+}
+
+void JumpingSniper::atacado(uint dano, Disparo *disparo)
+{
+	if(estadoSniper == CUBIERTO)
+	{
+		std::cout << "1" << std::endl;
+		if(disparo->tipoDisparo() == FUEGO || disparo->tipoDisparo() == ANILLO)
+			Enemigo::atacado(ENERGIAMAXIMAJUMPINGSNIPER/2+ESCUDOJUMPINGSNIPER, disparo);
+	}
+	else
+		Enemigo::atacado(dano, disparo);
 }
 
 void JumpingSniper::actualizarMaquinaEstados(real deltaT)
@@ -108,6 +122,12 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 
 void JumpingSniper::actualizar(real deltaT)
 {
+	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
+	{
+		megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+		IDTarget = megaman->obtenerID();
+	}
+
 	b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
 
 	if(orientacion.LengthSquared() >= DISTANCIAVISION)

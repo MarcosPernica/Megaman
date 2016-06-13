@@ -75,7 +75,7 @@ bool ElementosEnZona::ReportFixture(b2Fixture * fixture)
 }
 
 
-DanarRadio::DanarRadio(uint dano) : dano(dano)
+DanarRadio::DanarRadio(uint dano, Bomba *bomba) : dano(dano), bomba(bomba)
 {
 }
 
@@ -87,7 +87,7 @@ bool DanarRadio::ReportFixture(b2Fixture * fixture)
 		if(datos->ID == CUERPOPRINCIPAL)
 		{
 			Entidad *entidad = (Entidad*)datos->cuerpo;
-			entidad->atacado(dano);
+			entidad->atacado(dano, bomba);
 		}
 	}
 
@@ -298,7 +298,6 @@ void DetectarBalistica::BeginContact(b2Contact * contacto)
 
 		disparo->alColisionar(datosA->cuerpo);
 	}
-	
 }
 
 void DetectarTocarPowerUp::BeginContact(b2Contact * contacto)
@@ -354,14 +353,14 @@ void DetectarTocarEnemigos::BeginContact(b2Contact * contacto)
 	if (datosA->cuerpo->tipoCuerpo() == PERSONAJES && datosB->cuerpo->tipoCuerpo() == AURAENEMIGOS)
 	{
 		Megaman *megaman = (Megaman*)datosA->cuerpo;
-		megaman->atacado(DANOPORCONTACTO);
+		megaman->atacado(DANOPORCONTACTO,NULL);
 	}
 	
 	if (datosB->cuerpo->tipoCuerpo() == PERSONAJES && datosA->cuerpo->tipoCuerpo() == AURAENEMIGOS)
 	{
 		
 		Megaman *megaman = (Megaman*)datosB->cuerpo;
-		megaman->atacado(DANOPORCONTACTO);
+		megaman->atacado(DANOPORCONTACTO, NULL);
 	}
 }
 

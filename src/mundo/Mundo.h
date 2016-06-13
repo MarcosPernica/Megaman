@@ -83,8 +83,13 @@ public:
 
 	Megaman *obtenerMegamanCercano(const b2Vec2 posicion);
 	Enemigo *obtenerEnemigoCercano(const b2Vec2 posicion);
+
+	bool existeMegaman(uint ID);
+	bool existeEnemigo(uint ID);
+	bool existeElemento(uint ID);
+
 	Entidad *obtenerEntidad(uint ID);
-	void danarZona(b2AABB zona, uint dano);
+	void danarZona(b2AABB zona, uint dano, Bomba *bomba);
 
 	void eliminar(Enemigo * enemigo);
 	void eliminar(PowerUp * powerUp);
@@ -117,8 +122,6 @@ public:
 	void agregarZonaSpawnSparkman(uint IDPuerta, b2Vec2 posicion);
 	void agregarZonaSpawnRingman(uint IDPuerta, b2Vec2 posicion);
 	void agregarZonaSpawnFireman(uint IDPuerta, b2Vec2 posicion);
-
-	bool existeElemento(uint ID);
 
 	std::list<Dibujable*> obtenerDibujables() const;/////////COPIA//// esa lista podría ser demasiado grande
 

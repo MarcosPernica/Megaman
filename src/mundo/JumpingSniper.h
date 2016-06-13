@@ -17,6 +17,7 @@ private:
 	Animacion animacion_saltando;
 
 	Megaman *megaman;
+	uint IDTarget;
 	char estadoSniper;
 	real reflejos;
 	char cantidadDisparos;
@@ -28,6 +29,7 @@ public:
 		const b2Vec2 &velocidad = b2Vec2_zero);
 	~JumpingSniper(){};
 
+	void atacado(uint dano, Disparo *disparo);
 	void actualizarMaquinaEstados(real deltaT);
 	void actualizar(real deltaT);
 	ushort tipoCuerpo() const {return ENEMIGOS;};

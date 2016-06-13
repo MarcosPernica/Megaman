@@ -17,6 +17,7 @@ private:
 	Animacion animacion_disparando;
 
 	Megaman *megaman;
+	uint IDTarget;
 	real tiempo;//snapshoteado
 	char estadoMet;//snapshoteado
 	bool accionEjecutada;//snapshoteado
@@ -31,6 +32,8 @@ public:
 	void actualizarMaquinaEstados(real deltaT);
 	void actualizar(real deltaT);
 	ushort tipoCuerpo() const {return ENEMIGOS;};
+
+	void atacado(uint dano, Disparo *disparo);
 
 
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);

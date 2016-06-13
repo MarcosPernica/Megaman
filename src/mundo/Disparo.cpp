@@ -14,7 +14,10 @@ void Disparo::actualizar(real DeltaT)
 void Disparo::alColisionar(Cuerpo *cuerpo)
 {
 	if(cuerpo->tipoCuerpo() == PERSONAJES || cuerpo->tipoCuerpo() == ENEMIGOS)
-		((Entidad*)cuerpo)->atacado(dano);
+	{
+		
+		((Entidad*)cuerpo)->atacado(dano, this);
+	}
 	eliminarse(obtenerMundo());
 }
 
@@ -63,12 +66,6 @@ Disparo::Disparo(uint ID, Mundo &mundo,
 {
 }
 
-bool Disparo::danar(Entidad *entidad)
-{
-	entidad->atacado(dano);
-	return true;
-}
-
 Bomba::Bomba(uint ID, 
 		 Mundo & mundo, 
 		 ushort categoriaTarget,
@@ -88,11 +85,10 @@ Bomba::Bomba(uint ID,
 {
 }
 
-bool Bomba::danar(Entidad * entidad)
+ushort Bomba::tipoDisparo() const
 {
-	return false;
+	return BOMBA;
 }
-
 
 void Bomba::actualizar(real deltaT)
 {
@@ -125,7 +121,7 @@ void Bomba::explotar()
 	consulta.upperBound = rect.rightBottom();
 	consulta.lowerBound = rect.topLeft();
 
-	obtenerMundo().danarZona(consulta, DANOBOMBA);
+	obtenerMundo().danarZona(consulta, DANOBOMBA, this);
 	obtenerMundo().eliminar(this);
 }
 
@@ -145,6 +141,11 @@ Plasma::Plasma(uint ID,
 				       false,
 		               velocidad)
 {
+}
+
+ushort Plasma::tipoDisparo() const
+{
+	return PLASMA;
 }
 
 uint Plasma::obtenerMultiplicadorVelocidad() const
@@ -173,6 +174,11 @@ Chispa::Chispa(uint ID,
 				       false,
 		               velocidad)
 {
+}
+
+ushort Chispa::tipoDisparo() const
+{
+	return CHISPA;
 }
 
 uint Chispa::obtenerMultiplicadorVelocidad() const
@@ -206,10 +212,15 @@ Anillo::Anillo(uint ID,
 	modificarRestitucion(1);
 }
 
+ushort Anillo::tipoDisparo() const
+{
+	return ANILLO;
+}
+
 void Anillo::alColisionar(Cuerpo *cuerpo)
 {
 	if(cuerpo->tipoCuerpo() == PERSONAJES || cuerpo->tipoCuerpo() == ENEMIGOS)
-		danar((Entidad*)cuerpo);
+		((Entidad*)cuerpo)->atacado(DANOANILLO, this);
 }
 
 void Anillo::actualizar(real deltaT)
@@ -248,6 +259,11 @@ Fuego::Fuego(uint ID,
 {
 }
 
+ushort Fuego::tipoDisparo() const
+{
+	return FUEGO;
+}
+
 uint Fuego::obtenerMultiplicadorVelocidad() const
 {
 	return MULTIPLICADORVELOCIDADFUEGO;
@@ -278,14 +294,20 @@ Iman::Iman(uint ID,
 {
 }
 
+ushort Iman::tipoDisparo() const
+{
+	return IMAN;
+}
+
 void Iman::actualizar(real deltaT)
 {
-	if(!target || target->estaMuerta())
+	if(!target || !obtenerMundo().existeEnemigo(IDTarget) || !obtenerMundo().existeMegaman(IDTarget))
 	{
-		if(obtenerCategoriaTarget() == ENEMIGOS)
+		if(obtenerCategoriaTarget() == AURAENEMIGOS)
 			target = (Entidad*)obtenerMundo().obtenerEnemigoCercano(obtenerPosicion());
 		else
 			target = (Entidad*)obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+		IDTarget = target->obtenerID();
 	}
 	
 	b2Vec2 direccion = target->obtenerPosicion() - obtenerPosicion();

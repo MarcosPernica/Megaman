@@ -30,11 +30,13 @@ Sniper::Sniper(uint ID,
 				   VELOCIDADSALTOSNIPER,
 				   VELOCIDADCORRERSNIPER,
 				   ENEMIGOS,
-				   CONSTRUCCIONES | DISPAROS,
+				   CONSTRUCCIONES,
 				   posicion, 
 				   false,
 				   true,
 				   velocidad),
+				   megaman(NULL),
+				   IDTarget(0),
 				animacion_protegido(ANIM_SNIPER_PROTEGIDO,0.1),
 				animacion_disparando(ANIM_SNIPER_DISPARANDO,0.1),
 				Animado(animacion_disparando)
@@ -45,6 +47,17 @@ Sniper::Sniper(uint ID,
 	estadoSniper = DESCUBRIENDOSE;
 	
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+}
+
+void Sniper::atacado(uint dano, Disparo *disparo)
+{
+	if(estadoSniper == CUBIERTO)
+	{
+		if(disparo->tipoDisparo() == FUEGO || disparo->tipoDisparo() == ANILLO)
+			Enemigo::atacado(ENERGIAMAXIMASNIPER/2+ESCUDOSNIPER, disparo);
+	}
+	else
+		Enemigo::atacado(dano, disparo);
 }
 
 void Sniper::actualizarMaquinaEstados(real deltaT)
@@ -95,6 +108,12 @@ void Sniper::actualizarMaquinaEstados(real deltaT)
 void Sniper::actualizar(real deltaT)
 {
 	avanzar(deltaT);
+
+	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
+	{
+		megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
+		IDTarget = megaman->obtenerID();
+	}
 
 	b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
 

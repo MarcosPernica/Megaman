@@ -16,18 +16,18 @@ INC := -I include
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)"; $(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)
+	$(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 
 	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)"; $(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)
 
 clean:
 	@echo " Cleaning..."; 
-	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+	$(RM) -r $(BUILDDIR) $(TARGET)
 posta:
-	@echo " $(RM) -r $(BUILDDIR)/main.o "; $(RM) -r $(BUILDDIR)/main.o	
+	$(RM) -r $(BUILDDIR)/main.o	
 	@echo "make"; make
 	
 # Tests
