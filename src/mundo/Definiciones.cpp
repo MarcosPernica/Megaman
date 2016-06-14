@@ -1,5 +1,6 @@
 #include "Definiciones.h"
-
+#include <sstream>
+#include <iostream>
 namespace SJuego
 {
 	Constantes attr;
@@ -120,13 +121,27 @@ namespace SJuego
 
 		std::fstream archivo;
 		archivo.open(nombreArchivo.c_str(), std::ios::in);
-
+		
 		while(!archivo.eof())
 		{
 			archivo >> linea;
 			partes = linea.partir(Cadena("="));
-			*punteros[partes.at(0)] = (double)partes.at(2);
+			std::istringstream iss(partes.at(2));
+			std::cout<<partes.at(2)<<partes.at(2)[1]<<(int)partes.at(2)[1]<<std::endl;
+			double leido;
+			
+			iss.imbue(std::locale(iss.getloc(), new ConComa()));
+			iss>>leido;
+			
+			*punteros[partes.at(0)] = leido;
+			std::cout<<partes.at(0)<<"="<<leido<<std::endl;
+			
 		}
 
 	}
+	
+	char ConComa::do_decimal_point() const{
+		return (char)44; 
+	}
 }
+
