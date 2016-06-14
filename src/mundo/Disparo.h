@@ -5,6 +5,9 @@
 #include "Actualizable.h"
 #include <Box2D/Box2D.h>
 #include "../net/snapshots/Snapshot.h"
+#include "../graficos/Animado.h"
+#include "../graficos/Animacion.h"
+
 class Entidad;
 
 class Mundo;
@@ -52,10 +55,10 @@ public:
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 };
 
-class Plasma : public Disparo
+class Plasma : public Disparo, public Animado
 {
 private:
-	
+	Animacion animacion;
 public:
 	Plasma(uint ID, 
 		   Mundo &mundo, 
@@ -71,12 +74,25 @@ public:
 	
 	GENERAR_GET_TIPO(Plasma);
 	GENERAR_DESDE_SNAPSHOT(Plasma);
+
+	void actualizar(real deltaT){avanzar(deltaT);};
+
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	bool espejado() const{return obtenerVelocidad().x < 0;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPLASMA/2,
+						obtenerPosicion().y-ALTOSPRITEPLASMA/2,
+						ANCHOSPRITEPLASMA,
+						ALTOSPRITEPLASMA);}
 };
 
-class Chispa : public Disparo
+class Chispa : public Disparo, public Animado
 {
 private:
-	
+	Animacion animacion;	
 public:
 	Chispa(uint ID, 
 		   Mundo &mundo, 
@@ -91,11 +107,25 @@ public:
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	GENERAR_GET_TIPO(Chispa);
 	GENERAR_DESDE_SNAPSHOT(Chispa);
+
+	void actualizar(real deltaT){avanzar(deltaT);};
+
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	bool espejado() const{return false;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITECHISPA/2,
+						obtenerPosicion().y-ALTOSPRITECHISPA/2,
+						ANCHOSPRITECHISPA,
+						ALTOSPRITECHISPA);}
 };
 
-class Anillo : public Disparo
+class Anillo : public Disparo, public Animado
 {
 private:
+	Animacion animacion;
 	real tiempo;
 public:
 	GENERAR_GET_TIPO(Anillo);
@@ -115,12 +145,23 @@ public:
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_DESDE_SNAPSHOT(Anillo);
+
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	bool espejado() const{return false;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEANILLO/2,
+						obtenerPosicion().y-ALTOSPRITEANILLO/2,
+						ANCHOSPRITEANILLO,
+						ALTOSPRITEANILLO);}
 };
 
-class Fuego : public Disparo
+class Fuego : public Disparo, public Animado
 {
 private:
-	
+	Animacion animacion;	
 public:
 	GENERAR_GET_TIPO(Fuego);
 	Fuego(uint ID, 
@@ -136,11 +177,25 @@ public:
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	GENERAR_DESDE_SNAPSHOT(Fuego);
+
+	void actualizar(real deltaT){avanzar(deltaT);};
+
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	bool espejado() const{return obtenerVelocidad().x < 0;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEFUEGO/2,
+						obtenerPosicion().y-ALTOSPRITEFUEGO/2,
+						ANCHOSPRITEFUEGO,
+						ALTOSPRITEFUEGO);}
 };
 
-class Iman : public Disparo
+class Iman : public Disparo, public Animado
 {
 private:
+	Animacion animacion;
 	Entidad *target;
 	uint IDTarget;
 public:
@@ -158,11 +213,23 @@ public:
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	GENERAR_DESDE_SNAPSHOT(Iman);
+
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	bool espejado() const{return false;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEIMAN/2,
+						obtenerPosicion().y-ALTOSPRITEIMAN/2,
+						ANCHOSPRITEIMAN,
+						ALTOSPRITEIMAN);}
 };
 
-class Bomba : public Disparo
+class Bomba : public Disparo, public Animado
 {
 private:
+	Animacion animacion;
 	real tiempoTotal;
 public:
 	GENERAR_GET_TIPO(Bomba);
@@ -182,6 +249,17 @@ public:
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	
 	GENERAR_DESDE_SNAPSHOT(Bomba);
+
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	bool espejado() const{return false;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEBOMBA/2,
+						obtenerPosicion().y-ALTOSPRITEBOMBA/2,
+						ANCHOSPRITEBOMBA,
+						ALTOSPRITEBOMBA);}
 	
 private:
 	void explotar();

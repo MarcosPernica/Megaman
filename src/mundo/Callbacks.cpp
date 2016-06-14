@@ -22,6 +22,7 @@ void CallbackCreadorPowerUp::ejecutar()
 	
 	real aleatorio = (real)rand()/RAND_MAX, piso = 0;
 
+
 	if(aleatorio >= piso && aleatorio < (piso += PROBANUEVAVIDA))
 		mundo.agregar(new NuevaVida(ID,mundo,posicion));
 	else if(aleatorio >= piso && aleatorio < (piso += PROBAENERGIACHICA))
@@ -69,8 +70,8 @@ bool ElementosEnZona::ReportFixture(b2Fixture * fixture)
 	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)fixture->GetUserData();
 
 	if(datos->ID == CUERPOPRINCIPAL)
-		elementos.push_back((Dibujable*)datos->cuerpo);
-
+		if(datos->cuerpo->tipoCuerpo() != PERSONAJES)
+			elementos.push_back((Dibujable*)datos->cuerpo);
 	return true;
 }
 

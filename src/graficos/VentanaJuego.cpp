@@ -21,7 +21,7 @@
 #include <glibmm/main.h>
 #include "../net/Debug.h"
 
-VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),jugador(NULL),mundo(NULL),simulador(NULL){
+VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),jugador(NULL),mundo(NULL),simulador(NULL), fondo(800,600){
 	set_default_size(800, 600);
 	
 	#ifndef DEBUG
@@ -75,7 +75,8 @@ bool VentanaJuego::mi_on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	Gtk::Allocation allocation = darea.get_allocation();
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();
-	
+
+	fondo.dibujarEn(cr, b2Vec2(0,0), 1);
 
 	b2Vec2 posicion = Dibujable::mundoARender(mundo->obtenerPosicionCamara());
 	std::list<Dibujable*> dibujables = mundo->obtenerElementosCamara();

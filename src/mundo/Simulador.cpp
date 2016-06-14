@@ -1,5 +1,4 @@
 #include "Simulador.h"
-#include "../graficos/Camara.h"
 #include <glibmm/main.h>
 #include <iostream>
 

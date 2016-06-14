@@ -46,8 +46,19 @@ class Animacion{
 #define ANIM_CUBOTIERRA "imagenes/cuboTierra/"
 #define ANIM_CUBOMETAL "imagenes/cuboMetal/"
 #define ANIM_CUBOLADRILLO "imagenes/cuboLadrillo/"
+#define ANIM_FONDO "imagenes/fondo/1.png"
 
 #define ANIM_FIREMAN_SALTANDO	"imagenes/megamanrojo/saltando/"
 #define ANIM_FIREMAN_CORRIENDO	"imagenes/megamanrojo/corriendo/"
+
+#define ANIM_VIDA "imagenes/vida/"
+#define ANIM_PLASMA "imagenes/plasma/"
+#define ANIM_ENERGIA "imagenes/energia/"
+#define ANIM_DISPARO_PLASMA "imagenes/disparoPlasma/"
+#define ANIM_DISPARO_FUEGO "imagenes/disparoFuego/"
+#define ANIM_DISPARO_ANILLO "imagenes/disparoAnillo/"
+#define ANIM_DISPARO_BOMBA "imagenes/disparoBomba/"
+#define ANIM_DISPARO_IMAN "imagenes/disparoIman/"
+#define ANIM_DISPARO_CHISPA "imagenes/disparoChispa/"
 
 #endif

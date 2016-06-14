@@ -13,6 +13,7 @@
 #include "../common/exceptions.h"
 #include <tinyxml.h>
 #include "../net/Debug.h"
+#include "Definiciones.h"
 
 #define MUNDOVIVO 0
 #define MUNDOTERMINADO 1
@@ -498,6 +499,7 @@ std::list<Megaman *> Mundo::obtenerMegamanes()
 std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real alto)
 {
 	b2AABB consulta;
+	b2Vec2 posicionMegaman;
 	
 	std::list<Dibujable *> aux;
 	ElementosEnZona zona(aux);
@@ -506,6 +508,20 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 	consulta.lowerBound = posicion;
 
 	mundo.QueryAABB(&zona, consulta);
+
+		/*Pone primero los megamanes*/
+	
+	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
+	while(a != megamanes.end())
+	{
+		posicionMegaman = a->second->obtenerPosicion();
+		if((posicionMegaman.x - ANCHOSPRITEMEGAMAN/2) >= consulta.lowerBound.x && (posicionMegaman.x + ANCHOSPRITEMEGAMAN/2) <= consulta.upperBound.x)
+		{
+			if((posicionMegaman.y - ALTOSPRITEMEGAMAN/2) >= consulta.lowerBound.y && (posicionMegaman.y + ALTOSPRITEMEGAMAN/2) <= consulta.upperBound.y)
+				aux.push_back(a->second);
+		}
+		a++;
+	}
 
 	return aux;
 }

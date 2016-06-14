@@ -28,6 +28,6 @@ void Imagen::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 	Dibujable::dibujarImagen(	cr, origen, factorAmplificacion, top_left_def,
 								ancho_imagen, altoEscalado,imagen,espejado());
 	
-	Dibujable::dibujarRectangulo(	cr, origen, factorAmplificacion, top_left_escalada,
-								anchoEscalado, altoEscalado);
+	/*Dibujable::dibujarRectangulo(	cr, origen, factorAmplificacion, top_left_escalada,
+								anchoEscalado, altoEscalado);*/
 }

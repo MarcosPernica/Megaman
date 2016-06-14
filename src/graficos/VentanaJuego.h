@@ -11,11 +11,14 @@
 #include <gtkmm/entry.h>
 #include <gdk/gdk.h>
 #include "../net/cliente/Cliente.h"
+#include "Fondo.h"
+
 class Mundo;
 class Jugador;
 class Simulador;
 class VentanaJuego : public Gtk::Window{
 	private:
+	Fondo fondo;
 	std::string nombre;
 	Gtk::DrawingArea darea;
 	Gtk::Label estado;

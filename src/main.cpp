@@ -18,15 +18,27 @@
 #include <gtkmm/application.h>
 #include "graficos/VentanaJuego.h"
 #include "mundo/Definiciones.h"
+#include <string>
+#include <sys/time.h>
 
 int main(int argc, char *argv[])
 {
 	std::locale::global( std::locale( "" ) );
+
+	timeval tv;
+	gettimeofday(&tv, 0);
+
+	std::string nombre = std::string("Megaman Inicia")+std::to_string(tv.tv_usec); //Funcion de C++11 re copada.
+
+	std::cout << nombre << std::endl;
+
 	SJuego::attr.cargar("configuracion.conf");
-	Glib::RefPtr<Gtk::Application> app =Gtk::Application::create(argc,argv,"pepenachohacejuegos.fi.uba");
+	Glib::RefPtr<Gtk::Application> app =Gtk::Application::create(argc,argv,nombre);
+	std::cout << "1" << std::endl;
 	VentanaJuego ventana;
+	std::cout << "2" << std::endl;
 	return app->run(ventana);
-	
+	std::cout << "3" << std::endl;
 }
 #else
 #include "net/servidor/Servidor.h"

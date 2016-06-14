@@ -12,7 +12,9 @@ void CallbackAumentador::ejecutar()
 	powerUp->aumentar(*megaman);
 }
 
-NuevaVida::NuevaVida(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
+NuevaVida::NuevaVida(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion), 
+			animacion(ANIM_VIDA,0.5),
+			Animado(animacion)
 {
 }
 
@@ -103,7 +105,9 @@ void HabilitadorFuego::aumentar(Megaman & megaman)
 	obtenerMundo().finalizar();
 }
 
-CapsulaEnergiaChica::CapsulaEnergiaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIACHICA, posicion)
+CapsulaEnergiaChica::CapsulaEnergiaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIACHICA, posicion),
+			animacion(ANIM_ENERGIA,0.25),
+			Animado(animacion)
 {
 }
 
@@ -113,7 +117,9 @@ void CapsulaEnergiaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-CapsulaEnergiaGrande::CapsulaEnergiaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIAGRANDE, posicion)
+CapsulaEnergiaGrande::CapsulaEnergiaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIAGRANDE, posicion),
+						animacion(ANIM_ENERGIA,0.25),
+						Animado(animacion)
 {
 }
 
@@ -123,7 +129,9 @@ void CapsulaEnergiaGrande::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-CapsulaPlasmaChica::CapsulaPlasmaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMACHICA, posicion)
+CapsulaPlasmaChica::CapsulaPlasmaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMACHICA, posicion),
+			animacion(ANIM_PLASMA,0.5),
+			Animado(animacion)
 {
 }
 
@@ -133,7 +141,9 @@ void CapsulaPlasmaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
-CapsulaPlasmaGrande::CapsulaPlasmaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMAGRANDE, posicion)
+CapsulaPlasmaGrande::CapsulaPlasmaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMAGRANDE, posicion),
+			animacion(ANIM_PLASMA,0.5),
+			Animado(animacion)
 {
 }
 

@@ -81,7 +81,9 @@ Bomba::Bomba(uint ID,
 				     posicion,
 					 true,
 				     velocidad),
-			tiempoTotal(TIEMPOEXPLOSIONBOMBA)
+			tiempoTotal(TIEMPOEXPLOSIONBOMBA),
+			animacion(ANIM_DISPARO_BOMBA,0.5),
+			Animado(animacion)
 {
 }
 
@@ -92,6 +94,8 @@ ushort Bomba::tipoDisparo() const
 
 void Bomba::actualizar(real deltaT)
 {
+	avanzar(deltaT);
+
 	tiempoTotal -= deltaT;
 
 	if (tiempoTotal <= 0)
@@ -139,7 +143,9 @@ Plasma::Plasma(uint ID,
 					   categoriaTarget,
 					   posicion,
 				       false,
-		               velocidad)
+		               velocidad),		
+			animacion(ANIM_DISPARO_PLASMA,0.1),
+			Animado(animacion)
 {
 }
 
@@ -172,7 +178,9 @@ Chispa::Chispa(uint ID,
 					   categoriaTarget,
 					   posicion,
 				       false,
-		               velocidad)
+		               velocidad),
+				animacion(ANIM_DISPARO_CHISPA,0.5),
+				Animado(animacion)
 {
 }
 
@@ -207,7 +215,9 @@ Anillo::Anillo(uint ID,
 					   posicion,
 				       false,
 		               velocidad),
-			       tiempo(TIEMPOANILLO)
+			       tiempo(TIEMPOANILLO),
+				animacion(ANIM_DISPARO_ANILLO,1),
+				Animado(animacion)
 {
 	modificarRestitucion(1);
 }
@@ -225,6 +235,7 @@ void Anillo::alColisionar(Cuerpo *cuerpo)
 
 void Anillo::actualizar(real deltaT)
 {
+	avanzar(deltaT);
 	tiempo -= deltaT;	
 
 	if(tiempo <= 0)
@@ -255,7 +266,9 @@ Fuego::Fuego(uint ID,
 					   categoriaTarget,
 					   posicion,
 				       false,
-		               velocidad)
+		               velocidad),
+				animacion(ANIM_DISPARO_FUEGO,0.25),
+				Animado(animacion)
 {
 }
 
@@ -290,7 +303,9 @@ Iman::Iman(uint ID,
 					   posicion,
 				       false,
 		               velocidad),
-				target(NULL)
+				target(NULL),
+				animacion(ANIM_DISPARO_IMAN,0.5),
+				Animado(animacion)
 {
 }
 
@@ -301,6 +316,8 @@ ushort Iman::tipoDisparo() const
 
 void Iman::actualizar(real deltaT)
 {
+	avanzar(deltaT);
+
 	if(!target || !obtenerMundo().existeEnemigo(IDTarget) || !obtenerMundo().existeMegaman(IDTarget))
 	{
 		if(obtenerCategoriaTarget() == AURAENEMIGOS)

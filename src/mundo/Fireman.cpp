@@ -75,8 +75,9 @@ void Fireman::actualizarMaquinaEstados(real deltaT)
 
 			if(puedeSaltar())
 				estadoFireman = QUIETO;
-			
+
 			break;
+			
 		}
 		case CORRIENDO:
 		{
