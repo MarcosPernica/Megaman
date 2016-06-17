@@ -18,11 +18,9 @@ void Receptor::ejecutarMensaje(const std::string& tipo_mensaje,const std::string
 }
 void Receptor::run(){
 	while(seguirRecibiendo() && getRecepcionSana()){
-		try{
-			/*
-			std::string recibido = channel.receiveUntilNl(0.01);
-			decodificarMensaje(recibido);
-			*/
+		std::cout<<"Corriendo receptor!"<<std::endl;
+		
+		//try{
 			std::string tipo, mensaje;
 			recibirTipoMensaje(tipo);
 			int largo = recibirLargo();
@@ -30,13 +28,21 @@ void Receptor::run(){
 				recibirString(mensaje,largo);
 			}
 			ejecutarMensaje(tipo,mensaje);
+			std::cout<<"Ejecuté!"<<std::endl;
+		/*
 		}//catch(RecvException& e){}
 		 catch(RecvTimeOutException &e){
+			 std::cout<<"Recepción rota!"<<std::endl;
 			 setRecepcionRota();
 			 throw e;////////////////////POR AHORA NO HAGO NINGUN MANEJO ESPECIAL DE ESTA SITUACION!!
 			 /////////////////////////-----------------
 		 }
+		 */
+		std::cout<<"Fin del loop!"<<std::endl;
 	}
+	std::cout<<"RUN!"<<std::endl;
+	std::cout<<seguirRecibiendo()<<std::endl;
+	std::cout<<getRecepcionSana()<<std::endl;
 }
 
 void Receptor::end(){
