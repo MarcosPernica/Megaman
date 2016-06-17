@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	std::locale::global(std::locale(std::cout.getloc(), new SJuego::ConComa()));
 	SJuego::attr.cargar("configuracion.conf");
 	Servidor servidor;
-	servidor.correr();
+	servidor.ejecutar();
 }
 #endif
 
