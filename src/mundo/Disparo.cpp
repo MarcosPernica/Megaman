@@ -83,7 +83,7 @@ Bomba::Bomba(uint ID,
 				     velocidad),
 			tiempoTotal(TIEMPOEXPLOSIONBOMBA),
 			animacion(ANIM_DISPARO_BOMBA,0.5),
-			Animado(animacion)
+			Animado(&animacion)
 {
 }
 
@@ -145,7 +145,7 @@ Plasma::Plasma(uint ID,
 				       false,
 		               velocidad),		
 			animacion(ANIM_DISPARO_PLASMA,0.1),
-			Animado(animacion)
+			Animado(&animacion)
 {
 }
 
@@ -180,7 +180,7 @@ Chispa::Chispa(uint ID,
 				       false,
 		               velocidad),
 				animacion(ANIM_DISPARO_CHISPA,0.5),
-				Animado(animacion)
+				Animado(&animacion)
 {
 }
 
@@ -217,7 +217,7 @@ Anillo::Anillo(uint ID,
 		               velocidad),
 			       tiempo(TIEMPOANILLO),
 				animacion(ANIM_DISPARO_ANILLO,1),
-				Animado(animacion)
+				Animado(&animacion)
 {
 	modificarRestitucion(1);
 }
@@ -268,7 +268,7 @@ Fuego::Fuego(uint ID,
 				       false,
 		               velocidad),
 				animacion(ANIM_DISPARO_FUEGO,0.25),
-				Animado(animacion)
+				Animado(&animacion)
 {
 }
 
@@ -305,7 +305,7 @@ Iman::Iman(uint ID,
 		               velocidad),
 				target(NULL),
 				animacion(ANIM_DISPARO_IMAN,0.5),
-				Animado(animacion)
+				Animado(&animacion)
 {
 }
 

@@ -1,6 +1,7 @@
 #ifndef POWERUP
 #define POWERUP 
 
+#include "Definiciones.h"
 #include "Cuerpo.h"
 #include "Megaman.h"
 #include "Mundo.h"
@@ -10,6 +11,7 @@
 #include "../net/snapshots/Snapshot.h"
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
+#include "../graficos/ImagenEscalada.h"
 
 class PowerUp;
 
@@ -33,7 +35,9 @@ public:
 	PowerUp(uint ID, 
 			Mundo &mundo,
 			real probabilidadAparicion,
-			const b2Vec2 &posicion);
+			const b2Vec2 &posicion,
+			real ancho = ANCHOSPRITEPOWERUP,
+			real alto = ALTOSPRITEPOWERUP);
 	~PowerUp(){};
 
 	real obtenerProbabilidadAparicion();
@@ -191,51 +195,120 @@ public:
 						ALTOSPRITEPOWERUP);}
 };
 
-class HabilitadorBomba : public PowerUp
+class Habilitador : public ImagenEscalada
+{
+private:
+	Glib::RefPtr<Gdk::Pixbuf> textura;
+public:
+	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
+	virtual const Rectangulo obtenerRepresentacion() const = 0;
+};
+
+class HabilitadorBomba : public PowerUp, public Habilitador
 {
 public:
 	HabilitadorBomba(uint ID, Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 	GENERAR_GET_TIPO(HabilitadorBomba);
 	GENERAR_DESDESNAPSHOT(HabilitadorBomba);
+
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+		
+	}
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+						ANCHOSPRITEPOWERUP,
+						ALTOSPRITEPOWERUP
+					);
+	}
 };
 
 
-class HabilitadorIman : public PowerUp
+class HabilitadorIman : public PowerUp, public Habilitador
 {
 public:
 	HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 	GENERAR_GET_TIPO(HabilitadorIman);
 	GENERAR_DESDESNAPSHOT(HabilitadorIman);
+
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+		
+	}
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+						ANCHOSPRITEPOWERUP,
+						ALTOSPRITEPOWERUP
+					);
+	}
 };
 
 
-class HabilitadorChispa : public PowerUp
+class HabilitadorChispa : public PowerUp, public Habilitador
 {
 public:
 	HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 	GENERAR_GET_TIPO(HabilitadorChispa);
 	GENERAR_DESDESNAPSHOT(HabilitadorChispa);
+
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+		
+	}
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+						ANCHOSPRITEPOWERUP,
+						ALTOSPRITEPOWERUP
+					);
+	}
 };
 
-class HabilitadorAnillo : public PowerUp
+class HabilitadorAnillo : public PowerUp, public Habilitador
 {
 public:
 	HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 	GENERAR_GET_TIPO(HabilitadorAnillo);
 	GENERAR_DESDESNAPSHOT(HabilitadorAnillo);
+
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+		
+	}
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+						ANCHOSPRITEPOWERUP,
+						ALTOSPRITEPOWERUP
+					);
+	}
 };
 
-class HabilitadorFuego: public PowerUp
+class HabilitadorFuego: public PowerUp, public Habilitador
 {
 public:
 	HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion);
 	void aumentar(Megaman &megaman);
 	GENERAR_GET_TIPO(HabilitadorFuego);
 	GENERAR_DESDESNAPSHOT(HabilitadorFuego);
+
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+		
+	}
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+						ANCHOSPRITEPOWERUP,
+						ALTOSPRITEPOWERUP
+					);
+	}
 };
 
 #endif

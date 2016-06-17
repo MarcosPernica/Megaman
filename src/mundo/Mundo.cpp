@@ -23,10 +23,18 @@ Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std:
 	nombre_nivel = n;
 	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
 	Cadena nombre(nombre_nivel);
+
 	mundo.SetContactListener(&listenerColisiones);
 	camara = new ZonaCamara(*this,anchoCamara, altoCamara, posicionCamara);
 
 	cargarNivel(nombre);	
+	
+	/*Sacar de aca. Solo para probar.*/
+	agregarMegaman();
+	/*agregarMegaman();
+	agregarMegaman();
+	agregarMegaman();*/
+	
 	camara->reiniciar();
 }
 
@@ -103,6 +111,8 @@ void Mundo::cargarNivel(Cadena nombre){
 			agregarCuboLadrillo(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "CuboTierra")
 			agregarCuboTierra(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
+		else if(elemento->ValueStr() == "CuboVacio")
+			agregarCuboVacio(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "ZonaMortal")
 			agregarZonaMortal(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "ZonaTransporte")
@@ -117,8 +127,8 @@ void Mundo::cargarNivel(Cadena nombre){
 			agregarPuas(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Escalera")
 			agregarEscalera(atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-    		else if(elemento->ValueStr() == "Megaman")
-			agregarMegaman(b2Vec2(atributos["x"],atributos["y"]));
+    		else if(elemento->ValueStr() == "ZonaSpawnMegaman")
+			agregarZonaSpawnMegaman(atributos["longitud"], b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Met")
 			agregarZonaSpawnMet(b2Vec2(atributos["x"],atributos["y"]));
 		else if(elemento->ValueStr() == "Bumby")
@@ -260,6 +270,11 @@ void Mundo::agregarCuboTierra(real ancho, real alto, b2Vec2 posicion)
 	construcciones.push_back(new CuboTierra(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
 }
 
+void Mundo::agregarCuboVacio(real ancho, real alto, b2Vec2 posicion)
+{
+	construcciones.push_back(new CuboVacio(IDCONSTRUCCIONES,*this,posicion, ancho, alto));
+}
+
 void Mundo::agregarPuas(real ancho, real alto, b2Vec2 posicion)
 {
 	controladores.push_back(new Puas(*this, ancho, alto, posicion));
@@ -271,12 +286,17 @@ void Mundo::agregarEscalera(real alto, b2Vec2 posicion)
 	construcciones.push_back(new Escalera(IDCONSTRUCCIONES,*this,posicion, alto));
 }
 
-Megaman *Mundo::agregarMegaman(b2Vec2 posicion)
+void Mundo::agregarZonaSpawnMegaman(real longitud, b2Vec2 posicion)
 {
- 	Megaman *megaman = new Megaman(generarID(),*this, posicion);
+	zonaSpawnMegaman.inicio = posicion;
+	zonaSpawnMegaman.longitud = longitud;
+}
+
+Megaman *Mundo::agregarMegaman()
+{
+ 	Megaman *megaman = new Megaman(generarID(),*this, b2Vec2(zonaSpawnMegaman.inicio.x + ((zonaSpawnMegaman.longitud/CANTIDADMAXIMAJUGADORES)*megamanes.size()), zonaSpawnMegaman.inicio.y));
 	
 	megamanes[megaman->obtenerID()] = megaman;
-
 	return megaman;
 }
 
@@ -451,7 +471,7 @@ void Mundo::actualizarCuerpos(real deltaT)
 
 	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
 	while(b != enemigos.end())
-		(b++)->second->actualizar(deltaT);	
+		(b++)->second->actualizar(deltaT);
 
 	std::map<uint, Disparo*>::const_iterator c = disparos.begin();
 	while(c != disparos.end())
@@ -464,6 +484,10 @@ void Mundo::actualizarCuerpos(real deltaT)
 	std::list<CajaAccion*>::const_iterator e = controladores.begin();
 	while(e != controladores.end())
 		(*e++)->actualizar(deltaT);	
+
+	std::map<uint, Puerta*>::const_iterator f = puertas.begin();
+	while(f != puertas.end())
+		(f++)->second->actualizar(deltaT);	
 }
 
 void Mundo::actualizar(real segundosDesdeUltima){
@@ -509,26 +533,12 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 	mundo.QueryAABB(&zona, consulta);
 
-		/*Pone primero los megamanes*/
-	
-	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
-	while(a != megamanes.end())
-	{
-		posicionMegaman = a->second->obtenerPosicion();
-		if((posicionMegaman.x - ANCHOSPRITEMEGAMAN/2) >= consulta.lowerBound.x && (posicionMegaman.x + ANCHOSPRITEMEGAMAN/2) <= consulta.upperBound.x)
-		{
-			if((posicionMegaman.y - ALTOSPRITEMEGAMAN/2) >= consulta.lowerBound.y && (posicionMegaman.y + ALTOSPRITEMEGAMAN/2) <= consulta.upperBound.y)
-				aux.push_back(a->second);
-		}
-		a++;
-	}
-
 	return aux;
 }
 
 void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 {
-	/* Limpia lo que esta fuera del area circular que pasa por todos los vertices del area cuadrada.*/
+	/* Limpia (elimina de los mapas) lo que esta fuera del area circular que pasa por todos los vertices del area cuadrada.*/
 
 	real radio = (posicion.x+ancho)*(posicion.x+ancho) +  (posicion.y+alto)*(posicion.y+alto);
 
@@ -580,16 +590,7 @@ void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)
 	while(d != powerUps.end())
 		mapa[d->first] = (d++)->second;
 }
-/*
-void Mundo::obtenerSnapshot(FullSnapshot& en){
-	FullSnapshot nueva;
-	std::map<uint, Snapshotable*>::iterator it;
-	for(it=snapshotables.begin(); it!=snapshotables.end(); ++it){
-		nueva.add((it->second)->getSnapshot());
-	}
-	en=nueva;
-}
-*/
+
 void Mundo::obtenerSnapshot(FullSnapshot& en){
 	std::map<uint, Snapshotable*> mapa;
 	obtenerSnapshotables(mapa);

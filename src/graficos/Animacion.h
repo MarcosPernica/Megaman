@@ -6,9 +6,13 @@
 #include <map>
 #include <string>
 
+#define CANTIDADMAXIMACUADROS 100
+
 class Animacion{
-	private:
+public:
 	std::string nombre;
+	bool loop;
+private:
 	int cuadro_actual;
 	int cantidad_cuadros;
 	float segundos_por_cuadro;
@@ -17,7 +21,7 @@ class Animacion{
 	public:
 	void avanzar(float segundos);
 	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
-	Animacion(const std::string& nombre,float segundos_por_cuadro);
+	Animacion(const std::string& nombre,float segundos_por_cuadro, bool loop = true, unsigned int cantidadCuadros = CANTIDADMAXIMACUADROS);
 	void reiniciar();
 	bool operator==(const Animacion& animacion);
 };
@@ -60,5 +64,8 @@ class Animacion{
 #define ANIM_DISPARO_BOMBA "imagenes/disparoBomba/"
 #define ANIM_DISPARO_IMAN "imagenes/disparoIman/"
 #define ANIM_DISPARO_CHISPA "imagenes/disparoChispa/"
+
+#define ANIM_PUERTA "imagenes/puerta/"
+#define ANIM_PODER "imagenes/poder/1.png"
 
 #endif

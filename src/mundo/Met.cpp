@@ -40,7 +40,7 @@ Met::Met(uint ID,
 				   IDTarget(0),
 			animacion_protegido(ANIM_MET_PROTEGIDO,1),
 			animacion_disparando(ANIM_MET_DISPARANDO,1),
-			Animado(animacion_protegido)
+			Animado(&animacion_protegido)
 {
 	tiempo = 0;
 	estadoMet = CUBIERTO;
@@ -75,7 +75,7 @@ void Met::actualizarMaquinaEstados(real deltaT)
 				tiempo = 0;
 				estadoMet = DESCUBIERTO;
 				exponerse();
-				cambiar(animacion_disparando);
+				cambiar(&animacion_disparando);
 			}
 			break;
 		case DESCUBIERTO:
@@ -108,7 +108,7 @@ void Met::actualizarMaquinaEstados(real deltaT)
 				tiempo = 0;
 				estadoMet = CUBIERTO;
 				cubrirse();
-				cambiar(animacion_protegido);
+				cambiar(&animacion_protegido);
 			}
 			break;
 	}

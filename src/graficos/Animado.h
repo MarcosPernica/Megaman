@@ -5,12 +5,12 @@
 #include <map>
 class Animado: public Imagen{
 	private:
-	Animacion& actual;
+	Animacion* actual;
 	
 	public:
 	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
-	Animado(Animacion& inicial);
-	void cambiar(Animacion& otra);
+	Animado(Animacion* inicial);
+	void cambiar(Animacion* otra);
 	void avanzar(float segundos);
 };
 

@@ -371,15 +371,23 @@ b2Vec2 ZonaCamara::obtenerPosicion()
 void ZonaCamara::reiniciar()
 {
 	b2Vec2 posicionPromedio = b2Vec2_zero;
+	unsigned char cantidadMegamanesVivos = 0;
 
 	std::list<Megaman*> megamanes = mundo.obtenerMegamanes();
 
 	std::list<Megaman*>::iterator i = megamanes.begin();
 
 	while(i != megamanes.end())
-		posicionPromedio = (*i++)->obtenerPosicion();
+	{
+		if(!((*i)->estaMuerta()))
+		{
+			posicionPromedio = (*i)->obtenerPosicion();
+			cantidadMegamanesVivos++;
+		}
+		i++;
+	}
 
-	posicionPromedio = (1/(real)megamanes.size()) * posicionPromedio;
+	posicionPromedio = (1/(real)cantidadMegamanesVivos) * posicionPromedio;
 
 	posicionCentral.x = posicionPromedio.x;
 
@@ -393,6 +401,7 @@ void ZonaCamara::actualizarRecinto(real deltaT)
 {
 	b2Vec2 posicionPromedio = b2Vec2_zero;
 	real lateralIzquierdo, lateralDerecho;
+	unsigned char cantidadMegamanesVivos = 0;
 
 	std::list<Megaman*> megamanes = mundo.obtenerMegamanes();
 	std::list<Megaman*> megamanesAfuera;
@@ -405,23 +414,27 @@ void ZonaCamara::actualizarRecinto(real deltaT)
 
 	while(i != megamanes.end())
 	{
-		posicionMegaman = (*i)->obtenerPosicion();
-		if(posicionMegaman.x > lateralDerecho)
+		if(!(*i)->estaMuerta())
 		{
-			posicionMegaman.x = lateralDerecho;	
-			(*i)->modificarPosicion(posicionMegaman);
-		}
-		else if(posicionMegaman.x < lateralIzquierdo)
-		{
-			posicionMegaman.x = lateralIzquierdo;	
-			(*i)->modificarPosicion(posicionMegaman);
-		}
+			posicionMegaman = (*i)->obtenerPosicion();
+			if(posicionMegaman.x > lateralDerecho)
+			{
+				posicionMegaman.x = lateralDerecho;	
+				(*i)->modificarPosicion(posicionMegaman);
+			}
+			else if(posicionMegaman.x < lateralIzquierdo)
+			{
+				posicionMegaman.x = lateralIzquierdo;	
+				(*i)->modificarPosicion(posicionMegaman);
+			}
 		
-		posicionPromedio += posicionMegaman;
+			posicionPromedio += posicionMegaman;
+			cantidadMegamanesVivos++;
+		}
 		i++;
 	}
 
-	posicionPromedio = (1/(real)megamanes.size()) * posicionPromedio;
+	posicionPromedio = (1/(real)cantidadMegamanesVivos) * posicionPromedio;
 
 	posicionCentral.x = posicionPromedio.x;
 

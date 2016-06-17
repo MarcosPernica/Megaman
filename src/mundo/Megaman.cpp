@@ -7,7 +7,6 @@
 
 #define TIEMPODISPARO 1
 
-
 #define HACIENDONADA 0
 
 #define PISANDO 1
@@ -54,19 +53,19 @@ ushort Megaman::tipoCuerpo() const
 
 void Megaman::actualizar(real deltaT)
 {
-	if(timeoutDisparo >= 0)
-		timeoutDisparo -= deltaT;
+	if(timeoutDisparo > 0)
+	{
+		if(timeoutDisparo - deltaT >= 0)
+			timeoutDisparo -= deltaT;
+		else
+			timeoutDisparo = 0;
+	}
 
 	if(estaMuerta())
 		return;
 
 	if(estadoEscalado != AGARRADOESCALERA)
 		avanzar(deltaT);
-
-	tiempoInmunidad -= deltaT;	
-
-	if(tiempoInmunidad <= 0)
-		tiempoInmunidad = 0;
 
 	if(inmovilizado)
 	{
@@ -80,6 +79,16 @@ void Megaman::actualizar(real deltaT)
 		velocidad.x = 0;
 		velocidad += VELOCIDADMEGAMANCORRIENDO*Cuerpo::orientacionAVector(obtenerOrientacion());
 		modificarVelocidad(velocidad);
+
+		/*Puede setearse cada vez porque internamente si se le cambia la animacion a la misma que ya tiene hace nada y no gasta tiempo de CPU practicamente.*/
+
+		if(estadoSalto == PISANDO)
+		{
+			if(!timeoutDisparo)
+				cambiar(&animacion_corriendo);
+			else 
+				cambiar(&animacion_disparandoCorriendo);
+		}
 	}
 
 	if (estadoSalto == PORSALTAR)
@@ -95,7 +104,7 @@ void Megaman::actualizar(real deltaT)
 	else if(estadoSalto == ENELAIRE)
 	{
 		if(timeoutDisparo)
-			cambiar(animacion_disparandoSaltando);
+			cambiar(&animacion_disparandoSaltando);
 	}
 
 	if(estadoEscalado != HACIENDONADA)
@@ -117,7 +126,7 @@ void Megaman::actualizar(real deltaT)
 		else
 		{
 			if(timeoutDisparo)
-				cambiar(animacion_disparandoSubiendo);
+				cambiar(&animacion_disparandoSubiendo);
 		}
 			modificarVelocidad(velocidad);
 	}
@@ -146,10 +155,7 @@ void Megaman::actualizar(real deltaT)
 	}
 
 	if(estadoDisparo == HACIENDONADA && estadoEscalado == HACIENDONADA && estadoSalto == PISANDO && !corriendo)
-		if(!timeoutDisparo)
-			cambiar(animacion_quieto);
-		else
-			cambiar(animacion_disparando);
+			cambiar(&animacion_disparando);
 }
 
 void Megaman::agregarArma(Disparo * disparo, uint cantidadPlasma)
@@ -201,13 +207,12 @@ Megaman::Megaman(uint ID,
 				animacion_disparandoCorriendo(ANIM_MEGAM_CORRE_DISP, 0.1),
 				animacion_disparandoSaltando(ANIM_MEGAM_SALTA_DISP, 0.1),
 				animacion_disparandoSubiendo(ANIM_MEGAM_SUBIENDO_DISP, 0.1),
-				Animado(animacion_quieto),
+				Animado(&animacion_quieto),
 				posicionSpawn(posicion)
 				
 {
 	deshabilitarFriccion();
 	vidas = VIDASINICIALES;
-	tiempoInmunidad = 0;
 
 	puedeSaltar = 0;
 	puedeSubir = 0;
@@ -280,7 +285,6 @@ void Megaman::habilitarSalto()
 	puedeSaltar++;
 	estadoSalto = PISANDO;
 	estadoEscalado = HACIENDONADA;
-	cambiar(animacion_quieto);
 }
 
 void Megaman::deshabilitarSalto()
@@ -294,20 +298,13 @@ void Megaman::saltar()
 	{
 		gravitar();
 		estadoSalto = PORSALTAR;
-		cambiar(animacion_saltando);
+		cambiar(&animacion_saltando);
 	}
 }
 
 void Megaman::correr()
 {
 	corriendo = true;
-	if(estadoSalto == PISANDO)
-	{
-		if(!timeoutDisparo)
-			cambiar(animacion_corriendo);
-		else 
-			cambiar(animacion_disparandoCorriendo);
-	}
 }
 
 void Megaman::dejarCorrer()
@@ -357,7 +354,7 @@ void Megaman::subirEscalera()
 	if(puedeSubir)
 	{
 		estadoSalto = HACIENDONADA;
-		cambiar(animacion_subiendo);
+		cambiar(&animacion_subiendo);
 		estadoEscalado = SUBIENDOESCALERA;
 	}
 }
@@ -367,7 +364,7 @@ void Megaman::bajarEscalera()
 	if(puedeSubir)
 	{
 		estadoSalto = HACIENDONADA;
-		cambiar(animacion_subiendo);
+		cambiar(&animacion_subiendo);
 		estadoEscalado = BAJANDOESCALERA;
 	}
 }
@@ -380,11 +377,7 @@ void Megaman::pararMovimientoEscalera()
 
 void Megaman::atacado(uint dano, Disparo *disparo)
 {
-	if(!tiempoInmunidad)
-	{
-		Entidad::atacado(dano, disparo);
-		tiempoInmunidad = TIEMPOINMUNIDADMEGAMAN;
-	}
+	Entidad::atacado(dano, disparo);
 }
 
 

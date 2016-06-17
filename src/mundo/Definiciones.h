@@ -8,7 +8,9 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <locale>
 
+#define CANTIDADMAXIMAJUGADORES 4.0
 #define NULO 0
 
 #define FANTASMAS 0
@@ -68,8 +70,6 @@
 #define ENERGIAMAXIMASPARKMAN 500
 #define ESCUDOSPARKMAN 0
 
-#include <locale>
-
 typedef unsigned int uint;
 typedef float real;
 typedef unsigned short ushort;
@@ -83,13 +83,6 @@ namespace SJuego
 		protected:
 			virtual char do_decimal_point() const;
 	};
-	/*
-	template <class charT, charT sep>
-	class punct_facet: public std::numpunct<charT> {
-	protected:
-		charT do_decimal_point() const { return sep; }
-	};
-	*/
 	
 	
 	struct Constantes

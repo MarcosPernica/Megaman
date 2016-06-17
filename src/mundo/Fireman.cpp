@@ -45,7 +45,7 @@ Fireman::Fireman(uint ID,
 				   false),
 			animacion_saltando(ANIM_FIREMAN_SALTANDO,1),
 			animacion_corriendo(ANIM_FIREMAN_CORRIENDO,0.1),
-			Animado(animacion_saltando)
+			Animado(&animacion_saltando)
 {
 	reflejos = 0;
 	estadoFireman = QUIETO;
@@ -97,18 +97,23 @@ void Fireman::actualizarMaquinaEstados(real deltaT)
 				correr();
 				saltar();
 				estadoFireman = SALTANDO;
-				cambiar(animacion_saltando);
 			}
 			else
 			{
 				correr();
 				estadoFireman = CORRIENDO;
-				cambiar(animacion_corriendo);
 			}
 			reflejos = 0;
 			break;
 		}
 	}
+
+	/*Es mas preciso cambiarlo de esta forma que una vez por cambio de la maquina de estados.*/
+
+	if(estaEnElAire())
+		cambiar(&animacion_saltando);
+	else
+		cambiar(&animacion_corriendo);
 }
 
 void Fireman::actualizar(real deltaT)

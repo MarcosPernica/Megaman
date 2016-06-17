@@ -39,7 +39,7 @@ Sniper::Sniper(uint ID,
 				   IDTarget(0),
 				animacion_protegido(ANIM_SNIPER_PROTEGIDO,0.1),
 				animacion_disparando(ANIM_SNIPER_DISPARANDO,0.1),
-				Animado(animacion_disparando)
+				Animado(&animacion_disparando)
 			
 {
 	reflejos = 0;
@@ -71,7 +71,7 @@ void Sniper::actualizarMaquinaEstados(real deltaT)
 		reflejos = 0;
 		exponerse();
 		estadoSniper = DESCUBRIENDOSE;
-		cambiar(animacion_disparando);
+		cambiar(&animacion_disparando);
 	}
 	
 	if(estadoSniper == DESCUBRIENDOSE)
@@ -101,7 +101,7 @@ void Sniper::actualizarMaquinaEstados(real deltaT)
 	{
 		estadoSniper = CUBIERTO;
 		cubrirse();
-		cambiar(animacion_protegido);
+		cambiar(&animacion_protegido);
 	}
 }
 

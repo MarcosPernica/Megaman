@@ -62,6 +62,7 @@ public:
 	bool puedeIrDerecha();
 	bool puedeCorrer();
 
+	bool estaEnElAire();
 	bool puedeSaltar();
 	void saltar();
 	void correr();

@@ -53,8 +53,17 @@ private:
 		DatosEliminacion(uint ID, Categoria categoria) : ID(ID), categoria(categoria){};
 	};
 
+	struct SpawnMegaman
+	{
+		b2Vec2 inicio;
+		real longitud;
+	};	
+
 	ListenerColisiones listenerColisiones;
 	b2World mundo;
+
+	/*Recta de spawn de los jugadores.*/
+	SpawnMegaman zonaSpawnMegaman;
 
 	std::map<uint, Megaman*> megamanes;
 	std::map<uint, Enemigo*> enemigos;
@@ -98,17 +107,19 @@ public:
 	void agregar(Disparo * disparo);
 	void agregar(PowerUp * powerUp);
 	void agregar(Enemigo * enemigo);
+	Megaman *agregarMegaman();
 
 	void agregarCuboMadera(real ancho, real alto, b2Vec2 posicion);
 	void agregarCuboMetal(real ancho, real alto, b2Vec2 posicion);
 	void agregarCuboLadrillo(real ancho, real alto, b2Vec2 posicion);
 	void agregarCuboTierra(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboVacio(real ancho, real alto, b2Vec2 posicion);
 	void agregarPuas(real ancho, real alto, b2Vec2 posicion);
 	void agregarEscalera(real alto, b2Vec2 posicion);
-	Megaman *agregarMegaman(b2Vec2 posicion);
 	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
 	void agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino);
 	void agregarZonaGuardado(real ancho, real alto, b2Vec2 posicion);
+	void agregarZonaSpawnMegaman(real longitud, b2Vec2 posicion);
 	void agregarZonaCerradura(uint IDPuerta, real ancho, real alto, b2Vec2 posicion);
 	void agregarPuerta(uint IDInterno, real ancho, real alto, b2Vec2 posicion);
 

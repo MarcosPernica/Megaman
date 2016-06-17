@@ -83,6 +83,15 @@ CuboTierra::CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 {
 }
 
+CuboVacio::CuboVacio(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto):
+			Construccion(ID,
+				     mundo,
+				     posicion,
+				     ancho,
+				     alto)
+{
+}
+
 Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion):
 			Cuerpo(ID,
 							  mundo,
@@ -97,9 +106,19 @@ Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, con
 							  b2Vec2_zero,
 							  izquierda,
 							  true),
+							  Animado(&animacion),
+							  animacion(ANIM_PUERTA,0.1,false, 10),
 							  cerrada(false),
-							  IDInterno(IDInterno)
+							  IDInterno(IDInterno),
+							  ancho(ancho),
+							  alto(alto)
 {
+}
+
+void Puerta::actualizar(real deltaT)
+{
+	if(cerrada)
+		avanzar(deltaT);
 }
 
 uint Puerta::obtenerIDInterno()

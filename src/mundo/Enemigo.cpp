@@ -159,6 +159,10 @@ bool Enemigo::puedeSaltar()
 	return contadorPiso;
 }
 
+bool Enemigo::estaEnElAire()
+{
+	return estadoSalto == ENELAIRE;
+}
 
 void Enemigo::saltar()
 {

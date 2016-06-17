@@ -127,15 +127,12 @@ namespace SJuego
 			archivo >> linea;
 			partes = linea.partir(Cadena("="));
 			std::istringstream iss(partes.at(2));
-			std::cout<<partes.at(2)<<partes.at(2)[1]<<(int)partes.at(2)[1]<<std::endl;
 			double leido;
 			
 			iss.imbue(std::locale(iss.getloc(), new ConComa()));
 			iss>>leido;
 			
-			*punteros[partes.at(0)] = leido;
-			std::cout<<partes.at(0)<<"="<<leido<<std::endl;
-			
+			*punteros[partes.at(0)] = leido;			
 		}
 
 	}

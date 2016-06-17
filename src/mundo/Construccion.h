@@ -7,6 +7,7 @@
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
 #include "../graficos/ImagenEscalada.h"
+#include "Actualizable.h"
 
 class Construccion: public Cuerpo, public ImagenEscalada
 {
@@ -22,7 +23,7 @@ public:
 	virtual std::string nombreImagen() = 0;
 };
 
-class CuboMadera : public Construccion//, public Animado
+class CuboMadera : public Construccion
 {
 public:
 	CuboMadera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
@@ -53,20 +54,42 @@ public:
 };
 
 
-class Puerta : public Cuerpo
+class CuboVacio : public Construccion
+{
+public:
+	CuboVacio(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto);
+	virtual std::string nombreImagen(){return "imagenes/vacio.png";};
+};
+
+
+class Puerta : public Cuerpo, public Animado, public Actualizable
 {
 private:
+	Animacion animacion;
 	bool cerrada;
 	uint IDInterno;
+	real ancho, alto;
 public:
 	Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion);
 	virtual std::string nombreImagen(){return "imagenes/cuboMetal/1.png";};
 	void cerrar();
 	bool estaCerrada();
 	uint obtenerIDInterno();
+	void actualizar(real deltaT);
 	
 	ushort tipoCuerpo() const {return CONSTRUCCIONES;};
 	void eliminarse(Mundo& de){};
+
+		virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+	bool espejado() const{return false;};
+
+	const Rectangulo obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ancho/2,
+						obtenerPosicion().y-alto/2,
+						ancho,
+						alto);}
 
 };
 #endif

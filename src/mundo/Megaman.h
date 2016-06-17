@@ -41,7 +41,6 @@ private:
 	char estadoSalto, estadoDisparo, estadoEscalado;//snapshoteado
 	bool corriendo;//snapshoteado
 	bool inmovilizado; //snapshoteado
-	real tiempoInmunidad;
 
 	/*Posicion X de la que megaman puede agarrarse.*/
 	real agarreX;//snapshoteado

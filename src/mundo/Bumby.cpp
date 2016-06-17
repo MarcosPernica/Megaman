@@ -33,7 +33,7 @@ Bumby::Bumby(uint ID,
 				   megaman(NULL),
 				   IDTarget(0),
 			animacion_volando(ANIM_BUMBY_VOLANDO,0.1),
-			Animado(animacion_volando)
+			Animado(&animacion_volando)
 				 
 {
 	tiempo = 0;	

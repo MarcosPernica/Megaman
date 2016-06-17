@@ -70,8 +70,15 @@ bool ElementosEnZona::ReportFixture(b2Fixture * fixture)
 	DatosColisionCuerpo *datos = (DatosColisionCuerpo*)fixture->GetUserData();
 
 	if(datos->ID == CUERPOPRINCIPAL)
-		if(datos->cuerpo->tipoCuerpo() != PERSONAJES)
+	{
+		if(datos->cuerpo->tipoCuerpo() == PERSONAJES && ((Entidad*)datos->cuerpo)->estaMuerta())
+			return true;
+
+		if(datos->cuerpo->tipoCuerpo() == ESCALERAS)
+			elementos.push_front((Dibujable*)datos->cuerpo);
+		else
 			elementos.push_back((Dibujable*)datos->cuerpo);
+	}
 	return true;
 }
 

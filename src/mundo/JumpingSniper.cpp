@@ -41,7 +41,7 @@ JumpingSniper::JumpingSniper(uint ID,
 				animacion_protegido(ANIM_JSNIPER_PROTEGIDO,0.1),
 				animacion_disparando(ANIM_JSNIPER_DISPARANDO,0.1),
 				animacion_saltando(ANIM_JSNIPER_SALTANDO,0.1),
-				Animado(animacion_disparando)
+				Animado(&animacion_disparando)
 {
 	reflejos = 0;
 	cantidadDisparos = 0;
@@ -54,7 +54,6 @@ void JumpingSniper::atacado(uint dano, Disparo *disparo)
 {
 	if(estadoSniper == CUBIERTO)
 	{
-		std::cout << "1" << std::endl;
 		if(disparo->tipoDisparo() == FUEGO || disparo->tipoDisparo() == ANILLO)
 			Enemigo::atacado(ENERGIAMAXIMAJUMPINGSNIPER/2+ESCUDOJUMPINGSNIPER, disparo);
 	}
@@ -100,7 +99,7 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 	{
 		saltar();
 		estadoSniper &= ~DISPARANDO;
-		cambiar(animacion_saltando);
+		cambiar(&animacion_saltando);
 	}
 
 	if(cantidadDisparos)
@@ -116,7 +115,7 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 	{
 		estadoSniper = CUBIERTO;
 		cubrirse();
-		cambiar(animacion_protegido);
+		cambiar(&animacion_protegido);
 	}
 }
 

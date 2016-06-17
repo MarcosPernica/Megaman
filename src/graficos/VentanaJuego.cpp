@@ -21,7 +21,8 @@
 #include <glibmm/main.h>
 #include "../net/Debug.h"
 
-VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),jugador(NULL),mundo(NULL),simulador(NULL), fondo(800,600){
+VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),jugador(NULL),mundo(NULL),simulador(NULL), 
+	fondo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600)){
 	set_default_size(800, 600);
 	
 	#ifndef DEBUG

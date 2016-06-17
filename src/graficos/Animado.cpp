@@ -1,17 +1,18 @@
 #include "Animado.h"
+#include <iostream>
 Glib::RefPtr<Gdk::Pixbuf> Animado::a_dibujar(){
-	return actual.a_dibujar();
+	return actual->a_dibujar();
 }
-Animado::Animado(Animacion& inicial):actual(inicial){}
+Animado::Animado(Animacion* inicial):actual(inicial){}
 
-void Animado::cambiar(Animacion& otra){
+void Animado::cambiar(Animacion* otra){
 	/*Cambia solo si son diferentes*/
-	if(!(actual == otra))
+	if(!(*actual == *otra))
 	{
 		actual = otra;
-		actual.reiniciar();
+		actual->reiniciar();
 	}
 }
 void Animado::avanzar(float segundos){
-	actual.avanzar(segundos);
+	actual->avanzar(segundos);
 }

@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	timeval tv;
 	gettimeofday(&tv, 0);
 	std::ostringstream oss;
-	oss<<"pepenacho.Megaman.Inicia"<<tv.tv_usec;
+	oss<<"Megaman.Inicia"<<tv.tv_usec;
 	std::string nombre = oss.str();
 
 	std::cout << nombre << std::endl;
