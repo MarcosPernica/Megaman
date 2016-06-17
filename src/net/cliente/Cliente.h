@@ -33,8 +33,6 @@ class Cliente{
 	 
 	 std::string nombre;
 	public:
-	void correr();
-	
 	
 	//interfaz para ReceptorCliente
 	void agregarEstaba(const std::string& usuario);
@@ -44,7 +42,6 @@ class Cliente{
 	void iniciar();
 	bool iniciado();
 	
-	void iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor);
 	const std::string& obtenerNombre();
 	Cliente(VentanaJuego &ventana);
 	

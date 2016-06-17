@@ -37,6 +37,9 @@ class VentanaJuego : public Gtk::Window{
 	public:
 	VentanaJuego();
 	~VentanaJuego();
+	
+	uint cantidad_jugadores;
+	
 	bool on_actualizar_dibujo();
 	
 	bool mi_on_draw(const Cairo::RefPtr<Cairo::Context>& cr);

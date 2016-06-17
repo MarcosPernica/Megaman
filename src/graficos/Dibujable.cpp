@@ -1,5 +1,6 @@
 #include "Dibujable.h"
-
+#include <cmath>
+#include <limits>
 b2Vec2 Dibujable::renderAMundo(b2Vec2 vector)
 {
 	return (1/FACTORCONVERSIONMPX)*vector;
@@ -93,14 +94,36 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 	b2Vec2 aux = factorAmplificacion*(posicion - origen);
 	real escala_x = ancho_def/imagen->get_width();
 	real escala_y = alto_def/imagen->get_height();
-	cr->save();
 	
+	if(aux.x == std::numeric_limits<float32>::quiet_NaN()) return;
+	if(aux.y == std::numeric_limits<float32>::quiet_NaN()) return;
+	if(escala_x == std::numeric_limits<real>::quiet_NaN()) return;
+	if(escala_y == std::numeric_limits<real>::quiet_NaN()) return;
+	
+	if(-aux.x == std::numeric_limits<float32>::quiet_NaN()) return;
+	if(-aux.y == std::numeric_limits<float32>::quiet_NaN()) return;
+	if(-escala_x == std::numeric_limits<real>::quiet_NaN()) return;
+	if(-escala_y == std::numeric_limits<real>::quiet_NaN()) return;
+	
+	std::cout<<"---antes de save---"<<std::endl;
+	std::cout<<aux.x<<std::endl;
+	std::cout<<aux.y<<std::endl;
+	std::cout<<escala_x<<std::endl;
+	std::cout<<escala_y<<std::endl;
+	std::cout<<imagen<<std::endl;
+	
+	
+	cr->save();
+	std::cout<<"---luego de save---"<<std::endl;
 	cr->translate(aux.x,aux.y);
+	
+	std::cout<<"---listo couts---"<<std::endl;
 	if(invertir){
 		cr->scale(-escala_x,escala_y);
 	}else{
 		cr->scale(escala_x,escala_y);
 	}
+	std::cout<<"---ya escale---"<<std::endl;
 	
 	Gdk::Cairo::set_source_pixbuf(cr, 
 						imagen,
@@ -109,10 +132,11 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 		      0, 
 		      imagen->get_width(), 
 		      imagen->get_height());
-	
+	std::cout<<"---buenas noches---"<<std::endl;
 	cr->clip();
 	
 	cr->paint();
-	
+	std::cout<<"---antes de restore---"<<std::endl;
 	cr->restore();
+	std::cout<<"---restore y chau---"<<std::endl;
 }

@@ -58,7 +58,7 @@ void Servidor::ejecutarNivel(char nivel){
 	std::cout<<"El nombre del nivel es: "<<nombre_nivel.str()<<std::endl;
 	
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
-	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str());
+	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str(),contenedor.cantidadJugadores());
 	
 	
 	std::vector<ProxyJugador*> jugadores = contenedor.obtenerJugadores();

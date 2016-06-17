@@ -23,43 +23,6 @@ void Cliente::conectarse(const std::string& nombre){
 	this->nombre = nombre;
 	receptor.start();
 }
-//Cliente::Cliente(){}
-void Cliente::correr(){
-	
-
-	#ifndef DEBUG
-	while(obtenerPosicion()==-1){
-		//detener
-	}
-	
-	if(obtenerPosicion()>0){
-		std::cout<<"No sos el primero"<<std::endl;
-	}else{
-		
-		//comentar esto de abajo hace que se deje de esperar la i
-		char respuesta='0';
-		while(obtenerPosicion()==0 && !(respuesta>='1' && respuesta<='5')){
-			std::cout<<"Usted es el primero. Ingrese un número entre 1 y 5 inclusive para iniciar ese nivel"<<std::endl;
-			std::cin>>respuesta;
-		}
-		//(comentar hasta acá)
-		std::string nivel_enviar;
-		nivel_enviar+=respuesta;
-		emisor.enviar(MENSAJE_INICIAR,nivel_enviar);
-	}
-	
-	while(!iniciado()){//ahora, seas segundo o primero, te bloqueo hasta que recibis el iniciar
-		//detener este hilo
-	}
-
-	#endif
-
-	std::cout<<"Se lanza la partida y la ventana aca!"<<std::endl;	
-	iniciarVentana(emisor, receptor);
-	//terminó la ventana...
-	socket.closeS();
-	
-}
 
 void Cliente::agregarEstaba(const std::string& usuario){
 	Lock l(m_pantalla);
@@ -95,21 +58,6 @@ bool Cliente::iniciado(){
 }
 const std::string& Cliente::obtenerNombre(){
 	return nombre;
-}
-//VUELA
-void Cliente::iniciarVentana(const Emisor& emisor, ReceptorCliente& receptor){
-	char* argv1 = "./holi";
-	char** argv = &argv1;
-	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml");
-	//VentanaJuego ventana(1,argv,"1", mundo);
-	
-	Jugador jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);
-	#ifndef DEBUG
-	receptor.inyectarFullSnapshotsA(&mundo);
-	#endif
-	Simulador simulador(mundo,33);
-	//ventana.simularMundo(mundo);//se lanza(ba) la ventana, "bloquea" este hilo hasta que termina ese mundo
-	receptor.inyectarFullSnapshotsA(NULL);
 }
 Jugador* Cliente::configurarNivel(VentanaJuego& ventana ,Mundo& mundo){
 	Jugador* jugador = new Jugador(mundo.obtenerMegaman(obtenerPosicion()), ventana, emisor);

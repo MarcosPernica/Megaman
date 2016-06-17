@@ -18,8 +18,14 @@
 #include <glibmm/main.h>
 #include "../net/Debug.h"
 
-VentanaJuego::VentanaJuego():cajaSplash(false,10),cliente(*this),malos(true,10),jugador(NULL),mundo(NULL),simulador(NULL), 
-	fondo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600)){
+VentanaJuego::VentanaJuego():cajaSplash(false,10),
+				cliente(*this),
+				malos(true,10),
+				jugador(NULL),
+				mundo(NULL),
+				simulador(NULL), 
+				fondo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600)),
+				cantidad_jugadores(0){
 	set_default_size(800, 600);
 	
 	#ifndef DEBUG
@@ -116,6 +122,7 @@ void VentanaJuego::agregarJugador(const std::string& nombre){
 	Glib::ustring texto_lobby = lobby.get_text();
 	texto_lobby+=nombre+"\n";
 	lobby.set_text(texto_lobby);
+	cantidad_jugadores+=1;
 }
 
 void VentanaJuego::on_button_clicked(int cual){
@@ -133,7 +140,7 @@ void VentanaJuego::iniciarNivel(){
 	add(darea);
 	darea.show();
 	
-	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml");
+	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml",cantidad_jugadores);
 	jugador = cliente.configurarNivel(*this,*mundo);
 	
 	simulador = new Simulador(*mundo,33);

@@ -85,7 +85,7 @@ private:
 	std::string nombre_nivel;
 public:
 	uint generarID(){static uint ID = 0; return ++ID;};
-	Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& nombre_nivel = "nivel.xml");
+	Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& nombre_nivel = "nivel.xml",uint cantidad_jugadores = 1);
 	b2World &obtenerMundo();
 
 	b2Vec2 obtenerPosicionCamara();

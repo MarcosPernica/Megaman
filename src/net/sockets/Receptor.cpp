@@ -18,7 +18,6 @@ void Receptor::ejecutarMensaje(const std::string& tipo_mensaje,const std::string
 }
 void Receptor::run(){
 	while(seguirRecibiendo() && getRecepcionSana()){
-		std::cout<<"Corriendo receptor!"<<std::endl;
 		
 		//try{
 			std::string tipo, mensaje;
@@ -28,7 +27,6 @@ void Receptor::run(){
 				recibirString(mensaje,largo);
 			}
 			ejecutarMensaje(tipo,mensaje);
-			std::cout<<"Ejecuté!"<<std::endl;
 		/*
 		}//catch(RecvException& e){}
 		 catch(RecvTimeOutException &e){
@@ -38,11 +36,7 @@ void Receptor::run(){
 			 /////////////////////////-----------------
 		 }
 		 */
-		std::cout<<"Fin del loop!"<<std::endl;
 	}
-	std::cout<<"RUN!"<<std::endl;
-	std::cout<<seguirRecibiendo()<<std::endl;
-	std::cout<<getRecepcionSana()<<std::endl;
 }
 
 void Receptor::end(){

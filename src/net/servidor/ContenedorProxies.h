@@ -59,5 +59,7 @@ class ContenedorProxies{
 	 void notificarLlegada(ProxyJugador* jugador);
 	 
 	 std::vector<ProxyJugador*> obtenerJugadores();
+	 
+	 uint cantidadJugadores();
 };
 #endif

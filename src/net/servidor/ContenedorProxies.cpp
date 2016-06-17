@@ -5,6 +5,9 @@ ContenedorProxies::ContenedorProxies(CallbackReceptor* iniciar, CallbackLimiteJu
 					callbackIniciar(iniciar),
 					callbackLimite(limite){}
 
+uint ContenedorProxies::cantidadJugadores(){
+	return proxies.size();
+}
 /**
  * Ideas para agregar robustez:
  * -Si un jugador se va?

@@ -18,7 +18,7 @@
 #define MUNDOVIVO 0
 #define MUNDOTERMINADO 1
 
-Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& n) : mundo(b2Vec2(0,GRAVEDAD)), terminado(false)
+Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& n,uint cantidad_jugadores) : mundo(b2Vec2(0,GRAVEDAD)), terminado(false)
 {
 	nombre_nivel = n;
 	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
@@ -29,12 +29,9 @@ Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std:
 
 	cargarNivel(nombre);	
 	
-	/*Sacar de aca. Solo para probar.*/
-	agregarMegaman();
-	/*agregarMegaman();
-	agregarMegaman();
-	agregarMegaman();*/
-	
+	for(uint i=0; i<cantidad_jugadores; i++){
+		agregarMegaman();
+	}
 	camara->reiniciar();
 }
 
