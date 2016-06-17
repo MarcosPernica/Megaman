@@ -7,7 +7,7 @@
 **/
 #include <string>
 #include "../sockets/Receptor.h"
-#include <set>
+#include <vector>
 #include "../../mundo/Megaman.h"
 #include "../snapshots/FullSnapshot.h"
 #include <queue>
@@ -41,7 +41,7 @@ class ProxyJugador: public Receptor{
 	//ProxyJugador(const std::string& id_usuario, ChannelSocket* channel);
 	ProxyJugador(ChannelSocket* channel);
 	
-	void enviarListaJugadores(const std::set<ProxyJugador*>& lista);
+	void enviarListaJugadores(const std::vector<ProxyJugador*>& lista);
 	void notificarLlegada(ProxyJugador* jugador);
 	void notificarEstaba(ProxyJugador* jugador);
 	virtual void recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje);

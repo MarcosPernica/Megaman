@@ -1,4 +1,3 @@
-
 #ifndef VENTANAJUEGO
 #define VENTANAJUEGO
 #include <gtkmm/window.h>

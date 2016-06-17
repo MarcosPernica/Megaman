@@ -1,9 +1,17 @@
 #ifndef SERVIDOR
 #define SERVIDOR
 #include <set>
-#include "../sockets/AccepterSocket.h"
-#include "ProxyJugador.h"
+#include "../sockets/ThreadAceptador.h"
+#include "ContenedorProxies.h"
+#include "../../common/Lock.h"
 class Servidor{
+	
+	void ejecutarNivel(char nivel);
+	
+	Mutex m_nivel;
+	char nivel;
+	
+	ContenedorProxies contenedor;
 	/**
 	 * Un thread paralelo tocará este flag para señalizar que se dejen de esperar conexiones
 	 * */
@@ -15,56 +23,70 @@ class Servidor{
 	/**
 	 * Socket aceptador
 	 * */
-	AccepterSocket accepter;
+	ThreadAceptador aceptador;
 	/**
 	 * pide port
 	 * */
-	void conectar();
+	//void conectar();
 	/**
 	 * Etapa de preparación del juego/esperar jugadores/etc.
 	 * Devuelve el primer jugador.
 	 * */
-	ProxyJugador* agregarJugadores();
+	//ProxyJugador* agregarJugadores();
 	/**
 	 * Esperar que el primer jugador desee iniciar la partida. 
 	 * Este método recibirá también del jugador el nivel que será jugado. 
 	 * */
-	 void esperarAlPrimero(ProxyJugador* primero);
-	 /**
-	  * Avisa del inicio del juego a todos los proxies que hay hasta ahora
-	  * */
-	  void notificarInicio();
-	/**
-	 * Avisa de la llegada de ese usuario a todos los proxies que 
-	 * hay hasta ahora
-	 * */
-	void notificarLlegada(ProxyJugador* jugador);
-	
-	/**
-	 * Borra todas las conexiones. 
-	 * */
-	void matarConexiones();
-	
-	/**
-	 * Le envia el nive (el archivo!) a todos los clientes
-	 * */
-	void enviarNivel(char nivel);
+	 //void esperarAlPrimero(ProxyJugador* primero);
+	 
 	
 	/**
 	 * Copia el archivo para que pueda usarse con tinyXML
 	 * */ 
-	void copiarParaTiny(char nivel);
+	//void copiarParaTiny(char nivel);
 	
 	public:
 	
-	/**Ejecuta todo
-	 * */
-	void correr();
-	
-	
-	
 	~Servidor();
 	
+	void nueva(ChannelSocket* nuevo_channel);
 	
+	Servidor();
+	
+	/**
+	 * Debe llamarse cuando se alcanza el límite de jugadores
+	 * */
+	void alcanzadoLimiteJugadores();
+	
+	/**
+	 * Debe llamarse cuando se recibe la senial de iniciar desde el jugador que corresponde
+	 * */
+	void iniciar(char nivel);
+	
+	void ejecutar();
 };
+class CallbackAceptador : public CallbackNuevaConexion{
+	private:
+	Servidor& serv;
+	public:
+	CallbackAceptador(Servidor& servidor):serv(servidor){};
+	virtual void nueva(ChannelSocket* nuevo_channel);
+};
+
+class CallbackIniciarPartida : public CallbackReceptor{
+	private:
+	Servidor& serv;
+	public:
+	CallbackIniciarPartida(Servidor& servidor):serv(servidor){};
+	void recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje);
+};
+
+class CallbackLimite: public CallbackLimiteJugadores{
+	private:
+	Servidor& serv;
+	public:
+	CallbackLimite(Servidor& servidor):serv(servidor){};
+	virtual void limiteAlcanzado();
+};
+
 #endif

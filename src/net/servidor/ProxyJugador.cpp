@@ -12,8 +12,8 @@ ProxyJugador::ProxyJugador(const std::string& id, ChannelSocket* chan)
 							:channel(chan),
 							id_usuario(id){}
 */
-void ProxyJugador::enviarListaJugadores(const std::set<ProxyJugador*>& lista){
-	std::set<ProxyJugador*>::iterator it;
+void ProxyJugador::enviarListaJugadores(const std::vector<ProxyJugador*>& lista){
+	std::vector<ProxyJugador*>::const_iterator it;
 	for( it=lista.begin(); it != lista.end(); ++it){
 		notificarEstaba(*it);
 	}
@@ -86,16 +86,20 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 
 void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
 	if(tipo_mensaje == MENSAJE_ID){
+		std::cout<<"ID"<<std::endl;
 		Lock l(m_id);
 		id_usuario = resto_mensaje;
-	}else if(tipo_mensaje == MENSAJE_INICIAR){
+	}else if(tipo_mensaje == MENSAJE_INICIAR){//YA NO LLEGA!!!!!
+		std::cout<<"Inicio"<<std::endl;
 		setQuiereIniciarPartida(resto_mensaje[0]);//no es el número de nivel, sino el caracter que lo representa!
 	}else if(controlado != NULL){
+		/*
 		if(tipo_mensaje == MENSAJE_KEY_Z){
 			timespec ahora;
 			clock_gettime(CLOCK_REALTIME,&ahora);
 			std::cout<<"Llega la Z a las "<<ahora.tv_nsec<<std::endl;
 		}
+		*/
 		Lock l(m_controles_recibidos);
 		controles_recibidos.push(tipo_mensaje);
 		//std::cout<<"Llegó un mensaje: "<<tipo_mensaje<<std::endl;
@@ -112,7 +116,6 @@ ProxyJugador::ProxyJugador(ChannelSocket* chan)
 	CallbackProxyJugador* callback=new CallbackProxyJugador(*this);
 	
 	agregarCallback(MENSAJE_ID,callback);
-	agregarCallback(MENSAJE_INICIAR,callback);
 	
 	agregarCallback(MENSAJE_KEY_1,callback);
 	agregarCallback(MENSAJE_KEY_2,callback);

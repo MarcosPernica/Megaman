@@ -7,9 +7,7 @@
 #include "ContenedorProxies.h"
 #include "../../graficos/Dibujable.h" 
 #include <fstream>
-void Servidor::conectar(){
-	accepter.open(10020,4);
-}
+/*
 void Servidor::copiarParaTiny(char nivel){
 	std::string nombre_nivel("niveles/nivel");
 	nombre_nivel+=nivel;
@@ -20,118 +18,95 @@ void Servidor::copiarParaTiny(char nivel){
 	dst<<src.rdbuf();
 	dst.close();
 }
+*/
+void Servidor::nueva(ChannelSocket* nuevo_channel){
+	contenedor.nuevaConexion(nuevo_channel);
+}
 
-void Servidor::correr(){
-	conectar();
-	ProxyJugador* primero = agregarJugadores();
-	esperarAlPrimero(primero);
-	char elegido = primero->nivelQueEligio();
-	enviarNivel(elegido);
-	std::cout<<elegido<<std::endl;
-	notificarInicio();
-	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
-	//copiarParaTiny(primero->nivelQueEligio());
+Servidor::Servidor():
+			aceptador(10020,4),
+			contenedor(new CallbackIniciarPartida(*this), new CallbackLimite(*this) ),
+			nivel(0){
+				
+				aceptador.agregarCallback(new CallbackAceptador(*this));
+				aceptador.start();
+				//sleep(10);
+}
+
+
+void Servidor::alcanzadoLimiteJugadores(){
+	//aceptador.join();
+}
+void Servidor::ejecutar(){
+	while(true){
+		sleep(0.5);
+		Lock l(m_nivel);
+		if(nivel!=0) break;
+	}
+	Lock l(m_nivel);
+	ejecutarNivel(nivel);
+}
+void Servidor::ejecutarNivel(char nivel){
+	contenedor.enviarNivel(nivel);
+	std::cout<<nivel<<std::endl;
+	contenedor.notificarInicio();
+	
 	std::ostringstream nombre_nivel;
 	nombre_nivel<<"niveles/nivel";
-	nombre_nivel<<(char)elegido;
+	nombre_nivel<<(char)nivel;
 	nombre_nivel<< ".xml";
 	std::cout<<"El nombre del nivel es: "<<nombre_nivel.str()<<std::endl;
-	ContenedorProxies distribuidor(proxies);
-	//Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.c_str());
+	
+	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
 	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str());
-	//(*proxies.begin())->enviarKeystrokesA(mundo.getMegaman());
+	
+	
+	std::vector<ProxyJugador*> jugadores = contenedor.obtenerJugadores();
+	
+	std::vector<ProxyJugador*>::iterator it;
+	for(it = jugadores.begin(); it!=jugadores.end(); ++it){
+		int pos = (*it)->obtenerPosicion();
+		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
+	}
+	
+	/*
 	std::set<ProxyJugador*>::iterator it;
 	for(it=proxies.begin(); it != proxies.end(); ++it){
 		int pos = (*it)->obtenerPosicion();
 		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
 	}
+	*/
 	
-	SimuladorSinVentana sim(mundo,20,distribuidor);
+	SimuladorSinVentana sim(mundo,20,contenedor);
 	sim.start();
 	std::cout<<"Ingresa cualquier cosa para matar el server sin avisarle a nadie"<<std::endl;
 	std::string listo;
 	std::cin>>listo;
 	sim.join();
 	
-	matarConexiones();
+	contenedor.matarConexiones();
 	std::cout<<"chau servidor!!!"<<std::endl;
 }
-/**
- * Ideas para agregar robustez:
- * -Si un jugador se va?
- * -Si el primero se va?
- * */
-ProxyJugador* Servidor::agregarJugadores(){
-	aceptarJugadores = true;
-	ProxyJugador* primero = NULL;;
-	while(aceptarJugadores){
-		try{
-			ChannelSocket* channel = accepter.acceptConnection();
-			ProxyJugador* nuevo = new ProxyJugador(channel);
-			
-			std::string id_usuario = nuevo->getUsuario();//bloquea hasta que se recibe el usuario por primera vez
-			std::cout<<"Entra: "<<id_usuario<<std::endl;
-			
-			if(primero==NULL){
-				primero=nuevo;
-			}
-			nuevo->enviarPosicion(proxies.size());
-			//sleep(1);
-			
-			nuevo->enviarListaJugadores(proxies);//se le envían los que ya estaban
-			notificarLlegada(nuevo);//se notifica a los que ya estaban
-			proxies.insert(nuevo);//se agrega el nuevo a la lista
-			if(proxies.size()==4){
-				aceptarJugadores=false;
-				std::cout<<"Se alcanzo el limite de jugadores posibles"<<std::endl;
-			}
-			
-		}catch(AcceptException& e){}
-		
-		if(primero!=NULL && primero->quiereIniciarPartida()){
-			aceptarJugadores = false;
-			std::cout<<"El primer jugador decidio iniciar"<<std::endl;
-		}
-	}
-	return primero;
-}
-void Servidor::notificarLlegada(ProxyJugador* jugador){
-	std::set<ProxyJugador*>::iterator it;
-	for(it = proxies.begin(); it!=proxies.end(); ++it){
-		(*it)->notificarLlegada(jugador);
-	}
+
+
+void Servidor::iniciar(char nivel){
+	Lock l(m_nivel);
+	alcanzadoLimiteJugadores();//basta de aceptar jugadores
+	
+	this->nivel = nivel;
 }
 
 Servidor::~Servidor(){
 	
 }
-void Servidor::matarConexiones(){
-	std::set<ProxyJugador*>::iterator it;
-	for(it=proxies.begin(); it!=proxies.end(); ++it){
-		ProxyJugador* a_borrar=*it;
-		delete a_borrar;
-	}
+void CallbackIniciarPartida::recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
+	serv.iniciar(resto_mensaje[0]);
+};
+
+void CallbackLimite::limiteAlcanzado(){
+	serv.alcanzadoLimiteJugadores();
 }
 
-void Servidor::esperarAlPrimero(ProxyJugador* primero){
-	while(!primero->quiereIniciarPartida()){
-		//bloqueo el programa hasta que el primero envíe iniciar
-	}
-	std::cout<<"El primer jugador decidio iniciar"<<std::endl;
-}
-void Servidor::notificarInicio(){
-	std::set<ProxyJugador*>::iterator it;
-	for(it = proxies.begin(); it!=proxies.end(); ++it){
-		(*it)->notificarInicio();
-	}
-}
-
-void Servidor::enviarNivel(char nivel){
-	/*
-	std::cout<<"----------------------ENVIO EL  NIVEL"<<nivel<<"A TODOS----------"<<std::endl;
-	* */
-	std::set<ProxyJugador*>::iterator it;
-	for(it = proxies.begin(); it!=proxies.end(); ++it){
-		(*it)->enviarNivel(nivel);
-	}
+void CallbackAceptador::nueva(ChannelSocket* nuevo_channel){
+	serv.nueva(nuevo_channel);
 }

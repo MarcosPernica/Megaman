@@ -1,11 +1,8 @@
 #include "VentanaJuego.h"
 #include <cairo.h>
-#include <cairomm/context.h>
-#include <gtkmm/drawingarea.h>
 #include <gdk/gdk.h>
 
 //-------------
-#include <cairomm/context.h>
 #include <gdkmm/general.h> // set_source_pixbuf()
 #include <glibmm/fileutils.h>
 #include <iostream>
