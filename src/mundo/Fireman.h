@@ -28,24 +28,16 @@ public:
 	void alMorir();
 	void actualizarMaquinaEstados(real deltaT);
 	void actualizar(real deltaT);
-	ushort tipoCuerpo() const {return ENEMIGOS;};
 
 
-	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
-	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_GET_TIPO(Fireman);
 	static Fireman* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerOrientacion()==izquierda;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOFIREMAN/2,
-						obtenerPosicion().y-ALTOFIREMAN/2,
-						ANCHOFIREMAN,
-						ALTOFIREMAN);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 #endif

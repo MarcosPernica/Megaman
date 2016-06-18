@@ -9,7 +9,6 @@
 #include "../graficos/Animacion.h"
 
 class Entidad;
-
 class Mundo;
 
 //--------------------macro que genera desdeSnapshot-----------------------//
@@ -27,28 +26,35 @@ private:
 	ushort categoriaTarget;
 public:
 	Disparo(uint ID,
-			Mundo &mundo,
-			uint danio, 
-			real ancho, 
-			real alto,
-			real masa,
-			ushort categoriaTarget,
-			const b2Vec2 &posicion,
-			bool gravitacional, 
-			const b2Vec2 &velocidad);
+		Mundo &mundo,
+		uint danio, 
+		real ancho, 
+		real alto,
+		real masa,
+		ushort categoriaTarget,
+		const b2Vec2 &posicion,
+		bool gravitacional, 
+		const b2Vec2 &velocidad);
 
 	virtual void actualizar(real deltaT);
+
+	/*Define que pasa al colisionar. Asi se tiene mejor control y mas versatilidad.*/
 	virtual void alColisionar(Cuerpo *cuerpo);
-	~Disparo(){};
+	virtual ~Disparo(){};
 
 	/*Un disparo puede lanzarse (Bomba o bumerang) o dispararse (Plasma)*/
 	virtual bool lanzable();
+
+	/*Modifica la velocidad base.*/
 	virtual uint obtenerMultiplicadorVelocidad() const = 0;
 	ushort tipoCuerpo() const;
 	virtual ushort tipoDisparo() const = 0;
+
+	/*Que entidades impacta?.*/
 	ushort obtenerCategoriaTarget();
 	void eliminarse(Mundo& de);
 
+	/*Permite clonar el disparo.*/
 	virtual Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad) = 0;
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
@@ -61,10 +67,10 @@ private:
 	Animacion animacion;
 public:
 	Plasma(uint ID, 
-		   Mundo &mundo, 
-		   ushort categoriaTarget,
-		   const b2Vec2 &posicion = b2Vec2(-1000,-1000),
-		   const b2Vec2 &velocidad = b2Vec2_zero);
+	       Mundo &mundo, 
+	       ushort categoriaTarget,
+	       const b2Vec2 &posicion = b2Vec2(-1000,-1000),
+	       const b2Vec2 &velocidad = b2Vec2_zero);
 	~Plasma(){};
 
 	uint obtenerMultiplicadorVelocidad() const;
@@ -75,18 +81,11 @@ public:
 	GENERAR_GET_TIPO(Plasma);
 	GENERAR_DESDE_SNAPSHOT(Plasma);
 
-	void actualizar(real deltaT){avanzar(deltaT);};
+	void actualizar(real deltaT);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerVelocidad().x < 0;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPLASMA/2,
-						obtenerPosicion().y-ALTOSPRITEPLASMA/2,
-						ANCHOSPRITEPLASMA,
-						ALTOSPRITEPLASMA);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class Chispa : public Disparo, public Animado
@@ -95,10 +94,11 @@ private:
 	Animacion animacion;	
 public:
 	Chispa(uint ID, 
-		   Mundo &mundo, 
- 		   ushort categoriaTarget,
-		   const b2Vec2 &posicion = b2Vec2(-1000,-1000),
-		   const b2Vec2 &velocidad = b2Vec2_zero);
+	       Mundo &mundo, 
+ 	       ushort categoriaTarget,
+	       const b2Vec2 &posicion = b2Vec2(-1000,-1000),
+	       const b2Vec2 &velocidad = b2Vec2_zero);
+
 	~Chispa(){};
 
 	uint obtenerMultiplicadorVelocidad() const;
@@ -108,18 +108,11 @@ public:
 	GENERAR_GET_TIPO(Chispa);
 	GENERAR_DESDE_SNAPSHOT(Chispa);
 
-	void actualizar(real deltaT){avanzar(deltaT);};
+	void actualizar(real deltaT);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITECHISPA/2,
-						obtenerPosicion().y-ALTOSPRITECHISPA/2,
-						ANCHOSPRITECHISPA,
-						ALTOSPRITECHISPA);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class Anillo : public Disparo, public Animado
@@ -130,10 +123,10 @@ private:
 public:
 	GENERAR_GET_TIPO(Anillo);
 	Anillo(uint ID, 
-		   Mundo &mundo, 
-		   ushort categoriaTarget,
-		   const b2Vec2 &posicion = b2Vec2(-1000,-1000),
-		   const b2Vec2 &velocidad = b2Vec2_zero);
+	       Mundo &mundo, 
+	       ushort categoriaTarget,
+	       const b2Vec2 &posicion = b2Vec2(-1000,-1000),
+	       const b2Vec2 &velocidad = b2Vec2_zero);
 	~Anillo(){};
 
 	ushort tipoDisparo() const;
@@ -142,20 +135,13 @@ public:
 	void alColisionar(Cuerpo *cuerpo);
 
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
-	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
-	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_DESDE_SNAPSHOT(Anillo);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEANILLO/2,
-						obtenerPosicion().y-ALTOSPRITEANILLO/2,
-						ANCHOSPRITEANILLO,
-						ALTOSPRITEANILLO);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class Fuego : public Disparo, public Animado
@@ -165,10 +151,10 @@ private:
 public:
 	GENERAR_GET_TIPO(Fuego);
 	Fuego(uint ID, 
-		   Mundo &mundo, 
-		   ushort categoriaTarget,
-		   const b2Vec2 &posicion = b2Vec2(-1000,-1000),
-		   const b2Vec2 &velocidad = b2Vec2_zero);
+	      Mundo &mundo, 
+	      ushort categoriaTarget,
+	      const b2Vec2 &posicion = b2Vec2(-1000,-1000),
+	      const b2Vec2 &velocidad = b2Vec2_zero);
 	~Fuego(){};
 
 	ushort tipoDisparo() const;
@@ -178,18 +164,11 @@ public:
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	GENERAR_DESDE_SNAPSHOT(Fuego);
 
-	void actualizar(real deltaT){avanzar(deltaT);};
+	void actualizar(real deltaT);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return obtenerVelocidad().x < 0;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEFUEGO/2,
-						obtenerPosicion().y-ALTOSPRITEFUEGO/2,
-						ANCHOSPRITEFUEGO,
-						ALTOSPRITEFUEGO);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class Iman : public Disparo, public Animado
@@ -201,10 +180,10 @@ private:
 public:
 	GENERAR_GET_TIPO(Iman);
 	Iman(uint ID, 
-		   Mundo &mundo, 
-		   ushort categoriaTarget,
-		   const b2Vec2 &posicion = b2Vec2(-1000,-1000),
-		   const b2Vec2 &velocidad = b2Vec2_zero);
+	     Mundo &mundo, 
+	     ushort categoriaTarget,
+	     const b2Vec2 &posicion = b2Vec2(-1000,-1000),
+	      const b2Vec2 &velocidad = b2Vec2_zero);
 	~Iman(){};
 
 	ushort tipoDisparo() const;
@@ -214,16 +193,9 @@ public:
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	GENERAR_DESDE_SNAPSHOT(Iman);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEIMAN/2,
-						obtenerPosicion().y-ALTOSPRITEIMAN/2,
-						ANCHOSPRITEIMAN,
-						ALTOSPRITEIMAN);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class Bomba : public Disparo, public Animado
@@ -233,7 +205,11 @@ private:
 	real tiempoTotal;
 public:
 	GENERAR_GET_TIPO(Bomba);
-	Bomba(uint ID, Mundo &mundo, ushort categoriaTarget, const b2Vec2 &posicion = b2Vec2(-1000,-1000), const b2Vec2 &velocidad = b2Vec2_zero);
+	Bomba(uint ID, 
+	      Mundo &mundo, 
+              ushort categoriaTarget, 
+              const b2Vec2 &posicion = b2Vec2(-1000,-1000), 
+              const b2Vec2 &velocidad = b2Vec2_zero);
 	~Bomba(){};
 
 	ushort tipoDisparo() const;
@@ -245,21 +221,15 @@ public:
 	void alColisionar(Cuerpo *cuerpo){};
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	
-	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
-	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	void setStateFromSnapshot(const Snapshot& snapshot);
 	
 	GENERAR_DESDE_SNAPSHOT(Bomba);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
 
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEBOMBA/2,
-						obtenerPosicion().y-ALTOSPRITEBOMBA/2,
-						ANCHOSPRITEBOMBA,
-						ALTOSPRITEBOMBA);}
+	const Rectangulo obtenerRepresentacion() const;
 	
 private:
 	void explotar();

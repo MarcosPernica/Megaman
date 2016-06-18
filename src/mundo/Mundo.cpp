@@ -18,7 +18,13 @@
 #define MUNDOVIVO 0
 #define MUNDOTERMINADO 1
 
-Mundo::Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& n,uint cantidad_jugadores) : mundo(b2Vec2(0,GRAVEDAD)), terminado(false)
+Mundo::Mundo(real anchoCamara, 
+	     real altoCamara, 
+	     b2Vec2 posicionCamara,
+	     const std::string& n,
+	     uint cantidad_jugadores) : 
+	     mundo(b2Vec2(0,GRAVEDAD)), 
+	     terminado(false)
 {
 	nombre_nivel = n;
 	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
@@ -75,7 +81,7 @@ EstadoMundo Mundo::obtenerEstadoMundo()
 			return perdido;
 	}
 	else
-		vivo;
+		return vivo;
 }
 
 void Mundo::obtenerAtributosXML(TiXmlAttribute *atributo, std::map<std::string,real>& mapaAtributos)
@@ -154,7 +160,7 @@ b2World & Mundo::obtenerMundo()
 	return mundo;
 }
 
-Megaman *Mundo::obtenerMegamanCercano(const b2Vec2 posicion)
+Megaman *Mundo::obtenerMegamanCercano(const b2Vec2 posicion, bool incluirMuertos)
 {
 	Megaman *cercano = megamanes.begin()->second;
 	real normaCuadrada = (cercano->obtenerPosicion() - posicion).LengthSquared(), normaAux;
@@ -162,11 +168,14 @@ Megaman *Mundo::obtenerMegamanCercano(const b2Vec2 posicion)
 
 	while(i != megamanes.end())
 	{
-		normaAux = (i->second->obtenerPosicion() - posicion).LengthSquared();
-		if( normaAux < normaCuadrada)
-		{
-			normaCuadrada = normaAux;
-			cercano = i->second;
+		if(!i->second->estaMuerta() || incluirMuertos)
+		{	
+			normaAux = (i->second->obtenerPosicion() - posicion).LengthSquared();
+			if( normaAux < normaCuadrada)
+			{
+				normaCuadrada = normaAux;
+				cercano = i->second;
+			}
 		}
 		i++;
 	}
@@ -189,6 +198,7 @@ Enemigo *Mundo::obtenerEnemigoCercano(const b2Vec2 posicion)
 				normaCuadrada = normaAux;
 				cercano = i->second;
 			}
+		
 		i++;
 	}
 
@@ -487,7 +497,8 @@ void Mundo::actualizarCuerpos(real deltaT)
 		(f++)->second->actualizar(deltaT);	
 }
 
-void Mundo::actualizar(real segundosDesdeUltima){
+void Mundo::actualizar(real segundosDesdeUltima)
+{
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 	
@@ -505,14 +516,18 @@ void Mundo::actualizar(real segundosDesdeUltima){
 	camara->actualizar(segundosDesdeUltima);
 }
 
-std::list<Megaman *> Mundo::obtenerMegamanes()
+std::list<Megaman *> Mundo::obtenerMegamanes(bool incluirMuertos)
 {
 	std::list<Megaman *> megas;
 
 	std::map<uint, Megaman*>::iterator i = megamanes.begin();
 
 	while(i != megamanes.end())
-		megas.push_back((i++)->second);
+	{
+		if(!i->second->estaMuerta() || incluirMuertos)
+			megas.push_back(i->second);
+		i++;	
+	}
 
 	return megas;
 }

@@ -16,7 +16,12 @@
 
 void Bombman::alMorir()
 {
-	obtenerMundo().agregarTareaDiferida(new CallbackHabilitadorArma(obtenerMundo().generarID(),obtenerMundo(),obtenerPosicion(),BOMBA));
+	/*Le dice al mundo que agregue el PowerUp que habilita la bomba.*/
+	obtenerMundo().agregarTareaDiferida(new CallbackHabilitadorArma(obtenerMundo().generarID(),
+									obtenerMundo(),
+									obtenerPosicion(),
+									BOMBA));
+
 	eliminarse(obtenerMundo());
 }
 
@@ -24,34 +29,39 @@ Bombman::Bombman(uint ID,
 		 Mundo & mundo, 
 		 const b2Vec2 & posicion,
 		 const b2Vec2 & velocidad) : 
-		 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
 		 Enemigo(ID,
-				mundo,
-				   ANCHOBOMBMAN,
-				   ALTOBOMBMAN,
-				   &arma,
-			      	   ENERGIAMAXIMABOMBMAN,
-				   ESCUDOBOMBMAN,
-				   MASABOMBMAN, 
-				   VELOCIDADSALTOBOMBMAN,
-				   VELOCIDADCORRERBOMBMAN,
-				   ENEMIGOS,
-				   CONSTRUCCIONES | DISPAROS,
-				   posicion, 
-				   false,
-				   true,
-				   velocidad,
-				   izquierda,
-				   false),
-				   megaman(NULL),
-				   IDTarget(0)
+			 mundo,
+			 ANCHOBOMBMAN,
+			 ALTOBOMBMAN,
+			 &arma,
+		      	 ENERGIAMAXIMABOMBMAN,
+			 ESCUDOBOMBMAN,
+			 MASABOMBMAN, 
+			 VELOCIDADSALTOBOMBMAN,
+			 VELOCIDADCORRERBOMBMAN,
+			 ENEMIGOS,
+			 CONSTRUCCIONES | DISPAROS,
+			 posicion, 
+			 false,
+			 true,
+			 velocidad,
+			 izquierda,
+			 false),
+			 Animado(&animacion_saltando),
+			 animacion_saltando(ANIM_BOMBMAN_SALTANDO,1),
+			 animacion_corriendo(ANIM_BOMBMAN_CORRIENDO,0.1),
+			 megaman(NULL),
+			 IDTarget(0),
+			 estadoBombman(QUIETO),
+			 reflejos(0),
+			 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES)
+			
 {
-	reflejos = 0;
-	estadoBombman = QUIETO;
 }
 
 void Bombman::actualizarMaquinaEstados(real deltaT)
 {
+	/*Toma de punto un jugador.*/
 	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
 	{
 		megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
@@ -87,6 +97,7 @@ void Bombman::actualizarMaquinaEstados(real deltaT)
 
 			b2Vec2 orientacion = megaman->obtenerPosicion()-obtenerPosicion();
 	
+			/*La distancia al cuadrado es varios ordenes de magnitud mas rapida.*/
 			if(orientacion.LengthSquared() >= DISTANCIAVISION*DISTANCIAVISION)
 				return;
 
@@ -111,27 +122,58 @@ void Bombman::actualizarMaquinaEstados(real deltaT)
 			break;
 		}
 	}
+
+	/*Es mas preciso cambiarlo de esta forma que una vez por cambio de la maquina de estados.*/
+
+	if(estaEnElAire())
+		cambiar(&animacion_saltando);
+	else
+		cambiar(&animacion_corriendo);
 }
 
 void Bombman::actualizar(real deltaT)
 {
+	/*Avanza la animacion.*/
+	avanzar(deltaT);
+
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
 
-void Bombman::agregarPropiedadesASnapshot(Snapshot& sn){
+void Bombman::agregarPropiedadesASnapshot(Snapshot& sn)
+{
 	SN_AGREGAR_PROPIEDAD(estadoBombman);
 	SN_AGREGAR_PROPIEDAD(reflejos);
 	Enemigo::agregarPropiedadesASnapshot(sn);
 }
-void Bombman::setStateFromSnapshot(const Snapshot& sn){
+void Bombman::setStateFromSnapshot(const Snapshot& sn)
+{
 	SN_OBTENER_PROPIEDAD(estadoBombman);
 	SN_OBTENER_PROPIEDAD(reflejos);
 	Enemigo::setStateFromSnapshot(sn);
 }
 
-Bombman* Bombman::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	Bombman* p =new Bombman(sn.getID(),mundo,b2Vec2_zero);
+Bombman* Bombman::desdeSnapshot(const Snapshot& sn, Mundo& mundo)
+{
+	Bombman* p = new Bombman(sn.getID(),mundo,b2Vec2_zero);
 	p->setStateFromSnapshot(sn);
 	return p;
+}
+
+void Bombman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);
+}
+
+bool Bombman::espejado() const
+{
+	return obtenerOrientacion() == izquierda;
+};
+
+const Rectangulo Bombman::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOBOMBMAN/2,
+			  obtenerPosicion().y-ALTOBOMBMAN/2,
+			  ANCHOBOMBMAN,
+			  ALTOBOMBMAN);
 }

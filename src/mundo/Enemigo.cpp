@@ -21,58 +21,56 @@
 #define SUBIENDOESCALERA 3
 
 Enemigo::Enemigo(uint ID,
-			         Mundo & mundo,
-					 real ancho,
-					 real alto,
-					 Disparo *arma,
-			         uint energiaMaxima,
-				 uint escudo,
-					 real masa,
-				 real velocidadSalto,
-			 	 real velocidadCorrer,
-					 ushort categoria,
-				     ushort colisionaCon,
-					 const b2Vec2 & posicion,
-					 bool rotable,
-				     bool gravitacional,
-					 const b2Vec2 & velocidad,
-					 Orientaciones orientacion,
-					 bool powerUpMorir) :
-					 Entidad(ID,
-							mundo,
-							 ancho,
-							 alto,
-							 energiaMaxima,
-							 masa,
-							 categoria,
-							 colisionaCon,
-							 posicion,
-							 rotable,
-							 gravitacional,
-							 velocidad,
-							 orientacion),
-					escudo(escudo),
-					cubierto(true),
-					powerUpMorir(powerUpMorir),
-					velocidadSalto(velocidadSalto),
-					velocidadCorrer(velocidadCorrer)
+		 Mundo & mundo,
+		 real ancho,
+		 real alto,
+		 Disparo *arma,
+		 uint energiaMaxima,
+		 uint escudo,
+		 real masa,
+		 real velocidadSalto,
+		 real velocidadCorrer,
+		 ushort categoria,
+		 ushort colisionaCon,
+		 const b2Vec2 & posicion,
+		 bool rotable,
+		 bool gravitacional,
+		 const b2Vec2 & velocidad,
+		 Orientaciones orientacion,
+		 bool powerUpMorir) :
+		 Entidad(ID,
+			 mundo,
+			 ancho,
+			 alto,
+			 energiaMaxima,
+			 masa,
+			 categoria,
+			 colisionaCon,
+			 posicion,
+			 rotable,
+			 gravitacional,
+			 velocidad,
+			 orientacion),
+		contadorPiso(0),
+		estadoSalto(PISANDO),
+		estadoDisparo(HACIENDONADA),
+		corriendo(false),
+		tocandoIzquierda(0),
+		tocandoDerecha(0),
+		escudo(escudo),
+		cubierto(true),
+		arma(arma),
+		powerUpMorir(powerUpMorir),
+		velocidadSalto(velocidadSalto),
+		velocidadCorrer(velocidadCorrer)
 {
-	contadorPiso = 0;
-	tocandoIzquierda = 0;
-	tocandoDerecha = 0;
-	estadoSalto = PISANDO;
-	estadoDisparo = HACIENDONADA;
-	corriendo = false;
-
-	this->arma = arma;
-
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(0,alto*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES);
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(-ancho/2,0), LEFTBOX, LEFTBOX, CONSTRUCCIONES);
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(+ancho/2,0), RIGHTBOX, RIGHTBOX, CONSTRUCCIONES);
 	agregarCuerpoInmaterial(ancho,alto,b2Vec2(0,0), AURAENEMIGOS, AURAENEMIGOS, PERSONAJES | DISPAROS);
 }
 
-void Enemigo::atacado(uint dano, Disparo *disparo)
+void Enemigo::atacado(int dano, Disparo *disparo)
 {
 	if (!cubierto || escudo < dano)
 		Entidad::atacado(dano - escudo*cubierto, disparo);
@@ -138,7 +136,7 @@ bool Enemigo::puedeCorrer()
 {
 	if(obtenerOrientacion() == derecha)
 		return puedeIrDerecha();
-	else if(obtenerOrientacion() == izquierda)
+	else 
 		return puedeIrIzquierda();	
 }
 
@@ -237,7 +235,7 @@ void Enemigo::actualizar(real deltaT)
 
 		velocidad = arma->obtenerMultiplicadorVelocidad()*direccionDisparo;
 
-		posicion = direccionDisparo + obtenerPosicion();//Cambiar por la posicion de enemigo
+		posicion = direccionDisparo + obtenerPosicion();
 		if (arma->lanzable())
 			posicion -= b2Vec2(0, POSICIONLANZAMIENTOMEGAMAN);
 
@@ -245,6 +243,11 @@ void Enemigo::actualizar(real deltaT)
 
 		estadoDisparo = HACIENDONADA;
 	}
+}
+
+ushort Enemigo::tipoCuerpo() const
+{
+	return ENEMIGOS;
 }
 
 real Enemigo::numeroAleatorio(real desde, real hasta)

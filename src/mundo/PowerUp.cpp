@@ -13,8 +13,8 @@ void CallbackAumentador::ejecutar()
 }
 
 NuevaVida::NuevaVida(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion), 
-			animacion(ANIM_VIDA,0.5),
-			Animado(&animacion)
+			Animado(&animacion),
+			animacion(ANIM_VIDA,0.5)
 {
 }
 
@@ -24,9 +24,21 @@ void NuevaVida::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void NuevaVida::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+bool NuevaVida::espejado() const{return false;};
+
+const Rectangulo NuevaVida::obtenerRepresentacion() const{
+	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+						ANCHOSPRITEPOWERUP,
+						ALTOSPRITEPOWERUP);}
+
+
 
 Glib::RefPtr<Gdk::Pixbuf> Habilitador::a_dibujar(){
-	if(textura == NULL){
+	if(textura == 0){
 		textura = Gdk::Pixbuf::create_from_file(ANIM_PODER);
 	}
 	return textura;
@@ -50,6 +62,19 @@ void HabilitadorBomba::aumentar(Megaman & megaman)
 	obtenerMundo().finalizar();
 }
 
+void HabilitadorBomba::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);	
+	}
+
+
+const Rectangulo HabilitadorBomba::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP,
+					ALTOSPRITEPOWERUP
+				);
+}
+
 HabilitadorIman::HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
 }
@@ -64,6 +89,19 @@ void HabilitadorIman::aumentar(Megaman & megaman)
 
 	eliminarPowerUp();
 	obtenerMundo().finalizar();
+}
+
+void HabilitadorIman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+	
+}
+
+const Rectangulo HabilitadorIman::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP,
+					ALTOSPRITEPOWERUP
+				);
 }
 
 HabilitadorChispa::HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
@@ -82,6 +120,19 @@ void HabilitadorChispa::aumentar(Megaman & megaman)
 	obtenerMundo().finalizar();
 }
 
+void HabilitadorChispa::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+	
+}
+
+const Rectangulo HabilitadorChispa::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP,
+					ALTOSPRITEPOWERUP
+				);
+}
+
 HabilitadorAnillo::HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
 }
@@ -96,6 +147,18 @@ void HabilitadorAnillo::aumentar(Megaman & megaman)
 
 	eliminarPowerUp();
 	obtenerMundo().finalizar();
+}
+
+void HabilitadorAnillo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+	
+}
+const Rectangulo HabilitadorAnillo::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP,
+					ALTOSPRITEPOWERUP
+				);
 }
 
 HabilitadorFuego::HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
@@ -114,9 +177,22 @@ void HabilitadorFuego::aumentar(Megaman & megaman)
 	obtenerMundo().finalizar();
 }
 
+void HabilitadorFuego::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
+	
+}
+
+const Rectangulo HabilitadorFuego::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP,
+					ALTOSPRITEPOWERUP
+				);
+}
+
 CapsulaEnergiaChica::CapsulaEnergiaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIACHICA, posicion, ANCHOSPRITEPOWERUP/4, ALTOSPRITEPOWERUP/4),
-			animacion(ANIM_ENERGIA,0.25),
-			Animado(&animacion)
+			Animado(&animacion),
+			animacion(ANIM_ENERGIA,0.25)
 {
 }
 
@@ -126,9 +202,20 @@ void CapsulaEnergiaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaEnergiaChica::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+bool CapsulaEnergiaChica::espejado() const{return false;};
+
+const Rectangulo CapsulaEnergiaChica::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP/2,
+					ALTOSPRITEPOWERUP/2);}
+
 CapsulaEnergiaGrande::CapsulaEnergiaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIAGRANDE, posicion),
-						animacion(ANIM_ENERGIA,0.25),
-						Animado(&animacion)
+						Animado(&animacion),
+						animacion(ANIM_ENERGIA,0.25)
 {
 }
 
@@ -138,9 +225,20 @@ void CapsulaEnergiaGrande::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaEnergiaGrande::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+bool CapsulaEnergiaGrande::espejado() const{return false;};
+
+const Rectangulo CapsulaEnergiaGrande::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP,
+					ALTOSPRITEPOWERUP);}
+
 CapsulaPlasmaChica::CapsulaPlasmaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMACHICA, posicion, ANCHOSPRITEPOWERUP/4, ALTOSPRITEPOWERUP/4),
-			animacion(ANIM_PLASMA,0.5),
-			Animado(&animacion)
+			Animado(&animacion),
+			animacion(ANIM_PLASMA,0.5)
 {
 }
 
@@ -150,9 +248,22 @@ void CapsulaPlasmaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaPlasmaChica::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+bool CapsulaPlasmaChica::espejado() const{return false;};
+
+const Rectangulo CapsulaPlasmaChica::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP/2,
+					ALTOSPRITEPOWERUP/2);}
+
+
 CapsulaPlasmaGrande::CapsulaPlasmaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMAGRANDE, posicion),
-			animacion(ANIM_PLASMA,0.5),
-			Animado(&animacion)
+			Animado(&animacion),
+			animacion(ANIM_PLASMA,0.5)
+			
 {
 }
 
@@ -162,23 +273,35 @@ void CapsulaPlasmaGrande::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaPlasmaGrande::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+bool CapsulaPlasmaGrande::espejado() const{return false;};
+
+const Rectangulo CapsulaPlasmaGrande::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
+					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
+					ANCHOSPRITEPOWERUP,
+					ALTOSPRITEPOWERUP);}
+
+
 PowerUp::PowerUp(uint ID, Mundo &mundo,
 				 real probabilidadAparicion,
 				 const b2Vec2 &posicion,
 				 real ancho,
 				 real alto) :
-				 probabilidadAparicion(probabilidadAparicion),
 				 Cuerpo(ID, 
-						mundo,
-						ancho,
-						alto,
-						MASAPOWERUP,
-						POWERUPS,
-						CONSTRUCCIONES | PERSONAJES,
-						posicion,	
-						false,
-						true,	
-						b2Vec2 (0,VELOCIDADPOWERUP))
+					mundo,
+					ancho,
+					alto,
+					MASAPOWERUP,
+					POWERUPS,
+					CONSTRUCCIONES | PERSONAJES,
+					posicion,	
+					false,
+					true,	
+					b2Vec2 (0,VELOCIDADPOWERUP)),
+				probabilidadAparicion(probabilidadAparicion)
 			     
 {
 	if (probabilidadAparicion < 0 || probabilidadAparicion > 1)

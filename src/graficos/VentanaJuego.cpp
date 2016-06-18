@@ -140,7 +140,11 @@ void VentanaJuego::iniciarNivel(){
 	add(darea);
 	darea.show();
 	
+	#ifndef DEBUG
 	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml",cantidad_jugadores);
+	#else 
+	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml",1);
+	#endif
 	jugador = cliente.configurarNivel(*this,*mundo);
 	
 	simulador = new Simulador(*mundo,33);

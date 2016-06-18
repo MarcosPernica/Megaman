@@ -14,8 +14,10 @@ class Callback
 {	
 public:
 	virtual void ejecutar() = 0;
-	~Callback(){};
+	virtual ~Callback(){};
 };
+
+/*Decide que PowerUp lanza el enemigo (si acaso lanza).*/
 
 class CallbackCreadorPowerUp : public Callback
 {
@@ -28,6 +30,8 @@ public:
 	void ejecutar();
 };
 
+
+/*Pone en el mundo el habilitador de arma especial.*/
 class CallbackHabilitadorArma : public Callback
 {
 private:
@@ -39,6 +43,7 @@ public:
 	void ejecutar();
 };
 
+/*Obtiene todos los elementos en una zona y los coloca en elementos.*/
 class ElementosEnZona : public b2QueryCallback
 {
 private:
@@ -48,6 +53,7 @@ public:
 	bool ReportFixture(b2Fixture *fixture);
 };
 
+/*Ataca todas las entidades en un radio.*/
 class DanarRadio : public b2QueryCallback
 {
 private:
@@ -58,6 +64,7 @@ public:
 	bool ReportFixture(b2Fixture *fixture);
 };
 
+/*Detecta cuando una de las Boxes toca una pared.*/
 class DetectarSuelo : public b2ContactListener
 {
 public:
@@ -65,6 +72,7 @@ public:
 	void EndContact(b2Contact *contacto);
 };
 
+/*Avisa si puede megaman escalar.*/
 class DetectarEscalera : public b2ContactListener
 {
 public:
@@ -72,7 +80,7 @@ public:
 	void EndContact(b2Contact *contacto);
 };
 
-
+/*Avisa si hubo algun impacto de bala.*/
 class DetectarBalistica : public b2ContactListener
 {
 public:
@@ -80,6 +88,7 @@ public:
 	void EndContact(b2Contact *contacto){};
 };
 
+/*Megaman pierde vida si toca un enemigo.*/
 class DetectarTocarEnemigos : public b2ContactListener
 {
 public:
@@ -87,6 +96,7 @@ public:
 	void EndContact(b2Contact *contacto){};
 };
 
+/*Para que megaman pueda agarrar los powerUps.*/
 class DetectarTocarPowerUp : public b2ContactListener
 {
 public:
@@ -94,12 +104,15 @@ public:
 	void EndContact(b2Contact *contacto){};
 };
 
+
 class DetectarTocarCajaAccion : public b2ContactListener
 {
 public:
 	void BeginContact(b2Contact *contacto);
 	void EndContact(b2Contact *contacto){};
 };
+
+/*Nuclea todos en un solo ContactListener ya que Box2D no soporta varios.*/
 
 class ListenerColisiones : public b2ContactListener
 {

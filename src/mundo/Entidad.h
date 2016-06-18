@@ -18,26 +18,26 @@ private:
 	bool muerta;//snapshoteado
 public:
 	Entidad(uint ID, 
-			Mundo &mundo,
-			real ancho,
-			real alto,
-			uint energiaMaxima, 
-			real masa,
-			ushort categoria,
-			ushort colisionaCon,
-			const b2Vec2 &posicion,
-			bool rotable = false,
-			bool gravitacional = true,
-			const b2Vec2 &velocidad = b2Vec2_zero,
-			Orientaciones orientacion = derecha);
+		Mundo &mundo,
+		real ancho,
+		real alto,
+		uint energiaMaxima, 
+		real masa,
+		ushort categoria,
+		ushort colisionaCon,
+		const b2Vec2 &posicion,
+		bool rotable = false,
+		bool gravitacional = true,
+		const b2Vec2 &velocidad = b2Vec2_zero,
+		Orientaciones orientacion = derecha);
 	~Entidad(){};
 
-	void recuperarEnergia(uint cantidadEnergia);
+	void recuperarEnergia(int cantidadEnergia);
 	uint obtenerEnergiaMaxima();
 	uint obtenerEnergiaActual();
 	bool estaMuerta();
 	void revivir();
-	virtual void atacado(uint danio, Disparo *disparo);
+	virtual void atacado(int danio, Disparo *disparo);
 	virtual void alMorir();
 
 

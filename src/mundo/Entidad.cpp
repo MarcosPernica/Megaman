@@ -4,34 +4,34 @@
 #include <iostream>
 #include "../net/snapshots/Snapshot.h"
 Entidad::Entidad(uint ID, 
-		     Mundo & mundo, 
-	             real ancho,
-			     real alto,
-	             uint energiaMaxima,
-	             real masa, 
-			     ushort categoria,
-				 ushort colisionaCon,
-	             const b2Vec2 & posicion,
-				 bool rotable,
-	             bool gravitacional,
-	             const b2Vec2 & velocidad,
-	             Orientaciones orientacion) :
-				 energia(energiaMaxima),
-				 energiaMaxima(energiaMaxima),
-				 mundo(mundo),
-			     Cuerpo(ID,
-						mundo,
-						ancho,
-						alto,
-						masa,
-						categoria,
-						colisionaCon,
-						posicion,
-						rotable,
-						gravitacional,
-						velocidad,
-						orientacion),
-			 muerta(false)
+		 Mundo & mundo, 
+	         real ancho,
+		 real alto,
+	         uint energiaMaxima,
+	         real masa, 
+		 ushort categoria,
+		 ushort colisionaCon,
+	         const b2Vec2 & posicion,
+		 bool rotable,
+	         bool gravitacional,
+	         const b2Vec2 & velocidad,
+	         Orientaciones orientacion) :
+		 Cuerpo(ID,
+			mundo,
+			ancho,
+			alto,
+			masa,
+			categoria,
+			colisionaCon,
+			posicion,
+			rotable,
+			gravitacional,
+			velocidad,
+			orientacion),
+		energia(energiaMaxima),
+		energiaMaxima(energiaMaxima), 
+		mundo(mundo),
+		muerta(false)
 {
 }
 
@@ -56,7 +56,7 @@ uint Entidad::obtenerEnergiaActual()
 	return energia;
 }
 
-void Entidad::recuperarEnergia(uint cantidadEnergia)
+void Entidad::recuperarEnergia(int cantidadEnergia)
 {
 	if (energia + cantidadEnergia > energiaMaxima)
 		energia = energiaMaxima;
@@ -69,14 +69,13 @@ void Entidad::alMorir()
 	eliminarse(obtenerMundo());
 }
 
-void Entidad::atacado(uint danio, Disparo *disparo)
+void Entidad::atacado(int danio, Disparo *disparo)
 {
 
 	if (danio < energia)
 		energia -= danio;
 	else
 	{	
-		std::cout << "Dead" << std::endl;
 		muerta = true;
 		alMorir();
 	}		

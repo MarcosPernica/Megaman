@@ -16,41 +16,38 @@
 #define TIEMPODISPARANDO 0.5
 
 Met::Met(uint ID,
-		 Mundo & mundo, 
-		 const b2Vec2 & posicion,
-		 const b2Vec2 & velocidad) : 
-		 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
-		 Enemigo(ID,
-				mundo,
-				   ANCHOMET,
-				   ALTOMET,
-				   &arma,
-			      	   ENERGIAMAXIMAMET,
-				   ESCUDOMET,
-				   MASAMET, 
-				   VELOCIDADSALTOMET,
-				   VELOCIDADCORRERMET,
-				   ENEMIGOS,
-				   CONSTRUCCIONES,
-				   posicion, 
-				   false,
-				   true,
-				   velocidad),
-				   megaman(NULL),
-				   IDTarget(0),
-			animacion_protegido(ANIM_MET_PROTEGIDO,1),
-			animacion_disparando(ANIM_MET_DISPARANDO,1),
-			Animado(&animacion_protegido)
+	 Mundo & mundo, 
+	 const b2Vec2 & posicion,
+	 const b2Vec2 & velocidad) : 
+	 Enemigo(ID,
+		mundo,
+		ANCHOMET,
+		ALTOMET,
+		&arma,
+		ENERGIAMAXIMAMET,
+		ESCUDOMET,
+		MASAMET, 
+		VELOCIDADSALTOMET,
+		VELOCIDADCORRERMET,
+		ENEMIGOS,
+		CONSTRUCCIONES,
+		posicion, 
+		false,
+		true,
+		velocidad),
+	Animado(&animacion_protegido),
+	animacion_protegido(ANIM_MET_PROTEGIDO,1),
+	animacion_disparando(ANIM_MET_DISPARANDO,1),
+	megaman(NULL),
+	IDTarget(0),
+	tiempo(0),
+	estadoMet(CUBIERTO),
+	arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES)
 {
-	tiempo = 0;
-	estadoMet = CUBIERTO;
-	accionEjecutada = false;
-	
-	
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
 }
 
-void Met::atacado(uint dano, Disparo *disparo)
+void Met::atacado(int dano, Disparo *disparo)
 {
 	if(estadoMet == CUBIERTO)
 	{
@@ -137,22 +134,43 @@ void Met::actualizar(real deltaT)
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
+
+
 void Met::agregarPropiedadesASnapshot(Snapshot& sn){
 	Enemigo::agregarPropiedadesASnapshot(sn);
 	SN_AGREGAR_PROPIEDAD(tiempo);
 	SN_AGREGAR_PROPIEDAD(estadoMet);
-	SN_AGREGAR_PROPIEDAD(accionEjecutada);
 	
 }
 void Met::setStateFromSnapshot(const Snapshot& sn){
 	Enemigo::setStateFromSnapshot(sn);
 	SN_OBTENER_PROPIEDAD(tiempo);
 	SN_OBTENER_PROPIEDAD(estadoMet);
-	SN_OBTENER_PROPIEDAD(accionEjecutada);
 }
 
 Met* Met::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	Met* p =new Met(sn.getID(),mundo,b2Vec2_zero);
 	p->setStateFromSnapshot(sn);
 	return p;
+}
+
+void Met::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
+		    b2Vec2 origen, 
+	            real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+
+bool Met::espejado() const
+{
+	return obtenerOrientacion() == derecha;
+};
+
+const Rectangulo Met::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOMET/2,
+			  obtenerPosicion().y-ALTOMET/2,
+			  ANCHOMET,
+			  ALTOMET);
 }

@@ -18,7 +18,6 @@ Sniper::Sniper(uint ID,
 		 Mundo & mundo, 
 		 const b2Vec2 & posicion,
 		 const b2Vec2 & velocidad) : 
-		 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
 		 Enemigo(ID,
 				mundo,
 				   ANCHOSNIPER,
@@ -35,21 +34,21 @@ Sniper::Sniper(uint ID,
 				   false,
 				   true,
 				   velocidad),
-				   megaman(NULL),
-				   IDTarget(0),
+				Animado(&animacion_disparando),
 				animacion_protegido(ANIM_SNIPER_PROTEGIDO,0.1),
 				animacion_disparando(ANIM_SNIPER_DISPARANDO,0.1),
-				Animado(&animacion_disparando)
+				  megaman(NULL),
+				   IDTarget(0),
+				estadoSniper(DESCUBRIENDOSE),
+				reflejos(0),
+				cantidadDisparos(0),				
+				 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES)
 			
-{
-	reflejos = 0;
-	cantidadDisparos = 0;
-	estadoSniper = DESCUBRIENDOSE;
-	
+{	
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
 }
 
-void Sniper::atacado(uint dano, Disparo *disparo)
+void Sniper::atacado(int dano, Disparo *disparo)
 {
 	if(estadoSniper == CUBIERTO)
 	{
@@ -147,3 +146,14 @@ Sniper* Sniper::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	p->setStateFromSnapshot(sn);
 	return p;
 }
+
+void Sniper::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+bool Sniper::espejado() const{return obtenerOrientacion()==izquierda;};
+
+const Rectangulo Sniper::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSNIPER/2,
+					obtenerPosicion().y-ALTOSNIPER/2,
+					ANCHOSNIPER,
+					ALTOSNIPER);}

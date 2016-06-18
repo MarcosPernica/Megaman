@@ -105,25 +105,25 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 	if(-escala_x == std::numeric_limits<real>::quiet_NaN()) return;
 	if(-escala_y == std::numeric_limits<real>::quiet_NaN()) return;
 	
-	std::cout<<"---antes de save---"<<std::endl;
+	/*std::cout<<"---antes de save---"<<std::endl;
 	std::cout<<aux.x<<std::endl;
 	std::cout<<aux.y<<std::endl;
 	std::cout<<escala_x<<std::endl;
 	std::cout<<escala_y<<std::endl;
-	std::cout<<imagen<<std::endl;
+	std::cout<<imagen<<std::endl;*/
 	
 	
 	cr->save();
-	std::cout<<"---luego de save---"<<std::endl;
+	//std::cout<<"---luego de save---"<<std::endl;
 	cr->translate(aux.x,aux.y);
 	
-	std::cout<<"---listo couts---"<<std::endl;
+	//std::cout<<"---listo couts---"<<std::endl;*/
 	if(invertir){
 		cr->scale(-escala_x,escala_y);
 	}else{
 		cr->scale(escala_x,escala_y);
 	}
-	std::cout<<"---ya escale---"<<std::endl;
+	//std::cout<<"---ya escale---"<<std::endl;
 	
 	Gdk::Cairo::set_source_pixbuf(cr, 
 						imagen,
@@ -132,11 +132,11 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 		      0, 
 		      imagen->get_width(), 
 		      imagen->get_height());
-	std::cout<<"---buenas noches---"<<std::endl;
+	//std::cout<<"---buenas noches---"<<std::endl;
 	cr->clip();
 	
 	cr->paint();
-	std::cout<<"---antes de restore---"<<std::endl;
+	//std::cout<<"---antes de restore---"<<std::endl;
 	cr->restore();
-	std::cout<<"---restore y chau---"<<std::endl;
+	//std::cout<<"---restore y chau---"<<std::endl;
 }

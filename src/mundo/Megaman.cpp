@@ -35,10 +35,12 @@ void Megaman::aumentarVida()
 void Megaman::recuperarPlasma(int cantidadPlasma)
 {
 	if (armaSeleccionada)
+	{
 		if (armas.at(armaSeleccionada).plasma + cantidadPlasma > MAXIMACANTIDADPLASMA)
 			armas.at(armaSeleccionada).plasma = MAXIMACANTIDADPLASMA;
 		else
 			armas.at(armaSeleccionada).plasma += cantidadPlasma;
+	}
 }
 
 char Megaman::obtenerCantidadPlasma()
@@ -182,45 +184,45 @@ uint Megaman::obtenerCantidadVidas()
 }
 
 Megaman::Megaman(uint ID,
-				Mundo & mundo,
-				 const b2Vec2 & posicion,
-				 const b2Vec2 & velocidad,
-				 Orientaciones orientacion) :
-				 Entidad(ID,
-						mundo,
-						 ANCHOSPRITEMEGAMAN,
-						 ALTOSPRITEMEGAMAN,
-					     ENERGIAMEGAMAN,
-						 MASAMEGAMAN,
-						 PERSONAJES,
-					     CONSTRUCCIONES | POWERUPS | AURAENEMIGOS | DISPAROS | CAJASACCION,
-						 posicion,
-					     false,
-					     true,
-					     velocidad,
-					     orientacion),
-				animacion_corriendo(ANIM_MEGAM_CORRE,0.1),
-				animacion_subiendo(ANIM_MEGAM_SUBIENDO,0.1),
-				animacion_saltando(ANIM_MEGAM_SALTA,1),
-				animacion_quieto(ANIM_MEGAM_QUIETO,1),
-				animacion_disparando(ANIM_MEGAM_QUIETO_DISP, 0.1),
-				animacion_disparandoCorriendo(ANIM_MEGAM_CORRE_DISP, 0.1),
-				animacion_disparandoSaltando(ANIM_MEGAM_SALTA_DISP, 0.1),
-				animacion_disparandoSubiendo(ANIM_MEGAM_SUBIENDO_DISP, 0.1),
-				Animado(&animacion_quieto),
-				posicionSpawn(posicion)
+		Mundo & mundo,
+		const b2Vec2 & posicion,
+		const b2Vec2 & velocidad,
+		Orientaciones orientacion) :
+		Entidad(ID,
+			mundo,
+			ANCHOSPRITEMEGAMAN,
+			ALTOSPRITEMEGAMAN,
+			ENERGIAMEGAMAN,
+			MASAMEGAMAN,
+			PERSONAJES,
+			CONSTRUCCIONES | POWERUPS | AURAENEMIGOS | DISPAROS | CAJASACCION,
+			posicion,
+			false,
+			true,
+			velocidad,
+			orientacion),
+		Animado(&animacion_quieto),
+		animacion_corriendo(ANIM_MEGAM_CORRE,0.1),
+		animacion_subiendo(ANIM_MEGAM_SUBIENDO,0.1),
+		animacion_saltando(ANIM_MEGAM_SALTA,1),
+		animacion_quieto(ANIM_MEGAM_QUIETO,1),
+		animacion_disparando(ANIM_MEGAM_QUIETO_DISP, 0.1),
+		animacion_disparandoCorriendo(ANIM_MEGAM_CORRE_DISP, 0.1),
+		animacion_disparandoSaltando(ANIM_MEGAM_SALTA_DISP, 0.1),
+		animacion_disparandoSubiendo(ANIM_MEGAM_SUBIENDO_DISP, 0.1),
+		armaSeleccionada(0),
+		vidas(VIDASINICIALES),
+		puedeSaltar(0),
+		puedeSubir(0),
+		estadoSalto(PISANDO),
+		estadoDisparo(HACIENDONADA),
+		estadoEscalado(HACIENDONADA),
+		corriendo(false),
+		inmovilizado(true),
+		posicionSpawn(posicion)
 				
 {
 	deshabilitarFriccion();
-	vidas = VIDASINICIALES;
-
-	puedeSaltar = 0;
-	puedeSubir = 0;
-	estadoSalto = PISANDO;
-	estadoDisparo = HACIENDONADA;
-	estadoEscalado = HACIENDONADA;
-	corriendo = false;
-	inmovilizado = true;
 	
 	Arma arma;
 
@@ -229,29 +231,7 @@ Megaman::Megaman(uint ID,
 
 	armas.push_back(arma);
 
-	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Bomba(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
-
-	armas.push_back(arma);
-
-	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Iman(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
-
-	armas.push_back(arma);
-
-
-	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Fuego(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
-
-	armas.push_back(arma);
-
-	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Anillo(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
-
-	armas.push_back(arma);
-
-
-	armaSeleccionada = 3;
+	/*Para saber si esta pisando.*/
 
 	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.5,0.3,b2Vec2(0,ALTOSPRITEMEGAMAN*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
 }
@@ -332,10 +312,12 @@ void Megaman::mirarIzquierda()
 void Megaman::disparar()
 {
 	if (armas.at(armaSeleccionada).plasma)
+	{
 		if (armas.at(armaSeleccionada).arma->lanzable())
 			estadoDisparo = LANZANDO;
 		else
 			estadoDisparo = DISPARANDO;
+	}
 }
 
 void Megaman::habilitarAgarre(real agarreX)
@@ -415,7 +397,7 @@ void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	SN_AGREGAR_PROPIEDAD(agarreX);
 	SN_AGREGAR_PROPIEDAD(topeY);
 	
-	unsigned int tam = armas.size();
+	//unsigned int tam = armas.size();
 	
 	/* SNAPSHOTEAR LAS ARMAS ES UN POCO MÁS COMPLICADO PQ EL TAMANIO DEL VECTOR VARÍA MARCOS REVISALO
 	SN_AGREGAR_PROPIEDAD(armas[0].plasma);

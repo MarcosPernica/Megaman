@@ -55,6 +55,18 @@ private:
 #define ANIM_FIREMAN_SALTANDO	"imagenes/megamanrojo/saltando/"
 #define ANIM_FIREMAN_CORRIENDO	"imagenes/megamanrojo/corriendo/"
 
+#define ANIM_BOMBMAN_SALTANDO	"imagenes/megamannegro/saltando/"
+#define ANIM_BOMBMAN_CORRIENDO	"imagenes/megamannegro/corriendo/"
+
+#define ANIM_SPARKMAN_SALTANDO	"imagenes/megamanamarillo/saltando/"
+#define ANIM_SPARKMAN_CORRIENDO	"imagenes/megamanamarillo/corriendo/"
+
+#define ANIM_MAGNETMAN_SALTANDO	"imagenes/megamanblanco/saltando/"
+#define ANIM_MAGNETMAN_CORRIENDO "imagenes/megamanblanco/corriendo/"
+
+#define ANIM_RINGMAN_SALTANDO	"imagenes/megamanverde/saltando/"
+#define ANIM_RINGMAN_CORRIENDO	"imagenes/megamanverde/corriendo/"
+
 #define ANIM_VIDA "imagenes/vida/"
 #define ANIM_PLASMA "imagenes/plasma/"
 #define ANIM_ENERGIA "imagenes/energia/"

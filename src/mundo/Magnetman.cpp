@@ -23,30 +23,32 @@ Magnetman::Magnetman(uint ID,
 		 Mundo & mundo, 
 		 const b2Vec2 & posicion,
 		 const b2Vec2 & velocidad) : 
-		 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
 		 Enemigo(ID,
-				mundo,
-				   ANCHOMAGNETMAN,
-				   ALTOMAGNETMAN,
-				   &arma,
-			      	   ENERGIAMAXIMAMAGNETMAN,
-				   ESCUDOMAGNETMAN,
-				   MASAMAGNETMAN, 
-				   VELOCIDADSALTOMAGNETMAN,
-				   VELOCIDADCORRERMAGNETMAN,
-				   ENEMIGOS,
-				   CONSTRUCCIONES,
-				   posicion, 
-				   false,
-				   true,
-				   velocidad,
-				   izquierda,
-				   false)
+			mundo,
+			ANCHOMAGNETMAN,
+			ALTOMAGNETMAN,
+			&arma,
+			ENERGIAMAXIMAMAGNETMAN,
+			ESCUDOMAGNETMAN,
+			MASAMAGNETMAN, 
+			VELOCIDADSALTOMAGNETMAN,
+			VELOCIDADCORRERMAGNETMAN,
+			ENEMIGOS,
+			CONSTRUCCIONES,
+			posicion, 
+			false,
+			true,
+			velocidad,
+			izquierda,
+			false),
+		Animado(&animacion_saltando),
+		animacion_saltando(ANIM_MAGNETMAN_SALTANDO,1),
+		animacion_corriendo(ANIM_MAGNETMAN_CORRIENDO,0.1),
+		estadoMagnetman(QUIETO),
+		reflejos(0),			
+		arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
+		disparos(0)
 {
-	reflejos = 0;
-	disparos = 0;
-	estadoMagnetman = QUIETO;
-	
 	deshabilitarFriccion();
 }
 
@@ -109,10 +111,18 @@ void Magnetman::actualizarMaquinaEstados(real deltaT)
 			break;
 		}
 	}
+
+	/*Es mas preciso cambiarlo de esta forma que una vez por cambio de la maquina de estados.*/
+
+	if(estaEnElAire())
+		cambiar(&animacion_saltando);
+	else
+		cambiar(&animacion_corriendo);
 }
 
 void Magnetman::actualizar(real deltaT)
 {
+	avanzar(deltaT);
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
@@ -132,4 +142,24 @@ Magnetman* Magnetman::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	Magnetman* p =new Magnetman(sn.getID(),mundo,b2Vec2_zero);
 	p->setStateFromSnapshot(sn);
 	return p;
+}
+
+void Magnetman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
+			  b2Vec2 origen, 
+			  real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool Magnetman::espejado() const
+{
+	return obtenerOrientacion() == izquierda;
+};
+
+const Rectangulo Magnetman::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOMAGNETMAN/2,
+			  obtenerPosicion().y-ALTOMAGNETMAN/2,
+			  ANCHOMAGNETMAN,
+			  ALTOMAGNETMAN);
 }

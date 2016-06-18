@@ -14,9 +14,9 @@ class Megaman : public Entidad, public Saltador, public Animado
 {
 private:
 	Animacion animacion_corriendo;
+	Animacion animacion_subiendo;
 	Animacion animacion_saltando;
 	Animacion animacion_quieto;
-	Animacion animacion_subiendo;
 	Animacion animacion_disparando;
 	Animacion animacion_disparandoCorriendo;
 	Animacion animacion_disparandoSaltando;

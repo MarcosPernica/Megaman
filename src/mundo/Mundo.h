@@ -62,9 +62,10 @@ private:
 	ListenerColisiones listenerColisiones;
 	b2World mundo;
 
-	/*Recta de spawn de los jugadores.*/
+	/*Recta de spawn de los jugadores. Aparecen ahi de forma equidistante.*/
 	SpawnMegaman zonaSpawnMegaman;
 
+	/*Todos mapas disjuntos para mejor acceso.*/
 	std::map<uint, Megaman*> megamanes;
 	std::map<uint, Enemigo*> enemigos;
 	std::map<uint, PowerUp*> powerUps;
@@ -79,18 +80,23 @@ private:
 	std::list<Callback*> tareasDiferidas;
 	std::list<DatosEliminacion> destrucciones;
 
+	/*Mundo terminado?.*/
 	bool terminado;
 	
 	void cargarNivel(Cadena nombre);
 	std::string nombre_nivel;
 public:
 	uint generarID(){static uint ID = 0; return ++ID;};
-	Mundo(real anchoCamara, real altoCamara, b2Vec2 posicionCamara,const std::string& nombre_nivel = "nivel.xml",uint cantidad_jugadores = 1);
+	Mundo(real anchoCamara, 
+	      real altoCamara, 
+	      b2Vec2 posicionCamara,
+	      const std::string& nombre_nivel = "nivel.xml",
+	      uint cantidad_jugadores = 1);
 	b2World &obtenerMundo();
 
 	b2Vec2 obtenerPosicionCamara();
 
-	Megaman *obtenerMegamanCercano(const b2Vec2 posicion);
+	Megaman *obtenerMegamanCercano(const b2Vec2 posicion, bool incluirMuertos = false);
 	Enemigo *obtenerEnemigoCercano(const b2Vec2 posicion);
 
 	bool existeMegaman(uint ID);
@@ -107,34 +113,8 @@ public:
 	void agregar(Disparo * disparo);
 	void agregar(PowerUp * powerUp);
 	void agregar(Enemigo * enemigo);
-	Megaman *agregarMegaman();
 
-	void agregarCuboMadera(real ancho, real alto, b2Vec2 posicion);
-	void agregarCuboMetal(real ancho, real alto, b2Vec2 posicion);
-	void agregarCuboLadrillo(real ancho, real alto, b2Vec2 posicion);
-	void agregarCuboTierra(real ancho, real alto, b2Vec2 posicion);
-	void agregarCuboVacio(real ancho, real alto, b2Vec2 posicion);
-	void agregarPuas(real ancho, real alto, b2Vec2 posicion);
-	void agregarEscalera(real alto, b2Vec2 posicion);
-	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
-	void agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino);
-	void agregarZonaGuardado(real ancho, real alto, b2Vec2 posicion);
-	void agregarZonaSpawnMegaman(real longitud, b2Vec2 posicion);
-	void agregarZonaCerradura(uint IDPuerta, real ancho, real alto, b2Vec2 posicion);
-	void agregarPuerta(uint IDInterno, real ancho, real alto, b2Vec2 posicion);
-
-	void agregarZonaSpawnMet(b2Vec2 posicion);
-	void agregarZonaSpawnBumby(b2Vec2 posicion);
-	void agregarZonaSpawnSniper(b2Vec2 posicion);
-	void agregarZonaSpawnJumpingSniper(b2Vec2 posicion);
-
-	void agregarZonaSpawnBombman(uint IDPuerta, b2Vec2 posicion);
-	void agregarZonaSpawnMagnetman(uint IDPuerta, b2Vec2 posicion);
-	void agregarZonaSpawnSparkman(uint IDPuerta, b2Vec2 posicion);
-	void agregarZonaSpawnRingman(uint IDPuerta, b2Vec2 posicion);
-	void agregarZonaSpawnFireman(uint IDPuerta, b2Vec2 posicion);
-
-	std::list<Dibujable*> obtenerDibujables() const;/////////COPIA//// esa lista podría ser demasiado grande
+	std::list<Dibujable*> obtenerDibujables() const;
 
 	void destruirCuerpos();
 	void agregarTareaDiferida(Callback *callback);
@@ -142,7 +122,7 @@ public:
 	
 	void actualizar(real segundosDesdeUltima);
 
-	std::list<Megaman *> obtenerMegamanes();
+	std::list<Megaman *> obtenerMegamanes(bool incluirMuertos = false);
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
 	void limpiar(b2Vec2 posicion, real ancho, real alto);
 	std::list<Dibujable *> obtenerElementosCamara();
@@ -184,6 +164,30 @@ public:
 	void obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa);
 
 private:
+	void agregarCuboMadera(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboMetal(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboLadrillo(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboTierra(real ancho, real alto, b2Vec2 posicion);
+	void agregarCuboVacio(real ancho, real alto, b2Vec2 posicion);
+	void agregarPuas(real ancho, real alto, b2Vec2 posicion);
+	void agregarEscalera(real alto, b2Vec2 posicion);
+	void agregarZonaMortal(real ancho, real alto, b2Vec2 posicion);
+	void agregarZonaTransporte(real ancho, real alto, b2Vec2 posicion, b2Vec2 posicionDestino);
+	void agregarZonaGuardado(real ancho, real alto, b2Vec2 posicion);
+	void agregarZonaSpawnMegaman(real longitud, b2Vec2 posicion);
+	void agregarZonaCerradura(uint IDPuerta, real ancho, real alto, b2Vec2 posicion);
+	void agregarPuerta(uint IDInterno, real ancho, real alto, b2Vec2 posicion);
+	void agregarZonaSpawnMet(b2Vec2 posicion);
+	void agregarZonaSpawnBumby(b2Vec2 posicion);
+	void agregarZonaSpawnSniper(b2Vec2 posicion);
+	void agregarZonaSpawnJumpingSniper(b2Vec2 posicion);
+	void agregarZonaSpawnBombman(uint IDPuerta, b2Vec2 posicion);
+	void agregarZonaSpawnMagnetman(uint IDPuerta, b2Vec2 posicion);
+	void agregarZonaSpawnSparkman(uint IDPuerta, b2Vec2 posicion);
+	void agregarZonaSpawnRingman(uint IDPuerta, b2Vec2 posicion);
+	void agregarZonaSpawnFireman(uint IDPuerta, b2Vec2 posicion);
+	Megaman *agregarMegaman();
+
 	void actualizarCuerpos(real deltaT);
 	void obtenerAtributosXML(TiXmlAttribute *atributo, std::map<std::string,real>& mapaAtributos);
 };

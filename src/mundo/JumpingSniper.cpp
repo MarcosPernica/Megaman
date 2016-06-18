@@ -19,38 +19,37 @@ JumpingSniper::JumpingSniper(uint ID,
 		 Mundo & mundo, 
 		 const b2Vec2 & posicion,
 		 const b2Vec2 & velocidad) : 
-		 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
 		 Enemigo(ID,
-				mundo,
-				   ANCHOJUMPINGSNIPER,
-				   ALTOJUMPINGSNIPER,
-				   &arma,
-			      	   ENERGIAMAXIMAJUMPINGSNIPER,
-				   ESCUDOJUMPINGSNIPER,
-				   MASAJUMPINGSNIPER, 
-				   VELOCIDADSALTOJUMPINGSNIPER,
-				   VELOCIDADCORRERJUMPINGSNIPER,
-				   ENEMIGOS,
-				   CONSTRUCCIONES,
-				   posicion, 
-				   false,
-				   true,
-				   velocidad), 
-				   megaman(NULL),
-				   IDTarget(0),
-				animacion_protegido(ANIM_JSNIPER_PROTEGIDO,0.1),
-				animacion_disparando(ANIM_JSNIPER_DISPARANDO,0.1),
-				animacion_saltando(ANIM_JSNIPER_SALTANDO,0.1),
-				Animado(&animacion_disparando)
-{
-	reflejos = 0;
-	cantidadDisparos = 0;
-	estadoSniper = DESCUBRIENDOSE;
-	
+			mundo,
+			ANCHOJUMPINGSNIPER,
+			ALTOJUMPINGSNIPER,
+			&arma,
+			ENERGIAMAXIMAJUMPINGSNIPER,
+			ESCUDOJUMPINGSNIPER,
+			MASAJUMPINGSNIPER, 
+			VELOCIDADSALTOJUMPINGSNIPER,
+			VELOCIDADCORRERJUMPINGSNIPER,
+			ENEMIGOS,
+			CONSTRUCCIONES,
+			posicion, 
+			false,
+			true,
+			velocidad), 
+		Animado(&animacion_disparando),
+		animacion_protegido(ANIM_JSNIPER_PROTEGIDO,0.1),
+		animacion_disparando(ANIM_JSNIPER_DISPARANDO,0.1),
+		animacion_saltando(ANIM_JSNIPER_SALTANDO,0.1),
+		megaman(NULL),
+		IDTarget(0),
+		estadoSniper(DESCUBRIENDOSE),
+		reflejos(0),
+		cantidadDisparos(0),				
+		arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES)
+{	
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
 }
 
-void JumpingSniper::atacado(uint dano, Disparo *disparo)
+void JumpingSniper::atacado(int dano, Disparo *disparo)
 {
 	if(estadoSniper == CUBIERTO)
 	{
@@ -158,6 +157,26 @@ JumpingSniper* JumpingSniper::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	JumpingSniper* p =new JumpingSniper(sn.getID(),mundo,b2Vec2_zero);
 	p->setStateFromSnapshot(sn);
 	return p;
+}
+
+void JumpingSniper::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
+			      b2Vec2 origen, 
+			      real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool JumpingSniper::espejado() const
+{
+	return obtenerOrientacion() == izquierda;
+};
+
+const Rectangulo JumpingSniper::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOJUMPINGSNIPER/2,
+			  obtenerPosicion().y-ALTOJUMPINGSNIPER/2,
+			  ANCHOJUMPINGSNIPER,
+			  ALTOJUMPINGSNIPER);
 }
 
 

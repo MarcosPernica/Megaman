@@ -35,7 +35,7 @@ void CallbackCreadorPowerUp::ejecutar()
 		mundo.agregar(new CapsulaPlasmaChica(ID,mundo,posicion));
 }
 
-CallbackHabilitadorArma::CallbackHabilitadorArma(uint ID, Mundo &mundo, const b2Vec2 &posicion, uint arma) : ID(ID), mundo(mundo), posicion(posicion), arma(arma){};
+CallbackHabilitadorArma::CallbackHabilitadorArma(uint ID, Mundo &mundo, const b2Vec2 &posicion, uint arma) : ID(ID),  arma(arma), mundo(mundo), posicion(posicion){};
 
 void CallbackHabilitadorArma::ejecutar()
 {

@@ -28,28 +28,21 @@ public:
 		const b2Vec2 &velocidad = b2Vec2_zero);
 	~Sniper(){};
 
-	void atacado(uint dano, Disparo *disparo);
+	void atacado(int dano, Disparo *disparo);
 
 	void actualizarMaquinaEstados(real deltaT);
 	void actualizar(real deltaT);
-	ushort tipoCuerpo() const {return ENEMIGOS;};
 
-
-	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
-	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	void agregarPropiedadesASnapshot(Snapshot& snapshot);
+	void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_GET_TIPO(Sniper);
 	static Sniper* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 
-	bool espejado() const{return obtenerOrientacion()==izquierda;};
+	bool espejado() const;
 
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSNIPER/2,
-						obtenerPosicion().y-ALTOSNIPER/2,
-						ANCHOSNIPER,
-						ALTOSNIPER);}
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 #endif

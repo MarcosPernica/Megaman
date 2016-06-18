@@ -14,10 +14,7 @@ void Disparo::actualizar(real DeltaT)
 void Disparo::alColisionar(Cuerpo *cuerpo)
 {
 	if(cuerpo->tipoCuerpo() == PERSONAJES || cuerpo->tipoCuerpo() == ENEMIGOS)
-	{
-		
 		((Entidad*)cuerpo)->atacado(dano, this);
-	}
 	eliminarse(obtenerMundo());
 }
 
@@ -42,48 +39,49 @@ ushort Disparo::obtenerCategoriaTarget()
 }
 
 Disparo::Disparo(uint ID, Mundo &mundo,
-				 uint dano,
-				 real ancho,
-				 real alto,
-				 real masa,
-				 ushort categoriaTarget, 
-				 const b2Vec2 &posicion,
-				 bool gravitacional,
-				 const b2Vec2 &velocidad) :
-			     	 Cuerpo(ID, 
-						mundo,
-						ancho,
-						alto,
-						masa,
-						DISPAROS,
-						CONSTRUCCIONES | categoriaTarget,
-						posicion,
-						false,
-						gravitacional,
-						velocidad),
-				dano(dano),
-			        categoriaTarget(categoriaTarget)
+		 uint dano,
+		 real ancho,
+		 real alto,
+		 real masa,
+		 ushort categoriaTarget, 
+		 const b2Vec2 &posicion,
+		 bool gravitacional,
+		 const b2Vec2 &velocidad) :
+	     	 Cuerpo(ID, 
+			mundo,
+			ancho,
+			alto,
+			masa,
+			DISPAROS,
+			CONSTRUCCIONES | categoriaTarget,
+			posicion,
+			false,
+			gravitacional,
+			velocidad),
+			dano(dano),
+		        categoriaTarget(categoriaTarget)
 {
 }
 
 Bomba::Bomba(uint ID, 
-		 Mundo & mundo, 
-		 ushort categoriaTarget,
-	         const b2Vec2 & posicion,
-	         const b2Vec2 & velocidad) :
-			 Disparo(ID, 
-				 mundo,
-				 DANOBOMBA,
-				ANCHOSPRITEBOMBA,
-				 ALTOSPRITEBOMBA,
-				    MASABOMBA,
-				    categoriaTarget,
-				     posicion,
-					 true,
-				     velocidad),
-			tiempoTotal(TIEMPOEXPLOSIONBOMBA),
-			animacion(ANIM_DISPARO_BOMBA,0.5),
-			Animado(&animacion)
+	     Mundo & mundo, 
+	     ushort categoriaTarget,
+             const b2Vec2 & posicion,
+             const b2Vec2 & velocidad) :
+	     Disparo(ID, 
+		     mundo,
+		     DANOBOMBA,
+		     ANCHOSPRITEBOMBA,
+		     ALTOSPRITEBOMBA,
+		     MASABOMBA,
+		     categoriaTarget,
+		     posicion,
+	             true,
+		     velocidad),
+	    Animado(&animacion),
+	    animacion(ANIM_DISPARO_BOMBA,0.5),
+	    tiempoTotal(TIEMPOEXPLOSIONBOMBA)
+			
 {
 }
 
@@ -129,23 +127,45 @@ void Bomba::explotar()
 	obtenerMundo().eliminar(this);
 }
 
+
+void Bomba::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
+                      b2Vec2 origen, 
+                      real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);
+}
+
+bool Bomba::espejado() const
+{
+	return false;
+};
+
+const Rectangulo Bomba::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOSPRITEBOMBA/2,
+			  obtenerPosicion().y-ALTOSPRITEBOMBA/2,
+			  ANCHOSPRITEBOMBA,
+			  ALTOSPRITEBOMBA);
+}
+
 Plasma::Plasma(uint ID, 
-			   Mundo & mundo,
-			   ushort categoriaTarget,
-			   const b2Vec2 & posicion,
-			   const b2Vec2 & velocidad) :
-			   Disparo(ID,
-					   mundo,
-					   DANOPLASMA,
-					   ANCHOSPRITEPLASMA,
-					   ALTOSPRITEPLASMA,
-					   MASAPLASMA,
-					   categoriaTarget,
-					   posicion,
-				       false,
-		               velocidad),		
-			animacion(ANIM_DISPARO_PLASMA,0.1),
-			Animado(&animacion)
+	       Mundo & mundo,
+	       ushort categoriaTarget,
+	       const b2Vec2 & posicion,
+	       const b2Vec2 & velocidad) :
+	       Disparo(ID,
+		       mundo,
+		       DANOPLASMA,
+		       ANCHOSPRITEPLASMA,
+		       ALTOSPRITEPLASMA,
+		       MASAPLASMA,
+		       categoriaTarget,
+		       posicion,
+		       false,
+		       velocidad),
+		Animado(&animacion),		
+		animacion(ANIM_DISPARO_PLASMA,0.1)
+			
 {
 }
 
@@ -164,23 +184,49 @@ Disparo * Plasma::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 	return new Plasma(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
 }
 
+void Plasma::actualizar(real deltaT)
+{
+	avanzar(deltaT);
+};
+
+void Plasma::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
+                       b2Vec2 origen, 
+                       real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool Plasma::espejado() const
+{
+	return obtenerVelocidad().x < 0;
+}
+
+const Rectangulo Plasma::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOSPRITEPLASMA/2,
+			  obtenerPosicion().y-ALTOSPRITEPLASMA/2,
+			  ANCHOSPRITEPLASMA,
+			  ALTOSPRITEPLASMA);
+}
+
+
 Chispa::Chispa(uint ID, 
-			   Mundo & mundo,
-			   ushort categoriaTarget,
-			   const b2Vec2 & posicion,
-			   const b2Vec2 & velocidad) :
-			   Disparo(ID,
-					   mundo,
-					   DANOCHISPA,
-					   ANCHOSPRITECHISPA,
-					   ALTOSPRITECHISPA,
-					   MASACHISPA,
-					   categoriaTarget,
-					   posicion,
-				       false,
-		               velocidad),
-				animacion(ANIM_DISPARO_CHISPA,0.5),
-				Animado(&animacion)
+	       Mundo & mundo,
+	       ushort categoriaTarget,
+	       const b2Vec2 & posicion,
+	       const b2Vec2 & velocidad) :
+	       Disparo(ID,
+		       mundo,
+		       DANOCHISPA,
+		       ANCHOSPRITECHISPA,
+		       ALTOSPRITECHISPA,
+		       MASACHISPA,
+		       categoriaTarget,
+		       posicion,
+		       false,
+		       velocidad),
+	       Animado(&animacion),
+	       animacion(ANIM_DISPARO_CHISPA,0.5)
 {
 }
 
@@ -199,25 +245,50 @@ Disparo * Chispa::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 	return new Chispa(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
 }
 
+void Chispa::actualizar(real deltaT)
+{
+	avanzar(deltaT);
+};
+
+void Chispa::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
+		       b2Vec2 origen, 
+		       real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool Chispa::espejado() const
+{
+	return false;
+};
+
+const Rectangulo Chispa::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOSPRITECHISPA/2,
+			  obtenerPosicion().y-ALTOSPRITECHISPA/2,
+			  ANCHOSPRITECHISPA,
+			  ALTOSPRITECHISPA);
+}
+
 
 Anillo::Anillo(uint ID, 
-			   Mundo & mundo,
-			   ushort categoriaTarget,
-			   const b2Vec2 & posicion,
-			   const b2Vec2 & velocidad) :
-			   Disparo(ID,
-					   mundo,
-					   DANOANILLO,
-					   ANCHOSPRITEANILLO,
-					   ALTOSPRITEANILLO,
-					   MASAANILLO,
-					   categoriaTarget,
-					   posicion,
-				       false,
-		               velocidad),
-			       tiempo(TIEMPOANILLO),
-				animacion(ANIM_DISPARO_ANILLO,1),
-				Animado(&animacion)
+	       Mundo & mundo,
+	       ushort categoriaTarget,
+	       const b2Vec2 & posicion,
+	       const b2Vec2 & velocidad) :
+	       Disparo(ID,
+		       mundo,
+		       DANOANILLO,
+		       ANCHOSPRITEANILLO,
+		       ALTOSPRITEANILLO,
+		       MASAANILLO,
+		       categoriaTarget,
+		       posicion,
+		       false,
+	               velocidad),
+		Animado(&animacion),
+		animacion(ANIM_DISPARO_ANILLO,1),
+		tiempo(TIEMPOANILLO)
 {
 	modificarRestitucion(1);
 }
@@ -252,23 +323,44 @@ Disparo * Anillo::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 	return new Anillo(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
 }
 
+void Anillo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
+		       b2Vec2 origen, 
+		       real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool Anillo::espejado() const
+{
+	return false;
+};
+
+const Rectangulo Anillo::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOSPRITEANILLO/2,
+			  obtenerPosicion().y-ALTOSPRITEANILLO/2,
+			  ANCHOSPRITEANILLO,
+			  ALTOSPRITEANILLO);
+}
+
 Fuego::Fuego(uint ID, 
-			   Mundo & mundo,
- 			   ushort categoriaTarget,
-			   const b2Vec2 & posicion,
-			   const b2Vec2 & velocidad) :
-			   Disparo(ID,
-					   mundo,
-					   DANOFUEGO,
-					   ANCHOSPRITEFUEGO,
-					   ALTOSPRITEFUEGO,
-					   MASAFUEGO,
-					   categoriaTarget,
-					   posicion,
-				       false,
-		               velocidad),
-				animacion(ANIM_DISPARO_FUEGO,0.25),
-				Animado(&animacion)
+	     Mundo & mundo,
+	     ushort categoriaTarget,
+	     const b2Vec2 & posicion,
+	     const b2Vec2 & velocidad) :
+	     Disparo(ID,
+		     mundo,
+		     DANOFUEGO,
+		     ANCHOSPRITEFUEGO,
+		     ALTOSPRITEFUEGO,
+		     MASAFUEGO,
+		     categoriaTarget,
+		     posicion,
+		     false,
+		     velocidad),
+	     Animado(&animacion),
+	     animacion(ANIM_DISPARO_FUEGO,0.25)
+				
 {
 }
 
@@ -287,25 +379,50 @@ Disparo * Fuego::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocida
 	return new Fuego(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
 }
 
+void Fuego::actualizar(real deltaT)
+{
+	avanzar(deltaT);
+};
+
+void Fuego::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
+		      b2Vec2 origen, 
+		      real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool Fuego::espejado() const
+{
+	return obtenerVelocidad().x < 0;
+};
+
+const Rectangulo Fuego::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOSPRITEFUEGO/2,
+			  obtenerPosicion().y-ALTOSPRITEFUEGO/2,
+			  ANCHOSPRITEFUEGO,
+			  ALTOSPRITEFUEGO);
+}
+
 
 Iman::Iman(uint ID, 
-			   Mundo & mundo,
-			   ushort categoriaTarget,
-			   const b2Vec2 & posicion,
-			   const b2Vec2 & velocidad) :
-			   Disparo(ID,
-					   mundo,
-					   DANOIMAN,
-					   ANCHOSPRITEIMAN,
-					   ALTOSPRITEIMAN,
-					   MASAIMAN,
-					   categoriaTarget,
-					   posicion,
-				       false,
-		               velocidad),
-				target(NULL),
-				animacion(ANIM_DISPARO_IMAN,0.5),
-				Animado(&animacion)
+	   Mundo & mundo,
+	   ushort categoriaTarget,
+	   const b2Vec2 & posicion,
+	   const b2Vec2 & velocidad) :
+	   Disparo(ID,
+		   mundo,
+		   DANOIMAN,
+		   ANCHOSPRITEIMAN,
+		   ALTOSPRITEIMAN,
+		   MASAIMAN,
+		   categoriaTarget,
+		   posicion,
+		   false,
+                   velocidad),
+	   Animado(&animacion),
+	   animacion(ANIM_DISPARO_IMAN,0.5),
+	   target(NULL)
 {
 }
 
@@ -316,8 +433,10 @@ ushort Iman::tipoDisparo() const
 
 void Iman::actualizar(real deltaT)
 {
+	/*Avanza la animacion*/
 	avanzar(deltaT);
 
+	/*Selecciona una target si no tiene y lo sigue.*/
 	if(!target || !obtenerMundo().existeEnemigo(IDTarget) || !obtenerMundo().existeMegaman(IDTarget))
 	{
 		if(obtenerCategoriaTarget() == AURAENEMIGOS)
@@ -341,6 +460,26 @@ uint Iman::obtenerMultiplicadorVelocidad() const
 Disparo * Iman::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocidad)
 {
 	return new Iman(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
+}
+
+void Iman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
+		     b2Vec2 origen, 
+		     real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool Iman::espejado() const
+{
+	return false;
+};
+
+const Rectangulo Iman::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOSPRITEIMAN/2,
+			  obtenerPosicion().y-ALTOSPRITEIMAN/2,
+			  ANCHOSPRITEIMAN,
+			  ALTOSPRITEIMAN);
 }
 
 //------------------------------snapshotable de Disparo------------------//

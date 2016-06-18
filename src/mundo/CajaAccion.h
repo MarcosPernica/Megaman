@@ -62,9 +62,10 @@ private:
 	
 public:
 	ZonaMortal(Mundo &mundo,
-			real ancho,
-			real alto,
-			const b2Vec2 &posicion);
+		   real ancho,
+		   real alto,
+		   const b2Vec2 &posicion);
+
 	~ZonaMortal(){};
 	void interactuar(Megaman *megaman);
 };
@@ -92,10 +93,9 @@ private:
 	real ancho, alto;
 public:
 	ZonaGuardado(Mundo &mundo,
-		       real ancho,
-		       real alto,
-		       const b2Vec2 &posicion
-		);
+		     real ancho,
+		     real alto,
+		     const b2Vec2 &posicion);
 
 	~ZonaGuardado(){};
 	
@@ -110,11 +110,10 @@ private:
 	real ancho, alto;
 public:
 	ZonaCerradura(Mundo &mundo,
-		       real ancho,
-		       real alto,
-		       const b2Vec2 &posicion,
-		       Puerta *puerta
-		);
+		      real ancho,
+		      real alto,
+		      const b2Vec2 &posicion,
+		      Puerta *puerta);
 
 	~ZonaCerradura(){};
 	
@@ -161,7 +160,7 @@ class CajaSpawnSniper : public CajaSpawn
 {
 private:
 	real cuentaRegresiva;
-	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	/*Recibe un ID del Sniper a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
 	CajaSpawnSniper(uint ID, Mundo &mundo, b2Vec2 posicion);
@@ -173,7 +172,7 @@ class CajaSpawnJumpingSniper : public CajaSpawn
 {
 private:
 	real cuentaRegresiva;
-	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
+	/*Recibe un ID del JumpingSniper a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
 	CajaSpawnJumpingSniper(uint ID, Mundo &mundo, b2Vec2 posicion);
@@ -185,8 +184,8 @@ class CajaSpawnBombman : public CajaSpawn
 {
 private:
 	Puerta *puerta;
+	/*Solo se crea una vez.*/
 	bool creado;
-	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
 	CajaSpawnBombman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
@@ -198,8 +197,8 @@ class CajaSpawnSparkman : public CajaSpawn
 {
 private:
 	Puerta *puerta;
+	/*Solo se crea una vez.*/
 	bool creado;
-	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
 	CajaSpawnSparkman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
@@ -211,8 +210,8 @@ class CajaSpawnMagnetman : public CajaSpawn
 {
 private:
 	Puerta *puerta;
+	/*Solo se crea una vez.*/
 	bool creado;
-	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
 	CajaSpawnMagnetman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
@@ -224,8 +223,8 @@ class CajaSpawnRingman : public CajaSpawn
 {
 private:
 	Puerta *puerta;
+	/*Solo se crea una vez.*/
 	bool creado;
-	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
 	CajaSpawnRingman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
@@ -237,8 +236,8 @@ class CajaSpawnFireman : public CajaSpawn
 {
 private:
 	Puerta *puerta;
+	/*Solo se crea una vez.*/
 	bool creado;
-	/*Recibe un ID del Bumby a crear, siempre se crean con el mismo ID (renace el mismo monstruo)*/
 	uint ID;
 public:
 	CajaSpawnFireman(uint ID, Puerta *puerta, Mundo &mundo, b2Vec2 posicion);
@@ -250,6 +249,9 @@ class ZonaCamara
 {
 private:
 	b2Vec2 posicion, posicionCentral;
+
+	/*Como se recalcula en cada cuadro se cachean estos valores en lugar de pedirselos a cuerpo 
+	ya que no los devuelve como escalares sino como un Rectangulo y habria que calcularlos una y otra vez.*/
 	real ancho, alto;
 	Mundo& mundo;
 

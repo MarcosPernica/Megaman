@@ -24,7 +24,6 @@ Sparkman::Sparkman(uint ID,
 		 Mundo & mundo, 
 		 const b2Vec2 & posicion,
 		 const b2Vec2 & velocidad) : 
-		 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
 		 Enemigo(ID,
 				mundo,
 				   ANCHOSPARKMAN,
@@ -43,12 +42,15 @@ Sparkman::Sparkman(uint ID,
 				   velocidad,
 				   izquierda,
 				   false),
-    			  	   megaman(NULL),
-				   IDTarget(0)
+			Animado(&animacion_saltando),	  
+			animacion_saltando(ANIM_SPARKMAN_SALTANDO,1),
+			animacion_corriendo(ANIM_SPARKMAN_CORRIENDO,0.1),
+			megaman(NULL),
+			IDTarget(0),
+			estadoSparkman(QUIETO),
+			reflejos(0),
+			arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES)
 {
-	reflejos = 0;
-	estadoSparkman = QUIETO;
-	
 	deshabilitarFriccion();
 
 	megaman = obtenerMundo().obtenerMegamanCercano(obtenerPosicion());
@@ -126,10 +128,18 @@ void Sparkman::actualizarMaquinaEstados(real deltaT)
 			break;
 		}
 	}
+
+	/*Es mas preciso cambiarlo de esta forma que una vez por cambio de la maquina de estados.*/
+
+	if(estaEnElAire())
+		cambiar(&animacion_saltando);
+	else
+		cambiar(&animacion_corriendo);
 }
 
 void Sparkman::actualizar(real deltaT)
 {
+	avanzar(deltaT);
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
@@ -150,3 +160,14 @@ Sparkman* Sparkman::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	p->setStateFromSnapshot(sn);
 	return p;
 }
+
+void Sparkman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+Imagen::dibujarEn(cr,origen,factorAmplificacion);}
+
+bool Sparkman::espejado() const{return obtenerOrientacion()==izquierda;};
+
+const Rectangulo Sparkman::obtenerRepresentacion() const{
+return Rectangulo(	obtenerPosicion().x-ANCHOSPARKMAN/2,
+					obtenerPosicion().y-ALTOSPARKMAN/2,
+					ANCHOSPARKMAN,
+					ALTOSPARKMAN);}

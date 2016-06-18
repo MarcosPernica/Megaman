@@ -152,7 +152,7 @@ void SimuladorSinVentana::run()
 	*/
 }
 
-SimuladorSinVentana::SimuladorSinVentana(Mundo& mun, uint milis,ContenedorProxies& con):mundo(mun), contenedor(con),continuar(true){
+SimuladorSinVentana::SimuladorSinVentana(Mundo& mun, uint milis,ContenedorProxies& con): contenedor(con), continuar(true), mundo(mun){
 	segundosPorActualizacion = ((float)milis)/1000;
 }
 

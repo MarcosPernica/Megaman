@@ -84,16 +84,9 @@ public:
 
 	void actualizar(real deltaT){avanzar(deltaT);};
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 
@@ -110,15 +103,9 @@ public:
 
 	void actualizar(real deltaT){avanzar(deltaT);};
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP/2,
-						ALTOSPRITEPOWERUP/2);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 
@@ -134,15 +121,9 @@ public:
 
 	void actualizar(real deltaT){avanzar(deltaT);};
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 
@@ -160,15 +141,9 @@ public:
 	GENERAR_GET_TIPO(CapsulaPlasmaChica);
 	GENERAR_DESDESNAPSHOT(CapsulaPlasmaChica);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP/2,
-						ALTOSPRITEPOWERUP/2);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 
@@ -184,15 +159,9 @@ public:
 
 	void actualizar(real deltaT){avanzar(deltaT);};
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);}
-	bool espejado() const{return false;};
-
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP);}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	bool espejado() const;
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class Habilitador : public ImagenEscalada
@@ -212,17 +181,8 @@ public:
 	GENERAR_GET_TIPO(HabilitadorBomba);
 	GENERAR_DESDESNAPSHOT(HabilitadorBomba);
 
-	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
-		
-	}
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP
-					);
-	}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 
@@ -234,17 +194,8 @@ public:
 	GENERAR_GET_TIPO(HabilitadorIman);
 	GENERAR_DESDESNAPSHOT(HabilitadorIman);
 
-	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
-		
-	}
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP
-					);
-	}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 
@@ -256,17 +207,8 @@ public:
 	GENERAR_GET_TIPO(HabilitadorChispa);
 	GENERAR_DESDESNAPSHOT(HabilitadorChispa);
 
-	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
-		
-	}
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP
-					);
-	}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class HabilitadorAnillo : public PowerUp, public Habilitador
@@ -277,17 +219,8 @@ public:
 	GENERAR_GET_TIPO(HabilitadorAnillo);
 	GENERAR_DESDESNAPSHOT(HabilitadorAnillo);
 
-	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
-		
-	}
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP
-					);
-	}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 class HabilitadorFuego: public PowerUp, public Habilitador
@@ -298,17 +231,8 @@ public:
 	GENERAR_GET_TIPO(HabilitadorFuego);
 	GENERAR_DESDESNAPSHOT(HabilitadorFuego);
 
-	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
-		
-	}
-	const Rectangulo obtenerRepresentacion() const{
-	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
-						obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
-						ANCHOSPRITEPOWERUP,
-						ALTOSPRITEPOWERUP
-					);
-	}
+	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	const Rectangulo obtenerRepresentacion() const;
 };
 
 #endif

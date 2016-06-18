@@ -4,28 +4,30 @@
 #include "../graficos/Dibujable.h"
 #include <iostream>
 #include "../net/snapshots/Snapshot.h"
+
 const b2Vec2 Cuerpo::versorIzquierda(-1, 0);
 const b2Vec2 Cuerpo::versorDerecha(1, 0);
 
 Cuerpo::Cuerpo(uint ID,
-			   Mundo &mundo,
-			   real ancho, 
-			   real alto,
-			   real masa,
-			   ushort categoria,
-			   ushort colisionaCon, 
-			   const b2Vec2 & posicion,
-		       bool rotable,
-			   bool gravitacional,
-		       const b2Vec2 & velocidad,
-			   Orientaciones orientacion,
-			   bool fantasma) :
-			   orientacion(orientacion),
-			   mundo(mundo),
-			   Snapshotable(ID),
-			   ancho(ancho),
-			   alto(alto),
-			   detectorSuelo(false)
+	       Mundo &mundo,
+	       real ancho, 
+	       real alto,
+	       real masa,
+	       ushort categoria,
+	       ushort colisionaCon, 
+	       const b2Vec2 & posicion,
+               bool rotable,
+	       bool gravitacional,
+               const b2Vec2 & velocidad,
+	       Orientaciones orientacion,
+	       bool fantasma) :
+	       Snapshotable(ID),
+	       orientacion(orientacion),
+	       mundo(mundo),
+               ancho(ancho),
+	       alto(alto)
+	 
+			
 {
 	b2BodyDef defCuerpo;
 	b2PolygonShape cajaColision;
@@ -48,6 +50,7 @@ Cuerpo::Cuerpo(uint ID,
 
 	cajaColision.SetAsBox(ancho / 2, alto / 2);
 	
+	/*Soporta solo densidad uniforme.*/
 	if(masa != MASAINFINITA)
 		unionCuerpo.density = masa / (ancho*alto);
 
@@ -56,6 +59,7 @@ Cuerpo::Cuerpo(uint ID,
 	unionCuerpo.filter.maskBits = colisionaCon;
 	unionCuerpo.isSensor = fantasma;
 
+	/*Siempre agrega la informacion al fixture.*/
 	datos.push_back(new DatosColisionCuerpo(this,CUERPOPRINCIPAL,Rectangulo(posicion.x,posicion.y,ancho,alto)));
 
 	unionCuerpo.userData = datos.at(0);
@@ -65,6 +69,7 @@ Cuerpo::Cuerpo(uint ID,
 
 void Cuerpo::habilitarFriccion()
 {
+	/*Son las fricciones por defecto de Box2D.*/
 	for(b2Fixture* i = cuerpo->GetFixtureList(); i; i = i->GetNext())
 		i->SetFriction(0.2f);
 }
@@ -94,7 +99,7 @@ Cuerpo::~Cuerpo()
 {
 	for (b2Fixture* f = cuerpo->GetFixtureList(); f; f = f->GetNext()) 
 	{
-		delete f->GetUserData();	
+		delete (DatosColisionCuerpo*)f->GetUserData();	
 		f->SetUserData(NULL);
 	}
 
@@ -125,12 +130,13 @@ Orientaciones Cuerpo::obtenerOrientacion() const
 
 Rectangulo Cuerpo::obtenerCajaMagnificada(uint magnificador) const
 {
+	/*Obtiene las medidas del cuerpo principal magnificadas si se quiere.*/
 	const b2Vec2 centro = obtenerPosicion();
 
 	return Rectangulo(centro.x - ((ancho/2)*magnificador),
-		    centro.y - ((alto/2)*magnificador),
- 		    ancho*magnificador,
-		    alto*magnificador);
+		    	  centro.y - ((alto/2)*magnificador),
+ 		          ancho*magnificador,
+		          alto*magnificador);
 }
 
 void Cuerpo::modificarVelocidad(const b2Vec2 & velocidad)
@@ -169,12 +175,12 @@ void Cuerpo::ingravitar()
 }
 
 void Cuerpo::agregarCuerpoInmaterial(real ancho, 
-			     real alto,
-			     b2Vec2 posicion, 
-			     uint identificador,
-			     ushort categoria,
-			     ushort colisionaCon,
-			     bool fantasma)
+				     real alto,
+				     b2Vec2 posicion, 
+				     uint identificador,
+				     ushort categoria,
+				     ushort colisionaCon,
+				     bool fantasma)
 {
 		b2PolygonShape cajita;
 		cajita.SetAsBox(ancho/2, alto/2, posicion, 0);
@@ -215,6 +221,7 @@ void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, r
 		Dibujable::dibujarRectangulo(cr, origen, factorAmplificacion, Dibujable::mundoARender(topLeftMundo), Dibujable::mundoARender(datos.at(i)->caja.obtenerAncho()), Dibujable::mundoARender(datos.at(i)->caja.obtenerAlto()));
 	}
 }
+
 ////---------------------------snapshotable-----------------------------//
 
 /**

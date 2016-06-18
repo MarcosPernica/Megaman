@@ -1,0 +1,53 @@
+<?xml version="1,0" ?>
+<Nivel>
+<CuboMadera ancho="1" alto="15" x="-0,5" y="7,5"></CuboMadera>
+<CuboMadera ancho="14" alto="1" x="7" y="14,5"></CuboMadera>
+<CuboMadera ancho="4" alto="1" x="6" y="13,5"></CuboMadera>
+<CuboMetal ancho="3" alto="1" x="6,5" y="12,5"></CuboMetal>
+<CuboLadrillo ancho="2" alto="1" x="7" y="11,5"></CuboLadrillo>
+<CuboTierra ancho="1" alto="1" x="7,5" y="10,5"></CuboTierra>
+<Escalera alto="7" x="12,5" y="10,5"></Escalera>	
+<CuboMadera ancho="2" alto="1" x="17" y="14,5"></CuboMadera>
+<CuboMadera ancho="1" alto="1" x="20,5" y="14,5"></CuboMadera>
+<CuboMadera ancho="2" alto="1" x="24" y="14,5"></CuboMadera>
+<CuboMadera ancho="2" alto="1" x="28" y="14,5"></CuboMadera>	
+<CuboMadera ancho="13" alto="1" x="19,5" y="9,5"></CuboMadera>
+<Escalera alto="5" x="28,5" y="11,5"></Escalera>
+<Puas alto="1" ancho="28" x="27" y="15,5"></Puas>
+<CuboMadera ancho="5" alto="1" x="31,5" y="11,5"></CuboMadera>
+<CuboMadera ancho="1" alto="1" x="35,5" y="11,5"></CuboMadera>
+<CuboMadera ancho="1" alto="1" x="37,5" y="11,5"></CuboMadera>	
+<CuboMadera ancho="1" alto="1" x="39,5" y="11,5"></CuboMadera>	
+<CuboMadera ancho="9" alto="1" x="44,5" y="14,5"></CuboMadera>
+
+
+<CuboMadera ancho="13" alto="12" x="54,5" y="6"></CuboMadera>
+<CuboMadera ancho="30" alto="1" x="63" y="14,5"></CuboMadera>
+<CuboMadera ancho="17" alto="2" x="69,5" y="1"></CuboMadera>
+<CuboMadera ancho="2" alto="12" x="77" y="8"></CuboMadera>
+
+<Puerta id="0" ancho="0,5" alto="2" x="48,25" y="13"></Puerta>
+<Puerta id="1" ancho="0,5" alto="2" x="60,75" y="13"></Puerta>
+<ZonaCerradura idPuerta="0" alto="2" ancho="12" x="54,5" y="13"></ZonaCerradura>
+<ZonaCerradura idPuerta="1" alto="3" ancho="15" x="68,5" y="12,5"></ZonaCerradura>
+<ZonaGuardado alto="3" ancho="15" x="68,5" y="12,5"></ZonaGuardado>
+
+<ZonaSpawnMegaman longitud="0" x="67" y="5"></ZonaSpawnMegaman>
+<Met x="5,5" y="7"></Met>
+<Met x="6,5" y="7"></Met>
+<Met x="7,5" y="7"></Met>
+<Bumby x="14,5" y="7,5"></Bumby>
+<Bumby x="18,5" y="7,5"></Bumby>
+<Bumby x="26,5" y="7,5"></Bumby>
+<Met x="23,5" y="13,5"></Met>
+<Met x="24,5" y="13,5"></Met>
+<Met x="27,5" y="13,5"></Met>	
+<Met x="32,5" y="10,5"></Met>		
+<Sniper x="39,5" y="9,5"></Sniper>		
+<JumpingSniper x="41" y="12"></JumpingSniper>
+<JumpingSniper x="47,5" y="12"></JumpingSniper>
+<Bumby x="39,5" y="10"></Bumby>
+<Bumby x="45,5" y="10"></Bumby>	
+<Bombman idPuerta="1" x="74" y="6"></Bombman>
+</Nivel>
+

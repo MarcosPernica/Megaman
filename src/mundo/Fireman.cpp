@@ -24,32 +24,31 @@ Fireman::Fireman(uint ID,
 		 Mundo & mundo, 
 		 const b2Vec2 & posicion,
 		 const b2Vec2 & velocidad) : 
-		 arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
 		 Enemigo(ID,
-				mundo,
-				   ANCHOFIREMAN,
-				   ALTOFIREMAN,
-				   &arma,
-			      	   ENERGIAMAXIMAFIREMAN,
-				   ESCUDOFIREMAN,
-				   MASAFIREMAN, 
-				   VELOCIDADSALTOFIREMAN,
-				   VELOCIDADCORRERFIREMAN,
-				   ENEMIGOS,
-				   CONSTRUCCIONES,
-				   posicion, 
-				   false,
-				   true,
-				   velocidad,
-				   izquierda,
-				   false),
-			animacion_saltando(ANIM_FIREMAN_SALTANDO,1),
-			animacion_corriendo(ANIM_FIREMAN_CORRIENDO,0.1),
-			Animado(&animacion_saltando)
-{
-	reflejos = 0;
-	estadoFireman = QUIETO;
-	
+			mundo,
+			ANCHOFIREMAN,
+			ALTOFIREMAN,
+			&arma,
+			ENERGIAMAXIMAFIREMAN,
+			ESCUDOFIREMAN,
+			MASAFIREMAN, 
+			VELOCIDADSALTOFIREMAN,
+			VELOCIDADCORRERFIREMAN,
+			ENEMIGOS,
+			CONSTRUCCIONES,
+			posicion, 
+			false,
+			true,
+			velocidad,
+			izquierda,
+			false),
+		Animado(&animacion_saltando),
+		animacion_saltando(ANIM_FIREMAN_SALTANDO,1),
+		animacion_corriendo(ANIM_FIREMAN_CORRIENDO,0.1),
+		estadoFireman(QUIETO),	
+		reflejos(0),
+		arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES)
+{	
 	deshabilitarFriccion();
 }
 
@@ -138,4 +137,24 @@ Fireman* Fireman::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	Fireman* p =new Fireman(sn.getID(),mundo,b2Vec2_zero);
 	p->setStateFromSnapshot(sn);
 	return p;
+}
+
+void Fireman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
+			b2Vec2 origen, 
+			real factorAmplificacion)
+{
+	Imagen::dibujarEn(cr, origen, factorAmplificacion);
+}
+
+bool Fireman::espejado() const
+{
+	return obtenerOrientacion() == izquierda;
+};
+
+const Rectangulo Fireman::obtenerRepresentacion() const
+{
+	return Rectangulo(obtenerPosicion().x-ANCHOFIREMAN/2,
+		          obtenerPosicion().y-ALTOFIREMAN/2,
+			  ANCHOFIREMAN,
+			  ALTOFIREMAN);
 }

@@ -51,6 +51,12 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 				controlado->seleccionarArma(5);
 				break;
 			}
+			case GDK_KEY_6: 
+			{
+				emisor.enviar(MENSAJE_KEY_6);
+				controlado->seleccionarArma(6);
+				break;
+			}
 			case GDK_KEY_Up:
 			{
 				emisor.enviar(MENSAJE_KEY_UP);
@@ -85,9 +91,6 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 			}
 			case GDK_KEY_z:
 			{
-				timespec ahora;
-				clock_gettime(CLOCK_REALTIME,&ahora);
-				std::cout<<"llegué a hacer que salte Megaman! a las "<<ahora.tv_nsec<<std::endl;
 				emisor.enviar(MENSAJE_KEY_Z);
 				controlado->saltar();
 				
@@ -129,7 +132,6 @@ bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
 				break;
 			}		
 		}
-		//server_proxy.enviarEvento(CODIGO_EVENTO_SALTO);
 	}
 	return true;
 }

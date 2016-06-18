@@ -1,0 +1,52 @@
+rm -f -r build/main.o	
+make
+make[1]: se entra en el directorio '/home/marcos/Escritorio/Megaman'
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Entidad.o src/mundo/Entidad.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Bombman.o src/mundo/Bombman.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Callbacks.o src/mundo/Callbacks.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/PowerUp.o src/mundo/PowerUp.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Escalera.o src/mundo/Escalera.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Met.o src/mundo/Met.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Enemigo.o src/mundo/Enemigo.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Magnetman.o src/mundo/Magnetman.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Mundo.o src/mundo/Mundo.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Bumby.o src/mundo/Bumby.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Disparo.o src/mundo/Disparo.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Sniper.o src/mundo/Sniper.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/JumpingSniper.o src/mundo/JumpingSniper.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Sparkman.o src/mundo/Sparkman.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Cuerpo.o src/mundo/Cuerpo.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Cadena.o src/mundo/Cadena.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Ringman.o src/mundo/Ringman.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Puas.o src/mundo/Puas.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Fireman.o src/mundo/Fireman.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Megaman.o src/mundo/Megaman.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Definiciones.o src/mundo/Definiciones.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Construccion.o src/mundo/Construccion.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/SimuladorSinVentana.o src/mundo/SimuladorSinVentana.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/CajaAccion.o src/mundo/CajaAccion.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/mundo/Simulador.o src/mundo/Simulador.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/main.o src/main.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/common/Thread.o src/common/Thread.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/common/exceptions.o src/common/exceptions.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/common/Lock.o src/common/Lock.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/common/Mutex.o src/common/Mutex.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/snapshots/Snapshotable.o src/net/snapshots/Snapshotable.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/snapshots/Snapshot.o src/net/snapshots/Snapshot.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/snapshots/FullSnapshot.o src/net/snapshots/FullSnapshot.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/cliente/Jugador.o src/net/cliente/Jugador.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/cliente/ReceptorCliente.o src/net/cliente/ReceptorCliente.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/cliente/CallbackPosicion.o src/net/cliente/CallbackPosicion.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/cliente/Cliente.o src/net/cliente/Cliente.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/servidor/ProxyJugador.o src/net/servidor/ProxyJugador.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/servidor/ContenedorProxies.o src/net/servidor/ContenedorProxies.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/servidor/Servidor.o src/net/servidor/Servidor.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/sockets/ThreadAceptador.o src/net/sockets/ThreadAceptador.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/sockets/Buffer.o src/net/sockets/Buffer.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/sockets/ChannelSocket.o src/net/sockets/ChannelSocket.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/sockets/Emisor.o src/net/sockets/Emisor.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/sockets/Socket.o src/net/sockets/Socket.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/sockets/Receptor.o src/net/sockets/Receptor.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/net/sockets/AccepterSocket.o src/net/sockets/AccepterSocket.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+g++  -g -Wall -std=c++98 -I include -c -o build/graficos/CallbackIniciar.o src/graficos/CallbackIniciar.cpp `pkg-config gtkmm-3.0 --cflags --libs`
+Makefile:30: fallo en las instrucciones para el objetivo 'posta'

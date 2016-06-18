@@ -14,7 +14,7 @@ class Escalera: public Construccion
 public:
 	Escalera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real alto);
 	ushort tipoCuerpo() const;
-	virtual std::string nombreImagen(){return "imagenes/escalera/1.png";};
+	std::string nombreImagen();
 };
 
 #endif

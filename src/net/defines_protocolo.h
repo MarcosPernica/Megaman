@@ -10,6 +10,7 @@
 #define MENSAJE_KEY_3 "k_3"
 #define MENSAJE_KEY_4 "k_4"
 #define MENSAJE_KEY_5 "k_5"
+#define MENSAJE_KEY_6 "k_6"
 #define MENSAJE_KEY_UP "kud"
 #define MENSAJE_KEY_DN "kdd"
 #define MENSAJE_KEY_RIGHT "krd"
