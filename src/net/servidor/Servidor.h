@@ -4,9 +4,19 @@
 #include "../sockets/ThreadAceptador.h"
 #include "ContenedorProxies.h"
 #include "../../common/Lock.h"
+#include "../../mundo/SimuladorSinVentana.h"
+#include "CallbackFin.h"
+
 class Servidor{
 	
+	Mundo* mundo;
+	
+	SimuladorSinVentana* simulador;
+	
 	void ejecutarNivel(char nivel);
+	
+	Mutex m_nivelContinua;
+	bool nivelContinua;
 	
 	Mutex m_nivel;
 	char nivel;
@@ -45,6 +55,9 @@ class Servidor{
 	 * */ 
 	//void copiarParaTiny(char nivel);
 	
+	void conectarProxiesConMegamanes();
+	void desconectarProxiesDeMegamanes();
+	
 	public:
 	
 	~Servidor();
@@ -64,6 +77,10 @@ class Servidor{
 	void iniciar(char nivel);
 	
 	void ejecutar();
+	
+	void finNivel();
+	
+	
 };
 class CallbackAceptador : public CallbackNuevaConexion{
 	private:
@@ -88,5 +105,4 @@ class CallbackLimite: public CallbackLimiteJugadores{
 	CallbackLimite(Servidor& servidor):serv(servidor){};
 	virtual void limiteAlcanzado();
 };
-
 #endif

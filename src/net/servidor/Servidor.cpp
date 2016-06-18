@@ -3,7 +3,6 @@
 #include "../../common/exceptions.h"
 #include <ctime>
 #include "../../mundo/Mundo.h"
-#include "../../mundo/SimuladorSinVentana.h"
 #include "ContenedorProxies.h"
 #include "../../graficos/Dibujable.h" 
 #include <fstream>
@@ -26,7 +25,9 @@ void Servidor::nueva(ChannelSocket* nuevo_channel){
 Servidor::Servidor():
 			aceptador(10020,4),
 			contenedor(new CallbackIniciarPartida(*this), new CallbackLimite(*this) ),
-			nivel(0){
+			nivel(0),
+			simulador(NULL),
+			nivelContinua(true){
 				
 				aceptador.agregarCallback(new CallbackAceptador(*this));
 				aceptador.start();
@@ -38,15 +39,57 @@ void Servidor::alcanzadoLimiteJugadores(){
 	//aceptador.join();
 }
 void Servidor::ejecutar(){
+	
+	//espero a que me digan qué nivel correr
 	while(true){
 		sleep(0.5);
 		Lock l(m_nivel);
 		if(nivel!=0) break;
 	}
+	
+	//arranco el nivel
 	Lock l(m_nivel);
 	ejecutarNivel(nivel);
+	
+	//espero a que termine el nivel
+	while(true){
+		sleep(0.5);
+		Lock l(m_nivelContinua);
+		if(!nivelContinua) break;
+	}
+	
+	//termino la simulacion
+	desconectarProxiesDeMegamanes();
+	
+	simulador->join();
+	delete simulador;
+	simulador = NULL;
+	
+	delete mundo;
+	mundo = NULL;
+	
+	//termino los proxies porque se termina el programa
+	contenedor.matarConexiones();
+}
+void Servidor::conectarProxiesConMegamanes(){
+	std::vector<ProxyJugador*> jugadores = contenedor.obtenerJugadores();
+	std::vector<ProxyJugador*>::iterator it;
+	for(it = jugadores.begin(); it!=jugadores.end(); ++it){
+		int pos = (*it)->obtenerPosicion();
+		(*it)->enviarKeystrokesA(mundo->obtenerMegaman(pos));
+	}
+}
+void Servidor::desconectarProxiesDeMegamanes(){
+	std::vector<ProxyJugador*> jugadores = contenedor.obtenerJugadores();
+	std::vector<ProxyJugador*>::iterator it;
+	for(it = jugadores.begin(); it!=jugadores.end(); ++it){
+		int pos = (*it)->obtenerPosicion();
+		(*it)->enviarKeystrokesA(NULL);
+	}
 }
 void Servidor::ejecutarNivel(char nivel){
+	nivelContinua = true;
+	
 	contenedor.enviarNivel(nivel);
 	std::cout<<nivel<<std::endl;
 	contenedor.notificarInicio();
@@ -58,34 +101,13 @@ void Servidor::ejecutarNivel(char nivel){
 	std::cout<<"El nombre del nivel es: "<<nombre_nivel.str()<<std::endl;
 	
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
-	Mundo mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str(),contenedor.cantidadJugadores());
+	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str(),contenedor.cantidadJugadores());
 	
 	
-	std::vector<ProxyJugador*> jugadores = contenedor.obtenerJugadores();
+	conectarProxiesConMegamanes();
 	
-	std::vector<ProxyJugador*>::iterator it;
-	for(it = jugadores.begin(); it!=jugadores.end(); ++it){
-		int pos = (*it)->obtenerPosicion();
-		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
-	}
-	
-	/*
-	std::set<ProxyJugador*>::iterator it;
-	for(it=proxies.begin(); it != proxies.end(); ++it){
-		int pos = (*it)->obtenerPosicion();
-		(*it)->enviarKeystrokesA(mundo.obtenerMegaman(pos));
-	}
-	*/
-	
-	SimuladorSinVentana sim(mundo,20,contenedor);
-	sim.start();
-	std::cout<<"Ingresa cualquier cosa para matar el server sin avisarle a nadie"<<std::endl;
-	std::string listo;
-	std::cin>>listo;
-	sim.join();
-	
-	contenedor.matarConexiones();
-	std::cout<<"chau servidor!!!"<<std::endl;
+	simulador = new SimuladorSinVentana(*mundo,20,contenedor,new CallbackFin(*this));
+	simulador->start();
 }
 
 
@@ -97,7 +119,8 @@ void Servidor::iniciar(char nivel){
 }
 
 Servidor::~Servidor(){
-	
+	delete simulador;
+	delete mundo;
 }
 void CallbackIniciarPartida::recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
 	serv.iniciar(resto_mensaje[0]);
@@ -109,4 +132,9 @@ void CallbackLimite::limiteAlcanzado(){
 
 void CallbackAceptador::nueva(ChannelSocket* nuevo_channel){
 	serv.nueva(nuevo_channel);
+}
+
+void Servidor::finNivel(){
+	Lock l(m_nivelContinua);
+	nivelContinua = false;
 }

@@ -27,7 +27,7 @@ Mundo::Mundo(real anchoCamara,
 	     terminado(false)
 {
 	nombre_nivel = n;
-	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
+	//std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
 	Cadena nombre(nombre_nivel);
 
 	mundo.SetContactListener(&listenerColisiones);
@@ -240,6 +240,7 @@ void Mundo::eliminar(PowerUp * elemento)
 void Mundo::eliminar(Disparo * elemento)
 {
 	destrucciones.push_back(DatosEliminacion(elemento->obtenerID(),disparo));
+	//std::cout<<"Voy a borrar una bala"<<std::endl;
 }
 
 void Mundo::agregar(Disparo * disparo)
@@ -499,6 +500,7 @@ void Mundo::actualizarCuerpos(real deltaT)
 
 void Mundo::actualizar(real segundosDesdeUltima)
 {
+	
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 	
@@ -513,6 +515,10 @@ void Mundo::actualizar(real segundosDesdeUltima)
 		(*a++)->actualizar(segundosDesdeUltima);
 
 	destruirCuerpos();
+	
+	std::cout<<disparos.size()<<std::endl;//si hago un cout no quedan disparos quietos (sin destruir)
+	//h++;//no hay warning
+	
 	camara->actualizar(segundosDesdeUltima);
 }
 
@@ -550,6 +556,7 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 {
+	
 	/* Limpia (elimina de los mapas) lo que esta fuera del area circular que pasa por todos los vertices del area cuadrada.*/
 
 	real radio = (posicion.x+ancho)*(posicion.x+ancho) +  (posicion.y+alto)*(posicion.y+alto);
@@ -650,6 +657,7 @@ void Mundo::inyectarSnapshot(FullSnapshot& fs){
 			snapshotable->setStateFromSnapshot(fs.get(*snapshotable));
 			fs.marcarRevisada(*snapshotable);
 		}else{
+			//std::cout<<"voy a eliminar un snapshotable porque no existe"<<std::endl;
 			//if(snapshotable->getTipo()!=TIPO_MEGAMAN){
 				a_eliminar.insert(snapshotable);
 				//std::cout<<"Voy a eliminar un snapshotable de tipo "<<snapshotable->getTipo()<<std::endl;
@@ -669,6 +677,8 @@ void Mundo::inyectarSnapshot(FullSnapshot& fs){
 	for(itr = no_revisadas.begin(); itr!=no_revisadas.end(); ++itr){
 		agregarDesdeSnapshot(*(*itr));
 	}
+	
+	destruirCuerpos();
 }
 
 #define GENERAR_CASE_AGREGAR(clase) \

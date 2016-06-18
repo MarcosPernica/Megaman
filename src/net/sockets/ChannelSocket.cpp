@@ -48,7 +48,7 @@ void ChannelSocket::connectTo(const std::string url, const unsigned port){
 void ChannelSocket::receiveFixed(Buffer& into) const{
 	int received = 0;
 	unsigned left = into.getSize();
-	while(left > 0 && received >= 0){
+	while(left > 0 && received >= 0){//decia received>=0
 		received = recvS(into.getData(), into.getSize());
 		left -= received;
 	}

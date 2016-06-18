@@ -8,10 +8,16 @@
  #include "../common/Thread.h"
  #include "../common/Mutex.h"
  #include "../net/servidor/ContenedorProxies.h"
-class SimuladorSinVentana:public Thread{
+class CallbackFinMundo{
 	public:
-	SimuladorSinVentana(Mundo& mundo, uint milisPorActualizacion, ContenedorProxies& contenedor);
+	virtual void fin() = 0;
+};
+class SimuladorSinVentana: public Thread{
+	public:
+	SimuladorSinVentana(Mundo& mundo, uint milisPorActualizacion, ContenedorProxies& contenedor, CallbackFinMundo* call);
+	~SimuladorSinVentana();
 	private:
+	CallbackFinMundo* callbackFinMundo;
 	ContenedorProxies& contenedor;
 	void run();
 	void end();
@@ -20,6 +26,8 @@ class SimuladorSinVentana:public Thread{
 	bool getContinuar();
 	Mundo& mundo;
 	float segundosPorActualizacion;
+	
+	
 };
 
 #endif

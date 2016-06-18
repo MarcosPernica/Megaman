@@ -121,8 +121,13 @@ void SimuladorSinVentana::run()
 			if(segs_dormi_extra<0){
 				segs_dormi_extra = 0;
 			}
-		}else{
-			//segundosPorActualizacion += -segs_a_dormir;
+		}
+		
+		if(mundo.obtenerEstadoMundo() != vivo){
+			callbackFinMundo->fin();
+			
+			Lock l(m_continuar);
+			continuar = false;
 		}
 	}
 	
@@ -152,7 +157,15 @@ void SimuladorSinVentana::run()
 	*/
 }
 
-SimuladorSinVentana::SimuladorSinVentana(Mundo& mun, uint milis,ContenedorProxies& con): contenedor(con), continuar(true), mundo(mun){
+SimuladorSinVentana::SimuladorSinVentana(
+				Mundo& mun, 
+				uint milis, 
+				ContenedorProxies& con, 
+				CallbackFinMundo* call):
+						contenedor(con), 
+						continuar(true), 
+						mundo(mun),
+						callbackFinMundo(call){
 	segundosPorActualizacion = ((float)milis)/1000;
 }
 
@@ -165,4 +178,8 @@ void SimuladorSinVentana::end(){
 	Lock l(m_continuar);
 	continuar = false;
 	//std::cout<<"Digamos que anda!"<<std::endl;
+}
+
+SimuladorSinVentana::~SimuladorSinVentana(){
+	delete callbackFinMundo;
 }
