@@ -8,7 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include <locale>
+#include "../common/deslocalizacion.h"
 
 #define CANTIDADMAXIMAJUGADORES 4.0
 #define NULO 0
@@ -79,10 +79,7 @@ typedef unsigned short ushort;
 
 namespace SJuego
 {
-	class ConComa: public std::numpunct<char> {
-		protected:
-			virtual char do_decimal_point() const;
-	};
+	
 	
 	
 	struct Constantes

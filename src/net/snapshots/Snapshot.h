@@ -23,7 +23,7 @@ class Snapshot{
 	public:
 	SnapshotSerializada serializar() const;
 	explicit Snapshot(const SnapshotSerializada& serializada);
-	explicit Snapshot(uint de);//... mejor: Snapshot(const Snapshotable& de);
+	explicit Snapshot(uint de);//... sería mejor: Snapshot(const Snapshotable& de);
 	
 	//-------------------int----------------------------------//
 	void agregarPropiedad(const std::string& nombre, int valor);

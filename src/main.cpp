@@ -20,11 +20,11 @@
 #include "mundo/Definiciones.h"
 #include <string>
 #include <sys/time.h>
-
+#include "common/deslocalizacion.h"
 int main(int argc, char *argv[])
 {
 	//std::locale::global( std::locale( "" ) );
-	std::locale::global(std::locale(std::cout.getloc(), new SJuego::ConComa()));
+	std::locale::global(std::locale(std::cout.getloc(), new ConComa()));
 
 	timeval tv;
 	gettimeofday(&tv, 0);
@@ -44,10 +44,11 @@ int main(int argc, char *argv[])
 }
 #else
 #include "net/servidor/Servidor.h"
+#include "common/deslocalizacion.h"
 int main(int argc, char *argv[])
 {
 	//std::locale::global( std::locale( "" ) );
-	std::locale::global(std::locale(std::cout.getloc(), new SJuego::ConComa()));
+	std::locale::global(std::locale(std::cout.getloc(), new ConComa()));
 	SJuego::attr.cargar("configuracion.conf");
 	Servidor servidor;
 	servidor.ejecutar();

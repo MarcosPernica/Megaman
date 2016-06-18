@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../../mundo/Cuerpo.h"
 #include "../../mundo/Disparo.h"
-
+#include "../../common/deslocalizacion.h"
 Snapshot::Snapshot(){}
 Snapshot::Snapshot(const SnapshotSerializada& serializada){
 	deserializar(serializada);
@@ -17,8 +17,11 @@ Snapshot::Snapshot(uint id){
 SnapshotSerializada Snapshot::serializar() const{
 	std::ostringstream ostream;
 	MapaPropiedades::const_iterator it;
+	ostream.imbue(std::locale(ostream.getloc(), new ConComa()));
+	ostream.imbue(std::locale(ostream.getloc(), new PonerNada()));
+	
 	for(it=propiedades.begin(); it!=propiedades.end(); ++it){
-		ostream<< it->first <<" "<<it->second<<" ";//<<std::endl; ese es el caracter de fin de mensaje segun nuestro protocolo!
+		ostream<< it->first <<" "<<it->second<<" ";
 	}
 	
 	return ostream.str();///////COPIA/////////////////////////////	
@@ -30,6 +33,8 @@ int Snapshot::getID() const{
 
 void Snapshot::deserializar(const SnapshotSerializada& serializada){
 	std::istringstream istream(serializada);
+	istream.imbue(std::locale(istream.getloc(), new ConComa()));
+	istream.imbue(std::locale(istream.getloc(), new PonerNada()));
 	//std::cout<<"deserializando----------------------"<<std::endl;
 	while(!istream.eof()){
 		std::string nombre;

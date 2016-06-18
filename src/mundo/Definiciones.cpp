@@ -137,8 +137,6 @@ namespace SJuego
 
 	}
 	
-	char ConComa::do_decimal_point() const{
-		return (char)44; 
-	}
+	
 }
 
