@@ -65,6 +65,8 @@ IMPLEMENTAR_CALL(TERMINAR_ENVIO_FULLSNAPSHOT){
 		//inyectar el full snapshot en cuanto pueda!
 		Lock l(m_a_punto);
 		
+		//------------ACÁ HAY QUE RECOMENTAR!!!!!-------------
+		
 		std::vector<SnapshotSerializada>::iterator it;
 		std::cout<<"----------mostrando fs recibida"<<std::endl;
 		for(it = recibidas.begin(); it != recibidas.end(); ++it){
