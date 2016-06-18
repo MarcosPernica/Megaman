@@ -466,6 +466,7 @@ bool Mundo::existeElemento(uint ID)
 
 void Mundo::actualizarCuerpos(real deltaT)
 {
+	/*
 	//Solo como parche es esto proximo.
 	if(obtenerEstadoMundo() == perdido)
 		reiniciar();
@@ -473,7 +474,7 @@ void Mundo::actualizarCuerpos(real deltaT)
 		throw CustomException("Se gano el nivel, todavía no está implementado lo que sigue");
 	
 	//Fin parche
-
+	*/
 	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
 	while(a != megamanes.end())
 		(a++)->second->actualizar(deltaT);	

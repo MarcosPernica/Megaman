@@ -124,7 +124,7 @@ void SimuladorSinVentana::run()
 		}
 		
 		if(mundo.obtenerEstadoMundo() != vivo){
-			callbackFinMundo->fin();
+			callbackFinMundo->fin(mundo.obtenerEstadoMundo());
 			
 			Lock l(m_continuar);
 			continuar = false;

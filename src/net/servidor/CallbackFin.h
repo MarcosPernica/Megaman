@@ -8,6 +8,6 @@ class CallbackFin: public CallbackFinMundo{
 	CallbackFin();
 	public:
 	CallbackFin(Servidor& servidor);
-	virtual void fin();
+	virtual void fin(EstadoMundo estado);
 };
 #endif

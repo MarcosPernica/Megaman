@@ -1,6 +1,6 @@
 #include "CallbackFin.h"
 #include "Servidor.h"
-void CallbackFin::fin(){
+void CallbackFin::fin(EstadoMundo estado){
 	servidor.finNivel();
 }
 

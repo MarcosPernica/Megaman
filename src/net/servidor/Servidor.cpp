@@ -68,8 +68,9 @@ void Servidor::ejecutar(){
 	delete mundo;
 	mundo = NULL;
 	
-	//termino los proxies porque se termina el programa
-	contenedor.matarConexiones();
+	std::cout<<"A dormir!"<<std::endl;
+	sleep(1);
+	
 }
 void Servidor::conectarProxiesConMegamanes(){
 	std::vector<ProxyJugador*> jugadores = contenedor.obtenerJugadores();
@@ -137,4 +138,5 @@ void CallbackAceptador::nueva(ChannelSocket* nuevo_channel){
 void Servidor::finNivel(){
 	Lock l(m_nivelContinua);
 	nivelContinua = false;
+	std::cout<<"----------------fin nivel--------------"<<std::endl;
 }

@@ -10,7 +10,7 @@
  #include "../net/servidor/ContenedorProxies.h"
 class CallbackFinMundo{
 	public:
-	virtual void fin() = 0;
+	virtual void fin(EstadoMundo estado) = 0;
 };
 class SimuladorSinVentana: public Thread{
 	public:
