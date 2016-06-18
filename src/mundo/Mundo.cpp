@@ -301,7 +301,7 @@ void Mundo::agregarZonaSpawnMegaman(real longitud, b2Vec2 posicion)
 
 Megaman *Mundo::agregarMegaman()
 {
- 	Megaman *megaman = new Megaman(generarID(),*this, b2Vec2(zonaSpawnMegaman.inicio.x + ((zonaSpawnMegaman.longitud/CANTIDADMAXIMAJUGADORES)*megamanes.size()), zonaSpawnMegaman.inicio.y));
+ 	Megaman *megaman = new Megaman(generarID(),*this, b2Vec2(zonaSpawnMegaman.inicio.x + ((zonaSpawnMegaman.longitud/CANTIDADMAXIMAJUGADORES)*megamanes.size()), zonaSpawnMegaman.inicio.y),megamanes.size());
 	
 	megamanes[megaman->obtenerID()] = megaman;
 	return megaman;

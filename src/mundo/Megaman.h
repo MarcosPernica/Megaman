@@ -13,6 +13,8 @@
 class Megaman : public Entidad, public Saltador, public Animado
 {
 private:
+	uint mi_posicion;
+
 	Animacion animacion_corriendo;
 	Animacion animacion_subiendo;
 	Animacion animacion_saltando;
@@ -50,6 +52,7 @@ public:
 	Megaman(uint ID,
 			Mundo &mundo,
 			const b2Vec2 &posicion,
+			uint mi_posicion = 0,
 			const b2Vec2 &velocidad = b2Vec2_zero,
 			Orientaciones orientacion = derecha);
 
@@ -92,9 +95,7 @@ public:
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_GET_TIPO(Megaman);
 
-	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
-	Imagen::dibujarEn(cr,origen,factorAmplificacion);
-	}
+	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	/**
 	 * Devuelve el rectángulo en unidades de render
 	 * */

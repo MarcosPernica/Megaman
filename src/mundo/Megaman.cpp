@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../net/snapshots/Snapshot.h"
 #include <ctime>
-
+#include <algorithm>
 #define TIEMPODISPARO 1
 
 #define HACIENDONADA 0
@@ -186,6 +186,7 @@ uint Megaman::obtenerCantidadVidas()
 Megaman::Megaman(uint ID,
 		Mundo & mundo,
 		const b2Vec2 & posicion,
+		uint pos,
 		const b2Vec2 & velocidad,
 		Orientaciones orientacion) :
 		Entidad(ID,
@@ -219,8 +220,8 @@ Megaman::Megaman(uint ID,
 		estadoEscalado(HACIENDONADA),
 		corriendo(false),
 		inmovilizado(true),
-		posicionSpawn(posicion)
-				
+		posicionSpawn(posicion),
+		mi_posicion(pos)
 {
 	deshabilitarFriccion();
 	
@@ -448,4 +449,66 @@ const Rectangulo Megaman::obtenerRepresentacion() const{
 
 bool Megaman::espejado() const{
 	return obtenerOrientacion()==izquierda;
+}
+
+void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
+	Imagen::dibujarEn(cr,origen,factorAmplificacion);
+	std::ostringstream nombre_imagen;
+	nombre_imagen<<"imagenes/P/P";
+	nombre_imagen<<mi_posicion+1;
+	nombre_imagen<<".png";
+	
+	Glib::RefPtr<Gdk::Pixbuf> imagen = Gdk::Pixbuf::create_from_file(nombre_imagen.str());
+	
+	b2Vec2 o = origen;
+	b2Vec2 posicionP = Dibujable::mundoARender(obtenerPosicion());
+	posicionP +=Dibujable::mundoARender(b2Vec2(-ANCHOSPRITEMEGAMAN,-ALTOSPRITEMEGAMAN*2));
+	Dibujable::dibujarImagen(cr, 
+				  o,
+				  factorAmplificacion, 
+				  posicionP,
+				  imagen->get_width(),
+				  imagen->get_height(),
+				  imagen,
+				  false);
+	b2Vec2 posicion_vida(20+0*100,20);
+	Dibujable::dibujarRectanguloLleno(cr, 
+				  o,
+				  factorAmplificacion, 
+				  posicion_vida+o,
+				  20,
+				  100
+				  );
+	uint color = 0xFFFFFF;
+	switch(mi_posicion){
+		case 0:
+			color = 0xFF0000;
+			break;
+		case 1:
+			color = 0xFFFF00;
+			break;
+		case 2:
+			color = 0x00FF00;
+			break;
+		case 3:
+			color = 0x00FFFF;
+			break;
+	}
+	Dibujable::dibujarRectanguloLleno(cr, 
+				  o,
+				  factorAmplificacion, 
+				  posicion_vida+o,
+				  20,
+				  (real)100/(real)obtenerEnergiaMaxima()*(real)obtenerEnergiaActual(),
+				  color
+				  );
+	Dibujable::dibujarRectanguloLleno(cr, 
+				  o,
+				  factorAmplificacion, 
+				  posicion_vida+o+b2Vec2(20,0),
+				  5,
+				  std::max(armas.at(armaSeleccionada).plasma,(char)0),
+				  color
+				  );
+	
 }

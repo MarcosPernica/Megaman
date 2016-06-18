@@ -17,6 +17,8 @@ class Dibujable{
 	virtual ~Dibujable(){};
 
 	static void dibujarRectangulo(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion, b2Vec2 posicion, real ancho, real alto);
+	static void dibujarRectanguloLleno(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, uint factorAmplificacion, b2Vec2 posicion, real ancho, real alto, uint color=0);
+	
 	static void dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr, 
 				  b2Vec2 origen,
 				  uint factorAmplificacion, 

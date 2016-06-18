@@ -21,6 +21,26 @@ real Dibujable::mundoARender(real numero)
 	return numero*FACTORCONVERSIONMPX;
 }
 
+void Dibujable::dibujarRectanguloLleno(const Cairo::RefPtr<Cairo::Context>& cr, 
+									b2Vec2 origen, 
+									uint factorAmplificacion, 
+									b2Vec2 posicion, 
+									real ancho, 
+									real alto,
+									uint color)
+{
+	b2Vec2 aux = factorAmplificacion*(posicion - origen);
+	cr->save();
+	cr->set_source_rgb(color & 0xFF0000, color & 0x00FF00, color & 0x0000FF);
+	
+	cr->rectangle(aux.x, 
+		      aux.y, 
+		      ancho*factorAmplificacion, 
+		      alto*factorAmplificacion);
+	cr->fill();
+	cr->restore();
+	
+}
 void Dibujable::dibujarRectangulo(const Cairo::RefPtr<Cairo::Context>& cr, 
 				  b2Vec2 origen,
 				  uint factorAmplificacion, 
@@ -95,35 +115,21 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 	real escala_x = ancho_def/imagen->get_width();
 	real escala_y = alto_def/imagen->get_height();
 	
-	if(aux.x == std::numeric_limits<float32>::quiet_NaN()) return;
-	if(aux.y == std::numeric_limits<float32>::quiet_NaN()) return;
-	if(escala_x == std::numeric_limits<real>::quiet_NaN()) return;
-	if(escala_y == std::numeric_limits<real>::quiet_NaN()) return;
 	
-	if(-aux.x == std::numeric_limits<float32>::quiet_NaN()) return;
-	if(-aux.y == std::numeric_limits<float32>::quiet_NaN()) return;
-	if(-escala_x == std::numeric_limits<real>::quiet_NaN()) return;
-	if(-escala_y == std::numeric_limits<real>::quiet_NaN()) return;
-	
-	/*std::cout<<"---antes de save---"<<std::endl;
-	std::cout<<aux.x<<std::endl;
-	std::cout<<aux.y<<std::endl;
-	std::cout<<escala_x<<std::endl;
-	std::cout<<escala_y<<std::endl;
-	std::cout<<imagen<<std::endl;*/
+	if(aux.x != aux.x) return;
+	if(aux.y != aux.y) return;
+	if(escala_x != escala_x) return;
+	if(escala_y != escala_y) return;
 	
 	
 	cr->save();
-	//std::cout<<"---luego de save---"<<std::endl;
 	cr->translate(aux.x,aux.y);
 	
-	//std::cout<<"---listo couts---"<<std::endl;*/
 	if(invertir){
 		cr->scale(-escala_x,escala_y);
 	}else{
 		cr->scale(escala_x,escala_y);
 	}
-	//std::cout<<"---ya escale---"<<std::endl;
 	
 	Gdk::Cairo::set_source_pixbuf(cr, 
 						imagen,
@@ -132,11 +138,8 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 		      0, 
 		      imagen->get_width(), 
 		      imagen->get_height());
-	//std::cout<<"---buenas noches---"<<std::endl;
 	cr->clip();
 	
 	cr->paint();
-	//std::cout<<"---antes de restore---"<<std::endl;
 	cr->restore();
-	//std::cout<<"---restore y chau---"<<std::endl;
 }
