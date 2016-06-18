@@ -24,7 +24,7 @@
 int main(int argc, char *argv[])
 {
 	//std::locale::global( std::locale( "" ) );
-	std::locale::global(std::locale(std::cout.getloc(), new SJuego::ConComa()));
+	//std::locale::global(std::locale(std::cout.getloc(), new SJuego::ConComa()));
 
 	timeval tv;
 	gettimeofday(&tv, 0);
@@ -36,18 +36,15 @@ int main(int argc, char *argv[])
 
 	SJuego::attr.cargar("configuracion.conf");
 	Glib::RefPtr<Gtk::Application> app =Gtk::Application::create(argc,argv,nombre);
-	std::cout << "1" << std::endl;
 	VentanaJuego ventana;
-	std::cout << "2" << std::endl;
 	return app->run(ventana);
-	std::cout << "3" << std::endl;
 }
 #else
 #include "net/servidor/Servidor.h"
 int main(int argc, char *argv[])
 {
 	//std::locale::global( std::locale( "" ) );
-	std::locale::global(std::locale(std::cout.getloc(), new SJuego::ConComa()));
+	//std::locale::global(std::locale(std::cout.getloc(), new SJuego::ConComa()));
 	SJuego::attr.cargar("configuracion.conf");
 	Servidor servidor;
 	servidor.ejecutar();

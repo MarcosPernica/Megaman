@@ -355,6 +355,7 @@ ZonaCamara::ZonaCamara(Mundo &mundo,
 		       real ancho,
 		       real alto,
 		       const b2Vec2 &posicion) :
+		       posicionCentral(posicion),
 		       posicion(posicion),
 		       ancho(ancho),
 		       alto(alto),
