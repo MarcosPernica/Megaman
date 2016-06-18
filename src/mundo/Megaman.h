@@ -13,8 +13,6 @@
 class Megaman : public Entidad, public Saltador, public Animado
 {
 private:
-	uint mi_posicion;
-
 	Animacion animacion_corriendo;
 	Animacion animacion_subiendo;
 	Animacion animacion_saltando;
@@ -46,8 +44,9 @@ private:
 
 	/*Posicion X de la que megaman puede agarrarse.*/
 	real agarreX;//snapshoteado
-	real topeY;	//snapshoteado
 	b2Vec2 posicionSpawn;
+
+	uint mi_posicion;
 public:
 	Megaman(uint ID,
 			Mundo &mundo,

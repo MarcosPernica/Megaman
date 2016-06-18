@@ -213,6 +213,7 @@ Megaman::Megaman(uint ID,
 		animacion_disparandoSubiendo(ANIM_MEGAM_SUBIENDO_DISP, 0.1),
 		armaSeleccionada(0),
 		vidas(VIDASINICIALES),
+		timeoutDisparo(0),
 		puedeSaltar(0),
 		puedeSubir(0),
 		estadoSalto(PISANDO),
@@ -396,7 +397,6 @@ void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	SN_AGREGAR_PROPIEDAD(estadoEscalado);
 	SN_AGREGAR_PROPIEDAD(corriendo);
 	SN_AGREGAR_PROPIEDAD(agarreX);
-	SN_AGREGAR_PROPIEDAD(topeY);
 	
 	//unsigned int tam = armas.size();
 	
@@ -423,7 +423,6 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	SN_OBTENER_PROPIEDAD(estadoEscalado);
 	SN_OBTENER_PROPIEDAD(corriendo);
 	SN_OBTENER_PROPIEDAD(agarreX);
-	SN_OBTENER_PROPIEDAD(topeY);
 	
 	/* SNAPSHOTEAR LAS ARMAS ES UN POCO MÁS COMPLICADO PQ EL TAMANIO DEL VECTOR VARÍA MARCOS REVISALO
 	SN_OBTENER_PROPIEDAD(armas[0].plasma);

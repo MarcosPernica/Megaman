@@ -5,7 +5,8 @@
 #include "../../mundo/Cuerpo.h"
 #include "../../mundo/Disparo.h"
 #include "../../common/deslocalizacion.h"
-Snapshot::Snapshot(){}
+
+Snapshot::Snapshot() : id(0){}
 Snapshot::Snapshot(const SnapshotSerializada& serializada){
 	deserializar(serializada);
 }

@@ -31,7 +31,7 @@ Mundo::Mundo(real anchoCamara,
 	Cadena nombre(nombre_nivel);
 
 	mundo.SetContactListener(&listenerColisiones);
-	camara = new ZonaCamara(*this,anchoCamara, altoCamara, posicionCamara);
+	camara = new ZonaCamara(*this, anchoCamara, altoCamara, posicionCamara);
 
 	cargarNivel(nombre);	
 	
@@ -420,6 +420,7 @@ void Mundo::destruirCuerpos()
 		}
 		i++;
 	}
+
 	destrucciones.clear();
 }
 
@@ -516,9 +517,6 @@ void Mundo::actualizar(real segundosDesdeUltima)
 
 	destruirCuerpos();
 	
-	std::cout<<disparos.size()<<std::endl;//si hago un cout no quedan disparos quietos (sin destruir)
-	//h++;//no hay warning
-	
 	camara->actualizar(segundosDesdeUltima);
 }
 
@@ -564,7 +562,7 @@ void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
 	while(b != enemigos.end())
 	{
-		if((b->second->obtenerPosicion()-posicion).LengthSquared() >= radio)
+		if((b->second->obtenerPosicion() - posicion).LengthSquared() >= radio)
 			eliminar(b->second);
 		b++;	
 	}
