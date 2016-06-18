@@ -39,37 +39,45 @@ void Servidor::alcanzadoLimiteJugadores(){
 	//aceptador.join();
 }
 void Servidor::ejecutar(){
-	
-	//espero a que me digan qué nivel correr
 	while(true){
-		sleep(0.5);
-		Lock l(m_nivel);
-		if(nivel!=0) break;
+		//espero a que me digan qué nivel correr
+		while(true){
+			sleep(0.5);
+			Lock l(m_nivel);
+			if(nivel!=0) break;
+		}
+		
+		//arranco el nivel
+		if(true){
+			Lock l(m_nivel);
+			ejecutarNivel(nivel);
+		}
+		
+		//espero a que termine el nivel
+		while(true){
+			sleep(0.5);
+			Lock l(m_nivelContinua);
+			if(!nivelContinua) break;
+		}
+		
+		//termino la simulacion
+		desconectarProxiesDeMegamanes();
+		
+		simulador->join();
+		delete simulador;
+		simulador = NULL;
+		
+		delete mundo;
+		mundo = NULL;
+		
+		if(true){
+			Lock l(m_nivel);
+			nivel = 0;
+		}
+		
+		std::cout<<"A dormir!"<<std::endl;
+		sleep(1);
 	}
-	
-	//arranco el nivel
-	Lock l(m_nivel);
-	ejecutarNivel(nivel);
-	
-	//espero a que termine el nivel
-	while(true){
-		sleep(0.5);
-		Lock l(m_nivelContinua);
-		if(!nivelContinua) break;
-	}
-	
-	//termino la simulacion
-	desconectarProxiesDeMegamanes();
-	
-	simulador->join();
-	delete simulador;
-	simulador = NULL;
-	
-	delete mundo;
-	mundo = NULL;
-	
-	std::cout<<"A dormir!"<<std::endl;
-	sleep(1);
 	
 }
 void Servidor::conectarProxiesConMegamanes(){
@@ -139,4 +147,5 @@ void Servidor::finNivel(){
 	Lock l(m_nivelContinua);
 	nivelContinua = false;
 	std::cout<<"----------------fin nivel--------------"<<std::endl;
+	contenedor.distribuirFinNivel();
 }

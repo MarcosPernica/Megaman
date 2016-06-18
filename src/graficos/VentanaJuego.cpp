@@ -12,6 +12,7 @@
 #include "../net/cliente/CallbackPosicion.h"
 #include "CallbackEstabaLlega.h"
 #include "CallbackIniciar.h"
+#include "CallbackFinVen.h"
 #include "../net/defines_protocolo.h"
 #include "../mundo/Simulador.h"
 #include "../net/cliente/Jugador.h"
@@ -26,6 +27,8 @@ VentanaJuego::VentanaJuego():cajaSplash(false,10),
 				simulador(NULL), 
 				fondo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600)),
 				cantidad_jugadores(0){
+	//functorActualizarDibujo = sigc::mem_fun(*this, &VentanaJuego::on_actualizar_dibujo);
+					
 	set_default_size(800, 600);
 	
 	#ifndef DEBUG
@@ -68,6 +71,7 @@ VentanaJuego::VentanaJuego():cajaSplash(false,10),
 	cliente.agregarCallback(MENSAJE_ESTABA,new CallbackEstabaLlega(*this,cliente));
 	cliente.agregarCallback(MENSAJE_LLEGA,new CallbackEstabaLlega(*this,cliente));
 	cliente.agregarCallback(MENSAJE_INICIAR,new CallbackIniciar(*this,cliente));
+	cliente.agregarCallback(MENSAJE_FIN_NIVEL,new CallbackFinVen(*this,cliente));
 
 	#else
 		iniciarNivel();
@@ -146,12 +150,22 @@ void VentanaJuego::iniciarNivel(){
 	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre+"nivel.xml",1);
 	#endif
 	jugador = cliente.configurarNivel(*this,*mundo);
-	
+	///int caca = sigc::mem_fun(*this, &VentanaJuego::on_actualizar_dibujo);
 	simulador = new Simulador(*mundo,33);
 	
-	Glib::signal_timeout().connect(
+	conexionActualizarDibujo = Glib::signal_timeout().connect(
 			sigc::mem_fun(*this, &VentanaJuego::on_actualizar_dibujo)
 			,33);
 	
-	darea.signal_draw().connect(sigc::mem_fun(*this, &VentanaJuego::mi_on_draw));
+	conexionMiOnDraw = darea.signal_draw().connect(sigc::mem_fun(*this, &VentanaJuego::mi_on_draw));
+}
+
+void VentanaJuego::mostrarPantallaSeleccion(){
+	std::cout<<"mostrarPantallaSeleccion"<<std::endl;
+	conexionActualizarDibujo.disconnect();
+	conexionMiOnDraw.disconnect();
+	remove();
+	add(cajaSplash);
+	
+	
 }

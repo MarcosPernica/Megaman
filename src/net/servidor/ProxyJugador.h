@@ -76,6 +76,11 @@ class ProxyJugador: public Receptor{
 	 * Desacola algún control recibido y apreta los botones del Megaman correspondiente
 	 * */
 	 void ejecutarControlSobreMegaman();
+	 
+	 /**
+	  * Envía al jugador el mensaje de que se envió el nivel
+	  * */
+	 void enviarFinNivel();
 };
 
 class CallbackProxyJugador : public CallbackReceptor {

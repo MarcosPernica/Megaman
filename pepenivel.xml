@@ -32,7 +32,7 @@
 <ZonaCerradura idPuerta="1" alto="3" ancho="15" x="68,5" y="13,5"></ZonaCerradura>
 <ZonaGuardado alto="3" ancho="15" x="68,5" y="14,5"></ZonaGuardado>
 
-<ZonaSpawnMegaman longitud="1" x="70" y="4"></ZonaSpawnMegaman>
+<ZonaSpawnMegaman longitud="1" x="2" y="5"></ZonaSpawnMegaman>
 <Met x="5,5" y="8"></Met>
 <Met x="6,5" y="8"></Met>
 <Met x="7,5" y="8"></Met>

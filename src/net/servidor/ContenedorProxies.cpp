@@ -93,3 +93,10 @@ void ContenedorProxies::notificarLlegada(ProxyJugador* jugador){
 std::vector<ProxyJugador*> ContenedorProxies::obtenerJugadores(){
 	return proxies;
 }
+
+void ContenedorProxies::distribuirFinNivel(){
+	std::vector<ProxyJugador*>::iterator it;
+	for(it = proxies.begin(); it!=proxies.end(); ++it){
+		(*it)->enviarFinNivel();
+	}
+}

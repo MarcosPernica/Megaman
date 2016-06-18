@@ -24,6 +24,11 @@ class VentanaJuego : public Gtk::Window{
 	Gtk::VBox cajaSplash;
 	Gtk::Entry entry;
 	
+	sigc::connection conexionActualizarDibujo;
+	sigc::connection conexionMiOnDraw;
+	
+	sigc::signal<bool>::iterator functorActualizarDibujo;
+	
 	Gtk::Label lobby;
 	
 	Gtk::HBox malos;
@@ -54,5 +59,7 @@ class VentanaJuego : public Gtk::Window{
 	
 	void agregarJugador(const std::string& nombre);
 	void on_button_clicked(int cual);
+	
+	void mostrarPantallaSeleccion();
 };
 #endif

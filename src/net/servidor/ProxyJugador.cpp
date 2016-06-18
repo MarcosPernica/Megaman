@@ -224,3 +224,7 @@ uint ProxyJugador::obtenerPosicion(){
 void ProxyJugador::enviarNivel(char nivel){
 	emisor.enviarNivel(nivel);//queda abierta la posibilidad de que el emisor sea un thread
 }
+
+void ProxyJugador::enviarFinNivel(){
+	emisor.enviar(MENSAJE_FIN_NIVEL);
+}

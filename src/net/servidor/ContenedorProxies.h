@@ -61,5 +61,7 @@ class ContenedorProxies{
 	 std::vector<ProxyJugador*> obtenerJugadores();
 	 
 	 uint cantidadJugadores();
+	 
+	 void distribuirFinNivel();
 };
 #endif

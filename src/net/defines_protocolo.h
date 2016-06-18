@@ -5,6 +5,8 @@
 
 #define MENSAJE_POSICION "sos"
 
+#define MENSAJE_FIN_NIVEL "fin"
+
 #define MENSAJE_KEY_1 "k_1"
 #define MENSAJE_KEY_2 "k_2"
 #define MENSAJE_KEY_3 "k_3"
