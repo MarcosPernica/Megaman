@@ -26,6 +26,7 @@ Mundo::Mundo(real anchoCamara,
 	     mundo(b2Vec2(0,GRAVEDAD)), 
 	     terminado(false)
 {
+	anterior_ID = 0;
 	nombre_nivel = n;
 	//std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
 	Cadena nombre(nombre_nivel);

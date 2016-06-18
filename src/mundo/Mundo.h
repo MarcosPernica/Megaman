@@ -85,8 +85,11 @@ private:
 	
 	void cargarNivel(Cadena nombre);
 	std::string nombre_nivel;
+	
+	uint anterior_ID; 
+	
 public:
-	uint generarID(){static uint ID = 0; return ++ID;};
+	uint generarID(){return ++anterior_ID;};
 	Mundo(real anchoCamara, 
 	      real altoCamara, 
 	      b2Vec2 posicionCamara,

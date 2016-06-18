@@ -224,6 +224,7 @@ Megaman::Megaman(uint ID,
 		posicionSpawn(posicion),
 		mi_posicion(pos)
 {
+	std::cout<<"ID:"<<ID<<std::endl;
 	deshabilitarFriccion();
 	
 	Arma arma;
@@ -276,8 +277,10 @@ void Megaman::deshabilitarSalto()
 
 void Megaman::saltar()
 {
+	std::cout<<"Llega la senial de saltar!"<<std::endl;
 	if (puedeSaltar >= 1 || estadoEscalado != HACIENDONADA)
 	{
+		std::cout<<"y estoy por saltar y todo!!"<<std::endl;
 		gravitar();
 		estadoSalto = PORSALTAR;
 		cambiar(&animacion_saltando);
