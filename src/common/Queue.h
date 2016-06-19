@@ -29,7 +29,7 @@ class Queue {
 
         void push(const T& val) {
             cond.lock();
-            if (q.empty()) {
+            if (q.empty()) {//entiendo que es atómico el checkeo
                 /* 
                  * La cola esta vacia por lo que este push hara que la cola
                  * tenga un elemento y por lo tanto deje de estar vacia.
@@ -52,7 +52,7 @@ class Queue {
 
         T pop() {
             cond.lock();
-            while (q.empty()) {
+            while (q.empty()) {//entiendo que es atómico el checkeo
                 /* Si la cola esta vacia, no podemos hacer un pop.
                  * En vez de retornar con un codigo de error esperamos
                  * a que la cola deje de estar vacia con el metodo wait().

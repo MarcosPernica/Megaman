@@ -1,15 +1,16 @@
 #ifndef _LOCK_
 #define _LOCK_
 #include "Mutex.h"
+#include "Lockable.h"
 /**
  * bloquea y desbloquea un Mutex por RAII
  * */
 class Lock {
     private:
-        Mutex &m;
+        Lockable &m;
 
     public:
-        explicit Lock(Mutex &m);
+        explicit Lock(Lockable &m);
         ~Lock();
     private:
         Lock(const Lock&);

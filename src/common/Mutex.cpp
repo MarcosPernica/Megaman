@@ -11,12 +11,12 @@ Mutex::~Mutex()
 	pthread_mutex_destroy(&mutex);
 }
 
-void Mutex::bloquear()
+void Mutex::lock()
 {
 	pthread_mutex_lock(&mutex);
 }
 
-void Mutex::desbloquear()
+void Mutex::unlock()
 {
 	pthread_mutex_unlock(&mutex);
 }

@@ -33,7 +33,24 @@ Servidor::Servidor():
 				aceptador.start();
 				//sleep(10);
 }
+bool Servidor::algunNivelSeleccionado(){
+	Lock l(m_nivel);
+	return nivel!=0;
+}
 
+void Servidor::esperarSeleccionNivel(){
+	Lock l(cv_nivelElegido);
+	while(!algunNivelSeleccionado()){
+		cv_nivelElegido.wait();
+	}
+}
+
+void Servidor::esperarFinNivel(){
+	Lock l(cv_nivelContinua);
+	while(nivelContinua){
+		cv_nivelContinua.wait();
+	}
+}
 
 void Servidor::alcanzadoLimiteJugadores(){
 	//aceptador.join();
@@ -41,11 +58,7 @@ void Servidor::alcanzadoLimiteJugadores(){
 void Servidor::ejecutar(){
 	while(true){
 		//espero a que me digan qué nivel correr
-		while(true){
-			sleep(0.5);
-			Lock l(m_nivel);
-			if(nivel!=0) break;
-		}
+		esperarSeleccionNivel();
 		
 		//arranco el nivel
 		if(true){
@@ -54,11 +67,13 @@ void Servidor::ejecutar(){
 		}
 		
 		//espero a que termine el nivel
+		/*
 		while(true){
 			sleep(0.5);
-			Lock l(m_nivelContinua);
-			if(!nivelContinua) break;
+			if(!nivelContinua) break;//bool es atomico
 		}
+		**/
+		esperarFinNivel();
 		
 		//guardo las estadisticas
 		EstadisticasMundo& correctas = mundo->obtenerEstadisticas();
@@ -129,9 +144,12 @@ void Servidor::ejecutarNivel(char nivel){
 
 
 void Servidor::iniciar(char nivel){
-	Lock l(m_nivel);
+	Lock l_cv(cv_nivelElegido);
+	if(!algunNivelSeleccionado()){//no estoy seguro de que haga falta este if
+		cv_nivelElegido.broadcast();
+	}
 	alcanzadoLimiteJugadores();//basta de aceptar jugadores
-	
+	Lock l(m_nivel);
 	this->nivel = nivel;
 }
 
@@ -152,8 +170,9 @@ void CallbackAceptador::nueva(ChannelSocket* nuevo_channel){
 }
 
 void Servidor::finNivel(){
-	Lock l(m_nivelContinua);
-	nivelContinua = false;
+	nivelContinua = false;//no hace falta proteger bools
 	std::cout<<"----------------fin nivel--------------"<<std::endl;
 	contenedor.distribuirFinNivel();
+	Lock l(cv_nivelContinua);
+	cv_nivelContinua.broadcast();
 }

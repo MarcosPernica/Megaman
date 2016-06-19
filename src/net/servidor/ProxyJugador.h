@@ -9,6 +9,7 @@
 #include "../sockets/Receptor.h"
 #include <vector>
 #include "../../mundo/Megaman.h"
+#include "../../common/ConditionVariable.h"
 #include "../snapshots/FullSnapshot.h"
 #include <queue>
 #include "../sockets/Emisor.h"
@@ -34,6 +35,8 @@ class ProxyJugador: public Receptor{
 	ChannelSocket* channel;
 	
 	bool tengoUsuario();
+	ConditionVariable cv_tengoUsuario;
+	
 	void informarEstaRota();
 	void setQuiereIniciarPartida(char nivel);
 	Emisor emisor;

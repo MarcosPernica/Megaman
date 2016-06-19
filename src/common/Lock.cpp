@@ -1,8 +1,8 @@
 #include "Lock.h"
-Lock::Lock(Mutex &m) : m(m) {
-	m.bloquear();
+Lock::Lock(Lockable &m) : m(m) {
+	m.lock();
 }
 
 Lock::~Lock() {
-	m.desbloquear();
+	m.unlock();
 }

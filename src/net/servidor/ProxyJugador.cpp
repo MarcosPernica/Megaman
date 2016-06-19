@@ -90,6 +90,10 @@ void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& 
 		std::cout<<"ID"<<std::endl;
 		Lock l(m_id);
 		id_usuario = resto_mensaje;
+		{
+			Lock l(cv_tengoUsuario);
+			cv_tengoUsuario.broadcast();
+		}
 	}else if(tipo_mensaje == MENSAJE_INICIAR){//YA NO LLEGA!!!!!
 		std::cout<<"Inicio"<<std::endl;
 		setQuiereIniciarPartida(resto_mensaje[0]);//no es el número de nivel, sino el caracter que lo representa!
@@ -143,10 +147,10 @@ bool ProxyJugador::tengoUsuario(){
 	return (id_usuario.length()>0);
 }
 const std::string& ProxyJugador::getUsuario(){
+	Lock l_cv(cv_tengoUsuario);
 	while(!tengoUsuario()){
-		//std::cout<<"El programa esta bloqueado mientras espero el nombre de usuario. Que lastima!"<<std::endl;
-		//bloqueo el programa!	
-		//...y entonces el hilo mágico nos saca de este loop
+		cv_tengoUsuario.wait();
+		//El programa esta bloqueado mientras espero el nombre de usuario.
 	}
 	Lock l(m_id);
 	return id_usuario;

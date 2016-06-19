@@ -4,6 +4,8 @@
 #include "../sockets/ThreadAceptador.h"
 #include "ContenedorProxies.h"
 #include "../../common/Lock.h"
+#include "../../common/Mutex.h"
+#include "../../common/ConditionVariable.h"
 #include "../../mundo/SimuladorSinVentana.h"
 #include "CallbackFin.h"
 #include "../../mundo/Mundo.h"
@@ -16,9 +18,10 @@ class Servidor{
 	
 	void ejecutarNivel(char nivel);
 	
-	Mutex m_nivelContinua;
 	bool nivelContinua;
+	ConditionVariable cv_nivelContinua;
 	
+	ConditionVariable cv_nivelElegido;
 	Mutex m_nivel;
 	char nivel;
 	
@@ -58,6 +61,10 @@ class Servidor{
 	
 	void conectarProxiesConMegamanes();
 	void desconectarProxiesDeMegamanes();
+	
+	bool algunNivelSeleccionado();
+	void esperarSeleccionNivel();
+	void esperarFinNivel();
 	
 	public:
 	

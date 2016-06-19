@@ -1,26 +1,21 @@
 #ifndef CONDITION_VARIABLE
 #define CONDITION_VARIABLE
 #include <pthread.h>
-class ConditionVariable {
+#include "Lockable.h"
+class ConditionVariable : public Lockable{
     private:
         pthread_mutex_t mutex;
         pthread_cond_t cond;
 
         ConditionVariable& operator=(const ConditionVariable&);
         ConditionVariable(const ConditionVariable&);
+        bool locked;
     public:
-        ConditionVariable() {
-            pthread_mutex_init(&mutex, 0);
-            pthread_cond_init(&cond, 0);
-        }
+        ConditionVariable();
 
-        void lock() {
-            pthread_mutex_lock(&mutex);
-        }
+        void lock();
 
-        void unlock() {
-            pthread_mutex_unlock(&mutex);
-        }
+        void unlock();
 
         /*
          * Duerme al hilo actual a la espera de recibir una señal.
@@ -30,9 +25,7 @@ class ConditionVariable {
          * Este metodo debe llamarse solo si el mutex ya fue adquirido
          * (se debe llamar al metodo lock() antes).
          * */
-        void wait() {
-            pthread_cond_wait(&cond, &mutex);
-        }
+        void wait();
 
         /*
          * Envia una señal y despierta a un unico hilo que este durmiendo
@@ -40,9 +33,7 @@ class ConditionVariable {
          * 
          * Si no hay ningun hilo durmiendo, la señal se descarta.
          * */
-        void signal() {
-            pthread_cond_signal(&cond);
-        }
+        void signal();
 
         /*
          * Envia una señal y despierta a todos los hilos que esten durmiendo
@@ -52,14 +43,9 @@ class ConditionVariable {
          *
          * Si no hay ningun hilo durmiendo, la señal se descarta.
          * */
-        void broadcast() {
-            pthread_cond_broadcast(&cond);
-        }
+        void broadcast();
 
-        ~ConditionVariable() {
-            pthread_cond_destroy(&cond);
-            pthread_mutex_destroy(&mutex);
-        }
+        ~ConditionVariable();
 };
 
 #endif

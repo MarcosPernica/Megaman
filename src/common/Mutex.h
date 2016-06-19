@@ -2,16 +2,16 @@
 #define MUTEX
 
 #include <pthread.h>
-
-class Mutex
+#include "Lockable.h"
+class Mutex: public Lockable
 {
 private:
 	pthread_mutex_t mutex;
 public:
 	Mutex();
 	~Mutex();
-	void bloquear();
-	void desbloquear();
+	void lock();
+	void unlock();
 
 	friend class VariableCondicional;
     private:
