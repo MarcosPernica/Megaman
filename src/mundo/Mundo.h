@@ -89,7 +89,7 @@ private:
 	uint anterior_ID; 
 	
 public:
-	uint generarID(){return ++anterior_ID;};
+	uint generarID();
 	Mundo(real anchoCamara, 
 	      real altoCamara, 
 	      b2Vec2 posicionCamara,

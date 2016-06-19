@@ -197,13 +197,13 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	emisor.enviar(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT,full_snapshot.obtenerHorarioCreacion());
 	
 	//------------ACÁ HAY QUE RECOMENTAR!!!!!-------------
-	/*
-	std::cout<<"-----------ENVIANDO  FULL SNAPSHOT------------"<<std::endl;
+	
+	//std::cout<<"-----------ENVIANDO  FULL SNAPSHOT------------"<<std::endl;
 	for(it = serializada.begin(); it!=serializada.end(); ++it){
 		emisor.enviar(MENSAJE_ENVIO_SNAPSHOT,*it);
-		std::cout<<*it<<std::endl;
+		//std::cout<<*it<<std::endl;
 	}
-	*/
+	
 	timespec ahora;
 	clock_gettime(CLOCK_REALTIME, &ahora);
 	long nanos_ahora = ahora.tv_nsec;

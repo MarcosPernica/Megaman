@@ -26,7 +26,9 @@ Mundo::Mundo(real anchoCamara,
 	     mundo(b2Vec2(0,GRAVEDAD)), 
 	     terminado(false)
 {
-	anterior_ID = 0;
+	anterior_ID = cantidad_jugadores;
+	
+	
 	nombre_nivel = n;
 	//std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
 	Cadena nombre(nombre_nivel);
@@ -36,9 +38,11 @@ Mundo::Mundo(real anchoCamara,
 
 	cargarNivel(nombre);	
 	
+	anterior_ID = 0;
 	for(uint i=0; i<cantidad_jugadores; i++){
 		agregarMegaman();
 	}
+	
 	camara->reiniciar();
 }
 
@@ -60,6 +64,9 @@ void Mundo::reiniciar()
 void Mundo::finalizar()
 {
 	terminado = true;
+}
+uint Mundo::generarID(){
+	return ++anterior_ID;
 }
 
 EstadoMundo Mundo::obtenerEstadoMundo()
@@ -503,7 +510,7 @@ void Mundo::actualizarCuerpos(real deltaT)
 
 void Mundo::actualizar(real segundosDesdeUltima)
 {
-	
+	//std::cout<<"Actualizando"<<std::endl;
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 	

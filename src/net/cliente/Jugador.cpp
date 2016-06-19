@@ -8,11 +8,11 @@ Jugador::Jugador(Megaman* controlado, VentanaJuego& ventana, const Emisor& emi):
 					ultimaTecla(0),
 					controlado(controlado),
 					emisor(emi){
-	ventana.signal_key_press_event().connect(
-			sigc::mem_fun(*this, &Jugador::detectarPresionTecla),false);
+	conexionKeyPress = ventana.signal_key_press_event().connect(
+					sigc::mem_fun(*this, &Jugador::detectarPresionTecla),false);
 
-	ventana.signal_key_release_event().connect(
-			sigc::mem_fun(*this, &Jugador::detectarLiberacionTecla),false);
+	conexionKeyRelease = ventana.signal_key_release_event().connect(
+					sigc::mem_fun(*this, &Jugador::detectarLiberacionTecla),false);
 }
 
 bool Jugador::detectarPresionTecla(GdkEventKey* evento){
@@ -85,12 +85,16 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 			}	
 			case GDK_KEY_x:
 			{
+				
 				emisor.enviar(MENSAJE_KEY_X);
 				controlado->disparar();
 				break;
 			}
 			case GDK_KEY_z:
 			{
+				
+				std::cout<<"Detecto que apretaste Z!"<<std::endl;
+				std::cout<<controlado<<std::endl;
 				emisor.enviar(MENSAJE_KEY_Z);
 				controlado->saltar();
 				
@@ -134,4 +138,13 @@ bool Jugador::detectarLiberacionTecla(GdkEventKey* evento){
 		}
 	}
 	return true;
+}
+
+Jugador::~Jugador(){
+	desconectar();
+}
+
+void Jugador::desconectar(){
+	conexionKeyPress.disconnect();
+	conexionKeyRelease.disconnect();
 }

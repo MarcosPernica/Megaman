@@ -27,15 +27,21 @@ class Jugador{
 	unsigned int ultimaTecla;
 	Megaman* controlado;
 	const Emisor& emisor;
+	sigc::connection conexionKeyPress;
+	sigc::connection conexionKeyRelease;
+	
 	public:
 	/**
 	 * Usado del lado del cliente
 	 * */
 	 Jugador(Megaman* controlado, VentanaJuego& ventana,const Emisor& emi);
+	 
+	 ~Jugador();
 	/**
 	 * Esta se uso del lado de cliente para detectar el teclado
 	 * */
 	bool detectarPresionTecla(GdkEventKey* evento);
 	bool detectarLiberacionTecla(GdkEventKey* evento);
+	void desconectar();
 };
 #endif

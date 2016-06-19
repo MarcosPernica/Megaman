@@ -166,6 +166,7 @@ void VentanaJuego::mostrarPantallaSeleccion(){
 	conexionMiOnDraw.disconnect();
 	remove();
 	add(cajaSplash);
-	
-	
+	jugador->desconectar();
+	delete jugador;
+	jugador = NULL;
 }
