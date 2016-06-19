@@ -25,9 +25,9 @@ Mundo::Mundo(real anchoCamara,
 	     uint cantidad_jugadores) : 
 	     mundo(b2Vec2(0,GRAVEDAD)), 
 	     terminado(false),
+	     anterior_ID(cantidad_jugadores),
 	     estadisticas(cantidad_jugadores)
 {
-	anterior_ID = cantidad_jugadores;
 	
 	nombre_nivel = n;
 	Cadena nombre(nombre_nivel);
@@ -43,6 +43,51 @@ Mundo::Mundo(real anchoCamara,
 	}
 	
 	camara->reiniciar();
+}
+
+Mundo::~Mundo()
+{
+	std::map<uint, Megaman*>::iterator a = megamanes.begin();
+
+	while(a != megamanes.end())
+		delete (a++)->second;
+
+	std::map<uint, Enemigo*>::iterator b = enemigos.begin();
+
+	while(b != enemigos.end())
+		delete (b++)->second;
+
+	std::map<uint, PowerUp*>::iterator c = powerUps.begin();
+
+	while(c != powerUps.end())
+		delete (c++)->second;
+
+	std::map<uint, Disparo*>::iterator d = disparos.begin();
+
+	while(d != disparos.end())
+		delete (d++)->second;
+
+	std::map<uint, Puerta*>::iterator e = puertas.begin();
+
+	while(e != puertas.end())
+		delete (e++)->second;
+
+	delete camara;
+
+	std::list<CajaAccion*>::iterator f = controladores.begin();
+
+	while(f != controladores.end())
+		delete *(f++);
+	
+	std::list<Interactuable*>::iterator g = zonas.begin();
+
+	while(g != zonas.end())
+		delete *(g++);
+
+	std::list<Construccion*>::iterator h = construcciones.begin();
+
+	while(h != construcciones.end())
+		delete *(h++);
 }
 
 void Mundo::setEstadisticas(EstadisticasMundo& estadisticas){
@@ -88,7 +133,8 @@ void Mundo::finalizar()
 {
 	terminado = true;
 }
-uint Mundo::generarID(){
+uint Mundo::generarID()
+{
 	return ++anterior_ID;
 }
 

@@ -102,6 +102,8 @@ public:
 	      b2Vec2 posicionCamara,
 	      const std::string& nombre_nivel = "nivel.xml",
 	      uint cantidad_jugadores = 1);
+	~Mundo();
+
 	b2World &obtenerMundo();
 
 	b2Vec2 obtenerPosicionCamara();

@@ -80,4 +80,6 @@ private:
 #define ANIM_PUERTA "imagenes/puerta/"
 #define ANIM_PODER "imagenes/poder/1.png"
 
+#define ANIM_PUAS "imagenes/pinches/1.png"
+
 #endif
