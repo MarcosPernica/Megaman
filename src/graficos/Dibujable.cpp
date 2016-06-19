@@ -39,8 +39,22 @@ void Dibujable::dibujarRectanguloLleno(const Cairo::RefPtr<Cairo::Context>& cr,
 		      alto*factorAmplificacion);
 	cr->fill();
 	cr->restore();
-	
 }
+
+void Dibujable::dibujarCirculoLleno(const Cairo::RefPtr<Cairo::Context>& cr, 
+									b2Vec2 origen, 
+									uint factorAmplificacion, 
+									b2Vec2 posicion, 
+									real radio, 
+									uint color){
+	b2Vec2 pos_final = factorAmplificacion*(posicion - origen);									
+	cr->save();
+	cr->set_source_rgb(color & 0xFF0000, color & 0x00FF00, color & 0x0000FF);
+	cr->arc(posicion.x,posicion.y,radio,0, 2 * M_PI);
+	cr->fill();
+	cr->restore();
+}
+
 void Dibujable::dibujarRectangulo(const Cairo::RefPtr<Cairo::Context>& cr, 
 				  b2Vec2 origen,
 				  uint factorAmplificacion, 
@@ -143,3 +157,5 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 	cr->paint();
 	cr->restore();
 }
+
+

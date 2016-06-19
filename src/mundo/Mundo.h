@@ -181,9 +181,9 @@ public:
 	void setEstadisticas(EstadisticasMundo& estadisticas);
 	
 	/**
-	 * Copia las estadísticas al pasado por referencia
+	 * guarda las estadisticas en el objeto que se pasa
 	 * */
-	void obtenerEstadisticas(EstadisticasMundo& en);
+	EstadisticasMundo& obtenerEstadisticas();
 	
 	/**
 	 * Agrega un arma para todos los megamanes

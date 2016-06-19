@@ -25,8 +25,7 @@ Mundo::Mundo(real anchoCamara,
 	     uint cantidad_jugadores) : 
 	     mundo(b2Vec2(0,GRAVEDAD)), 
 	     terminado(false),
-	     anterior_ID(cantidad_jugadores),
-	     estadisticas(cantidad_jugadores)
+	     anterior_ID(cantidad_jugadores)
 {
 	
 	nombre_nivel = n;
@@ -100,17 +99,21 @@ void Mundo::setEstadisticas(EstadisticasMundo& estadisticas){
 			it_m->second->agregarArma(*it,100);/////////////PONELE QUE 100 ES LA MÁXIMA CANTIDAD DE PLASMA///////////////////
 		}
 	}
-	for(uint i = 0; i<megamanes.size(); i++){
-		megamanes[i+1]->setCantidadVidas(estadisticas.vidasDe(i));
+	uint pos = 0;
+	std::map<uint, Megaman*>::iterator it_m;
+	for(it_m=megamanes.begin(); it_m != megamanes.end(); ++it_m){
+		it_m->second->setCantidadVidas(estadisticas.vidasDe(pos));
+		pos += 1;
 	}
 }
-
-void Mundo::obtenerEstadisticas(EstadisticasMundo& en){
-	en = estadisticas;
+EstadisticasMundo& Mundo::obtenerEstadisticas(){
+	std::cout<<"Vidas de Mundo:"<<this->estadisticas.vidasDe(0)<<std::endl;
+	return estadisticas;
 }
 
 void Mundo::notificarMuerteMegaman(Megaman* muerto){
 	estadisticas.perderUnaVida(muerto->obtenerID()-1);
+	std::cout<<"Se notifica la muerte de megaman"<<std::endl;
 }
 
 

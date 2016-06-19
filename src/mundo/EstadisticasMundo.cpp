@@ -1,15 +1,16 @@
 #include "EstadisticasMundo.h"
 #include <iostream>
-EstadisticasMundo::EstadisticasMundo(uint cantidad_jugadores):Snapshotable(60000){
-	for(uint i =0; i <cantidad_jugadores;i++){
-		vidas.push_back(3);
+#include <cmath>
+EstadisticasMundo::EstadisticasMundo():Snapshotable(60000){
+	for(uint i =0; i <4;i++){
+		vidas[i]=3;
 	}
 	
 }
-EstadisticasMundo::EstadisticasMundo(Snapshot& sn, uint cantidad_jugadores):Snapshotable(60000){
+EstadisticasMundo::EstadisticasMundo(Snapshot& sn):Snapshotable(60000){
 	std::cout<<"Creando EstadisticasMundo desde snapshot!!!"<<std::endl;
-	for(uint i =0; i <cantidad_jugadores;i++){
-		vidas.push_back(3);
+	for(uint i =0; i <4;i++){
+		vidas[i]=3;
 	}
 }
 void EstadisticasMundo::agregarArma(int disparo){
@@ -28,7 +29,10 @@ void EstadisticasMundo::setVidas(uint posicion_jugador, uint vs){
 }
 
 void EstadisticasMundo::perderUnaVida(uint posicion_jugador){
-	vidas[posicion_jugador]-=1;
+	
+	if(vidas[posicion_jugador]>=1){
+		vidas[posicion_jugador]-=1;
+	}
 }
 
 #define PROP_TIPO_DEL_ARMA "tipo_del_arma"
@@ -43,9 +47,7 @@ void EstadisticasMundo::agregarPropiedadesASnapshot(Snapshot& sn){
 		sn.agregarPropiedad(oss.str(),armas_disponibles[i]);
 	}
 	
-	int largo_vidas = vidas.size();
-	SN_AGREGAR_PROPIEDAD(largo_vidas);
-	for(int i = 0; i < vidas.size(); i++){
+	for(int i = 0; i < 4; i++){
 		std::ostringstream oss;
 		oss<<PROP_VIDA<<i;
 		sn.agregarPropiedad(oss.str(),vidas[i]);
@@ -64,9 +66,7 @@ void EstadisticasMundo::setStateFromSnapshot(const Snapshot& sn){
 		sn.obtenerPropiedad(oss.str(),armas_disponibles[i]);
 	}
 	
-	int largo_vidas;
-	SN_OBTENER_PROPIEDAD(largo_vidas);
-	for(int i = 0; i < largo_vidas; i++){
+	for(int i = 0; i < 4; i++){
 		std::ostringstream oss;
 		oss<<PROP_VIDA<<i;
 		sn.obtenerPropiedad(oss.str(),vidas[i]);

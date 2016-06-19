@@ -32,6 +32,12 @@ class Dibujable{
 	static b2Vec2 mundoARender(b2Vec2 vector);
 	static real renderAMundo(real numero);	
 	static real mundoARender(real numero);
+	static void dibujarCirculoLleno(const Cairo::RefPtr<Cairo::Context>& cr, 
+									b2Vec2 origen, 
+									uint factorAmplificacion, 
+									b2Vec2 posicion, 
+									real radio, 
+									uint color);
 };
 
 #endif

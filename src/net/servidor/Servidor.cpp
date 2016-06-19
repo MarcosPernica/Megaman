@@ -60,6 +60,13 @@ void Servidor::ejecutar(){
 			if(!nivelContinua) break;
 		}
 		
+		//guardo las estadisticas
+		EstadisticasMundo& correctas = mundo->obtenerEstadisticas();
+		//estadisticas.copiarDe(correctas);
+		estadisticas = correctas;
+		std::cout<<"Vidas(estadisticas):"<<estadisticas.vidasDe(0)<<std::endl;
+		std::cout<<"Vidas(correctas):"<<correctas.vidasDe(0)<<std::endl;
+		
 		//termino la simulacion
 		desconectarProxiesDeMegamanes();
 		
@@ -111,6 +118,7 @@ void Servidor::ejecutarNivel(char nivel){
 	
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
 	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str(),contenedor.cantidadJugadores());
+	mundo->setEstadisticas(estadisticas);
 	
 	
 	conectarProxiesConMegamanes();

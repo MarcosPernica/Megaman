@@ -6,8 +6,9 @@
 #include "../../common/Lock.h"
 #include "../../mundo/SimuladorSinVentana.h"
 #include "CallbackFin.h"
-
+#include "../../mundo/Mundo.h"
 class Servidor{
+	EstadisticasMundo estadisticas;
 	
 	Mundo* mundo;
 	

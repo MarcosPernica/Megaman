@@ -12,10 +12,10 @@ class EstadisticasMundo: public Snapshotable{
 	/**
 	 * Las vidas de cada Megaman, en orden de llegada
 	 * */
-	std::vector<uint> vidas;
+	uint vidas[4];
 	public:
-	EstadisticasMundo(uint cantidad_jugadores);
-	EstadisticasMundo(Snapshot& sn, uint cantidad_jugadores);
+	EstadisticasMundo();
+	EstadisticasMundo(Snapshot& sn);
 	void agregarArma(int tipo_disparo);
 	const std::vector<int>& obtenerArmas();
 	uint vidasDe(uint posicion_jugador);

@@ -494,7 +494,7 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 				  imagen->get_height(),
 				  imagen,
 				  false);
-	b2Vec2 posicion_vida(20+0*100,20);
+	b2Vec2 posicion_vida(20+mi_posicion*100,20);
 	Dibujable::dibujarRectanguloLleno(cr, 
 				  o,
 				  factorAmplificacion, 
@@ -517,6 +517,7 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 			color = 0x00FFFF;
 			break;
 	}
+	//barrita de vida
 	Dibujable::dibujarRectanguloLleno(cr, 
 				  o,
 				  factorAmplificacion, 
@@ -525,6 +526,7 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 				  (real)100/(real)obtenerEnergiaMaxima()*(real)obtenerEnergiaActual(),
 				  color
 				  );
+	//barrita de plasma
 	Dibujable::dibujarRectanguloLleno(cr, 
 				  o,
 				  factorAmplificacion, 
@@ -533,6 +535,17 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 				  std::max(armas.at(armaSeleccionada).plasma,(char)0),
 				  color
 				  );
+	for(uint i =0; i<obtenerCantidadVidas(); i++){
+		//cantidad de vidas
+		Dibujable::dibujarCirculoLleno(cr,
+					o,
+					factorAmplificacion,
+					posicion_vida+b2Vec2(40,10+i*40),
+					15,//radio
+					color
+					);
+	}
+	
 	
 }
 

@@ -46,6 +46,9 @@ private:
 	real agarreX;//snapshoteado
 	b2Vec2 posicionSpawn;
 
+	/**
+	 * Esto se refiere a si es el jugador 1,2,3...
+	 * */
 	uint mi_posicion;
 public:
 	Megaman(uint ID,
