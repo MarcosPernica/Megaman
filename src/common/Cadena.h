@@ -28,7 +28,7 @@ public:
 	/*Comprime las apariciones contiguas de un caracter en uno solo.*/
 	void comprimir(char caracter);
 
-	void buscarReplazar(char buscar, 
+	static void buscarReemplazar(std::string &cadena, char buscar, 
 		                char reemplazar);
 
 	operator double();

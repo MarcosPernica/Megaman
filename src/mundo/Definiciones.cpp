@@ -1,6 +1,7 @@
 #include "Definiciones.h"
-#include <sstream>
 #include <iostream>
+#include <locale>
+
 namespace SJuego
 {
 	Constantes attr;
@@ -125,14 +126,12 @@ namespace SJuego
 		while(!archivo.eof())
 		{
 			archivo >> linea;
-			partes = linea.partir(Cadena("="));
-			std::istringstream iss(partes.at(2));
-			double leido;
-			
-			iss.imbue(std::locale(iss.getloc(), new ConComa()));
-			iss>>leido;
-			
-			*punteros[partes.at(0)] = leido;			
+			partes = linea.partir(Cadena("="));	
+
+			/*Setea el formato decimal al de la maquina.*/
+			Cadena::buscarReemplazar(partes.at(2), ',' , std::use_facet< std::numpunct<char> >(std::cout.getloc()).decimal_point());	
+	
+			*punteros[partes.at(0)] = partes.at(2);			
 		}
 
 	}

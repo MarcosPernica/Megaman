@@ -5,7 +5,7 @@
 #include <Box2D/Box2D.h>
 #include "Definiciones.h"
 #include "Callbacks.h"
-#include "Cadena.h"
+#include "../common/Cadena.h"
 #include <string>
 
 #include "Megaman.h"

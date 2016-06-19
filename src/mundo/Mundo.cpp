@@ -9,7 +9,7 @@
 #include "Enemigo.h"
 #include "PowerUp.h"
 #include "Puas.h"
-#include "Cadena.h"
+#include "../common/Cadena.h"
 #include "../common/exceptions.h"
 #include <tinyxml.h>
 #include "../net/Debug.h"

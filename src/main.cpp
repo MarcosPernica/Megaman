@@ -23,9 +23,6 @@
 #include "common/deslocalizacion.h"
 int main(int argc, char *argv[])
 {
-	//std::locale::global( std::locale( "" ) );
-	std::locale::global(std::locale(std::cout.getloc(), new ConComa()));
-
 	timeval tv;
 	gettimeofday(&tv, 0);
 	std::ostringstream oss;
@@ -44,8 +41,6 @@ int main(int argc, char *argv[])
 #include "common/deslocalizacion.h"
 int main(int argc, char *argv[])
 {
-	//std::locale::global( std::locale( "" ) );
-	std::locale::global(std::locale(std::cout.getloc(), new ConComa()));
 	SJuego::attr.cargar("configuracion.conf");
 	Servidor servidor;
 	servidor.ejecutar();
