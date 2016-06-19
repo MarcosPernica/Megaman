@@ -59,6 +59,8 @@ public:
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
+	
+	static Disparo* crearDesdeTipo(int tipo,uint ID, Mundo &mundo, ushort categoriaTarget);
 };
 
 class Plasma : public Disparo, public Animado

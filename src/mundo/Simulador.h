@@ -8,8 +8,10 @@
 
 class Simulador{
 	public:
+	sigc::connection conexion;
 	Simulador(Mundo& mundo, uint milisPorActualizacion);
 	bool on_actualizar();
+	void desconectar();
 	private:
 	Mundo& mundo;
 	uint milisPorActualizacion;

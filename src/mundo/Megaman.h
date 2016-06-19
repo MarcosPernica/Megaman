@@ -80,6 +80,7 @@ public:
 	void recuperarPlasma(int cantidadPlasma);
 	char obtenerCantidadPlasma();
 	uint obtenerCantidadVidas();
+	void setCantidadVidas(uint cuantas);
 	void atacado(uint dano, Disparo *disparo);
 	void inmovilizar(); //Por un cuadro no puede caminar
 
@@ -88,6 +89,7 @@ public:
 	void actualizar(real deltaT);
 
 	void agregarArma(Disparo *disparom, uint cantidadPlasma);
+	void agregarArma(int tipo, uint cantidadPlasma);
 	void alMorir();
 	
 	virtual void agregarPropiedadesASnapshot(Snapshot& snapshot);

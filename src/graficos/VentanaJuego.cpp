@@ -169,4 +169,6 @@ void VentanaJuego::mostrarPantallaSeleccion(){
 	jugador->desconectar();
 	delete jugador;
 	jugador = NULL;
+	simulador->desconectar();
+	delete simulador;
 }

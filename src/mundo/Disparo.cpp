@@ -7,6 +7,17 @@
 #include "../common/Rectangulo.h"
 #include "../net/snapshots/Snapshot.h"
 
+Disparo* Disparo::crearDesdeTipo(int tipo,uint ID, Mundo &mundo, ushort categoriaTarget){
+	switch(tipo){
+		case TIPO_Plasma: return new Plasma(ID,mundo,categoriaTarget);
+		case TIPO_Chispa: return new Chispa(ID,mundo,categoriaTarget);
+		case TIPO_Anillo: return new Anillo(ID,mundo,categoriaTarget);
+		case TIPO_Fuego:  return new Fuego(ID,mundo,categoriaTarget);
+		case TIPO_Iman:   return new Iman(ID,mundo,categoriaTarget);
+		case TIPO_Bomba:  return new Bomba(ID,mundo,categoriaTarget);
+	}
+	return NULL;
+}
 void Disparo::actualizar(real DeltaT)
 {
 }

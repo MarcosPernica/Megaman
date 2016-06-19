@@ -67,13 +67,14 @@ IMPLEMENTAR_CALL(TERMINAR_ENVIO_FULLSNAPSHOT){
 		
 		//------------ACÁ HAY QUE RECOMENTAR!!!!!-------------
 		
+		/*
 		std::vector<SnapshotSerializada>::iterator it;
 		std::cout<<"----------mostrando fs recibida"<<std::endl;
 		for(it = recibidas.begin(); it != recibidas.end(); ++it){
 			std::cout<<*it<<std::endl;
 		}
 		std::cout<<"--------------finfs recibida"<<std::endl;
-		
+		*/
 		//horario_ultima_recepcion=clock();
 		a_punto_de_inyectar = FullSnapshot::desdeSerializada(recibidas);
 		/*

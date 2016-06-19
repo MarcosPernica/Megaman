@@ -107,25 +107,6 @@ void Snapshot::agregarPropiedad(const std::string& nombre, char valor){
 void Snapshot::obtenerPropiedad(const std::string& nombre, char& ponerEn) const{
 	ponerEn = (char) obtenerPropiedad(nombre);
 }
-//-------------------Arma*--------------------------------//
-void Snapshot::agregarPropiedad(const std::string& nombre, Disparo* valor){
-	agregarPropiedad(nombre,valor->getTipo());
-}
-
-void Snapshot::obtenerPropiedad(const std::string& nombre, Disparo*& ponerEn) const{
-	//delete ponerEn;
-	int obtenido = obtenerPropiedad(nombre);
-	switch(obtenido){
-		default:
-		;
-			//ponerEn = new Plasma();
-		/*
-		 * acá iría case TIPO_DISP_PLASMA :
-		 * case TIPO_DISP_BOMBA :
-		 * y así...
-		 * */
-	}
-}
 
 //--------------------Orientacion-------------------------//
 void Snapshot::agregarPropiedad(const std::string& nombre, Orientaciones valor){

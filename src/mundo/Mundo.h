@@ -1,6 +1,6 @@
 #ifndef MUNDO	
 #define MUNDO
-
+#include "EstadisticasMundo.h"
 #include <list>
 #include <Box2D/Box2D.h>
 #include "Definiciones.h"
@@ -88,7 +88,14 @@ private:
 	
 	uint anterior_ID; 
 	
+	EstadisticasMundo estadisticas;
+	
 public:
+	/**
+	 * Cuando un Megaman muere, debe llamarse este método para que se le descuente una vida
+	 * */
+	void notificarMuerteMegaman(Megaman* muerto);
+	
 	uint generarID();
 	Mundo(real anchoCamara, 
 	      real altoCamara, 
@@ -165,6 +172,21 @@ public:
 	 * */
 	Megaman* obtenerMegaman(uint posicion);
 	void obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa);
+	
+	/**
+	 * Configura las estadísticas de este Mundo (vidas y armas de cada Megaman)
+	 * */
+	void setEstadisticas(EstadisticasMundo& estadisticas);
+	
+	/**
+	 * Copia las estadísticas al pasado por referencia
+	 * */
+	void obtenerEstadisticas(EstadisticasMundo& en);
+	
+	/**
+	 * Agrega un arma para todos los megamanes
+	 * */
+	void agregarArma(int tipo_arma);
 
 private:
 	void agregarCuboMadera(real ancho, real alto, b2Vec2 posicion);

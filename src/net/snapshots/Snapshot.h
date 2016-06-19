@@ -54,13 +54,6 @@ class Snapshot{
 	void agregarPropiedad(const std::string& nombre, Orientaciones valor);
 	void obtenerPropiedad(const std::string& nombre, Orientaciones& ponerEn) const;
 	
-	//-------------------Arma*--------------------------------//
-	void agregarPropiedad(const std::string& nombre, Disparo* valor);
-	/**
-	 * Esto crea una nueva Arma y borra la que esté en ponerEn!!
-	 * */
-	void obtenerPropiedad(const std::string& nombre, Disparo*& ponerEn) const;
-	
 	
 	int getID() const;
 	int getTipo() const;

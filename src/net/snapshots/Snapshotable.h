@@ -52,6 +52,8 @@ class Mundo;
 #define TIPO_Fireman		30
 #define TIPO_Magnetman		31
 
+#define TIPO_EstadisticasMundo	32
+
 #define GENERAR_GET_TIPO(clase) virtual int getTipo() const {return TIPO_ ## clase;}
 
 class Snapshotable{

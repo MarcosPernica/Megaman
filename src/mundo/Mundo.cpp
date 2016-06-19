@@ -24,13 +24,12 @@ Mundo::Mundo(real anchoCamara,
 	     const std::string& n,
 	     uint cantidad_jugadores) : 
 	     mundo(b2Vec2(0,GRAVEDAD)), 
-	     terminado(false)
+	     terminado(false),
+	     estadisticas(cantidad_jugadores)
 {
 	anterior_ID = cantidad_jugadores;
 	
-	
 	nombre_nivel = n;
-	//std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
 	Cadena nombre(nombre_nivel);
 
 	mundo.SetContactListener(&listenerColisiones);
@@ -45,6 +44,30 @@ Mundo::Mundo(real anchoCamara,
 	
 	camara->reiniciar();
 }
+
+void Mundo::setEstadisticas(EstadisticasMundo& estadisticas){
+	this->estadisticas = estadisticas;
+	const std::vector<int>& armas = estadisticas.obtenerArmas();
+	std::vector<int>::const_iterator it;
+	for(it = armas.begin(); it!= armas.end(); ++it){
+		std::map<uint, Megaman*>::iterator it_m;
+		for(it_m = megamanes.begin(); it_m!=megamanes.end(); ++it_m){
+			it_m->second->agregarArma(*it,100);/////////////PONELE QUE 100 ES LA MÁXIMA CANTIDAD DE PLASMA///////////////////
+		}
+	}
+	for(uint i = 0; i<megamanes.size(); i++){
+		megamanes[i+1]->setCantidadVidas(estadisticas.vidasDe(i));
+	}
+}
+
+void Mundo::obtenerEstadisticas(EstadisticasMundo& en){
+	en = estadisticas;
+}
+
+void Mundo::notificarMuerteMegaman(Megaman* muerto){
+	estadisticas.perderUnaVida(muerto->obtenerID()-1);
+}
+
 
 b2Vec2 Mundo::obtenerPosicionCamara()
 {
@@ -615,6 +638,8 @@ void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)
 	std::map<uint, PowerUp*>::const_iterator d = powerUps.begin();
 	while(d != powerUps.end())
 		mapa[d->first] = (d++)->second;
+		
+	mapa[estadisticas.obtenerID()] = &estadisticas;//se sincronizan las estadísticas!!
 }
 
 void Mundo::obtenerSnapshot(FullSnapshot& en){
@@ -725,4 +750,9 @@ Megaman* Mundo::obtenerMegaman(uint posicion){
 		++it;
 	}
 	return it->second;
+}
+
+void Mundo::agregarArma(int tipo_arma){
+	estadisticas.agregarArma(tipo_arma);
+	finalizar();
 }

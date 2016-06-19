@@ -169,8 +169,24 @@ void Megaman::agregarArma(Disparo * disparo, uint cantidadPlasma)
 	armas.push_back(arma);
 }
 
+void Megaman::agregarArma(int tipo, uint cantidadPlasma)
+{
+	Arma arma;
+	arma.arma = Disparo::crearDesdeTipo(
+										tipo,
+										obtenerMundo().generarID(),
+										obtenerMundo(), 
+										AURAENEMIGOS
+										);
+	arma.plasma = cantidadPlasma;
+
+	armas.push_back(arma);
+}
+
+
 void Megaman::alMorir()
 {	
+	obtenerMundo().notificarMuerteMegaman(this);
 }
 
 void Megaman::inmovilizar()
@@ -226,14 +242,15 @@ Megaman::Megaman(uint ID,
 {
 	std::cout<<"ID:"<<ID<<std::endl;
 	deshabilitarFriccion();
-	
+	/*
 	Arma arma;
 
 	arma.plasma = CANTIDADINFINITAPLASMA;
 	arma.arma = new Plasma(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
 
 	armas.push_back(arma);
-
+	*/
+	agregarArma(TIPO_Plasma,CANTIDADINFINITAPLASMA);
 	/*Para saber si esta pisando.*/
 
 	agregarCuerpoInmaterial(ANCHOSPRITEMEGAMAN*0.5,0.3,b2Vec2(0,ALTOSPRITEMEGAMAN*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES | DISPAROS);
@@ -377,18 +394,9 @@ void Megaman::atacado(uint dano, Disparo *disparo)
  * Según el estándard de C++ false = 0 y true = 1, aprovecho eso
  * */
 
-#define PROP_VIDAS 				"vidas"
-#define PROP_PUEDE_SALTAR 		"puedeSaltar"
-#define PROP_PUEDE_SUBIR 		"puedeSubir"
-
-#define PROP_ESTADO_SALTO 		"estadoSalto"
-#define PROP_ESTADO_DISPARO 	"estadoDisparo"
-#define PROP_ESTADO_ESCALADO 	"estadoEscalado"
-#define PROP_ESTADO_CORRIENDO 	"estadoCorriendo"
-
-#define PROP_AGARREX 			"agarreX"
-#define PROP_TOPEY 				"topeY"
-//TODO: SERIALIZAR ARMAS
+#define PROP_ARMAS_CANTIDAD  	"cantidad_armas"
+#define PROP_ARMAS_TIPO  		"tipo_arma"
+#define PROP_ARMAS_PLASMA  		"plasma_arma"
 
 void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	Entidad::agregarPropiedadesASnapshot(sn);
@@ -401,20 +409,16 @@ void Megaman::agregarPropiedadesASnapshot(Snapshot& sn){
 	SN_AGREGAR_PROPIEDAD(corriendo);
 	SN_AGREGAR_PROPIEDAD(agarreX);
 	
-	//unsigned int tam = armas.size();
-	
-	/* SNAPSHOTEAR LAS ARMAS ES UN POCO MÁS COMPLICADO PQ EL TAMANIO DEL VECTOR VARÍA MARCOS REVISALO
-	SN_AGREGAR_PROPIEDAD(armas[0].plasma);
-	//SN_AGREGAR_PROPIEDAD(armas[0].arma);
-	SN_AGREGAR_PROPIEDAD(armas[1].plasma);
-	//SN_AGREGAR_PROPIEDAD(armas[1].arma);
-	SN_AGREGAR_PROPIEDAD(armas[2].plasma);
-	//SN_AGREGAR_PROPIEDAD(armas[2].arma);
-	SN_AGREGAR_PROPIEDAD(armas[3].plasma);
-	//SN_AGREGAR_PROPIEDAD(armas[3].arma);
-	SN_AGREGAR_PROPIEDAD(armas[4].plasma);
-	//SN_AGREGAR_PROPIEDAD(armas[4].arma);
-	*/
+	sn.agregarPropiedad(PROP_ARMAS_CANTIDAD,armas.size());
+	for(uint i =0; i< armas.size(); i++){
+		std::ostringstream tipo;
+		tipo<<PROP_ARMAS_TIPO<<i;
+		sn.agregarPropiedad(tipo.str(),armas[i].arma->getTipo());
+		
+		std::ostringstream plasma;
+		plasma<<PROP_ARMAS_PLASMA<<i;
+		sn.agregarPropiedad(plasma.str(),armas[i].plasma);
+	}
 }
 void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	Entidad::setStateFromSnapshot(sn);
@@ -427,18 +431,35 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 	SN_OBTENER_PROPIEDAD(corriendo);
 	SN_OBTENER_PROPIEDAD(agarreX);
 	
-	/* SNAPSHOTEAR LAS ARMAS ES UN POCO MÁS COMPLICADO PQ EL TAMANIO DEL VECTOR VARÍA MARCOS REVISALO
-	SN_OBTENER_PROPIEDAD(armas[0].plasma);
-	//SN_OBTENER_PROPIEDAD(armas[0].arma);
-	SN_OBTENER_PROPIEDAD(armas[1].plasma);
-	//SN_OBTENER_PROPIEDAD(armas[1].arma);
-	SN_OBTENER_PROPIEDAD(armas[2].plasma);
-	//SN_OBTENER_PROPIEDAD(armas[2].arma);
-	SN_OBTENER_PROPIEDAD(armas[3].plasma);
-	//SN_OBTENER_PROPIEDAD(armas[3].arma);
-	SN_OBTENER_PROPIEDAD(armas[4].plasma);
-	//SN_OBTENER_PROPIEDAD(armas[4].arma);
-	*/
+	int cantidad_armas;
+	sn.obtenerPropiedad(PROP_ARMAS_CANTIDAD,cantidad_armas);
+	
+	while(cantidad_armas>armas.size()){
+		Arma nueva;
+		nueva.arma = NULL;
+		nueva.plasma = 0;
+		armas.push_back(nueva);
+	}
+	
+	for(int i =0; i< cantidad_armas; i++){
+		delete armas[i].arma;
+		
+		std::ostringstream tipo;
+		tipo<<PROP_ARMAS_TIPO<<i;
+		int tipo_arma;
+		sn.obtenerPropiedad(tipo.str(),tipo_arma);
+		
+		armas[i].arma = Disparo::crearDesdeTipo(
+										tipo_arma,
+										obtenerMundo().generarID(),
+										obtenerMundo(), 
+										AURAENEMIGOS
+										);
+		
+		std::ostringstream plasma;
+		plasma<<PROP_ARMAS_PLASMA<<i;
+		sn.obtenerPropiedad(plasma.str(),armas[i].plasma);
+	}
 }
 
 //------------------------------------------------------------------
@@ -513,4 +534,8 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 				  color
 				  );
 	
+}
+
+void Megaman::setCantidadVidas(uint cuantas){
+	vidas = cuantas;
 }

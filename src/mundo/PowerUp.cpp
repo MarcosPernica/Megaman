@@ -52,6 +52,7 @@ HabilitadorBomba::HabilitadorBomba(uint ID, Mundo &mundo, const b2Vec2 &posicion
 
 void HabilitadorBomba::aumentar(Megaman & megaman)
 {
+	/*
 	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
 	std::list<Megaman *>::iterator i = megamanes.begin();
 
@@ -60,6 +61,9 @@ void HabilitadorBomba::aumentar(Megaman & megaman)
 
 	eliminarPowerUp();
 	obtenerMundo().finalizar();
+	*/
+	eliminarPowerUp();
+	obtenerMundo().agregarArma(TIPO_Bomba);
 }
 
 void HabilitadorBomba::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -81,6 +85,7 @@ HabilitadorIman::HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion) 
 
 void HabilitadorIman::aumentar(Megaman & megaman)
 {
+	/*
 	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
 	std::list<Megaman *>::iterator i = megamanes.begin();
 
@@ -89,6 +94,9 @@ void HabilitadorIman::aumentar(Megaman & megaman)
 
 	eliminarPowerUp();
 	obtenerMundo().finalizar();
+	*/
+	eliminarPowerUp();
+	obtenerMundo().agregarArma(TIPO_Iman);
 }
 
 void HabilitadorIman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -110,6 +118,7 @@ HabilitadorChispa::HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posici
 
 void HabilitadorChispa::aumentar(Megaman & megaman)
 {
+	/*
 	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
 	std::list<Megaman *>::iterator i = megamanes.begin();
 
@@ -118,6 +127,9 @@ void HabilitadorChispa::aumentar(Megaman & megaman)
 
 	eliminarPowerUp();
 	obtenerMundo().finalizar();
+	*/
+	eliminarPowerUp();
+	obtenerMundo().agregarArma(TIPO_Chispa);
 }
 
 void HabilitadorChispa::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -139,6 +151,7 @@ HabilitadorAnillo::HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posici
 
 void HabilitadorAnillo::aumentar(Megaman & megaman)
 {
+	/*
 	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
 	std::list<Megaman *>::iterator i = megamanes.begin();
 
@@ -147,6 +160,9 @@ void HabilitadorAnillo::aumentar(Megaman & megaman)
 
 	eliminarPowerUp();
 	obtenerMundo().finalizar();
+	*/
+	eliminarPowerUp();
+	obtenerMundo().agregarArma(TIPO_Anillo);
 }
 
 void HabilitadorAnillo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -167,6 +183,7 @@ HabilitadorFuego::HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion
 
 void HabilitadorFuego::aumentar(Megaman & megaman)
 {
+	/*
 	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
 	std::list<Megaman *>::iterator i = megamanes.begin();
 
@@ -175,6 +192,9 @@ void HabilitadorFuego::aumentar(Megaman & megaman)
 
 	eliminarPowerUp();
 	obtenerMundo().finalizar();
+	*/
+	eliminarPowerUp();
+	obtenerMundo().agregarArma(TIPO_Fuego);
 }
 
 void HabilitadorFuego::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
