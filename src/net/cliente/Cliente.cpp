@@ -15,10 +15,6 @@ void Cliente::conectarse(const std::string& nombre){
 	#ifndef DEBUG
 	socket.connectTo("127.0.0.1",10020);
 	#endif
-	/*
-	ReceptorCliente receptor(socket,*this);
-	Emisor emisor(socket);
-	* */
 	emisor.enviar(MENSAJE_ID,nombre);
 	this->nombre = nombre;
 	receptor.start();
@@ -83,4 +79,9 @@ void Cliente::enviarIniciar(int nivel){
 	std::ostringstream oss;
 	oss<<nivel;
 	emisor.enviar(MENSAJE_INICIAR,oss.str());
+}
+
+Cliente::~Cliente(){
+	std::cout<<"Cerrando el socket desde ~Cliente"<<std::endl;
+	socket.closeS();
 }

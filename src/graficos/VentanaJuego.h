@@ -12,11 +12,18 @@
 #include "../net/cliente/Cliente.h"
 #include "Fondo.h"
 
+class Terminador{
+	public:
+	virtual void terminar() = 0;
+};
+
 class Mundo;
 class Jugador;
 class Simulador;
 class VentanaJuego : public Gtk::Window{
 	private:
+	Terminador* terminador;//se destruye afuera
+	
 	Fondo fondo;
 	std::string nombre;
 	Gtk::DrawingArea darea;
@@ -27,20 +34,19 @@ class VentanaJuego : public Gtk::Window{
 	sigc::connection conexionActualizarDibujo;
 	sigc::connection conexionMiOnDraw;
 	
-	sigc::signal<bool>::iterator functorActualizarDibujo;
-	
 	Gtk::Label lobby;
 	
 	Gtk::HBox malos;
-	std::vector<Gtk::Button*> botonesMalos;
+	std::vector<Gtk::Button*> botonesMalos;//los destruyo
 	
-	Cliente cliente;
+	Cliente cliente;//no sabe bien cómo destruirse
 	
-	Jugador* jugador;
-	Mundo* mundo;
-	Simulador* simulador;
+	Jugador* jugador;//los destruyo
+	Mundo* mundo;//los destruyo
+	Simulador* simulador;//los destruyo
 	public:
-	VentanaJuego();
+	bool cerrarVentana(GdkEventAny* evento);
+	VentanaJuego(Terminador* terminador);
 	~VentanaJuego();
 	
 	uint cantidad_jugadores;
@@ -61,5 +67,8 @@ class VentanaJuego : public Gtk::Window{
 	void on_button_clicked(int cual);
 	
 	void mostrarPantallaSeleccion();
+	
+	void liberarRecursos();
+	
 };
 #endif

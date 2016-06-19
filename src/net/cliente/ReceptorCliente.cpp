@@ -139,3 +139,7 @@ void ReceptorCliente::terminarDescargaNivel(){
 void ReceptorCliente::recibirDatosNivel(const std::string& datos){
 	stream_nivel<<datos<<std::endl;
 }
+
+ReceptorCliente::~ReceptorCliente(){
+	std::cout<<"Destructor de ReceptorCliente!"<<std::endl;
+}

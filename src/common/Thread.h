@@ -6,6 +6,7 @@
  * */
 class Thread {
     private:
+		bool running;
         pthread_t thread;
         /**
          * Corre el método run en otro thread y atrapa cualquier excepción que lance
@@ -16,6 +17,7 @@ class Thread {
 		virtual void end() = 0;
         
     public:
+    Thread();
     /**
      * inicia el thread
      * */

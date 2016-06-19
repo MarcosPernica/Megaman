@@ -65,6 +65,7 @@ void Receptor::decodificarMensaje(const std::string& mensaje){
 }
 
 Receptor::~Receptor(){
+	std::cout<<"Destructor de Receptor!"<<std::endl;
 	join();
 	std::map<std::string,CallbackReceptor*>::iterator it;
 	std::set<CallbackReceptor*> borrados;

@@ -44,6 +44,7 @@ class Cliente{
 	
 	const std::string& obtenerNombre();
 	Cliente(VentanaJuego &ventana);
+	~Cliente();
 	
 	/**
 	 * Pide ip y port por cmd, y conecta el Socket

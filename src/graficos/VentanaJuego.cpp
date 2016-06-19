@@ -19,17 +19,19 @@
 #include <glibmm/main.h>
 #include "../net/Debug.h"
 
-VentanaJuego::VentanaJuego():cajaSplash(false,10),
+VentanaJuego::VentanaJuego(Terminador* termina):cajaSplash(false,10),
 				cliente(*this),
 				malos(true,10),
 				jugador(NULL),
 				mundo(NULL),
 				simulador(NULL), 
 				fondo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600)),
-				cantidad_jugadores(0){
-	//functorActualizarDibujo = sigc::mem_fun(*this, &VentanaJuego::on_actualizar_dibujo);
+				cantidad_jugadores(0),
+				terminador(termina){
 					
 	set_default_size(800, 600);
+	
+	signal_delete_event().connect(sigc::mem_fun(*this,&VentanaJuego::cerrarVentana));
 	
 	#ifndef DEBUG
 	estado.set_text("Introduzca nombre de usuario");
@@ -133,12 +135,7 @@ void VentanaJuego::on_button_clicked(int cual){
 	cliente.enviarIniciar(cual);
 }
 
-VentanaJuego::~VentanaJuego(){
-	std::vector<Gtk::Button*>::iterator it;
-	for(it = botonesMalos.begin(); it !=botonesMalos.end(); ++it){
-		delete *it;
-	}
-}
+
 void VentanaJuego::iniciarNivel(){
 	remove();
 	add(darea);
@@ -162,13 +159,48 @@ void VentanaJuego::iniciarNivel(){
 
 void VentanaJuego::mostrarPantallaSeleccion(){
 	std::cout<<"mostrarPantallaSeleccion"<<std::endl;
-	conexionActualizarDibujo.disconnect();
-	conexionMiOnDraw.disconnect();
+	liberarRecursos();
 	remove();
 	add(cajaSplash);
-	jugador->desconectar();
-	delete jugador;
-	jugador = NULL;
-	simulador->desconectar();
-	delete simulador;
+	
 }
+
+bool VentanaJuego::cerrarVentana(GdkEventAny* evento){
+	liberarRecursos();
+	std::cout<<"Cerrando ventana!"<<std::endl;
+	terminador->terminar();
+}
+
+void VentanaJuego::liberarRecursos(){
+	if(conexionActualizarDibujo.connected()){
+		conexionActualizarDibujo.disconnect();
+	}
+	
+	if(conexionMiOnDraw.connected()){
+		conexionMiOnDraw.disconnect();
+	}
+	
+	if(jugador!=NULL){
+		jugador->desconectar();
+		delete jugador;
+		jugador = NULL;
+	}
+	
+	if(simulador != NULL){
+		simulador->desconectar();
+		delete simulador;
+		simulador = NULL;
+	}
+	
+	delete mundo;
+	mundo = NULL;
+}
+
+VentanaJuego::~VentanaJuego(){
+	liberarRecursos();
+	std::vector<Gtk::Button*>::iterator it;
+	for(it = botonesMalos.begin(); it !=botonesMalos.end(); ++it){
+		delete *it;
+	}
+}
+

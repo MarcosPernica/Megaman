@@ -1,0 +1,8 @@
+Megaman.Inicia118161
+El usuario es pepe
+----------------ARRANCANDO THREAD:134150976
+Se agrega al lobby: pepe
+Me llega la senial de inicio
+Nombre del archivo que voy a cargar:pepenivel.xml
+ID:1
+Cerrando ventana!

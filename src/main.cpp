@@ -21,6 +21,7 @@
 #include <string>
 #include <sys/time.h>
 #include "common/deslocalizacion.h"
+#include "graficos/TerminadorAplicacion.h"
 int main(int argc, char *argv[])
 {
 	//std::locale::global( std::locale( "" ) );
@@ -33,10 +34,11 @@ int main(int argc, char *argv[])
 	std::string nombre = oss.str();
 
 	std::cout << nombre << std::endl;
-
+	
 	SJuego::attr.cargar("configuracion.conf");
 	Glib::RefPtr<Gtk::Application> app =Gtk::Application::create(argc,argv,nombre);
-	VentanaJuego ventana;
+	TerminadorAplicacion terminador(app);
+	VentanaJuego ventana(&terminador);
 	return app->run(ventana);
 }
 #else

@@ -673,9 +673,13 @@ std::list<Dibujable *> Mundo::obtenerElementosCamara()
 void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)
 {
 	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
+	for(a=megamanes.begin(); a!= megamanes.end(); ++a){
+		mapa[a->first] = a->second;
+	}
+	/*
 	while(a != megamanes.end())
 		mapa[a->first] = (a++)->second;
-
+	*/
 	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
 	while(b != enemigos.end())
 		mapa[b->first] = (b++)->second;	

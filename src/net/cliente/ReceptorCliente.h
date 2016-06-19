@@ -51,6 +51,7 @@ class ReceptorCliente: public Receptor{
 	void configurarCallbacks();
 	public: 
 	ReceptorCliente(const ChannelSocket& channel, Cliente& cliente);
+	~ReceptorCliente();
 	//void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje);
 	
 	/**
