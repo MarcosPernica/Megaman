@@ -15,7 +15,7 @@
 #include "Construccion.h"
 #include "../graficos/Dibujable.h"
 
-#include <tinyxml.h>
+#include "../tinyxml/tinyxml.h"
 
 class FullSnapshot;
 class ZonaCamara;

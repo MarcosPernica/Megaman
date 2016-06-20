@@ -11,7 +11,7 @@
 #include "Puas.h"
 #include "../common/Cadena.h"
 #include "../common/exceptions.h"
-#include <tinyxml.h>
+#include "../tinyxml/tinyxml.h"
 #include "../net/Debug.h"
 #include "Definiciones.h"
 
@@ -200,9 +200,9 @@ void Mundo::obtenerAtributosXML(TiXmlAttribute *atributo, std::map<std::string,r
 }
 
 void Mundo::cargarNivel(Cadena nombre){
-
+	std::string valor;
 	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
-	TiXmlDocument doc( nombre_nivel );
+	TiXmlDocument doc( nombre_nivel.c_str() );
 	if(!doc.LoadFile())
 		throw CustomException("Tiny XML no cargó el archivo");
 		
@@ -211,50 +211,51 @@ void Mundo::cargarNivel(Cadena nombre){
     	{
 		std::map<std::string,real> atributos;
 		obtenerAtributosXML(elemento->FirstAttribute(), atributos);
-
-       		if(elemento->ValueStr() == "CuboMadera")
+		valor = elemento->Value();
+		
+       		if(valor == "CuboMadera")
 			agregarCuboMadera(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "CuboMetal")
+		else if(valor == "CuboMetal")
 			agregarCuboMetal(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "CuboLadrillo")
+		else if(valor == "CuboLadrillo")
 			agregarCuboLadrillo(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "CuboTierra")
+		else if(valor == "CuboTierra")
 			agregarCuboTierra(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "CuboVacio")
+		else if(valor == "CuboVacio")
 			agregarCuboVacio(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "ZonaMortal")
+		else if(valor == "ZonaMortal")
 			agregarZonaMortal(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "ZonaTransporte")
+		else if(valor == "ZonaTransporte")
 			agregarZonaTransporte(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]),b2Vec2(atributos["destX"],atributos["destY"]));
-		else if(elemento->ValueStr() == "ZonaGuardado")
+		else if(valor == "ZonaGuardado")
 			agregarZonaGuardado(atributos["ancho"], atributos["alto"], b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "ZonaCerradura")
+		else if(valor == "ZonaCerradura")
 			agregarZonaCerradura(atributos["idPuerta"], atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "Puerta")
+		else if(valor == "Puerta")
 			agregarPuerta(atributos["id"], atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "Puas")
+		else if(valor == "Puas")
 			agregarPuas(atributos["ancho"],atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "Escalera")
+		else if(valor == "Escalera")
 			agregarEscalera(atributos["alto"],b2Vec2(atributos["x"],atributos["y"]));
-    		else if(elemento->ValueStr() == "ZonaSpawnMegaman")
+    		else if(valor == "ZonaSpawnMegaman")
 			agregarZonaSpawnMegaman(atributos["longitud"], b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "Met")
+		else if(valor == "Met")
 			agregarZonaSpawnMet(b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "Bumby")
+		else if(valor == "Bumby")
 			agregarZonaSpawnBumby(b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "Sniper")
+		else if(valor == "Sniper")
 			agregarZonaSpawnSniper(b2Vec2(atributos["x"],atributos["y"]));
-		else if(elemento->ValueStr() == "JumpingSniper")
+		else if(valor == "JumpingSniper")
 			agregarZonaSpawnJumpingSniper(b2Vec2(atributos["x"], atributos["y"]));
-		else if(elemento->ValueStr() == "Bombman")
+		else if(valor == "Bombman")
 			agregarZonaSpawnBombman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
-		else if(elemento->ValueStr() == "Sparkman")
+		else if(valor == "Sparkman")
 			agregarZonaSpawnSparkman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
-		else if(elemento->ValueStr() == "Magnetman")
+		else if(valor == "Magnetman")
 			agregarZonaSpawnMagnetman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
-		else if(elemento->ValueStr() == "Ringman")
+		else if(valor == "Ringman")
 			agregarZonaSpawnRingman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
-		else if(elemento->ValueStr() == "Fireman")
+		else if(valor == "Fireman")
 			agregarZonaSpawnFireman(atributos["idPuerta"] ,b2Vec2(atributos["x"], atributos["y"]));
 
        		elemento = elemento->NextSiblingElement();
