@@ -11,15 +11,13 @@
 
 class Construccion: public Cuerpo, public ImagenEscalada
 {
-private:
-	Glib::RefPtr<Gdk::Pixbuf> textura;
 public:
 	Construccion(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto, bool fantasma = false);
 	virtual ushort tipoCuerpo() const;
 	void eliminarse(Mundo& de){};
 
 	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
-	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
+	virtual ArchivoImagen a_dibujar();
 	const Rectangulo obtenerRepresentacion() const;
 
 	/*Que archivo usan para dibujarse?.*/

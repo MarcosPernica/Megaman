@@ -107,7 +107,6 @@ public:
 	
 	virtual bool espejado() const;
 	
-	//virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar() const;
 	void eliminarse(Mundo& de){};
 };
 

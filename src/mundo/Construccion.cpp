@@ -18,8 +18,7 @@ Construccion::Construccion(uint ID,
 				  false,
 				  b2Vec2_zero,
 				  izquierda,
-				  fantasma),
-			   textura(0)
+				  fantasma)
 {
 }
 
@@ -30,11 +29,9 @@ void Construccion::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 	ImagenEscalada::dibujarEn(cr, origen, factorAmplificacion);
 		
 }
-Glib::RefPtr<Gdk::Pixbuf> Construccion::a_dibujar()
+ArchivoImagen Construccion::a_dibujar()
 {
-	if(textura == 0)
-		textura = Gdk::Pixbuf::create_from_file(nombreImagen());
-	return textura;
+	return ArchivoImagen(nombreImagen());
 }
 
 const Rectangulo Construccion::obtenerRepresentacion() const

@@ -1,24 +1,25 @@
 #include "Dibujable.h"
 #include <cmath>
 #include <limits>
+
 b2Vec2 Dibujable::renderAMundo(b2Vec2 vector)
 {
-	return (1/FACTORCONVERSIONMPX)*vector;
+	return Proporcionador::renderAMundo(vector);
 }	
 
 b2Vec2 Dibujable::mundoARender(b2Vec2 vector)
 {
-	return FACTORCONVERSIONMPX*vector;
+	return Proporcionador::mundoARender(vector);
 }
 
 real Dibujable::renderAMundo(real numero)
 {
-	return numero/FACTORCONVERSIONMPX;
+	return Proporcionador::renderAMundo(numero);
 }
 
 real Dibujable::mundoARender(real numero)
 {
-	return numero*FACTORCONVERSIONMPX;
+	return Proporcionador::mundoARender(numero);
 }
 
 void Dibujable::dibujarRectanguloLleno(const Cairo::RefPtr<Cairo::Context>& cr, 
@@ -158,4 +159,22 @@ void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr,
 	cr->restore();
 }
 
-
+void Dibujable::dibujarImagen(const Cairo::RefPtr<Cairo::Context>& cr, 
+				  b2Vec2 origen,
+				  uint factorAmplificacion, 
+				  b2Vec2 posicion,
+				  real ancho,
+				  real alto,
+				  ArchivoImagen imagen,
+				  bool invertir)
+{
+	Glib::RefPtr<Gdk::Pixbuf> pixbuf = CacheImagenes::obtenerPixbuf(imagen);
+	dibujarImagen(cr, 
+				  origen,
+				  factorAmplificacion, 
+				  posicion,
+				  ancho,
+				  alto,
+				  pixbuf,
+				  invertir);
+}

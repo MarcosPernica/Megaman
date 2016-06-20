@@ -37,11 +37,8 @@ const Rectangulo NuevaVida::obtenerRepresentacion() const{
 
 
 
-Glib::RefPtr<Gdk::Pixbuf> Habilitador::a_dibujar(){
-	if(textura == 0){
-		textura = Gdk::Pixbuf::create_from_file(ANIM_PODER);
-	}
-	return textura;
+ArchivoImagen Habilitador::a_dibujar(){
+	return ArchivoImagen(ANIM_PODER);
 }
 
 

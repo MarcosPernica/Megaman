@@ -24,11 +24,9 @@ void Puas::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 	ImagenEscalada::dibujarEn(cr, origen, factorAmplificacion);
 		
 }
-Glib::RefPtr<Gdk::Pixbuf> Puas::a_dibujar()
+ArchivoImagen Puas::a_dibujar()
 {
-	if(textura == 0)
-		textura = Gdk::Pixbuf::create_from_file(ANIM_PUAS);
-	return textura;
+	return ArchivoImagen(ANIM_PUAS);
 }
 
 const Rectangulo Puas::obtenerRepresentacion() const

@@ -8,7 +8,7 @@ class Animado: public Imagen{
 	Animacion* actual;
 	
 	public:
-	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
+	virtual ArchivoImagen a_dibujar();
 	Animado(Animacion* inicial);
 	void cambiar(Animacion* otra);
 	void avanzar(float segundos);

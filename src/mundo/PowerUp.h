@@ -166,10 +166,8 @@ public:
 
 class Habilitador : public ImagenEscalada
 {
-private:
-	Glib::RefPtr<Gdk::Pixbuf> textura;
 public:
-	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
+	virtual ArchivoImagen a_dibujar();
 	virtual const Rectangulo obtenerRepresentacion() const = 0;
 };
 

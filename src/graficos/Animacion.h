@@ -1,26 +1,26 @@
 #ifndef ANIMACION
 #define ANIMACION
 #include <list>
-#include <gdkmm/pixbuf.h>
-#include <gdkmm/general.h>
 #include <map>
 #include <string>
-
+#include "ArchivoImagen.h"
 #define CANTIDADMAXIMACUADROS 100
 
 class Animacion{
 public:
 	std::string nombre;
 	bool loop;
+	~Animacion();
 private:
+	
 	int cuadro_actual;
 	int cantidad_cuadros;
 	float segundos_por_cuadro;
 	float segundos_desde_cambio;
-	std::map<int, Glib::RefPtr<Gdk::Pixbuf> > cargadas;
+	std::map<int, ArchivoImagen* > cargadas;
 	public:
 	void avanzar(float segundos);
-	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar();
+	virtual ArchivoImagen a_dibujar();
 	Animacion(const std::string& nombre,float segundos_por_cuadro, bool loop = true, unsigned int cantidadCuadros = CANTIDADMAXIMACUADROS);
 	void reiniciar();
 	bool operator==(const Animacion& animacion);

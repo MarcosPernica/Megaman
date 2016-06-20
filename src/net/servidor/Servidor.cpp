@@ -4,7 +4,7 @@
 #include <ctime>
 #include "../../mundo/Mundo.h"
 #include "ContenedorProxies.h"
-#include "../../graficos/Dibujable.h" 
+#include "../../graficos/Proporcionador.h" 
 #include <fstream>
 /*
 void Servidor::copiarParaTiny(char nivel){
@@ -25,6 +25,7 @@ void Servidor::nueva(ChannelSocket* nuevo_channel){
 Servidor::Servidor():
 			aceptador(SJuego::preconf.port,4),
 			contenedor(new CallbackIniciarPartida(*this), new CallbackLimite(*this) ),
+			//contenedor(NULL, NULL),
 			nivel(0),
 			simulador(NULL),
 			nivelContinua(true),
@@ -148,7 +149,7 @@ void Servidor::ejecutarNivel(char nivel){
 	std::cout<<"El nombre del nivel es: "<<nombre_nivel.str()<<std::endl;
 	
 	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
-	mundo = new Mundo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str(),contenedor.cantidadJugadores());
+	mundo = new Mundo(Proporcionador::renderAMundo(800),Proporcionador::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str(),contenedor.cantidadJugadores());
 	mundo->setEstadisticas(estadisticas);
 	
 	
@@ -176,8 +177,12 @@ void Servidor::iniciar(char nivel){
 }
 
 Servidor::~Servidor(){
+	liberarRecursos();
+	aceptador.join();
+	/*
 	delete simulador;
 	delete mundo;
+	* */
 }
 void CallbackIniciarPartida::recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
 	serv.iniciar(resto_mensaje[0]);

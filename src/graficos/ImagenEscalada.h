@@ -11,7 +11,7 @@ class ImagenEscalada : public virtual Dibujable{
 	 * */
 	virtual const Rectangulo obtenerRepresentacion() const = 0;
 	
-	virtual Glib::RefPtr<Gdk::Pixbuf> a_dibujar() = 0;
+	virtual ArchivoImagen a_dibujar() = 0;
 	
 };
 #endif

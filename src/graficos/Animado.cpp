@@ -1,6 +1,6 @@
 #include "Animado.h"
 #include <iostream>
-Glib::RefPtr<Gdk::Pixbuf> Animado::a_dibujar(){
+ArchivoImagen Animado::a_dibujar(){
 	return actual->a_dibujar();
 }
 Animado::Animado(Animacion* inicial):actual(inicial){}

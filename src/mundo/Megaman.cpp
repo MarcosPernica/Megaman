@@ -481,7 +481,7 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 	nombre_imagen<<mi_posicion+1;
 	nombre_imagen<<".png";
 	
-	Glib::RefPtr<Gdk::Pixbuf> imagen = Gdk::Pixbuf::create_from_file(nombre_imagen.str());
+	ArchivoImagen imagen(nombre_imagen.str());
 	
 	b2Vec2 o = origen;
 	b2Vec2 posicionP = Dibujable::mundoARender(obtenerPosicion());
@@ -490,8 +490,8 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 				  o,
 				  factorAmplificacion, 
 				  posicionP,
-				  imagen->get_width(),
-				  imagen->get_height(),
+				  CacheImagenes::ancho(imagen),
+				  CacheImagenes::alto(imagen),
 				  imagen,
 				  false);
 	b2Vec2 posicion_vida(20+mi_posicion*100,20);
