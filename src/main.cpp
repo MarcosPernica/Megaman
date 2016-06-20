@@ -41,11 +41,15 @@ int main(int argc, char *argv[])
 #else
 #include "net/servidor/Servidor.h"
 #include "common/deslocalizacion.h"
+#include "net/servidor/EscuchadorInput.h"
 int main(int argc, char *argv[])
 {
 	SJuego::attr.cargar("configuracion.conf");
 	Servidor servidor;
+	EscuchadorInput escuchador(servidor);
+	escuchador.start();
 	servidor.ejecutar();
+	escuchador.join();
 }
 #endif
 

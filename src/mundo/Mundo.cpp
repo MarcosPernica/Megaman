@@ -44,8 +44,21 @@ Mundo::Mundo(real anchoCamara,
 	camara->reiniciar();
 }
 
+#define GENERAR_LIBERAR_MAPA(_nombreMapa,_nombreClase)\
+	{\
+		std::map<uint, _nombreClase*>::iterator it;\
+		for(it = _nombreMapa.begin(); it!= _nombreMapa.end(); ++it){\
+			delete it->second;\
+		}\
+	}\
+
 Mundo::~Mundo()
 {
+	std::cout<<"Cantidad de megamanes:"<<megamanes.size()<<std::endl;
+	
+	//marcos tuve que refactorizar acá por el mismo motivo que el refactor de más abajo 
+	//(sólo que ahora había segfault siempre)
+	/*
 	std::map<uint, Megaman*>::iterator a = megamanes.begin();
 
 	while(a != megamanes.end())
@@ -70,7 +83,17 @@ Mundo::~Mundo()
 
 	while(e != puertas.end())
 		delete (e++)->second;
-
+	*/
+	std::cout<<"Cantidad de powerUps:"<<powerUps.size()<<std::endl;
+	std::cout<<"Cantidad de enemigos:"<<enemigos.size()<<std::endl;
+	std::cout<<"Cantidad de megamanes:"<<megamanes.size()<<std::endl;
+	GENERAR_LIBERAR_MAPA(megamanes,Megaman)
+	GENERAR_LIBERAR_MAPA(enemigos,Enemigo)
+	GENERAR_LIBERAR_MAPA(powerUps,PowerUp)
+	GENERAR_LIBERAR_MAPA(disparos,Disparo)
+	GENERAR_LIBERAR_MAPA(puertas,Puerta)
+	
+	
 	delete camara;
 
 	std::list<CajaAccion*>::iterator f = controladores.begin();
@@ -670,16 +693,28 @@ std::list<Dibujable *> Mundo::obtenerElementosCamara()
 	return elementosEnZona(camara->obtenerPosicion(),camara->obtenerAncho(),camara->obtenerAlto());
 }
 
+#define GENERAR_AGREGAR_SNAPSHOTABLES(_nombreClase,_nombreMapa)\
+	{\
+		std::map<uint, _nombreClase*>::const_iterator it;\
+		for(it= _nombreMapa.begin(); it != _nombreMapa.end(); ++it){\
+			mapa[it->first]=it->second;\
+		}\
+	}\
+
 void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)
 {
+	//Marcos refactoricé esto porque con los whiles a veces me tiraba segfault y a veces no. 
+	//lo de las macros es porque soy un enfermo.
+	GENERAR_AGREGAR_SNAPSHOTABLES(Megaman,megamanes)
+	GENERAR_AGREGAR_SNAPSHOTABLES(Enemigo,enemigos)
+	GENERAR_AGREGAR_SNAPSHOTABLES(Disparo,disparos)
+	GENERAR_AGREGAR_SNAPSHOTABLES(PowerUp,powerUps)
+	/*
 	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
 	for(a=megamanes.begin(); a!= megamanes.end(); ++a){
 		mapa[a->first] = a->second;
 	}
-	/*
-	while(a != megamanes.end())
-		mapa[a->first] = (a++)->second;
-	*/
+	
 	std::map<uint, Enemigo*>::const_iterator b = enemigos.begin();
 	while(b != enemigos.end())
 		mapa[b->first] = (b++)->second;	
@@ -691,7 +726,7 @@ void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)
 	std::map<uint, PowerUp*>::const_iterator d = powerUps.begin();
 	while(d != powerUps.end())
 		mapa[d->first] = (d++)->second;
-		
+	*/
 	mapa[estadisticas.obtenerID()] = &estadisticas;//se sincronizan las estadísticas!!
 }
 

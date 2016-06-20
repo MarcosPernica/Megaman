@@ -9,7 +9,25 @@
 #include "../../mundo/SimuladorSinVentana.h"
 #include "CallbackFin.h"
 #include "../../mundo/Mundo.h"
+#include "../../common/Queue.h"
+
+enum Evento{
+	SALIDA_FORZADA,
+	INICIO_NIVEL,
+	FIN_NIVEL
+};
 class Servidor{
+	private:
+	bool continuarEjecucion;
+	/**
+	 * Termina el nivel actual, limpia los recursos correspondientes y prepara la siguiente fase
+	 * */
+	void finalizarNivel();
+	/**
+	 * Cola de eventos que ejecuta el servidor
+	 * */
+	Queue<Evento> cola;
+	
 	EstadisticasMundo estadisticas;
 	
 	Mundo* mundo;
@@ -66,6 +84,8 @@ class Servidor{
 	void esperarSeleccionNivel();
 	void esperarFinNivel();
 	
+	void liberarRecursos();
+	
 	public:
 	
 	~Servidor();
@@ -84,9 +104,21 @@ class Servidor{
 	 * */
 	void iniciar(char nivel);
 	
+	/**
+	 * Ejecuta el servidor, que permanece esperando eventos
+	 * */
 	void ejecutar();
 	
+	/**
+	 * Genera el evento de fin de nivel
+	 * */
 	void finNivel();
+	
+	/**
+	 * Genera el evento que cierra el servidor
+	 * */
+	void cerrar();
+	
 	
 	
 };

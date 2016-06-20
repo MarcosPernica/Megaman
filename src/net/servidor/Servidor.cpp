@@ -27,7 +27,9 @@ Servidor::Servidor():
 			contenedor(new CallbackIniciarPartida(*this), new CallbackLimite(*this) ),
 			nivel(0),
 			simulador(NULL),
-			nivelContinua(true){
+			nivelContinua(true),
+			continuarEjecucion(true),
+			mundo(NULL){
 				
 				aceptador.agregarCallback(new CallbackAceptador(*this));
 				aceptador.start();
@@ -55,50 +57,63 @@ void Servidor::esperarFinNivel(){
 void Servidor::alcanzadoLimiteJugadores(){
 	//aceptador.join();
 }
-void Servidor::ejecutar(){
-	while(true){
-		//espero a que me digan qué nivel correr
-		esperarSeleccionNivel();
-		
-		//arranco el nivel
-		if(true){
-			Lock l(m_nivel);
-			ejecutarNivel(nivel);
-		}
-		
-		//espero a que termine el nivel
-		/*
-		while(true){
-			sleep(0.5);
-			if(!nivelContinua) break;//bool es atomico
-		}
-		**/
-		esperarFinNivel();
-		
-		//guardo las estadisticas
-		EstadisticasMundo& correctas = mundo->obtenerEstadisticas();
-		//estadisticas.copiarDe(correctas);
-		estadisticas = correctas;
-		std::cout<<"Vidas(estadisticas):"<<estadisticas.vidasDe(0)<<std::endl;
-		std::cout<<"Vidas(correctas):"<<correctas.vidasDe(0)<<std::endl;
-		
-		//termino la simulacion
-		desconectarProxiesDeMegamanes();
-		
+void Servidor::liberarRecursos(){
+	//termino la simulacion
+	desconectarProxiesDeMegamanes();
+	if(simulador!=NULL){
 		simulador->join();
 		delete simulador;
 		simulador = NULL;
-		
+	}
+	if(mundo == NULL){
 		delete mundo;
 		mundo = NULL;
-		
-		if(true){
-			Lock l(m_nivel);
-			nivel = 0;
+	}
+}
+void Servidor::finalizarNivel(){
+	//guardo las estadisticas
+	EstadisticasMundo& correctas = mundo->obtenerEstadisticas();
+	//estadisticas.copiarDe(correctas);
+	estadisticas = correctas;
+	std::cout<<"Vidas(estadisticas):"<<estadisticas.vidasDe(0)<<std::endl;
+	std::cout<<"Vidas(correctas):"<<correctas.vidasDe(0)<<std::endl;
+	
+	//termino la simulacion
+	liberarRecursos();
+	
+	//desconectarProxiesDeMegamanes();
+	/*
+	simulador->join();
+	delete simulador;
+	simulador = NULL;
+	*/
+	/*
+	delete mundo;
+	mundo = NULL;
+	*/
+	if(true){
+		Lock l(m_nivel);
+		nivel = 0;
+	}
+}
+void Servidor::ejecutar(){
+	while(continuarEjecucion){
+		switch(cola.pop()){
+			case INICIO_NIVEL :
+				if(true){
+					Lock l(m_nivel);
+					ejecutarNivel(nivel);
+				}
+				break;
+			case FIN_NIVEL :
+				finalizarNivel();
+				break;
+			case SALIDA_FORZADA :
+				liberarRecursos();
+				continuarEjecucion = false;
+				break;
+			
 		}
-		
-		std::cout<<"A dormir!"<<std::endl;
-		sleep(1);
 	}
 	
 }
@@ -144,13 +159,19 @@ void Servidor::ejecutarNivel(char nivel){
 
 
 void Servidor::iniciar(char nivel){
+	/*
 	Lock l_cv(cv_nivelElegido);
 	if(!algunNivelSeleccionado()){//no estoy seguro de que haga falta este if
 		cv_nivelElegido.broadcast();
 	}
+	**/
+	
 	alcanzadoLimiteJugadores();//basta de aceptar jugadores
-	Lock l(m_nivel);
-	this->nivel = nivel;
+	{
+		Lock l(m_nivel);
+		this->nivel = nivel;
+	}
+	cola.push(INICIO_NIVEL);
 }
 
 Servidor::~Servidor(){
@@ -173,6 +194,13 @@ void Servidor::finNivel(){
 	nivelContinua = false;//no hace falta proteger bools
 	std::cout<<"----------------fin nivel--------------"<<std::endl;
 	contenedor.distribuirFinNivel();
+	/*
 	Lock l(cv_nivelContinua);
 	cv_nivelContinua.broadcast();
+	*/
+	cola.push(FIN_NIVEL);
+}
+
+void Servidor::cerrar(){
+	cola.push(SALIDA_FORZADA);
 }
