@@ -2,21 +2,21 @@ CC := g++ # This is the main compiler
 # CC := clang --analyze # and comment out the linker last line for sanity
 SRCDIR := src
 BUILDDIR := build
-TARGET := holi
+TARGET := megaman
 COSOGTKMM := `pkg-config gtkmm-3.0 --cflags --libs`
  
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -g -Wall -std=c++98#-Dcompiling_server
-LIB := -lpthread -pthread -L lib -lBox2D -DDebug
+LIB := -lpthread -pthread -L lib -lBox2D -ltinyxml -llog4cpp
 INC := -I include
 
 
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	$(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)
+	$(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM) 
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 
