@@ -16,7 +16,6 @@ class Cliente{
 	Mutex m_pantalla;
 	Mutex m_posicion;
 	Mutex m_iniciado;
-	VentanaJuego& ventana;
 	
 	ChannelSocket socket;
 	int posicion;
@@ -43,7 +42,7 @@ class Cliente{
 	bool iniciado();
 	
 	const std::string& obtenerNombre();
-	Cliente(VentanaJuego &ventana);
+	Cliente();
 	~Cliente();
 	
 	/**

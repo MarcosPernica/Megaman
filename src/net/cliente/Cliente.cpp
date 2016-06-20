@@ -63,10 +63,9 @@ Jugador* Cliente::configurarNivel(VentanaJuego& ventana ,Mundo& mundo){
 	return jugador;
 }
 
-Cliente::Cliente(VentanaJuego &vent):
-							ventana(vent),
-							receptor(socket,*this),
-							emisor(socket){
+Cliente::Cliente():
+			receptor(socket,*this),
+			emisor(socket){
 	posicion=-1;
 	flag_iniciado=false;
 }

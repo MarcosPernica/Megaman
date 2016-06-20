@@ -2,8 +2,8 @@
 #define VENTANAJUEGO
 #include <gtkmm/window.h>
 #include <iostream>
-#include <string>
 #include <gtkmm/drawingarea.h>
+#include <string>
 #include <gtkmm/label.h>
 #include <gtkmm/button.h>
 #include <gtkmm/hvbox.h>
@@ -11,7 +11,7 @@
 #include <gdk/gdk.h>
 #include "../net/cliente/Cliente.h"
 #include "Fondo.h"
-
+#include "DareaSplash.h"
 class Terminador{
 	public:
 	virtual void terminar() = 0;
@@ -22,6 +22,9 @@ class Jugador;
 class Simulador;
 class VentanaJuego : public Gtk::Window{
 	private:
+	bool inicio_ok;
+	
+	DareaSplash dareaSplash;
 	Terminador* terminador;//se destruye afuera
 	
 	Fondo fondo;
@@ -33,6 +36,7 @@ class VentanaJuego : public Gtk::Window{
 	
 	sigc::connection conexionActualizarDibujo;
 	sigc::connection conexionMiOnDraw;
+	sigc::connection conexionKeyPress;
 	
 	Gtk::Label lobby;
 	
@@ -69,6 +73,10 @@ class VentanaJuego : public Gtk::Window{
 	void mostrarPantallaSeleccion();
 	
 	void liberarRecursos();
+	
+	bool expose_event(GdkEventExpose* evento);
+	
+	bool detectarPresionTecla(GdkEventKey* evento);
 	
 };
 #endif

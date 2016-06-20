@@ -20,15 +20,19 @@
 #include "../net/Debug.h"
 #include <cstdio>
 
-VentanaJuego::VentanaJuego(Terminador* termina):cajaSplash(false,10),
-				cliente(*this),
+VentanaJuego::VentanaJuego(Terminador* termina):
+				cajaSplash(false,10),
 				malos(true,10),
 				jugador(NULL),
 				mundo(NULL),
 				simulador(NULL), 
 				fondo(Dibujable::renderAMundo(800),Dibujable::renderAMundo(600)),
 				cantidad_jugadores(0),
-				terminador(termina){
+				terminador(termina),
+				inicio_ok(false){
+					
+	conexionKeyPress = signal_key_press_event().connect(
+					sigc::mem_fun(*this, &VentanaJuego::detectarPresionTecla),false);
 					
 	set_default_size(800, 600);
 	
@@ -38,7 +42,10 @@ VentanaJuego::VentanaJuego(Terminador* termina):cajaSplash(false,10),
 	estado.set_text("Introduzca nombre de usuario");
 	lobby.set_text("JUGADORES:\n");
 	
-	add(cajaSplash);
+	
+	add(dareaSplash);
+	dareaSplash.show();
+	
 	cajaSplash.add(estado);
 	cajaSplash.add(entry);
 	estado.show();
@@ -168,11 +175,14 @@ void VentanaJuego::mostrarPantallaSeleccion(){
 }
 
 bool VentanaJuego::cerrarVentana(GdkEventAny* evento){
-	std::remove((cliente.obtenerNombre()+"nivel.xml").c_str());
-	std::remove((cliente.obtenerNombre()+SJuego::archivoConfig).c_str());
+	if(cliente.obtenerNombre()!=""){
+		std::remove((cliente.obtenerNombre()+"nivel.xml").c_str());
+		std::remove((cliente.obtenerNombre()+SJuego::archivoConfig).c_str());
+	}
 	liberarRecursos();
 	std::cout<<"Cerrando ventana!"<<std::endl;
 	terminador->terminar();
+	return true;
 }
 
 void VentanaJuego::liberarRecursos(){
@@ -209,4 +219,11 @@ VentanaJuego::~VentanaJuego(){
 		delete *it;
 	}
 }
-
+bool VentanaJuego::detectarPresionTecla(GdkEventKey* evento){
+	remove();
+	add(cajaSplash);
+	std::cout<<"Presio tecla!"<<std::endl;
+	inicio_ok = true;
+	conexionKeyPress.disconnect();
+	return true;
+}
