@@ -848,5 +848,5 @@ Megaman* Mundo::obtenerMegaman(uint posicion){
 
 void Mundo::agregarArma(int tipo_arma){
 	estadisticas.agregarArma(tipo_arma);
-	finalizar();
+	
 }

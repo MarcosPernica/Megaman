@@ -61,6 +61,7 @@ void HabilitadorBomba::aumentar(Megaman & megaman)
 	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Bomba);
+	finalizar();
 }
 
 void HabilitadorBomba::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -94,6 +95,7 @@ void HabilitadorIman::aumentar(Megaman & megaman)
 	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Iman);
+	obtenerMundo().finalizar();
 }
 
 void HabilitadorIman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -127,6 +129,7 @@ void HabilitadorChispa::aumentar(Megaman & megaman)
 	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Chispa);
+	obtenerMundo().finalizar();
 }
 
 void HabilitadorChispa::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -160,6 +163,7 @@ void HabilitadorAnillo::aumentar(Megaman & megaman)
 	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Anillo);
+	obtenerMundo().finalizar();
 }
 
 void HabilitadorAnillo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
@@ -192,6 +196,7 @@ void HabilitadorFuego::aumentar(Megaman & megaman)
 	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Fuego);
+	obtenerMundo().finalizar();
 }
 
 void HabilitadorFuego::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
