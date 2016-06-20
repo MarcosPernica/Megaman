@@ -58,6 +58,9 @@ Mundo::~Mundo()
 	
 	//marcos tuve que refactorizar acá por el mismo motivo que el refactor de más abajo 
 	//(sólo que ahora había segfault siempre)
+	
+	//PD: después de debuggear creo que lo que habías escrito no generaba el error pero no me animo a desescribir nada
+	
 	/*
 	std::map<uint, Megaman*>::iterator a = megamanes.begin();
 
