@@ -13,7 +13,7 @@
 #include "../../graficos/VentanaJuego.h"
 void Cliente::conectarse(const std::string& nombre){
 	#ifndef DEBUG
-	socket.connectTo("127.0.0.1",10020);
+	socket.connectTo(SJuego::preconf.ip,SJuego::preconf.port);
 	#endif
 	emisor.enviar(MENSAJE_ID,nombre);
 	this->nombre = nombre;
@@ -84,4 +84,8 @@ void Cliente::enviarIniciar(int nivel){
 Cliente::~Cliente(){
 	std::cout<<"Cerrando el socket desde ~Cliente"<<std::endl;
 	socket.closeS();
+}
+
+void Cliente::terminarMundo(){
+	receptor.inyectarFullSnapshotsA(NULL);
 }

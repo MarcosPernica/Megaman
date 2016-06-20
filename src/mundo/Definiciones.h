@@ -79,8 +79,18 @@ typedef unsigned short ushort;
 
 namespace SJuego
 {
+	class Preconfiguracion{
+		private:
+		std::string leerIP();
+		uint leerPort();
+		public:
+		Preconfiguracion();
+		const std::string ip;
+		const uint port;
+	};
 	
 	
+	const std::string archivoConfig("configuracion.conf");
 	
 	struct Constantes
 	{
@@ -203,6 +213,7 @@ namespace SJuego
 	};
 
 	extern Constantes attr;
+	extern const Preconfiguracion preconf;
 }
 
 
@@ -323,5 +334,6 @@ class EstadoParametroIncorrecto : public std::exception {};
 class ClaveInvalida : public std::exception {};
 class ParametroEsPunteroNulo : public std::exception {};
 class NoPudoLanzarseHilo : public std::exception {};
+
 
 #endif

@@ -6,6 +6,7 @@
 #include "../Debug.h"
 #include <fstream>
 #include <string>
+#include "../../mundo/Definiciones.h"
 Emisor::Emisor(const ChannelSocket& s):socket(s){}
 /*
 void Emisor::enviar(const std::string& tipo_mensaje, const std::string& mensaje) const{
@@ -83,4 +84,16 @@ void Emisor::enviarNivel(char nivel) const{
 	}
 	enviar(MENSAJE_TERMINAR_ENVIO_NIVEL);
 	archivo_nivel.close();
+}
+
+void Emisor::enviarConfiguracion(){
+	//std::cout<<"Enviando cnfiguracion!"<<std::endl;
+	std::ifstream archivo_config(SJuego::archivoConfig.c_str());
+	enviar(MENSAJE_INICIAR_ENVIO_CONFIG);
+	std::string enviando;
+	while(!archivo_config.eof()){
+		std::getline(archivo_config,enviando);
+		enviar(MENSAJE_ENVIO_CONFIG,enviando);
+	}
+	enviar(MENSAJE_TERMINAR_ENVIO_CONFIG);
 }

@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
 	std::cout << nombre << std::endl;
 	
-	SJuego::attr.cargar("configuracion.conf");
+	//los atributos se cargan al recibir la configuracion
 	Glib::RefPtr<Gtk::Application> app =Gtk::Application::create(argc,argv,nombre);
 	TerminadorAplicacion terminador(app);
 	VentanaJuego ventana(&terminador);

@@ -709,10 +709,12 @@ void Mundo::obtenerSnapshotables(std::map<uint, Snapshotable*> &mapa)
 {
 	//Marcos refactoricé esto porque con los whiles a veces me tiraba segfault y a veces no. 
 	//lo de las macros es porque soy un enfermo.
-	GENERAR_AGREGAR_SNAPSHOTABLES(Megaman,megamanes)
-	GENERAR_AGREGAR_SNAPSHOTABLES(Enemigo,enemigos)
-	GENERAR_AGREGAR_SNAPSHOTABLES(Disparo,disparos)
-	GENERAR_AGREGAR_SNAPSHOTABLES(PowerUp,powerUps)
+	if(!terminado){
+		GENERAR_AGREGAR_SNAPSHOTABLES(Megaman,megamanes)
+		GENERAR_AGREGAR_SNAPSHOTABLES(Enemigo,enemigos)
+		GENERAR_AGREGAR_SNAPSHOTABLES(Disparo,disparos)
+		GENERAR_AGREGAR_SNAPSHOTABLES(PowerUp,powerUps)
+	}
 	/*
 	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
 	for(a=megamanes.begin(); a!= megamanes.end(); ++a){

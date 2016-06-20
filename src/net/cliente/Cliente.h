@@ -61,5 +61,7 @@ class Cliente{
 	
 	Jugador* configurarNivel(VentanaJuego& ventana ,Mundo& mundo);
 	
+	void terminarMundo();
+	
 };
 #endif

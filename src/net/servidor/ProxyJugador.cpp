@@ -88,8 +88,11 @@ void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& 
 	std::cout<<"Recibo un mensaje, controlado es: "<<controlado<<std::endl;
 	if(tipo_mensaje == MENSAJE_ID){
 		std::cout<<"ID"<<std::endl;
-		Lock l(m_id);
-		id_usuario = resto_mensaje;
+		{
+			Lock l(m_id);
+			id_usuario = resto_mensaje;
+		}
+		emisor.enviarConfiguracion();
 		{
 			Lock l(cv_tengoUsuario);
 			cv_tengoUsuario.broadcast();

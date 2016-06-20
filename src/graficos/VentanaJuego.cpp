@@ -18,6 +18,7 @@
 #include "../net/cliente/Jugador.h"
 #include <glibmm/main.h>
 #include "../net/Debug.h"
+#include <cstdio>
 
 VentanaJuego::VentanaJuego(Terminador* termina):cajaSplash(false,10),
 				cliente(*this),
@@ -159,6 +160,7 @@ void VentanaJuego::iniciarNivel(){
 
 void VentanaJuego::mostrarPantallaSeleccion(){
 	std::cout<<"mostrarPantallaSeleccion"<<std::endl;
+	
 	liberarRecursos();
 	remove();
 	add(cajaSplash);
@@ -166,6 +168,8 @@ void VentanaJuego::mostrarPantallaSeleccion(){
 }
 
 bool VentanaJuego::cerrarVentana(GdkEventAny* evento){
+	std::remove((cliente.obtenerNombre()+"nivel.xml").c_str());
+	std::remove((cliente.obtenerNombre()+SJuego::archivoConfig).c_str());
 	liberarRecursos();
 	std::cout<<"Cerrando ventana!"<<std::endl;
 	terminador->terminar();
@@ -191,6 +195,8 @@ void VentanaJuego::liberarRecursos(){
 		delete simulador;
 		simulador = NULL;
 	}
+	
+	cliente.terminarMundo();
 	
 	delete mundo;
 	mundo = NULL;

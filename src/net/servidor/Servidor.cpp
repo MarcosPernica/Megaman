@@ -23,7 +23,7 @@ void Servidor::nueva(ChannelSocket* nuevo_channel){
 }
 
 Servidor::Servidor():
-			aceptador(10020,4),
+			aceptador(SJuego::preconf.port,4),
 			contenedor(new CallbackIniciarPartida(*this), new CallbackLimite(*this) ),
 			nivel(0),
 			simulador(NULL),
@@ -35,6 +35,7 @@ Servidor::Servidor():
 				aceptador.start();
 				//sleep(10);
 }
+
 bool Servidor::algunNivelSeleccionado(){
 	Lock l(m_nivel);
 	return nivel!=0;

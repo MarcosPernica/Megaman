@@ -4,6 +4,24 @@
 
 namespace SJuego
 {
+	const Preconfiguracion preconf;
+	std::string Preconfiguracion::leerIP(){
+		std::ifstream iss("ip.conf");
+		std::string ret;
+		std::getline(iss,ret);
+		return ret;
+	}
+	uint Preconfiguracion::leerPort(){
+		std::ifstream iss("port.conf");
+		uint ret;
+		iss>>ret;
+		return ret;
+	}
+	
+	Preconfiguracion::Preconfiguracion():
+							ip(leerIP()),
+							port(leerPort()){}
+	
 	Constantes attr;
 
 	void Constantes::cargar(std::string nombreArchivo)

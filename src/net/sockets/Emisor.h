@@ -19,6 +19,8 @@ class Emisor{
 	void enviar(const std::string& tipo_mensaje) const;
 	
 	void enviarNivel(char nivel) const;
+	
+	void enviarConfiguracion();
 };
 
 #endif

@@ -36,7 +36,14 @@ void ReceptorCliente::configurarCallbacks(){
 	AGREGAR_CALLBACK(INICIAR_ENVIO_NIVEL);
 	AGREGAR_CALLBACK(ENVIO_NIVEL);
 	AGREGAR_CALLBACK(TERMINAR_ENVIO_NIVEL);
+	
+	AGREGAR_CALLBACK(INICIAR_ENVIO_CONFIG);
+	AGREGAR_CALLBACK(ENVIO_CONFIG);
+	AGREGAR_CALLBACK(TERMINAR_ENVIO_CONFIG);
 }
+
+
+
 IMPLEMENTAR_CALL(ESTABA){
 	cliente.agregarEstaba(resto_mensaje);
 }
@@ -94,6 +101,18 @@ IMPLEMENTAR_CALL(ENVIO_NIVEL){
 }
 IMPLEMENTAR_CALL(TERMINAR_ENVIO_NIVEL){
 	terminarDescargaNivel();
+}
+
+IMPLEMENTAR_CALL(INICIAR_ENVIO_CONFIG){
+	std::string nombre_archivo = cliente.obtenerNombre()+SJuego::archivoConfig;
+	stream_config.open(nombre_archivo.c_str(),std::ios_base::out|std::ios_base::trunc);//out:salida trunc:elimina todo lo que había antes
+}
+IMPLEMENTAR_CALL(ENVIO_CONFIG){
+	stream_config<<resto_mensaje<<std::endl;
+}
+IMPLEMENTAR_CALL(TERMINAR_ENVIO_CONFIG){
+	stream_config.close();
+	SJuego::attr.cargar(cliente.obtenerNombre()+SJuego::archivoConfig);
 }
 
 void ReceptorCliente::inyectarFullSnapshotsA(Mundo* a){
