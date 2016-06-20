@@ -74,11 +74,11 @@ void Cadena::comprimir(char caracter)
 	}
 }
 
-void Cadena::buscarReplazar(char buscar, char reemplazar)
+void Cadena::buscarReemplazar(std::string &cadena, char buscar, char reemplazar)
 {
-	for (unsigned int i = 0; i < size(); i++)
-		if (at(i) == buscar)
-			at(i) = reemplazar;
+	for (unsigned int i = 0; i < cadena.size(); i++)
+		if (cadena.at(i) == buscar)
+			cadena.at(i) = reemplazar;
 }
 
 Cadena::operator double()

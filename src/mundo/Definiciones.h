@@ -2,7 +2,7 @@
 #define DEFINICIONES
 
 #include <exception>
-#include "Cadena.h"
+#include "../common/Cadena.h"
 #include <string>
 #include <map>
 #include <vector>
