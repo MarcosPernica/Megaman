@@ -9,7 +9,7 @@ SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -g -Wall -Dcompiling_server -std=c++98
-LIB := -lpthread -pthread -L lib -lBox2D -ltinyxml
+LIB := -lpthread -pthread -L lib -lBox2D -ltinyxml -llog4cpp
 INC := -I include -I src
 
 $(TARGET): $(OBJECTS)
