@@ -14,7 +14,10 @@ class Escalera: public Construccion
 public:
 	Escalera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real alto);
 	ushort tipoCuerpo() const;
+
+	#ifndef compiling_server
 	std::string nombreImagen();
+	#endif
 };
 
 #endif

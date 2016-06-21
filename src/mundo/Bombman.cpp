@@ -47,9 +47,11 @@ Bombman::Bombman(uint ID,
 			 velocidad,
 			 izquierda,
 			 false),
+			#ifndef compiling_server
 			 Animado(&animacion_saltando),
 			 animacion_saltando(ANIM_BOMBMAN_SALTANDO,1),
 			 animacion_corriendo(ANIM_BOMBMAN_CORRIENDO,0.1),
+			#endif
 			 megaman(NULL),
 			 IDTarget(0),
 			 estadoBombman(QUIETO),
@@ -125,16 +127,20 @@ void Bombman::actualizarMaquinaEstados(real deltaT)
 
 	/*Es mas preciso cambiarlo de esta forma que una vez por cambio de la maquina de estados.*/
 
+	#ifndef compiling_server
 	if(estaEnElAire())
 		cambiar(&animacion_saltando);
 	else
 		cambiar(&animacion_corriendo);
+	#endif
 }
 
 void Bombman::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	/*Avanza la animacion.*/
 	avanzar(deltaT);
+	#endif
 
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
@@ -160,6 +166,7 @@ Bombman* Bombman::desdeSnapshot(const Snapshot& sn, Mundo& mundo)
 	return p;
 }
 
+#ifndef compiling_server
 void Bombman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion)
 {
 	Imagen::dibujarEn(cr,origen,factorAmplificacion);
@@ -177,3 +184,5 @@ const Rectangulo Bombman::obtenerRepresentacion() const
 			  ANCHOBOMBMAN,
 			  ALTOBOMBMAN);
 }
+
+#endif

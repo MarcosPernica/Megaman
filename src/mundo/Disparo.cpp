@@ -89,8 +89,10 @@ Bomba::Bomba(uint ID,
 		     posicion,
 	             true,
 		     velocidad),
+	#ifndef compiling_server
 	    Animado(&animacion),
 	    animacion(ANIM_DISPARO_BOMBA,0.5),
+	#endif
 	    tiempoTotal(TIEMPOEXPLOSIONBOMBA)
 			
 {
@@ -103,7 +105,9 @@ ushort Bomba::tipoDisparo() const
 
 void Bomba::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 
 	tiempoTotal -= deltaT;
 
@@ -138,7 +142,7 @@ void Bomba::explotar()
 	obtenerMundo().eliminar(this);
 }
 
-
+#ifndef compiling_server
 void Bomba::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
                       b2Vec2 origen, 
                       real factorAmplificacion)
@@ -158,6 +162,7 @@ const Rectangulo Bomba::obtenerRepresentacion() const
 			  ANCHOSPRITEBOMBA,
 			  ALTOSPRITEBOMBA);
 }
+#endif
 
 Plasma::Plasma(uint ID, 
 	       Mundo & mundo,
@@ -173,9 +178,11 @@ Plasma::Plasma(uint ID,
 		       categoriaTarget,
 		       posicion,
 		       false,
-		       velocidad),
-		Animado(&animacion),		
+		       velocidad)
+		#ifndef compiling_server
+		,Animado(&animacion),		
 		animacion(ANIM_DISPARO_PLASMA,0.1)
+		#endif
 			
 {
 }
@@ -197,9 +204,12 @@ Disparo * Plasma::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 
 void Plasma::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 };
 
+#ifndef compiling_server
 void Plasma::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
                        b2Vec2 origen, 
                        real factorAmplificacion)
@@ -220,6 +230,8 @@ const Rectangulo Plasma::obtenerRepresentacion() const
 			  ALTOSPRITEPLASMA);
 }
 
+#endif
+
 
 Chispa::Chispa(uint ID, 
 	       Mundo & mundo,
@@ -235,9 +247,11 @@ Chispa::Chispa(uint ID,
 		       categoriaTarget,
 		       posicion,
 		       false,
-		       velocidad),
-	       Animado(&animacion),
+		       velocidad)
+		#ifndef compiling_server
+		, Animado(&animacion),
 	       animacion(ANIM_DISPARO_CHISPA,0.5)
+		#endif
 {
 }
 
@@ -258,9 +272,12 @@ Disparo * Chispa::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 
 void Chispa::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 };
 
+#ifndef compiling_server
 void Chispa::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 		       b2Vec2 origen, 
 		       real factorAmplificacion)
@@ -280,6 +297,7 @@ const Rectangulo Chispa::obtenerRepresentacion() const
 			  ANCHOSPRITECHISPA,
 			  ALTOSPRITECHISPA);
 }
+#endif
 
 
 Anillo::Anillo(uint ID, 
@@ -297,8 +315,10 @@ Anillo::Anillo(uint ID,
 		       posicion,
 		       false,
 	               velocidad),
+		#ifndef compiling_server
 		Animado(&animacion),
 		animacion(ANIM_DISPARO_ANILLO,1),
+		#endif
 		tiempo(TIEMPOANILLO)
 {
 	modificarRestitucion(1);
@@ -317,7 +337,10 @@ void Anillo::alColisionar(Cuerpo *cuerpo)
 
 void Anillo::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
+
 	tiempo -= deltaT;	
 
 	if(tiempo <= 0)
@@ -334,6 +357,7 @@ Disparo * Anillo::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocid
 	return new Anillo(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
 }
 
+#ifndef compiling_server
 void Anillo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 		       b2Vec2 origen, 
 		       real factorAmplificacion)
@@ -353,6 +377,7 @@ const Rectangulo Anillo::obtenerRepresentacion() const
 			  ANCHOSPRITEANILLO,
 			  ALTOSPRITEANILLO);
 }
+#endif
 
 Fuego::Fuego(uint ID, 
 	     Mundo & mundo,
@@ -368,9 +393,11 @@ Fuego::Fuego(uint ID,
 		     categoriaTarget,
 		     posicion,
 		     false,
-		     velocidad),
-	     Animado(&animacion),
+		     velocidad)
+		#ifndef compiling_server
+		,Animado(&animacion),
 	     animacion(ANIM_DISPARO_FUEGO,0.25)
+		#endif
 				
 {
 }
@@ -392,9 +419,12 @@ Disparo * Fuego::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocida
 
 void Fuego::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 };
 
+#ifndef compiling_server
 void Fuego::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 		      b2Vec2 origen, 
 		      real factorAmplificacion)
@@ -414,6 +444,7 @@ const Rectangulo Fuego::obtenerRepresentacion() const
 			  ANCHOSPRITEFUEGO,
 			  ALTOSPRITEFUEGO);
 }
+#endif
 
 
 Iman::Iman(uint ID, 
@@ -431,8 +462,10 @@ Iman::Iman(uint ID,
 		   posicion,
 		   false,
                    velocidad),
+		#ifndef compiling_server
 	   Animado(&animacion),
 	   animacion(ANIM_DISPARO_IMAN,0.5),
+		#endif
 	   target(NULL)
 {
 }
@@ -444,8 +477,10 @@ ushort Iman::tipoDisparo() const
 
 void Iman::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	/*Avanza la animacion*/
 	avanzar(deltaT);
+	#endif
 
 	/*Selecciona una target si no tiene y lo sigue.*/
 	if(!target || !obtenerMundo().existeEnemigo(IDTarget) || !obtenerMundo().existeMegaman(IDTarget))
@@ -473,6 +508,7 @@ Disparo * Iman::nuevo(uint ID, const b2Vec2 & posicion, const b2Vec2 & velocidad
 	return new Iman(ID, obtenerMundo(), obtenerCategoriaTarget(), posicion, velocidad);
 }
 
+#ifndef compiling_server
 void Iman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 		     b2Vec2 origen, 
 		     real factorAmplificacion)
@@ -492,6 +528,7 @@ const Rectangulo Iman::obtenerRepresentacion() const
 			  ANCHOSPRITEIMAN,
 			  ALTOSPRITEIMAN);
 }
+#endif
 
 //------------------------------snapshotable de Disparo------------------//
 void Disparo::agregarPropiedadesASnapshot(Snapshot& sn){

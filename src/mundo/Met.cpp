@@ -35,9 +35,11 @@ Met::Met(uint ID,
 		false,
 		true,
 		velocidad),
+	#ifndef compiling_server
 	Animado(&animacion_protegido),
 	animacion_protegido(ANIM_MET_PROTEGIDO,1),
 	animacion_disparando(ANIM_MET_DISPARANDO,1),
+	#endif
 	megaman(NULL),
 	IDTarget(0),
 	tiempo(0),
@@ -72,7 +74,9 @@ void Met::actualizarMaquinaEstados(real deltaT)
 				tiempo = 0;
 				estadoMet = DESCUBIERTO;
 				exponerse();
+				#ifndef compiling_server
 				cambiar(&animacion_disparando);
+				#endif
 			}
 			break;
 		case DESCUBIERTO:
@@ -105,7 +109,9 @@ void Met::actualizarMaquinaEstados(real deltaT)
 				tiempo = 0;
 				estadoMet = CUBIERTO;
 				cubrirse();
+				#ifndef compiling_server
 				cambiar(&animacion_protegido);
+				#endif
 			}
 			break;
 	}
@@ -113,7 +119,9 @@ void Met::actualizarMaquinaEstados(real deltaT)
 
 void Met::actualizar(real deltaT)
 {
-	avanzar(deltaT);
+	#ifndef compiling_server
+	avanzar(deltaT);	
+	#endif
 
 	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
 	{
@@ -154,6 +162,7 @@ Met* Met::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	return p;
 }
 
+#ifndef compiling_server
 void Met::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 		    b2Vec2 origen, 
 	            real factorAmplificacion)
@@ -174,3 +183,4 @@ const Rectangulo Met::obtenerRepresentacion() const
 			  ANCHOMET,
 			  ALTOMET);
 }
+#endif

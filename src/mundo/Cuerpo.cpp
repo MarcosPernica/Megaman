@@ -1,9 +1,12 @@
 #include "Cuerpo.h"
 #include "Mundo.h"
 #include <Box2D/Box2D.h>
-#include "../graficos/Dibujable.h"
 #include <iostream>
+
+#ifndef compiling_server
+#include "../graficos/Dibujable.h"
 #include "../net/snapshots/Snapshot.h"
+#endif
 
 const b2Vec2 Cuerpo::versorIzquierda(-1, 0);
 const b2Vec2 Cuerpo::versorDerecha(1, 0);
@@ -207,6 +210,8 @@ const b2Vec2 & Cuerpo::orientacionAVector(Orientaciones orientacion)
 		return versorIzquierda;
 }
 
+#ifndef compiling_server
+
 void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion)
 {
 	Rectangulo principal = obtenerCajaMagnificada(1);
@@ -221,7 +226,7 @@ void Cuerpo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, r
 		Dibujable::dibujarRectangulo(cr, origen, factorAmplificacion, Dibujable::mundoARender(topLeftMundo), Dibujable::mundoARender(datos.at(i)->caja.obtenerAncho()), Dibujable::mundoARender(datos.at(i)->caja.obtenerAlto()));
 	}
 }
-
+#endif
 ////---------------------------snapshotable-----------------------------//
 
 /**

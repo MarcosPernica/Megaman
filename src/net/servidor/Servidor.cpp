@@ -6,6 +6,7 @@
 #include "ContenedorProxies.h"
 #include "../../graficos/Proporcionador.h" 
 #include <fstream>
+#include <sstream>
 /*
 void Servidor::copiarParaTiny(char nivel){
 	std::string nombre_nivel("niveles/nivel");

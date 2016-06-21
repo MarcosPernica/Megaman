@@ -19,7 +19,9 @@ ushort Escalera::tipoCuerpo() const
 	return ESCALERAS;
 }
 
+#ifndef compiling_server
 std::string Escalera::nombreImagen()
 {
 	return "imagenes/escalera/1.png";
 };
+#endif

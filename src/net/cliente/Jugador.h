@@ -5,6 +5,7 @@
 class VentanaJuego;
 class ServerProxy;
 #include "../../mundo/Megaman.h"
+#include <gdkmm/general.h>
 
 class ServerProxy;
 #include <gdk/gdk.h>

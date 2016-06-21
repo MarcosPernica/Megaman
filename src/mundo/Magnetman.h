@@ -11,11 +11,16 @@
 
 class Megaman;
 
-class Magnetman : public Enemigo, public Animado
+class Magnetman : public Enemigo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion_saltando;
 	Animacion animacion_corriendo;
+	#endif
 
 	char estadoMagnetman;
 	real reflejos;
@@ -40,9 +45,11 @@ public:
 	GENERAR_GET_TIPO(Magnetman);
 	static Magnetman* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 
+	#ifndef compiling_server
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
 #endif

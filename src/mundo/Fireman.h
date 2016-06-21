@@ -4,16 +4,24 @@
 #include "Enemigo.h"
 #include <Box2D/Box2D.h>
 #include "Disparo.h"
+
+#ifndef compiling_server
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
+#endif
 
 class Megaman;
 
-class Fireman : public Enemigo, public Animado
+class Fireman : public Enemigo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion_saltando;
 	Animacion animacion_corriendo;
+	#endif
 
 	char estadoFireman;
 	real reflejos;
@@ -35,9 +43,11 @@ public:
 	GENERAR_GET_TIPO(Fireman);
 	static Fireman* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 
+	#ifndef compiling_server
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
 #endif

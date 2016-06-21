@@ -5,6 +5,8 @@
 #include "../net/snapshots/Snapshot.h"
 #include <ctime>
 #include <algorithm>
+#include <sstream>
+
 #define TIEMPODISPARO 1
 
 #define HACIENDONADA 0
@@ -66,8 +68,10 @@ void Megaman::actualizar(real deltaT)
 	if(estaMuerta())
 		return;
 
+	#ifndef compiling_server
 	if(estadoEscalado != AGARRADOESCALERA)
 		avanzar(deltaT);
+	#endif
 
 	if(inmovilizado)
 	{
@@ -82,6 +86,7 @@ void Megaman::actualizar(real deltaT)
 		velocidad += VELOCIDADMEGAMANCORRIENDO*Cuerpo::orientacionAVector(obtenerOrientacion());
 		modificarVelocidad(velocidad);
 
+		#ifndef compiling_server
 		/*Puede setearse cada vez porque internamente si se le cambia la animacion a la misma que ya tiene hace nada y no gasta tiempo de CPU practicamente.*/
 
 		if(estadoSalto == PISANDO)
@@ -91,6 +96,7 @@ void Megaman::actualizar(real deltaT)
 			else 
 				cambiar(&animacion_disparandoCorriendo);
 		}
+		#endif
 	}
 
 	if (estadoSalto == PORSALTAR)
@@ -105,8 +111,10 @@ void Megaman::actualizar(real deltaT)
 	}
 	else if(estadoSalto == ENELAIRE)
 	{
+		#ifndef compiling_server
 		if(timeoutDisparo)
 			cambiar(&animacion_disparandoSaltando);
+		#endif
 	}
 
 	if(estadoEscalado != HACIENDONADA)
@@ -127,8 +135,10 @@ void Megaman::actualizar(real deltaT)
 		}
 		else
 		{
+			#ifndef compiling_server
 			if(timeoutDisparo)
 				cambiar(&animacion_disparandoSubiendo);
+			#endif
 		}
 			modificarVelocidad(velocidad);
 	}
@@ -156,8 +166,10 @@ void Megaman::actualizar(real deltaT)
 		estadoDisparo = HACIENDONADA;
 	}
 
+	#ifndef compiling_server
 	if(estadoDisparo == HACIENDONADA && estadoEscalado == HACIENDONADA && estadoSalto == PISANDO && !corriendo)
 			cambiar(&animacion_disparando);
+	#endif
 }
 
 void Megaman::agregarArma(Disparo * disparo, uint cantidadPlasma)
@@ -218,6 +230,7 @@ Megaman::Megaman(uint ID,
 			true,
 			velocidad,
 			orientacion),
+		#ifndef compiling_server
 		Animado(&animacion_quieto),
 		animacion_corriendo(ANIM_MEGAM_CORRE,0.1),
 		animacion_subiendo(ANIM_MEGAM_SUBIENDO,0.1),
@@ -227,6 +240,7 @@ Megaman::Megaman(uint ID,
 		animacion_disparandoCorriendo(ANIM_MEGAM_CORRE_DISP, 0.1),
 		animacion_disparandoSaltando(ANIM_MEGAM_SALTA_DISP, 0.1),
 		animacion_disparandoSubiendo(ANIM_MEGAM_SUBIENDO_DISP, 0.1),
+		#endif
 		armaSeleccionada(0),
 		vidas(VIDASINICIALES),
 		timeoutDisparo(0),
@@ -240,16 +254,8 @@ Megaman::Megaman(uint ID,
 		posicionSpawn(posicion),
 		mi_posicion(pos)
 {
-	std::cout<<"ID:"<<ID<<std::endl;
 	deshabilitarFriccion();
-	/*
-	Arma arma;
 
-	arma.plasma = CANTIDADINFINITAPLASMA;
-	arma.arma = new Plasma(obtenerMundo().generarID(),obtenerMundo(), AURAENEMIGOS);
-
-	armas.push_back(arma);
-	*/
 	agregarArma(TIPO_Plasma,CANTIDADINFINITAPLASMA);
 	/*Para saber si esta pisando.*/
 
@@ -294,13 +300,13 @@ void Megaman::deshabilitarSalto()
 
 void Megaman::saltar()
 {
-	std::cout<<"Llega la senial de saltar!"<<std::endl;
 	if (puedeSaltar >= 1 || estadoEscalado != HACIENDONADA)
 	{
-		std::cout<<"y estoy por saltar y todo!!"<<std::endl;
 		gravitar();
 		estadoSalto = PORSALTAR;
+		#ifndef compiling_server
 		cambiar(&animacion_saltando);
+		#endif
 	}
 }
 
@@ -358,7 +364,9 @@ void Megaman::subirEscalera()
 	if(puedeSubir)
 	{
 		estadoSalto = HACIENDONADA;
+		#ifndef compiling_server
 		cambiar(&animacion_subiendo);
+		#endif
 		estadoEscalado = SUBIENDOESCALERA;
 	}
 }
@@ -368,7 +376,9 @@ void Megaman::bajarEscalera()
 	if(puedeSubir)
 	{
 		estadoSalto = HACIENDONADA;
+		#ifndef compiling_server
 		cambiar(&animacion_subiendo);
+		#endif
 		estadoEscalado = BAJANDOESCALERA;
 	}
 }
@@ -463,6 +473,7 @@ void Megaman::setStateFromSnapshot(const Snapshot& sn){
 }
 
 //------------------------------------------------------------------
+#ifndef compiling_server
 const Rectangulo Megaman::obtenerRepresentacion() const{
 	return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEMEGAMAN/2,
 						obtenerPosicion().y-ALTOSPRITEMEGAMAN/2,
@@ -548,6 +559,7 @@ void Megaman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, 
 	
 	
 }
+#endif
 
 void Megaman::setCantidadVidas(uint cuantas){
 	vidas = cuantas;

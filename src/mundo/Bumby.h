@@ -4,15 +4,23 @@
 #include "Enemigo.h"
 #include <Box2D/Box2D.h>
 #include "Disparo.h"
+
+#ifndef compiling_server
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
+#endif
 
 class Megaman;
 
-class Bumby : public Enemigo, public Animado
+class Bumby : public Enemigo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion_volando;
+	#endif
 
 	Megaman *megaman;
 	uint IDTarget;
@@ -35,7 +43,7 @@ public:
 	GENERAR_GET_TIPO(Bumby);
 	static Bumby* desdeSnapshot(const Snapshot& sn, Mundo& mundo);
 
-
+	#ifndef compiling_server
 	/*Como se dibuja.*/
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 		       b2Vec2 origen, 
@@ -43,6 +51,7 @@ public:
 
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
 #endif

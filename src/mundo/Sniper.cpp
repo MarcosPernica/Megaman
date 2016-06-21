@@ -34,9 +34,11 @@ Sniper::Sniper(uint ID,
 				   false,
 				   true,
 				   velocidad),
+				#ifndef compiling_server
 				Animado(&animacion_disparando),
 				animacion_protegido(ANIM_SNIPER_PROTEGIDO,0.1),
 				animacion_disparando(ANIM_SNIPER_DISPARANDO,0.1),
+				#endif
 				  megaman(NULL),
 				   IDTarget(0),
 				estadoSniper(DESCUBRIENDOSE),
@@ -63,14 +65,18 @@ void Sniper::actualizarMaquinaEstados(real deltaT)
 {
 	reflejos += deltaT;
 
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 	
 	if(estadoSniper == CUBIERTO && reflejos >= TIEMPOCUBIERTO)
 	{
 		reflejos = 0;
 		exponerse();
 		estadoSniper = DESCUBRIENDOSE;
+		#ifndef compiling_server
 		cambiar(&animacion_disparando);
+		#endif
 	}
 	
 	if(estadoSniper == DESCUBRIENDOSE)
@@ -100,13 +106,17 @@ void Sniper::actualizarMaquinaEstados(real deltaT)
 	{
 		estadoSniper = CUBIERTO;
 		cubrirse();
+		#ifndef compiling_server
 		cambiar(&animacion_protegido);
+		#endif
 	}
 }
 
 void Sniper::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 
 	if(!megaman || !obtenerMundo().existeMegaman(IDTarget))
 	{
@@ -147,6 +157,7 @@ Sniper* Sniper::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	return p;
 }
 
+#ifndef compiling_server
 void Sniper::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 Imagen::dibujarEn(cr,origen,factorAmplificacion);}
 
@@ -157,3 +168,4 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSNIPER/2,
 					obtenerPosicion().y-ALTOSNIPER/2,
 					ANCHOSNIPER,
 					ALTOSNIPER);}
+#endif
