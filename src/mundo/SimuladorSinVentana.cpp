@@ -11,7 +11,6 @@ void SimuladorSinVentana::run()
 {
 	FullSnapshot a_distribuir;
 	long nanos_por_segundo=1000000000;
-	//ahora sí, el ciclo
 	int loops_desde_ultimo_envio = 0;
 	double segs_dormi_extra = 0;
 	while(getContinuar()){
@@ -36,8 +35,6 @@ void SimuladorSinVentana::run()
 		double segs_computando = ((double)(t_despues_de_computos.tv_nsec-t_inicial.tv_nsec))/nanos_por_segundo;//aunque deberían ser 9 ceros (se supone que son 9!)
 		double segs_a_dormir = segundosPorActualizacion - segs_computando - segs_dormi_extra;
 		if(segs_a_dormir>0){
-//			std::cout<<"voy a dormir en us"<<(useconds_t)(segs_a_dormir * 1000000)<<" en s: "<<segs_a_dormir<<std::endl;
-//			std::cout<<"segs p/a "<<segundosPorActualizacion<<" segs computando "<<segs_computando<<" segs extra "<<segs_dormi_extra<<std::endl;
 			usleep((useconds_t)(segs_a_dormir * 1000000));// 6 ceros
 			
 			timespec t_despues_de_dormir;
@@ -50,15 +47,16 @@ void SimuladorSinVentana::run()
 			}
 		}
 		
-		if(mundo.obtenerEstadoMundo() != vivo){
+		if(mundo.obtenerEstadoMundo() == perdido){
+			mundo.reiniciar();
+		}
+		
+		if(mundo.obtenerEstadoMundo() == gameover || mundo.obtenerEstadoMundo() == ganado){
 			callbackFinMundo->fin(mundo.obtenerEstadoMundo());
-			
 			Lock l(m_continuar);
 			continuar = false;
 		}
 	}
-	
-	std::cout<<"Chau Simulador sin ventana"<<std::endl;
 }
 
 SimuladorSinVentana::SimuladorSinVentana(
@@ -78,10 +76,8 @@ bool SimuladorSinVentana::getContinuar(){
 	return continuar;
 }
 void SimuladorSinVentana::end(){
-	//std::cout<<"Se refiere a ventana!"<<std::endl;
 	Lock l(m_continuar);
 	continuar = false;
-	//std::cout<<"Digamos que anda!"<<std::endl;
 }
 
 SimuladorSinVentana::~SimuladorSinVentana(){

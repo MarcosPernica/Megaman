@@ -59,18 +59,9 @@ HabilitadorBomba::HabilitadorBomba(uint ID, Mundo &mundo, const b2Vec2 &posicion
 
 void HabilitadorBomba::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Bomba(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Bomba);
+	finalizar();
 }
 
 #ifndef compiling_server
@@ -94,18 +85,9 @@ HabilitadorIman::HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion) 
 
 void HabilitadorIman::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Iman(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Iman);
+	obtenerMundo().finalizar();
 }
 
 #ifndef compiling_server
@@ -129,18 +111,9 @@ HabilitadorChispa::HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posici
 
 void HabilitadorChispa::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Chispa(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Chispa);
+	obtenerMundo().finalizar();
 }
 
 #ifndef compiling_server
@@ -164,18 +137,9 @@ HabilitadorAnillo::HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posici
 
 void HabilitadorAnillo::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Anillo(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Anillo);
+	obtenerMundo().finalizar();
 }
 
 #ifndef compiling_server
@@ -198,18 +162,9 @@ HabilitadorFuego::HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion
 
 void HabilitadorFuego::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Fuego(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Fuego);
+	obtenerMundo().finalizar();
 }
 
 #ifndef compiling_server
