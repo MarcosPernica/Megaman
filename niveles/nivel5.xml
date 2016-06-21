@@ -1,52 +1,50 @@
 <?xml version="1,0" ?>
 <Nivel>
 <CuboVacio ancho="1" alto="15" x="-0,5" y="8,5"></CuboVacio>
-<CuboMetal ancho="30" alto="1" x="" y="15,5"></CuboMetal>
-<CuboMetal ancho="4" alto="1" x="6" y="14,5"></CuboMetal>
-<CuboMetal ancho="3" alto="1" x="6,5" y="13,5"></CuboMetal>
-<CuboMetal ancho="2" alto="1" x="7" y="12,5"></CuboMetal>
-<CuboMetal ancho="1" alto="1" x="7,5" y="11,5"></CuboMetal>
-<Escalera alto="9" x="12,5" y="10,5"></Escalera>	
-<CuboMetal ancho="2" alto="1" x="17" y="15,5"></CuboMetal>
-<CuboMetal ancho="1" alto="1" x="20,5" y="15,5"></CuboMetal>
-<CuboMetal ancho="2" alto="1" x="24" y="15,5"></CuboMetal>
-<CuboMetal ancho="2" alto="1" x="28" y="15,5"></CuboMetal>	
-<CuboMadera ancho="13" alto="1" x="19,5" y="10,5"></CuboMadera>
-<Escalera alto="9" x="28,5" y="10,5"></Escalera>
-<ZonaMortal alto="5" ancho="100" x="50" y="19"></ZonaMortal>
-<CuboMadera ancho="5" alto="1" x="31,5" y="11,5"></CuboMadera>
-<CuboMadera ancho="1" alto="1" x="35,5" y="11,5"></CuboMadera>
-<CuboMadera ancho="1" alto="1" x="37,5" y="11,5"></CuboMadera>	
-<CuboMadera ancho="1" alto="1" x="39,5" y="11,5"></CuboMadera>	
-<CuboMetal ancho="9" alto="1" x="43,5" y="15,5"></CuboMetal>
+<CuboTierra ancho="13" alto="6" x="-3,5" y="13"></CuboTierra>
+<CuboTierra ancho="4" alto="6" x="5" y="13"></CuboTierra>
+<CuboTierra ancho="1" alto="1" x="5" y="10,5"></CuboTierra>
+<CuboTierra ancho="6" alto="6" x="10" y="13"></CuboTierra>
+<CuboTierra ancho="1" alto="6" x="13,5" y="13"></CuboTierra>
+<CuboTierra ancho="1" alto="5" x="14,5" y="13,5"></CuboTierra>
+<CuboTierra ancho="1" alto="4" x="15,5" y="14"></CuboTierra>
+<CuboTierra ancho="1" alto="3" x="16,5" y="14,5"></CuboTierra>
+<CuboTierra ancho="1" alto="2" x="17,5" y="15"></CuboTierra>
+<CuboTierra ancho="14" alto="1" x="25" y="15,5"></CuboTierra>
+<Puas ancho="17" alto="1" x="40,5" y="16"></Puas>
+<CuboTierra ancho="2" alto="1" x="34" y="14,5"></CuboTierra>
+<CuboTierra ancho="3" alto="1" x="38,5" y="13,5"></CuboTierra>
+<CuboTierra ancho="1" alto="1" x="40,5" y="12,5"></CuboTierra>
+<CuboTierra ancho="1" alto="1" x="41,5" y="11,5"></CuboTierra>
+<CuboTierra ancho="1" alto="1" x="42,5" y="10,5"></CuboTierra>
+<CuboTierra ancho="17" alto="1" x="51,5" y="9,5"></CuboTierra>
+<CuboLadrillo ancho="17" alto="6" x="51,5" y="13"></CuboLadrillo>
+<CuboLadrillo ancho="17" alto="8" x="51,5" y="3"></CuboLadrillo>
+<CuboTierra ancho="21" alto="1" x="70,5" y="15,5"></CuboTierra>
+<CuboLadrillo ancho="21" alto="1" x="70,5" y="0,5"></CuboLadrillo>
+<CuboLadrillo ancho="11" alto="16" x="86,5" y="8"></CuboLadrillo>
 
+<ZonaSpawnMegaman longitud="1" x="1" y="9"></ZonaSpawnMegaman>
+<JumpingSniper x="5" y="10,5"></JumpingSniper>
+<Met x="6" y="10,5"></Met>
+<Met x="4" y="10,5"></Met>
+<Met x="7" y="10,5"></Met>
 
-<CuboMadera ancho="13" alto="13" x="54,5" y="6"></CuboMadera>
-<CuboMetal ancho="40" alto="1" x="67" y="15,5"></CuboMetal>
-<CuboMadera ancho="15" alto="2" x="68,5" y="1"></CuboMadera>
-<CuboMadera ancho="12" alto="15" x="82" y="7,5"></CuboMadera>
+<Bumby x="19,5" y="10,5"></Bumby>
+<Bumby x="22,5" y="10,5"></Bumby>
+<Met x="20,5" y="15"></Met>
+<Met x="21,5" y="15"></Met>
+<Met x="23,5" y="15"></Met>
+<JumpingSniper x="28,5" y="15"></JumpingSniper>
+<JumpingSniper x="30,5" y="15"></JumpingSniper>
+<Sniper x="38,5" y="12,5"></Sniper>
+<Sniper x="40,5" y="11,5"></Sniper>
+<Sniper x="42,5" y="9,5"></Sniper>
 
-<Puerta id="0" ancho="0,5" alto="2,50" x="48,50" y="13,75"></Puerta>
-<Puerta id="1" ancho="0,5" alto="2,50" x="60,50" y="13,75"></Puerta>
-<ZonaCerradura idPuerta="0" alto="2" ancho="10" x="54,5" y="14"></ZonaCerradura>
-<ZonaCerradura idPuerta="1" alto="3" ancho="15" x="68,5" y="13,5"></ZonaCerradura>
-<ZonaGuardado alto="3" ancho="15" x="68,5" y="14,5"></ZonaGuardado>
-
-<ZonaSpawnMegaman longitud="1" x="2" y="5"></ZonaSpawnMegaman>
-<Met x="5,5" y="8"></Met>
-<Met x="6,5" y="8"></Met>
-<Met x="7,5" y="8"></Met>
-<Bumby x="14,5" y="8,5"></Bumby>
-<Bumby x="18,5" y="8,5"></Bumby>
-<Bumby x="26,5" y="8,5"></Bumby>
-<Met x="23,5" y="14,5"></Met>
-<Met x="24,5" y="14,5"></Met>
-<Met x="27,5" y="14,5"></Met>	
-<Met x="32,5" y="10,5"></Met>				
-<JumpingSniper x="41" y="14"></JumpingSniper>
-<JumpingSniper x="47,5" y="14"></JumpingSniper>
-<Bumby x="39,5" y="8"></Bumby>
-<Bumby x="45,5" y="8"></Bumby>	
-<Fireman idPuerta="1" x="74" y="8"></Fireman>
+<Puerta id="1" ancho="1" alto="2" x="43,5" y="8"></Puerta>
+<ZonaCerradura idPuerta="1" ancho="13" alto="2" x="51,5" y="8"></ZonaCerradura>
+<Puerta id="2" ancho="1" alto="2" x="59,5" y="8"></Puerta>
+<ZonaCerradura idPuerta="2" ancho="10" alto="8" x="66" y="11"></ZonaCerradura>
+<ZonaGuardado idPuerta="2" ancho="20" alto="8" x="70" y="11"></ZonaGuardado>
+<Bombman idPuerta="2" x="80" y="14"></Bombman>
 </Nivel>
-
