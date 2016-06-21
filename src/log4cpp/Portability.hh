@@ -51,7 +51,7 @@
 #    pragma warning( disable : 4251 ) // "class XXX should be exported"
 #endif
 
-
+#define LOG4CPP_HAVE_SSTREAM
 #  include <sstream>
 
 
