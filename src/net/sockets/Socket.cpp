@@ -17,7 +17,6 @@ Socket::Socket(int fd){
 }
 
 Socket::~Socket(){
-	std::cout<<"Destructor de socket"<<std::endl;
 	if (file_descriptor != -1){
 		try{
 			closeS();

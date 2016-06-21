@@ -34,10 +34,10 @@ class Cliente{
 	public:
 	
 	//interfaz para ReceptorCliente
-	/*
-	void agregarEstaba(const std::string& usuario);
-	void agregarLlega(const std::string& usuario);
-	**/
+	
+	void agregarEstaba(const std::string& usuario);//no se usan
+	void agregarLlega(const std::string& usuario);//no se usan
+	
 	void definirPosicion(int posicion);
 	int obtenerPosicion();
 	void iniciar();
