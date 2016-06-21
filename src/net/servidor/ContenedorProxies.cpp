@@ -75,6 +75,7 @@ void ContenedorProxies::matarConexiones(){
 	for(it=proxies.begin(); it!=proxies.end(); ++it){
 		ProxyJugador* a_borrar=*it;
 		delete a_borrar;
+		*it = NULL;
 	}
 	proxies.clear();
 }
@@ -98,7 +99,10 @@ void ContenedorProxies::distribuirFinNivel(){
 }
 
 ContenedorProxies::~ContenedorProxies(){
-	delete callbackIniciar;
+	
+	if(proxies.size()==0){
+		 delete callbackIniciar;
+	 }
 	delete callbackLimite;
 	matarConexiones();
 }

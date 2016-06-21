@@ -17,7 +17,11 @@ class ContenedorProxies{
 	
 	Mutex m_proxies;
 	std::vector<ProxyJugador*> proxies;
+	/**
+	 * Borra todas las conexiones. 
+	 * */
 	
+	 void matarConexiones();
 	
 	public:
 	~ContenedorProxies();
@@ -51,11 +55,7 @@ class ContenedorProxies{
 	 
 	 void notificarInicio();
 	 
-	/**
-	 * Borra todas las conexiones. 
-	 * */
 	
-	 void matarConexiones();
 	 
 	 /**
 	 * Avisa de la llegada de ese usuario a todos los proxies que 

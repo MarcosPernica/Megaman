@@ -83,9 +83,13 @@ bool Receptor::getRecepcionSana(){
 }
 
 void Receptor::recibirTipoMensaje(std::string& poner_en){
-	Buffer buf(3);
-	channel.receiveFixed(buf);
-	poner_en = buf.asString();
+	try{
+		Buffer buf(3);
+		channel.receiveFixed(buf);
+		poner_en = buf.asString();
+	}catch(const CException& e){
+		std::cerr<<"Falla esperada en la recepción"<<std::endl;
+	}
 }
 
 int Receptor::recibirLargo(){

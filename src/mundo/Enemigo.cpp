@@ -62,7 +62,8 @@ Enemigo::Enemigo(uint ID,
 		arma(arma),
 		powerUpMorir(powerUpMorir),
 		velocidadSalto(velocidadSalto),
-		velocidadCorrer(velocidadCorrer)
+		velocidadCorrer(velocidadCorrer),
+		direccionDisparo(0,0)
 {
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(0,alto*0.9/2), JUMPBOX, JUMPBOX, CONSTRUCCIONES);
 	agregarCuerpoInmaterial(ancho*0.25,0.3,b2Vec2(-ancho/2,0), LEFTBOX, LEFTBOX, CONSTRUCCIONES);

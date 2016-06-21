@@ -54,6 +54,9 @@ int Snapshot::getTipo() const{
 //-------------------------int-------------------------------------//
 
 void Snapshot::agregarPropiedad(const std::string& nombre, int valor){
+	if(valor<25){
+		std::cout<<"";
+	}
 	propiedades[nombre]=valor;
 }
 void Snapshot::obtenerPropiedad(const std::string& nombre, int& ponerEn) const{

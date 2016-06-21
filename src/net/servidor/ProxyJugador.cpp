@@ -149,8 +149,11 @@ const std::string& ProxyJugador::getUsuario(){
 }
 
 ProxyJugador::~ProxyJugador(){
+	channel->closeS();
 	delete channel;
+	channel = NULL;
 }
+
 bool ProxyJugador::getEstaSana(){
 	Lock l(m_conexion_sana);
 	return conexion_sana && getRecepcionSana();
