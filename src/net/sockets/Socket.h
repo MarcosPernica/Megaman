@@ -46,7 +46,7 @@ class Socket{
 	/**
 	 * Hace que el socket sea no bloqueante
 	 * */
-	void setNonBlocking();
+	void setNonBlocking();//(no se usa)
 	
 	/**
 	 * Bind
