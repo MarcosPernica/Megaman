@@ -140,15 +140,19 @@ namespace SJuego
 
 		std::fstream archivo;
 		archivo.open(nombreArchivo.c_str(), std::ios::in);
+
+		char separador = ',';
+
+		/*Duck Typing.*/
+		if((real)Cadena("1,2") == 1)
+			separador = '.';
 		
 		while(!archivo.eof())
 		{
 			archivo >> linea;
 			partes = linea.partir(Cadena("="));	
-
 			/*Setea el formato decimal al de la maquina.*/
-			Cadena::buscarReemplazar(partes.at(2), ',' , std::use_facet< std::numpunct<char> >(std::cout.getloc()).decimal_point());	
-	
+			Cadena::buscarReemplazar(partes.at(2), ',' , separador);
 			*punteros[partes.at(0)] = partes.at(2);			
 		}
 
