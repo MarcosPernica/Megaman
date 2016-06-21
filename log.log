@@ -1,0 +1,19 @@
+1466529433 INFO sub : Cliente pepe desconectado
+1466529526 INFO sub : Cliente pepe desconectado
+1466530148 INFO sub : Entra nuevo cliente: pepe
+1466530150 INFO sub : Se va a iniciar el nivel: 1
+1466530213 INFO sub : Se va a iniciar el nivel: 2
+1466530276 INFO sub : Se va a iniciar el nivel: 4
+1466530289 INFO sub : Cliente pepe desconectado
+1466530474 INFO sub : Entra nuevo cliente: pepe
+1466530475 INFO sub : Se va a iniciar el nivel: 1
+1466531418 INFO sub : Entra nuevo cliente: pepe
+1466531419 INFO sub : Se va a iniciar el nivel: 1
+1466531603 INFO sub : Termina el nivel
+1466531610 INFO sub : Se va a iniciar el nivel: 4
+1466531645 INFO sub : Cliente pepe desconectado
+1466532995 INFO sub : Entra nuevo cliente: pepe
+1466532997 INFO sub : Se va a iniciar el nivel: 1
+1466533047 INFO sub : Termina el nivel
+1466533053 INFO sub : Se va a iniciar el nivel: 3
+1466533356 INFO sub : Termina el nivel

@@ -91,7 +91,8 @@ void Fireman::actualizarMaquinaEstados(real deltaT)
 		}
 		case QUIETO:
 		{
-			real aleatorio = numeroAleatorio(0,1);
+			real aleatorio;
+			aleatorio = numeroAleatorio(0,1);
 
 			if(aleatorio < 0.2)
 			{

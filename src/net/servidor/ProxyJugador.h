@@ -84,6 +84,8 @@ class ProxyJugador: public Receptor{
 	  * Envía al jugador el mensaje de que se envió el nivel
 	  * */
 	 void enviarFinNivel();
+	 
+	 void notificarRecepcionRota();
 };
 
 class CallbackProxyJugador : public CallbackReceptor {
