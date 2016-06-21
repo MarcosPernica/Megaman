@@ -61,7 +61,7 @@ void HabilitadorBomba::aumentar(Megaman & megaman)
 {
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Bomba);
-	finalizar();
+	obtenerMundo().finalizar();
 }
 
 #ifndef compiling_server
