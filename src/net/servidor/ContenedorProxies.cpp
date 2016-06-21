@@ -18,7 +18,6 @@ void ContenedorProxies::nuevaConexion(ChannelSocket* channel){
 	
 	ProxyJugador* nuevo = new ProxyJugador(channel);
 	std::string id_usuario = nuevo->getUsuario();//bloquea hasta que se recibe el usuario por primera vez
-	std::cout<<"Entra: "<<id_usuario<<std::endl;
 	nuevo->enviarPosicion(proxies.size());
 	
 	nuevo->enviarListaJugadores(proxies);//se le envían los que ya estaban//
@@ -36,12 +35,6 @@ void ContenedorProxies::nuevaConexion(ChannelSocket* channel){
 	 if(proxies.size()==1){
 		 proxies[0]->agregarCallback(MENSAJE_INICIAR,callbackIniciar);
 	 }
-	/*
-	if(primero!=NULL && primero->quiereIniciarPartida()){
-		aceptarJugadores = false;
-		std::cout<<"El primer jugador decidio iniciar"<<std::endl;
-	}
-	* */
 }
 
 void ContenedorProxies::distribuir(const FullSnapshot& full_snapshot){
@@ -59,9 +52,6 @@ void ContenedorProxies::ejecutarControlesSobreMegaman(){
 }
 
 void ContenedorProxies::enviarNivel(char nivel){
-	/*
-	std::cout<<"----------------------ENVIO EL  NIVEL"<<nivel<<"A TODOS----------"<<std::endl;
-	* */
 	std::vector<ProxyJugador*>::iterator it;
 	for(it = proxies.begin(); it!=proxies.end(); ++it){
 		(*it)->enviarNivel(nivel);

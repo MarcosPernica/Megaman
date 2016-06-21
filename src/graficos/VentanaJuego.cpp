@@ -117,7 +117,6 @@ bool VentanaJuego::on_actualizar_dibujo(){
 void VentanaJuego::on_intro_nombre(){
 	Glib::RefPtr<Gtk::EntryBuffer> buffer = entry.get_buffer();
 	nombre = buffer->get_text();
-	std::cout<<"El usuario es "<<nombre<<std::endl;
 	entry.set_text("ya enviaste tu nombre de usuario");
 	estado.set_text("Conectando...");
 	entry.set_sensitive(false);
@@ -134,7 +133,6 @@ void VentanaJuego::setPrimero(bool primero){
 }
 
 void VentanaJuego::agregarJugador(const std::string& nombre){
-	std::cout<<"Se agrega al lobby: "<<nombre<<std::endl;
 	Glib::ustring texto_lobby = lobby.get_text();
 	texto_lobby+=nombre+"\n";
 	lobby.set_text(texto_lobby);
@@ -168,8 +166,6 @@ void VentanaJuego::iniciarNivel(){
 }
 
 void VentanaJuego::mostrarPantallaSeleccion(){
-	std::cout<<"mostrarPantallaSeleccion"<<std::endl;
-	
 	liberarRecursos();
 	remove();
 	add(cajaSplash);
@@ -182,7 +178,6 @@ bool VentanaJuego::cerrarVentana(GdkEventAny* evento){
 		std::remove((cliente.obtenerNombre()+SJuego::archivoConfig).c_str());
 	}
 	liberarRecursos();
-	std::cout<<"Cerrando ventana!"<<std::endl;
 	terminador->terminar();
 	return true;
 }
@@ -224,7 +219,6 @@ VentanaJuego::~VentanaJuego(){
 bool VentanaJuego::detectarPresionTecla(GdkEventKey* evento){
 	remove();
 	add(cajaSplash);
-	std::cout<<"Presio tecla!"<<std::endl;
 	inicio_ok = true;
 	conexionKeyPress.disconnect();
 	return true;

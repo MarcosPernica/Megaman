@@ -18,24 +18,14 @@ void Receptor::ejecutarMensaje(const std::string& tipo_mensaje,const std::string
 }
 void Receptor::run(){
 	while(seguirRecibiendo() && getRecepcionSana()){
+		std::string tipo, mensaje;
+		recibirTipoMensaje(tipo);
+		int largo = recibirLargo();
+		if(largo>0){
+			recibirString(mensaje,largo);
+		}
+		ejecutarMensaje(tipo,mensaje);
 		
-		//try{
-			std::string tipo, mensaje;
-			recibirTipoMensaje(tipo);
-			int largo = recibirLargo();
-			if(largo>0){
-				recibirString(mensaje,largo);
-			}
-			ejecutarMensaje(tipo,mensaje);
-		/*
-		}//catch(RecvException& e){}
-		 catch(RecvTimeOutException &e){
-			 std::cout<<"Recepción rota!"<<std::endl;
-			 setRecepcionRota();
-			 throw e;////////////////////POR AHORA NO HAGO NINGUN MANEJO ESPECIAL DE ESTA SITUACION!!
-			 /////////////////////////-----------------
-		 }
-		 */
 	}
 }
 
@@ -49,7 +39,6 @@ bool Receptor::seguirRecibiendo(){
 }
 
 void Receptor::decodificarMensaje(const std::string& mensaje){
-	//std::cout<<mensaje<<std::endl;
 	std::istringstream stream(mensaje);
 	std::string tipo_mensaje;
 	
@@ -61,11 +50,9 @@ void Receptor::decodificarMensaje(const std::string& mensaje){
 	}
 	
 	ejecutarMensaje(tipo_mensaje,resto_mensaje);
-	//std::cout<<tipo_mensaje<<" - "<<resto_mensaje<<std::endl;
 }
 
 Receptor::~Receptor(){
-	std::cout<<"Destructor de Receptor!"<<std::endl;
 	join();
 	std::map<std::string,CallbackReceptor*>::iterator it;
 	std::set<CallbackReceptor*> borrados;
@@ -79,7 +66,7 @@ Receptor::~Receptor(){
 }
 bool Receptor::setRecepcionRota(){
 	Lock l(m_recepcion_sana);
-	std::cout<<"La recepcion acaba de romperse"<<std::endl;
+	std::cerr<<"La recepcion acaba de romperse"<<std::endl;
 	recepcion_sana = false;
 }
 bool Receptor::getRecepcionSana(){

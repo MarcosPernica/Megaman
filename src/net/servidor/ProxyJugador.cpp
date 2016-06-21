@@ -53,24 +53,18 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 				controlado->seleccionarArma(5);
 			}else if(tipo_mensaje == MENSAJE_KEY_Z){
 				controlado->saltar();
-				std::cout<<"Z!"<<std::endl;
 			}else if(tipo_mensaje == MENSAJE_KEY_X){
 				controlado->disparar();
-				//std::cout<<"X!"<<std::endl;
 			}else if(tipo_mensaje == MENSAJE_KEY_UP){
 				controlado->subirEscalera();
-				//std::cout<<"UP!"<<std::endl;
 			}else if(tipo_mensaje == MENSAJE_KEY_DN){
 				controlado->bajarEscalera();
-				//std::cout<<"DN!"<<std::endl;
 			}else if(tipo_mensaje == MENSAJE_KEY_RIGHT){
 				controlado->mirarDerecha();
 				controlado->correr();
-				std::cout<<"right!"<<std::endl;
 			}else if(tipo_mensaje == MENSAJE_KEY_LEFT){
 				controlado->mirarIzquierda();
 				controlado->correr();
-				std::cout<<"left!"<<std::endl;
 			}else if(tipo_mensaje == MENSAJE_KEY_UP_LIBERADA){
 				controlado->pararMovimientoEscalera();
 			}else if(tipo_mensaje == MENSAJE_KEY_DN_LIBERADA){
@@ -85,9 +79,7 @@ void ProxyJugador::ejecutarControlSobreMegaman(){
 }
 
 void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& resto_mensaje){
-	std::cout<<"Recibo un mensaje, controlado es: "<<controlado<<std::endl;
 	if(tipo_mensaje == MENSAJE_ID){
-		std::cout<<"ID"<<std::endl;
 		{
 			Lock l(m_id);
 			id_usuario = resto_mensaje;
@@ -98,19 +90,10 @@ void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& 
 			cv_tengoUsuario.broadcast();
 		}
 	}else if(tipo_mensaje == MENSAJE_INICIAR){//YA NO LLEGA!!!!!
-		std::cout<<"Inicio"<<std::endl;
 		setQuiereIniciarPartida(resto_mensaje[0]);//no es el número de nivel, sino el caracter que lo representa!
 	}else if(controlado != NULL){
-		/*
-		if(tipo_mensaje == MENSAJE_KEY_Z){
-			timespec ahora;
-			clock_gettime(CLOCK_REALTIME,&ahora);
-			std::cout<<"Llega la Z a las "<<ahora.tv_nsec<<std::endl;
-		}
-		*/
 		Lock l(m_controles_recibidos);
 		controles_recibidos.push(tipo_mensaje);
-		//std::cout<<"Llegó un mensaje: "<<tipo_mensaje<<std::endl;
 	}
 }
 
@@ -202,8 +185,6 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	FSSerializada::const_iterator it;
 	
 	emisor.enviar(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT,full_snapshot.obtenerHorarioCreacion());
-	
-	//------------ACÁ HAY QUE RECOMENTAR!!!!!-------------
 	
 	//std::cout<<"-----------ENVIANDO  FULL SNAPSHOT------------"<<std::endl;
 	for(it = serializada.begin(); it!=serializada.end(); ++it){

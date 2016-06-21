@@ -26,7 +26,7 @@ void ThreadAceptador::run(){
 				(*it)->nueva(aceptado);
 			}
 		}catch(const CException& e){
-			std::cout<<"Hubo un error al aceptar!! creo que porque se cerró el accepter socket"<<std::endl;
+			std::cerr<<"Error al aceptar: cerrado el acceptersocket"<<std::endl;
 		}
 	}
 	

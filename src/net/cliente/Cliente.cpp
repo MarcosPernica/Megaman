@@ -19,7 +19,7 @@ void Cliente::conectarse(const std::string& nombre){
 	this->nombre = nombre;
 	receptor.start();
 }
-
+/*
 void Cliente::agregarEstaba(const std::string& usuario){
 	Lock l(m_pantalla);
 	std::cout<<"Estaba el usuario "<<usuario<<std::endl;
@@ -28,6 +28,7 @@ void Cliente::agregarLlega(const std::string& usuario){
 	Lock l(m_pantalla);
 	std::cout<<"Llega el usuario "<<usuario<<std::endl;
 }
+**/
 void Cliente::definirPosicion(int pos){
 	if( pos<0 || pos>3){
 		throw CustomException("Las posiciones deben estar entre 0 y 3");
@@ -81,7 +82,6 @@ void Cliente::enviarIniciar(int nivel){
 }
 
 Cliente::~Cliente(){
-	std::cout<<"Cerrando el socket desde ~Cliente"<<std::endl;
 	socket.closeS();
 }
 

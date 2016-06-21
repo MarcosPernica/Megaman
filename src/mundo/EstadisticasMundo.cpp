@@ -9,7 +9,6 @@ EstadisticasMundo::EstadisticasMundo():Snapshotable(60000){
 	
 }
 EstadisticasMundo::EstadisticasMundo(Snapshot& sn):Snapshotable(60000){
-	std::cout<<"Creando EstadisticasMundo desde snapshot!!!"<<std::endl;
 	for(uint i =0; i <4;i++){
 		vidas[i]=3;
 	}

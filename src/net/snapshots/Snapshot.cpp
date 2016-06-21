@@ -36,7 +36,6 @@ void Snapshot::deserializar(const SnapshotSerializada& serializada){
 	std::istringstream istream(serializada);
 	istream.imbue(std::locale(istream.getloc(), new ConComa()));
 	istream.imbue(std::locale(istream.getloc(), new PonerNada()));
-	//std::cout<<"deserializando----------------------"<<std::endl;
 	while(!istream.eof()){
 		std::string nombre;
 		int valor;
@@ -44,11 +43,8 @@ void Snapshot::deserializar(const SnapshotSerializada& serializada){
 		istream>>valor;
 		if(nombre.size()>=1){
 			agregarPropiedad(nombre,valor);
-			//std::cout<<"agregando propiedad: "<<nombre<<", "<<valor<<std::endl;
 		}
 	}
-	//std::cout<<"Yo cuando estaba serializado: "<<serializada<<std::endl;
-	//std::cout<<"Yo antes de serializar: "<<serializar()<<std::endl;
 }
 
 int Snapshot::getTipo() const{
@@ -90,15 +86,11 @@ void Snapshot::obtenerPropiedad(const std::string& nombre, bool& ponerEn) const{
 //-------------------real--------------------------------//
 void Snapshot::agregarPropiedad(const std::string& nombre, real valor){
 	int post = (int) (valor*1000);
-	//if(valor!=0)
-	//std::cout<<"AGREGAR: Entra: "<<valor<<" sale: "<<post<<std::endl;
 	agregarPropiedad(nombre,post);
 }
 void Snapshot::obtenerPropiedad(const std::string& nombre, real& ponerEn) const{
 	int prop = obtenerPropiedad(nombre);
 	ponerEn = ((float)prop)/1000;
-	//if(prop!=0)
-	//std::cout<<"OBTENER: Entra: "<<prop<<" sale: "<<ponerEn<<std::endl;
 }
 //-------------------char--------------------------------//
 void Snapshot::agregarPropiedad(const std::string& nombre, char valor){

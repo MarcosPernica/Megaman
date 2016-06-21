@@ -3,7 +3,6 @@
 #include <iostream>
 #include "CacheImagenes.h"
 void Animacion::avanzar(float segundos){
-	//std::cout<<"Hola soy Animacion: "<<segundos<<" "<<segundos_desde_cambio<<" "<<segundos_por_cuadro<<std::endl;
 		
 	segundos_desde_cambio+=segundos;
 	if(segundos_desde_cambio>segundos_por_cuadro){
@@ -27,18 +26,6 @@ ArchivoImagen Animacion::a_dibujar(){
 			cantidad_cuadros = cuadro_actual;
 			cuadro_actual = 0;
 		}
-		/*
-		try{
-			cargadas[cuadro_actual]= Gdk::Pixbuf::create_from_file(nombre_con_nro.str());
-		}catch(const Glib::Error& ex){
-			cantidad_cuadros = cuadro_actual;
-			cuadro_actual = 0;
-		}
-		*/
-		//por que? porque la animacion forma parte del Mundo, 
-		//del lado del server, lo de arriba causa un error de runtime.
-		//Entonces, me aseguro que sólo se cargue la imagen si será dibujada 
-		//(==si estoy del lado del cliente) de esta manera.
 	}
 	if(cargadas[cuadro_actual]!=NULL){
 		return *cargadas[cuadro_actual];

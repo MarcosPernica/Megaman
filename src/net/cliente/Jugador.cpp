@@ -92,9 +92,6 @@ bool Jugador::detectarPresionTecla(GdkEventKey* evento){
 			}
 			case GDK_KEY_z:
 			{
-				
-				std::cout<<"Detecto que apretaste Z!"<<std::endl;
-				std::cout<<controlado<<std::endl;
 				emisor.enviar(MENSAJE_KEY_Z);
 				controlado->saltar();
 				

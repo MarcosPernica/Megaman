@@ -97,13 +97,11 @@ void Mundo::setEstadisticas(EstadisticasMundo& estadisticas){
 	}
 }
 EstadisticasMundo& Mundo::obtenerEstadisticas(){
-	std::cout<<"Vidas de Mundo:"<<this->estadisticas.vidasDe(0)<<std::endl;
 	return estadisticas;
 }
 
 void Mundo::notificarMuerteMegaman(Megaman* muerto){
 	estadisticas.perderUnaVida(muerto->obtenerID()-1);
-	std::cout<<"Se notifica la muerte de megaman"<<std::endl;
 }
 
 
@@ -165,7 +163,6 @@ void Mundo::obtenerAtributosXML(TiXmlAttribute *atributo, std::map<std::string,r
 
 void Mundo::cargarNivel(Cadena nombre){
 	std::string valor;
-	std::cout<<"Nombre del archivo que voy a cargar:"<<nombre_nivel<<std::endl;
 	TiXmlDocument doc( nombre_nivel.c_str() );
 	if(!doc.LoadFile())
 		throw CustomException("Tiny XML no cargó el archivo");
@@ -311,7 +308,6 @@ void Mundo::eliminar(PowerUp * elemento)
 void Mundo::eliminar(Disparo * elemento)
 {
 	destrucciones.push_back(DatosEliminacion(elemento->obtenerID(),disparo));
-	//std::cout<<"Voy a borrar una bala"<<std::endl;
 }
 
 void Mundo::agregar(Disparo * disparo)
@@ -712,6 +708,8 @@ void Mundo::obtenerSnapshot(FullSnapshot& en){
  * -A los objetos en el mundo y en el fs se les inyecta una Snapshot
  * -Los objetos que están sólo en el fs se crean en cualquier estado
  * y se les inyecta una snapshot
+ * 
+ * Dejo comentadas líneas utilizadas para debugging porque pueden ser útiles
  * 
  * Dos Snapshotables representan al mismo objeto sii su ID y su tipo son iguales.
  * */

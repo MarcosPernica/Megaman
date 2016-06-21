@@ -78,8 +78,6 @@ void Servidor::finalizarNivel(){
 	EstadisticasMundo& correctas = mundo->obtenerEstadisticas();
 	//estadisticas.copiarDe(correctas);
 	estadisticas = correctas;
-	std::cout<<"Vidas(estadisticas):"<<estadisticas.vidasDe(0)<<std::endl;
-	std::cout<<"Vidas(correctas):"<<correctas.vidasDe(0)<<std::endl;
 	
 	//termino la simulacion
 	liberarRecursos();
@@ -140,16 +138,13 @@ void Servidor::ejecutarNivel(char nivel){
 	nivelContinua = true;
 	
 	contenedor.enviarNivel(nivel);
-	std::cout<<nivel<<std::endl;
 	contenedor.notificarInicio();
 	
 	std::ostringstream nombre_nivel;
 	nombre_nivel<<"niveles/nivel";
 	nombre_nivel<<(char)nivel;
 	nombre_nivel<< ".xml";
-	std::cout<<"El nombre del nivel es: "<<nombre_nivel.str()<<std::endl;
 	
-	std::cout<<"Ahora lanzo el Mundo"<<std::endl;
 	mundo = new Mundo(Proporcionador::renderAMundo(800),Proporcionador::renderAMundo(600),b2Vec2(0,0),nombre_nivel.str().c_str(),contenedor.cantidadJugadores());
 	mundo->setEstadisticas(estadisticas);
 	
@@ -162,13 +157,6 @@ void Servidor::ejecutarNivel(char nivel){
 
 
 void Servidor::iniciar(char nivel){
-	/*
-	Lock l_cv(cv_nivelElegido);
-	if(!algunNivelSeleccionado()){//no estoy seguro de que haga falta este if
-		cv_nivelElegido.broadcast();
-	}
-	**/
-	
 	alcanzadoLimiteJugadores();//basta de aceptar jugadores
 	{
 		Lock l(m_nivel);
@@ -199,12 +187,7 @@ void CallbackAceptador::nueva(ChannelSocket* nuevo_channel){
 
 void Servidor::finNivel(){
 	nivelContinua = false;//no hace falta proteger bools
-	std::cout<<"----------------fin nivel--------------"<<std::endl;
 	contenedor.distribuirFinNivel();
-	/*
-	Lock l(cv_nivelContinua);
-	cv_nivelContinua.broadcast();
-	*/
 	cola.push(FIN_NIVEL);
 }
 

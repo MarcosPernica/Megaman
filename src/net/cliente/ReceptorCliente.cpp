@@ -60,6 +60,11 @@ IMPLEMENTAR_CALL(POSICION){
 IMPLEMENTAR_CALL(INICIAR){
 	cliente.iniciar();
 }
+
+/**
+ * Dejo los cout comentados ya que esta sección de código es crítica 
+ * y pueden ser muy utiles a futuro
+ * */
 IMPLEMENTAR_CALL(INICIAR_ENVIO_FULLSNAPSHOT){
 	//std::cout<<"----------------me llega un fulls de"<<resto_mensaje<<" a las "<<clock()<<std::endl;
 	recibidas.clear();
@@ -72,8 +77,6 @@ IMPLEMENTAR_CALL(TERMINAR_ENVIO_FULLSNAPSHOT){
 		//inyectar el full snapshot en cuanto pueda!
 		Lock l(m_a_punto);
 		
-		//------------ACÁ HAY QUE RECOMENTAR!!!!!-------------
-		
 		/*
 		std::vector<SnapshotSerializada>::iterator it;
 		std::cout<<"----------mostrando fs recibida"<<std::endl;
@@ -84,12 +87,6 @@ IMPLEMENTAR_CALL(TERMINAR_ENVIO_FULLSNAPSHOT){
 		*/
 		//horario_ultima_recepcion=clock();
 		a_punto_de_inyectar = FullSnapshot::desdeSerializada(recibidas);
-		/*
-		if(inyectado){
-			Glib::signal_idle().connect(sigc::mem_fun(*this, &ReceptorCliente::onInyectar));
-			inyectado = false;
-		}
-		*/
 		//a_punto_de_inyectar.mostrar();
 	}
 }

@@ -13,7 +13,7 @@ class Jugador;
  * */
 class Cliente{
 	private:
-	Mutex m_pantalla;
+	//Mutex m_pantalla;
 	Mutex m_posicion;
 	Mutex m_iniciado;
 	
@@ -34,8 +34,10 @@ class Cliente{
 	public:
 	
 	//interfaz para ReceptorCliente
+	/*
 	void agregarEstaba(const std::string& usuario);
 	void agregarLlega(const std::string& usuario);
+	**/
 	void definirPosicion(int posicion);
 	int obtenerPosicion();
 	void iniciar();
