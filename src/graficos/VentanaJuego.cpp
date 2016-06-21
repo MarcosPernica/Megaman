@@ -90,6 +90,7 @@ VentanaJuego::VentanaJuego(Terminador* termina):
 
 bool VentanaJuego::mi_on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 
+	#ifndef compiling_server
 	Gtk::Allocation allocation = darea.get_allocation();
 	const int width = allocation.get_width();
 	const int height = allocation.get_height();
@@ -104,6 +105,7 @@ bool VentanaJuego::mi_on_draw(const Cairo::RefPtr<Cairo::Context>& cr){
 	while(i != dibujables.end())
 		(*i++)->dibujarEn(cr, posicion, 1);
 	
+	#endif
 	return true;
 }
 

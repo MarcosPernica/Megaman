@@ -13,7 +13,10 @@
 #include "Entidad.h"
 #include "Disparo.h"
 #include "Construccion.h"
+
+#ifndef compiling_server
 #include "../graficos/Dibujable.h"
+#endif
 
 #include "../tinyxml/tinyxml.h"
 
@@ -135,9 +138,17 @@ public:
 	void actualizar(real segundosDesdeUltima);
 
 	std::list<Megaman *> obtenerMegamanes(bool incluirMuertos = false);
+
+	#ifndef compiling_server
 	std::list<Dibujable *> elementosEnZona(b2Vec2 posicion, real ancho, real alto);
+	#endif
+
 	void limpiar(b2Vec2 posicion, real ancho, real alto);
+
+	#ifndef compiling_server
 	std::list<Dibujable *> obtenerElementosCamara();
+	#endif
+
 	Puerta *obtenerPuerta(uint IDInterno);
 
 	void finalizar();

@@ -41,9 +41,11 @@ Magnetman::Magnetman(uint ID,
 			velocidad,
 			izquierda,
 			false),
+		#ifndef compiling_server
 		Animado(&animacion_saltando),
 		animacion_saltando(ANIM_MAGNETMAN_SALTANDO,1),
 		animacion_corriendo(ANIM_MAGNETMAN_CORRIENDO,0.1),
+		#endif
 		estadoMagnetman(QUIETO),
 		reflejos(0),			
 		arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES),
@@ -112,17 +114,21 @@ void Magnetman::actualizarMaquinaEstados(real deltaT)
 		}
 	}
 
+	#ifndef compiling_server
 	/*Es mas preciso cambiarlo de esta forma que una vez por cambio de la maquina de estados.*/
 
 	if(estaEnElAire())
 		cambiar(&animacion_saltando);
 	else
 		cambiar(&animacion_corriendo);
+	#endif
 }
 
 void Magnetman::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
@@ -144,6 +150,7 @@ Magnetman* Magnetman::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	return p;
 }
 
+#ifndef compiling_server
 void Magnetman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr,
 			  b2Vec2 origen, 
 			  real factorAmplificacion)
@@ -163,3 +170,4 @@ const Rectangulo Magnetman::obtenerRepresentacion() const
 			  ANCHOMAGNETMAN,
 			  ALTOMAGNETMAN);
 }
+#endif

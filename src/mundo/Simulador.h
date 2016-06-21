@@ -6,6 +6,8 @@
  * */
 #include "Mundo.h"
 
+#include <gdkmm/general.h>
+
 class Simulador{
 	public:
 	sigc::connection conexion;

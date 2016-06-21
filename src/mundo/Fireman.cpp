@@ -42,9 +42,11 @@ Fireman::Fireman(uint ID,
 			velocidad,
 			izquierda,
 			false),
+		#ifndef compiling_server
 		Animado(&animacion_saltando),
 		animacion_saltando(ANIM_FIREMAN_SALTANDO,1),
 		animacion_corriendo(ANIM_FIREMAN_CORRIENDO,0.1),
+		#endif
 		estadoFireman(QUIETO),	
 		reflejos(0),
 		arma(obtenerMundo().generarID(),obtenerMundo(), PERSONAJES)
@@ -107,17 +109,21 @@ void Fireman::actualizarMaquinaEstados(real deltaT)
 		}
 	}
 
+	#ifndef compiling_server
 	/*Es mas preciso cambiarlo de esta forma que una vez por cambio de la maquina de estados.*/
 
 	if(estaEnElAire())
 		cambiar(&animacion_saltando);
 	else
 		cambiar(&animacion_corriendo);
+	#endif
 }
 
 void Fireman::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 	actualizarMaquinaEstados(deltaT);
 	Enemigo::actualizar(deltaT);
 }
@@ -139,6 +145,7 @@ Fireman* Fireman::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	return p;
 }
 
+#ifndef compiling_server
 void Fireman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 			b2Vec2 origen, 
 			real factorAmplificacion)
@@ -158,3 +165,4 @@ const Rectangulo Fireman::obtenerRepresentacion() const
 			  ANCHOFIREMAN,
 			  ALTOFIREMAN);
 }
+#endif

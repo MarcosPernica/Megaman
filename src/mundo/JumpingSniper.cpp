@@ -34,11 +34,13 @@ JumpingSniper::JumpingSniper(uint ID,
 			posicion, 
 			false,
 			true,
-			velocidad), 
+			velocidad),
+		#ifndef compiling_server
 		Animado(&animacion_disparando),
 		animacion_protegido(ANIM_JSNIPER_PROTEGIDO,0.1),
 		animacion_disparando(ANIM_JSNIPER_DISPARANDO,0.1),
 		animacion_saltando(ANIM_JSNIPER_SALTANDO,0.1),
+		#endif
 		megaman(NULL),
 		IDTarget(0),
 		estadoSniper(DESCUBRIENDOSE),
@@ -64,7 +66,9 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 {
 	reflejos += deltaT;
 
+	#ifndef compiling_server
 	avanzar(deltaT);
+	#endif
 
 	if(estadoSniper == CUBIERTO && reflejos >= TIEMPOCUBIERTO)
 	{
@@ -98,7 +102,9 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 	{
 		saltar();
 		estadoSniper &= ~DISPARANDO;
+		#ifndef compiling_server
 		cambiar(&animacion_saltando);
+		#endif
 	}
 
 	if(cantidadDisparos)
@@ -114,7 +120,9 @@ void JumpingSniper::actualizarMaquinaEstados(real deltaT)
 	{
 		estadoSniper = CUBIERTO;
 		cubrirse();
+		#ifndef compiling_server
 		cambiar(&animacion_protegido);
+		#endif
 	}
 }
 
@@ -159,6 +167,7 @@ JumpingSniper* JumpingSniper::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
 	return p;
 }
 
+#ifndef compiling_server
 void JumpingSniper::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 			      b2Vec2 origen, 
 			      real factorAmplificacion)
@@ -178,5 +187,4 @@ const Rectangulo JumpingSniper::obtenerRepresentacion() const
 			  ANCHOJUMPINGSNIPER,
 			  ALTOJUMPINGSNIPER);
 }
-
-
+#endif

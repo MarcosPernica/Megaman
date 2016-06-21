@@ -29,8 +29,10 @@ Bumby::Bumby(uint ID,
 		     false,
 		     false,
 		     velocidad),
+		#ifndef compiling_server
 	     Animado(&animacion_volando),
 	     animacion_volando(ANIM_BUMBY_VOLANDO,0.1),
+		#endif
 	     megaman(NULL),
 	     IDTarget(0),
 	     tiempo(0),
@@ -52,9 +54,11 @@ void Bumby::actualizarMaquinaEstados(real deltaT)
 	}
 
 	real direccion = megaman->obtenerPosicion().x-obtenerPosicion().x;
-
+	
+	#ifndef compiling_server
 	/*Avanza la animacion.*/
 	avanzar(deltaT);
+	#endif
 
 	if(abs(direccion) >= DISTANCIAVISION*0.5)
 	{
@@ -130,6 +134,7 @@ Bumby* Bumby::desdeSnapshot(const Snapshot& sn, Mundo& mundo)
 	return p;
 }
 
+#ifndef compiling_server
 void Bumby::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 		      b2Vec2 origen, 	 
 		      real factorAmplificacion)
@@ -149,3 +154,4 @@ const Rectangulo Bumby::obtenerRepresentacion() const
 			  ANCHOBUMBY,
 			  ALTOBUMBY);
 }
+#endif

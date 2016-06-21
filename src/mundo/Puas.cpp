@@ -17,6 +17,7 @@ void Puas::interactuar(Megaman *megaman)
 	megaman->atacado(megaman->obtenerEnergiaMaxima(), NULL);
 }
 
+#ifndef compiling_server
 void Puas::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 			     b2Vec2 origen, 
 			     real factorAmplificacion)
@@ -36,3 +37,4 @@ const Rectangulo Puas::obtenerRepresentacion() const
 			  obtenerAncho(),
 			  obtenerAlto());
 }
+#endif

@@ -22,6 +22,7 @@ Construccion::Construccion(uint ID,
 {
 }
 
+#ifndef compiling_server
 void Construccion::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 			     b2Vec2 origen, 
 			     real factorAmplificacion)
@@ -41,6 +42,7 @@ const Rectangulo Construccion::obtenerRepresentacion() const
 			  obtenerAncho(),
 			  obtenerAlto());
 }
+#endif
 
 
 ushort Construccion::tipoCuerpo() const
@@ -57,10 +59,12 @@ CuboMadera::CuboMadera(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 {
 }
 
+#ifndef compiling_server
 std::string CuboMadera::nombreImagen()
 {
 	return "imagenes/cuboMadera/1.png";
 };
+#endif
 
 CuboMetal::CuboMetal(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto):
 		     Construccion(ID,
@@ -71,10 +75,12 @@ CuboMetal::CuboMetal(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, 
 {
 }
 
+#ifndef compiling_server
 std::string CuboMetal::nombreImagen()
 {
 	return "imagenes/cuboMetal/1.png";
 };
+#endif
 
 CuboLadrillo::CuboLadrillo(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto):
 			   Construccion(ID,
@@ -85,10 +91,12 @@ CuboLadrillo::CuboLadrillo(uint ID, Mundo &mundo, const b2Vec2 &posicion, real a
 {
 }
 
+#ifndef compiling_server
 std::string CuboLadrillo::nombreImagen()
 {
 	return "imagenes/cuboLadrillo/1.png";
 };
+#endif
 
 CuboTierra::CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto):
 		       Construccion(ID,
@@ -99,10 +107,12 @@ CuboTierra::CuboTierra(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho
 {
 }
 
+#ifndef compiling_server
 std::string CuboTierra::nombreImagen()
 {
 	return "imagenes/cuboTierra/1.png";
 };
+#endif
 
 CuboVacio::CuboVacio(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, real alto):
 		     Construccion(ID,
@@ -113,10 +123,12 @@ CuboVacio::CuboVacio(uint ID, Mundo &mundo, const b2Vec2 &posicion, real ancho, 
 {
 }
 
+#ifndef compiling_server
 std::string CuboVacio::nombreImagen()
 {
 	return "imagenes/vacio.png";
 };
+#endif
 
 Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, const b2Vec2 &posicion):
 	       Cuerpo(ID,
@@ -132,8 +144,10 @@ Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, con
 		     b2Vec2_zero,
 		     izquierda,
 		     true),
+		#ifndef compiling_server
 	       Animado(&animacion),
 	       animacion(ANIM_PUERTA,0.1,false, 10),
+		#endif
 	       cerrada(false),
 	       IDInterno(IDInterno),
 	       ancho(ancho),
@@ -143,9 +157,11 @@ Puerta::Puerta(uint ID, uint IDInterno, Mundo &mundo, real ancho, real alto, con
 
 void Puerta::actualizar(real deltaT)
 {
+	#ifndef compiling_server
 	/*Solo si esta cerrada hace la animacion.*/
 	if(cerrada)
 		avanzar(deltaT);
+	#endif
 }
 
 uint Puerta::obtenerIDInterno()
@@ -164,16 +180,19 @@ bool Puerta::estaCerrada()
 	return cerrada;
 }
 
+#ifndef compiling_server
 std::string Puerta::nombreImagen()
 {
 	return "imagenes/cuboMetal/1.png";
 };
+#endif
 
 ushort Puerta::tipoCuerpo() const 
 {
 	return CONSTRUCCIONES;
 };
 
+#ifndef compiling_server
 void Puerta::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, 
 		       b2Vec2 origen, 
 		       real factorAmplificacion)
@@ -193,3 +212,4 @@ const Rectangulo Puerta::obtenerRepresentacion() const
 			  ancho,
 			  alto);
 }
+#endif

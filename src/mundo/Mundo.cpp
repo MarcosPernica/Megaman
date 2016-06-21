@@ -54,42 +54,6 @@ Mundo::Mundo(real anchoCamara,
 
 Mundo::~Mundo()
 {
-	std::cout<<"Cantidad de megamanes:"<<megamanes.size()<<std::endl;
-	
-	//marcos tuve que refactorizar acá por el mismo motivo que el refactor de más abajo 
-	//(sólo que ahora había segfault siempre)
-	
-	//PD: después de debuggear creo que lo que habías escrito no generaba el error pero no me animo a desescribir nada
-	
-	/*
-	std::map<uint, Megaman*>::iterator a = megamanes.begin();
-
-	while(a != megamanes.end())
-		delete (a++)->second;
-
-	std::map<uint, Enemigo*>::iterator b = enemigos.begin();
-
-	while(b != enemigos.end())
-		delete (b++)->second;
-
-	std::map<uint, PowerUp*>::iterator c = powerUps.begin();
-
-	while(c != powerUps.end())
-		delete (c++)->second;
-
-	std::map<uint, Disparo*>::iterator d = disparos.begin();
-
-	while(d != disparos.end())
-		delete (d++)->second;
-
-	std::map<uint, Puerta*>::iterator e = puertas.begin();
-
-	while(e != puertas.end())
-		delete (e++)->second;
-	*/
-	std::cout<<"Cantidad de powerUps:"<<powerUps.size()<<std::endl;
-	std::cout<<"Cantidad de enemigos:"<<enemigos.size()<<std::endl;
-	std::cout<<"Cantidad de megamanes:"<<megamanes.size()<<std::endl;
 	GENERAR_LIBERAR_MAPA(megamanes,Megaman)
 	GENERAR_LIBERAR_MAPA(enemigos,Enemigo)
 	GENERAR_LIBERAR_MAPA(powerUps,PowerUp)
@@ -122,7 +86,7 @@ void Mundo::setEstadisticas(EstadisticasMundo& estadisticas){
 	for(it = armas.begin(); it!= armas.end(); ++it){
 		std::map<uint, Megaman*>::iterator it_m;
 		for(it_m = megamanes.begin(); it_m!=megamanes.end(); ++it_m){
-			it_m->second->agregarArma(*it,100);/////////////PONELE QUE 100 ES LA MÁXIMA CANTIDAD DE PLASMA///////////////////
+			it_m->second->agregarArma(*it,100);
 		}
 	}
 	uint pos = 0;
@@ -573,15 +537,6 @@ bool Mundo::existeElemento(uint ID)
 
 void Mundo::actualizarCuerpos(real deltaT)
 {
-	/*
-	//Solo como parche es esto proximo.
-	if(obtenerEstadoMundo() == perdido)
-		reiniciar();
-	else if(obtenerEstadoMundo() == ganado)
-		throw CustomException("Se gano el nivel, todavía no está implementado lo que sigue");
-	
-	//Fin parche
-	*/
 	std::map<uint, Megaman*>::const_iterator a = megamanes.begin();
 	while(a != megamanes.end())
 		(a++)->second->actualizar(deltaT);	
@@ -609,7 +564,6 @@ void Mundo::actualizarCuerpos(real deltaT)
 
 void Mundo::actualizar(real segundosDesdeUltima)
 {
-	//std::cout<<"Actualizando"<<std::endl;
 	int32 velocityIterations = 6;
 	int32 positionIterations = 2;
 	
@@ -644,6 +598,7 @@ std::list<Megaman *> Mundo::obtenerMegamanes(bool incluirMuertos)
 	return megas;
 }
 
+#ifndef compiling_server
 std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real alto)
 {
 	b2AABB consulta;
@@ -659,6 +614,7 @@ std::list<Dibujable *> Mundo::elementosEnZona(b2Vec2 posicion, real ancho, real 
 
 	return aux;
 }
+#endif
 
 void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 {
@@ -692,10 +648,12 @@ void Mundo::limpiar(b2Vec2 posicion, real ancho, real alto)
 	}
 }
 
+#ifndef compiling_server
 std::list<Dibujable *> Mundo::obtenerElementosCamara()
 {
 	return elementosEnZona(camara->obtenerPosicion(),camara->obtenerAncho(),camara->obtenerAlto());
 }
+#endif
 
 #define GENERAR_AGREGAR_SNAPSHOTABLES(_nombreClase,_nombreMapa)\
 	{\

@@ -1,6 +1,7 @@
 #include "EstadisticasMundo.h"
 #include <iostream>
 #include <cmath>
+#include <sstream>
 EstadisticasMundo::EstadisticasMundo():Snapshotable(60000){
 	for(uint i =0; i <4;i++){
 		vidas[i]=3;

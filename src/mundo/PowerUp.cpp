@@ -12,9 +12,11 @@ void CallbackAumentador::ejecutar()
 	powerUp->aumentar(*megaman);
 }
 
-NuevaVida::NuevaVida(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion), 
-			Animado(&animacion),
+NuevaVida::NuevaVida(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
+			#ifndef compiling_server
+			,Animado(&animacion),
 			animacion(ANIM_VIDA,0.5)
+			#endif
 {
 }
 
@@ -24,6 +26,14 @@ void NuevaVida::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void NuevaVida::actualizar(real deltaT)
+{
+	#ifndef compiling_server
+	avanzar(deltaT);
+	#endif
+};
+
+#ifndef compiling_server
 void NuevaVida::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 Imagen::dibujarEn(cr,origen,factorAmplificacion);}
 
@@ -41,7 +51,7 @@ ArchivoImagen Habilitador::a_dibujar(){
 	return ArchivoImagen(ANIM_PODER);
 }
 
-
+#endif
 
 HabilitadorBomba::HabilitadorBomba(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
@@ -49,21 +59,12 @@ HabilitadorBomba::HabilitadorBomba(uint ID, Mundo &mundo, const b2Vec2 &posicion
 
 void HabilitadorBomba::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Bomba(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Bomba);
-	finalizar();
+	obtenerMundo().finalizar();
 }
 
+#ifndef compiling_server
 void HabilitadorBomba::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 	ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);	
 	}
@@ -76,6 +77,7 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					ALTOSPRITEPOWERUP
 				);
 }
+#endif
 
 HabilitadorIman::HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
@@ -83,21 +85,12 @@ HabilitadorIman::HabilitadorIman(uint ID, Mundo &mundo, const b2Vec2 &posicion) 
 
 void HabilitadorIman::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Iman(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Iman);
 	obtenerMundo().finalizar();
 }
 
+#ifndef compiling_server
 void HabilitadorIman::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
 	
@@ -110,6 +103,7 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					ALTOSPRITEPOWERUP
 				);
 }
+#endif
 
 HabilitadorChispa::HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
@@ -117,21 +111,12 @@ HabilitadorChispa::HabilitadorChispa(uint ID, Mundo &mundo, const b2Vec2 &posici
 
 void HabilitadorChispa::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Chispa(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Chispa);
 	obtenerMundo().finalizar();
 }
 
+#ifndef compiling_server
 void HabilitadorChispa::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
 	
@@ -144,6 +129,7 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					ALTOSPRITEPOWERUP
 				);
 }
+#endif
 
 HabilitadorAnillo::HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
@@ -151,21 +137,12 @@ HabilitadorAnillo::HabilitadorAnillo(uint ID, Mundo &mundo, const b2Vec2 &posici
 
 void HabilitadorAnillo::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Anillo(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Anillo);
 	obtenerMundo().finalizar();
 }
 
+#ifndef compiling_server
 void HabilitadorAnillo::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
 	
@@ -177,6 +154,7 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					ALTOSPRITEPOWERUP
 				);
 }
+#endif
 
 HabilitadorFuego::HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBANUEVAVIDA, posicion)
 {
@@ -184,21 +162,12 @@ HabilitadorFuego::HabilitadorFuego(uint ID, Mundo &mundo, const b2Vec2 &posicion
 
 void HabilitadorFuego::aumentar(Megaman & megaman)
 {
-	/*
-	std::list<Megaman *> megamanes = obtenerMundo().obtenerMegamanes();
-	std::list<Megaman *>::iterator i = megamanes.begin();
-
-	while(i != megamanes.end())
-		(*i++)->agregarArma(new Fuego(obtenerMundo().generarID(),obtenerMundo(), ENEMIGOS), CANTIDADINFINITAPLASMA);
-
-	eliminarPowerUp();
-	obtenerMundo().finalizar();
-	*/
 	eliminarPowerUp();
 	obtenerMundo().agregarArma(TIPO_Fuego);
 	obtenerMundo().finalizar();
 }
 
+#ifndef compiling_server
 void HabilitadorFuego::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 ImagenEscalada::dibujarEn(cr,origen,factorAmplificacion);
 	
@@ -211,10 +180,13 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					ALTOSPRITEPOWERUP
 				);
 }
+#endif
 
-CapsulaEnergiaChica::CapsulaEnergiaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIACHICA, posicion, ANCHOSPRITEPOWERUP/4, ALTOSPRITEPOWERUP/4),
-			Animado(&animacion),
+CapsulaEnergiaChica::CapsulaEnergiaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIACHICA, posicion, ANCHOSPRITEPOWERUP/4, ALTOSPRITEPOWERUP/4)
+			#ifndef compiling_server
+			,Animado(&animacion),
 			animacion(ANIM_ENERGIA,0.25)
+			#endif
 {
 }
 
@@ -224,6 +196,14 @@ void CapsulaEnergiaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaEnergiaChica::actualizar(real deltaT)
+{
+	#ifndef compiling_server
+	avanzar(deltaT);
+	#endif
+};
+
+#ifndef compiling_server
 void CapsulaEnergiaChica::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 Imagen::dibujarEn(cr,origen,factorAmplificacion);}
 
@@ -234,10 +214,13 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
 					ANCHOSPRITEPOWERUP/2,
 					ALTOSPRITEPOWERUP/2);}
+#endif
 
-CapsulaEnergiaGrande::CapsulaEnergiaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIAGRANDE, posicion),
-						Animado(&animacion),
+CapsulaEnergiaGrande::CapsulaEnergiaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAENERGIAGRANDE, posicion)
+						#ifndef compiling_server
+						,Animado(&animacion),
 						animacion(ANIM_ENERGIA,0.25)
+						#endif
 {
 }
 
@@ -247,6 +230,14 @@ void CapsulaEnergiaGrande::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaEnergiaGrande::actualizar(real deltaT)
+{
+	#ifndef compiling_server
+	avanzar(deltaT);
+	#endif
+};
+
+#ifndef compiling_server
 void CapsulaEnergiaGrande::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 Imagen::dibujarEn(cr,origen,factorAmplificacion);}
 
@@ -257,10 +248,13 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					obtenerPosicion().y-ALTOSPRITEPOWERUP/2,
 					ANCHOSPRITEPOWERUP,
 					ALTOSPRITEPOWERUP);}
+#endif
 
-CapsulaPlasmaChica::CapsulaPlasmaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMACHICA, posicion, ANCHOSPRITEPOWERUP/4, ALTOSPRITEPOWERUP/4),
-			Animado(&animacion),
+CapsulaPlasmaChica::CapsulaPlasmaChica(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMACHICA, posicion, ANCHOSPRITEPOWERUP/4, ALTOSPRITEPOWERUP/4)
+			#ifndef compiling_server	
+			,Animado(&animacion),
 			animacion(ANIM_PLASMA,0.5)
+			#endif
 {
 }
 
@@ -270,6 +264,14 @@ void CapsulaPlasmaChica::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaPlasmaChica::actualizar(real deltaT)
+{
+	#ifndef compiling_server
+	avanzar(deltaT);
+	#endif
+};
+
+#ifndef compiling_server
 void CapsulaPlasmaChica::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 Imagen::dibujarEn(cr,origen,factorAmplificacion);}
 
@@ -281,10 +283,12 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					ANCHOSPRITEPOWERUP/2,
 					ALTOSPRITEPOWERUP/2);}
 
-
-CapsulaPlasmaGrande::CapsulaPlasmaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMAGRANDE, posicion),
-			Animado(&animacion),
+#endif
+CapsulaPlasmaGrande::CapsulaPlasmaGrande(uint ID, Mundo &mundo, const b2Vec2 &posicion) : PowerUp(ID, mundo, PROBAPLASMAGRANDE, posicion)
+			#ifndef compiling_server
+			,Animado(&animacion),
 			animacion(ANIM_PLASMA,0.5)
+			#endif
 			
 {
 }
@@ -295,6 +299,14 @@ void CapsulaPlasmaGrande::aumentar(Megaman & megaman)
 	eliminarPowerUp();
 }
 
+void CapsulaPlasmaGrande::actualizar(real deltaT)
+{
+	#ifndef compiling_server
+	avanzar(deltaT);
+	#endif
+};
+
+#ifndef compiling_server
 void CapsulaPlasmaGrande::dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion){
 Imagen::dibujarEn(cr,origen,factorAmplificacion);}
 
@@ -306,7 +318,7 @@ return Rectangulo(	obtenerPosicion().x-ANCHOSPRITEPOWERUP/2,
 					ANCHOSPRITEPOWERUP,
 					ALTOSPRITEPOWERUP);}
 
-
+#endif
 PowerUp::PowerUp(uint ID, Mundo &mundo,
 				 real probabilidadAparicion,
 				 const b2Vec2 &posicion,
@@ -360,29 +372,3 @@ void PowerUp::setStateFromSnapshot(const Snapshot& sn){
 	SN_OBTENER_PROPIEDAD(probabilidadAparicion);
 	Cuerpo::setStateFromSnapshot(sn);
 }
-/*
- HabilitadorBomba* HabilitadorBomba::desdeSnapshot(const Snapshot& sn, Mundo& mundo){
-	HabilitadorBomba* p =new HabilitadorBomba(sn.getID(),mundo,b2Vec2(0,0));
-	p->setStateFromSnapshot(sn);
-	return p;
-}
-*/
-/*
-#define GENERAR_IMPLEMENTACION_DESDESNAPSHOT(clase) \
-clase* clase::desdeSnapshot(const Snapshot& sn, Mundo& mundo){ \
-	clase* p =new clase(sn.getID(),mundo,b2Vec2(0,0)); \
-	p->setStateFromSnapshot(sn); \
-	return p; \
-}
-
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorBomba)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorIman)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorChispa)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorAnillo)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(HabilitadorFuego)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaPlasmaGrande)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaPlasmaChica)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaEnergiaGrande)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(CapsulaEnergiaChica)
-GENERAR_IMPLEMENTACION_DESDESNAPSHOT(NuevaVida)
-*/

@@ -3,16 +3,24 @@
 
 #include "Entidad.h"
 #include "Definiciones.h"
+
+#ifndef compiling_server
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
+#endif
+
 #include <vector>
 #include "Disparo.h"
 #include "Saltador.h"
 
 
-class Megaman : public Entidad, public Saltador, public Animado
+class Megaman : public Entidad, public Saltador
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion_corriendo;
 	Animacion animacion_subiendo;
 	Animacion animacion_saltando;
@@ -21,6 +29,7 @@ private:
 	Animacion animacion_disparandoCorriendo;
 	Animacion animacion_disparandoSaltando;
 	Animacion animacion_disparandoSubiendo;
+	#endif
 
 	struct Arma
 	{
@@ -99,6 +108,7 @@ public:
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_GET_TIPO(Megaman);
 
+	#ifndef compiling_server
 	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	/**
 	 * Devuelve el rectángulo en unidades de render
@@ -106,6 +116,7 @@ public:
 	virtual const Rectangulo obtenerRepresentacion() const;
 	
 	virtual bool espejado() const;
+	#endif
 	
 	void eliminarse(Mundo& de){};
 };

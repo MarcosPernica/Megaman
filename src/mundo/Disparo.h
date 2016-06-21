@@ -5,8 +5,11 @@
 #include "Actualizable.h"
 #include <Box2D/Box2D.h>
 #include "../net/snapshots/Snapshot.h"
+
+#ifndef compiling_server
 #include "../graficos/Animado.h"
 #include "../graficos/Animacion.h"
+#endif
 
 class Entidad;
 class Mundo;
@@ -63,10 +66,15 @@ public:
 	static Disparo* crearDesdeTipo(int tipo,uint ID, Mundo &mundo, ushort categoriaTarget);
 };
 
-class Plasma : public Disparo, public Animado
+class Plasma : public Disparo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion;
+	#endif
 public:
 	Plasma(uint ID, 
 	       Mundo &mundo, 
@@ -85,15 +93,22 @@ public:
 
 	void actualizar(real deltaT);
 
+	#ifndef compiling_server
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
-class Chispa : public Disparo, public Animado
+class Chispa : public Disparo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
-	Animacion animacion;	
+	#ifndef compiling_server
+	Animacion animacion;
+	#endif	
 public:
 	Chispa(uint ID, 
 	       Mundo &mundo, 
@@ -112,15 +127,23 @@ public:
 
 	void actualizar(real deltaT);
 
+	#ifndef compiling_server
+
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
-class Anillo : public Disparo, public Animado
+class Anillo : public Disparo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion;
+	#endif
 	real tiempo;
 public:
 	GENERAR_GET_TIPO(Anillo);
@@ -141,15 +164,22 @@ public:
 	void setStateFromSnapshot(const Snapshot& snapshot);
 	GENERAR_DESDE_SNAPSHOT(Anillo);
 
+	#ifndef compiling_server
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
-class Fuego : public Disparo, public Animado
+class Fuego : public Disparo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion;	
+	#endif
 public:
 	GENERAR_GET_TIPO(Fuego);
 	Fuego(uint ID, 
@@ -168,15 +198,22 @@ public:
 
 	void actualizar(real deltaT);
 
+	#ifndef compiling_server
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
-class Iman : public Disparo, public Animado
+class Iman : public Disparo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion;
+	#endif
 	Entidad *target;
 	uint IDTarget;
 public:
@@ -195,15 +232,22 @@ public:
 	Disparo *nuevo(uint ID, const b2Vec2 &posicion, const b2Vec2 &velocidad);
 	GENERAR_DESDE_SNAPSHOT(Iman);
 
+	#ifndef compiling_server
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 };
 
-class Bomba : public Disparo, public Animado
+class Bomba : public Disparo
+#ifndef compiling_server
+, public Animado
+#endif
 {
 private:
+	#ifndef compiling_server
 	Animacion animacion;
+	#endif
 	real tiempoTotal;
 public:
 	GENERAR_GET_TIPO(Bomba);
@@ -228,10 +272,12 @@ public:
 	
 	GENERAR_DESDE_SNAPSHOT(Bomba);
 
+	#ifndef compiling_server
 	void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
 	bool espejado() const;
 
 	const Rectangulo obtenerRepresentacion() const;
+	#endif
 	
 private:
 	void explotar();

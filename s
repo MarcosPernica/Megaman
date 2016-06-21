@@ -9,16 +9,16 @@ SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -g -Wall -Dcompiling_server -std=c++98
-LIB := -lpthread -pthread -L lib -lBox2D -ltinyxml -llog4cpp
-INC := -I include
+LIB := -lpthread -pthread -L lib -lBox2D -ltinyxml
+INC := -I include -I src
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)"; $(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)
+	$(CC) $^ -o $(TARGET) $(LIB) $(COSOGTKMM)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)"; $(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $< $(COSOGTKMM)
 
 clean:
 	@echo " Cleaning..."; 

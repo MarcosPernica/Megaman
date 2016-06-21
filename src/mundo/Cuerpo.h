@@ -4,7 +4,11 @@
 #include "Definiciones.h"
 #include "../common/Rectangulo.h"
 #include <Box2D/Box2D.h>
+
+#ifndef compiling_server
 #include "../graficos/Dibujable.h"
+#endif
+
 #include "../net/snapshots/Snapshotable.h"
 #include "Orientaciones.h"
 
@@ -23,7 +27,11 @@ struct DatosColisionCuerpo
 	DatosColisionCuerpo(Cuerpo *cuerpo, uint ID, Rectangulo caja) : cuerpo(cuerpo), ID(ID), caja(caja){};
 };
 
-class Cuerpo: public Dibujable, public Snapshotable {
+class Cuerpo : 
+#ifndef compiling_server
+ public Dibujable,
+#endif
+ public Snapshotable {
 private:
 	b2Body *cuerpo;
 	Orientaciones orientacion;
@@ -86,8 +94,11 @@ public:
 	virtual void setStateFromSnapshot(const Snapshot& snapshot);
 	virtual int getTipo() const {return TIPO_CUERPO;};
 	virtual void eliminarse(Mundo& de) = 0;
+	
+	#ifndef compiling_server
 	/*Es responsabilidad de cada cuerpo saber que forma tiene.*/
 	virtual void dibujarEn(const Cairo::RefPtr<Cairo::Context>& cr, b2Vec2 origen, real factorAmplificacion);
+	#endif
 };
 
 #endif
