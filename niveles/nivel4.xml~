@@ -45,6 +45,6 @@
 <JumpingSniper x="47,5" y="14"></JumpingSniper>
 <Bumby x="39,5" y="8"></Bumby>
 <Bumby x="45,5" y="8"></Bumby>	
-<Magnetman idPuerta="1" x="74" y="8"></Magnetman>
+<Ringman idPuerta="1" x="74" y="8"></Ringman>
 </Nivel>
 

@@ -25,12 +25,13 @@
 <CuboLadrillo ancho="11" alto="16" x="86,5" y="8"></CuboLadrillo>
 
 <ZonaSpawnMegaman longitud="1" x="1" y="9"></ZonaSpawnMegaman>
-<Met x="5" y="10,5"></Met>
-<Bumby x="19,5" y="10,5"></Bumby>
-<Bumby x="22,5" y="10,5"></Bumby>
+<Sniper x="5" y="10,5"></Sniper>
 <Met x="20,5" y="15"></Met>
 <Met x="21,5" y="15"></Met>
 <Met x="23,5" y="15"></Met>
+<JumpingSniper x="24,5" y="15"></JumpingSniper>
+<JumpingSniper x="25,5" y="15"></JumpingSniper>
+<JumpingSniper x="26,5" y="15"></JumpingSniper>
 <JumpingSniper x="28,5" y="15"></JumpingSniper>
 <JumpingSniper x="30,5" y="15"></JumpingSniper>
 <Sniper x="38,5" y="12,5"></Sniper>
@@ -42,6 +43,5 @@
 <Puerta id="2" ancho="1" alto="2" x="59,5" y="8"></Puerta>
 <ZonaCerradura idPuerta="2" ancho="10" alto="8" x="66" y="11"></ZonaCerradura>
 <ZonaGuardado idPuerta="2" ancho="20" alto="8" x="70" y="11"></ZonaGuardado>
-<Fireman idPuerta="2" x="80" y="14"></Fireman>
+<Sparkman idPuerta="2" x="80" y="14"></Sparkman>
 </Nivel>
-
