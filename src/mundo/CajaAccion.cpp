@@ -185,7 +185,7 @@ void ZonaCerradura::actualizar(real deltaT)
 			i++;
 		}
 
-		if(adentro)
+		if(adentro && megamanes.size())
 			puerta->cerrar();
 	}
 }
