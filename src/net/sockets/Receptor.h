@@ -6,6 +6,7 @@
 #include <map>
 #include "../../common/Mutex.h"
 #include "CallbackReceptor.h"
+#include "RecepcionRotaCallback.h"
 /**
  * Es un hilo que responde con eventos cuando recibe mensajes.
  * Advertencia 1: los mensajes se llaman en el hilo correspondiente a esta instancia
@@ -17,6 +18,7 @@ class Receptor: public Thread{
 	Mutex m_recibir;
 	std::map<std::string,CallbackReceptor*> callbacks;
 	Mutex m_callbacks;
+	RecepcionRotaCallback* call_rota;
 	
 	bool recepcion_sana;
 	Mutex m_recepcion_sana;
@@ -25,7 +27,7 @@ class Receptor: public Thread{
 	void ejecutarMensaje(const std::string& tipo_mensaje,const std::string& resto_mensaje);
 	protected:
 	
-	Receptor(const ChannelSocket& channel);
+	Receptor(const ChannelSocket& channel, RecepcionRotaCallback* call_rota = NULL);
 	
 	
 	

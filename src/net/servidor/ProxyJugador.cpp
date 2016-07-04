@@ -1,7 +1,7 @@
 #include "ProxyJugador.h"
 #include <iostream>
 #include "../../graficos/VentanaJuego.h"
-
+#include "Logger.h"
 #include "../sockets/Buffer.h"
 #include "../defines_protocolo.h"
 #include "../../common/exceptions.h"
@@ -24,6 +24,7 @@ void ProxyJugador::notificarLlegada(ProxyJugador* jugador){
 		emisor.enviar(MENSAJE_LLEGA,jugador->getUsuario());
 	}catch(CException& e){
 		informarEstaRota();
+		
 	}
 }
 void ProxyJugador::notificarEstaba(ProxyJugador* jugador){
@@ -84,7 +85,12 @@ void ProxyJugador::recepcion(const std::string& tipo_mensaje,const std::string& 
 			Lock l(m_id);
 			id_usuario = resto_mensaje;
 		}
-		emisor.enviarConfiguracion();
+		try{
+			emisor.enviarConfiguracion();
+		}catch(CException& e){
+			informarEstaRota();
+		}
+		
 		{
 			Lock l(cv_tengoUsuario);
 			cv_tengoUsuario.broadcast();
@@ -143,8 +149,11 @@ const std::string& ProxyJugador::getUsuario(){
 }
 
 ProxyJugador::~ProxyJugador(){
+	channel->closeS();
 	delete channel;
+	channel = NULL;
 }
+
 bool ProxyJugador::getEstaSana(){
 	Lock l(m_conexion_sana);
 	return conexion_sana && getRecepcionSana();
@@ -152,6 +161,11 @@ bool ProxyJugador::getEstaSana(){
 
 void ProxyJugador::informarEstaRota(){
 	Lock l(m_conexion_sana);
+	if(conexion_sana){
+		std::cout<<"Ciente "<<getUsuario()<<" desconectado"<<std::endl;
+		serverLog.log("Cliente "+getUsuario()+" desconectado");
+	}
+	
 	conexion_sana = false;
 }
 bool ProxyJugador::quiereIniciarPartida(){
@@ -170,7 +184,12 @@ void ProxyJugador::setQuiereIniciarPartida(char nivel){
 	quiero_iniciar = nivel;
 }
 void ProxyJugador::notificarInicio(){
-	emisor.enviar(MENSAJE_INICIAR);
+	try{
+			emisor.enviar(MENSAJE_INICIAR);
+		}catch(CException& e){
+			informarEstaRota();
+		}
+	
 	Lock l(m_quiero_iniciar);
 	quiero_iniciar = false;//esto prepara la próxima pantalla de selección de niveles
 }
@@ -184,11 +203,21 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	const FSSerializada serializada = full_snapshot.serializar();
 	FSSerializada::const_iterator it;
 	
-	emisor.enviar(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT,full_snapshot.obtenerHorarioCreacion());
+	try{
+			emisor.enviar(MENSAJE_INICIAR_ENVIO_FULLSNAPSHOT,full_snapshot.obtenerHorarioCreacion());
+		}catch(CException& e){
+			informarEstaRota();
+		}
+	
 	
 	//std::cout<<"-----------ENVIANDO  FULL SNAPSHOT------------"<<std::endl;
 	for(it = serializada.begin(); it!=serializada.end(); ++it){
-		emisor.enviar(MENSAJE_ENVIO_SNAPSHOT,*it);
+		try{
+			emisor.enviar(MENSAJE_ENVIO_SNAPSHOT,*it);
+		}catch(CException& e){
+			informarEstaRota();
+		}
+		
 		//std::cout<<*it<<std::endl;
 	}
 	
@@ -199,11 +228,21 @@ void ProxyJugador::enviar(const FullSnapshot& full_snapshot){
 	
 	
 	nanos_ultimo_envio = nanos_ahora;
-	emisor.enviar(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT);
+	
+	try{
+			emisor.enviar(MENSAJE_TERMINAR_ENVIO_FULLSNAPSHOT);
+		}catch(CException& e){
+			informarEstaRota();
+		}
 }
 
 void ProxyJugador::enviarPosicion(uint posicion){
-	emisor.enviar(MENSAJE_POSICION,(int)posicion);
+	try{
+			emisor.enviar(MENSAJE_POSICION,(int)posicion);
+		}catch(CException& e){
+			informarEstaRota();
+		}
+	
 	this->posicion = posicion;
 }
 uint ProxyJugador::obtenerPosicion(){
@@ -211,9 +250,23 @@ uint ProxyJugador::obtenerPosicion(){
 }
 
 void ProxyJugador::enviarNivel(char nivel){
-	emisor.enviarNivel(nivel);//queda abierta la posibilidad de que el emisor sea un thread
+	try{
+			emisor.enviarNivel(nivel);
+		}catch(CException& e){
+			informarEstaRota();
+		}
+	
 }
 
 void ProxyJugador::enviarFinNivel(){
-	emisor.enviar(MENSAJE_FIN_NIVEL);
+	try{
+			emisor.enviar(MENSAJE_FIN_NIVEL);
+		}catch(CException& e){
+			informarEstaRota();
+		}
+	
+}
+
+void ProxyJugador::notificarRecepcionRota(){
+	informarEstaRota();
 }

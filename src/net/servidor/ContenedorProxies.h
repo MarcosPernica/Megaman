@@ -12,11 +12,20 @@ class CallbackLimiteJugadores{
 
 class ContenedorProxies{
 	private:
+	CallbackReceptor* callbackIniciar;
+	CallbackLimiteJugadores* callbackLimite;
+	
 	Mutex m_proxies;
 	std::vector<ProxyJugador*> proxies;
-	CallbackLimiteJugadores* callbackLimite;
-	CallbackReceptor* callbackIniciar;
+	/**
+	 * Borra todas las conexiones. 
+	 * */
+	
+	 void matarConexiones();
+	
 	public:
+	~ContenedorProxies();
+	
 	ContenedorProxies(CallbackReceptor* callbackIniciar, CallbackLimiteJugadores* callbackLimite);
 	/**
 	 * Distribuye un fullsnapshot a todos los clientes
@@ -46,11 +55,7 @@ class ContenedorProxies{
 	 
 	 void notificarInicio();
 	 
-	/**
-	 * Borra todas las conexiones. 
-	 * */
 	
-	 void matarConexiones();
 	 
 	 /**
 	 * Avisa de la llegada de ese usuario a todos los proxies que 

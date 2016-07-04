@@ -17,6 +17,7 @@ class SimuladorSinVentana: public Thread{
 	SimuladorSinVentana(Mundo& mundo, uint milisPorActualizacion, ContenedorProxies& contenedor, CallbackFinMundo* call);
 	~SimuladorSinVentana();
 	private:
+	Mundo& mundo;
 	CallbackFinMundo* callbackFinMundo;
 	ContenedorProxies& contenedor;
 	void run();
@@ -24,7 +25,7 @@ class SimuladorSinVentana: public Thread{
 	bool continuar;
 	Mutex m_continuar;
 	bool getContinuar();
-	Mundo& mundo;
+	
 	float segundosPorActualizacion;
 	
 	

@@ -252,7 +252,8 @@ Megaman::Megaman(uint ID,
 		corriendo(false),
 		inmovilizado(true),
 		posicionSpawn(posicion),
-		mi_posicion(pos)
+		mi_posicion(pos),
+		agarreX(0)
 {
 	deshabilitarFriccion();
 

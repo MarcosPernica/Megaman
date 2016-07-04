@@ -7,6 +7,7 @@
 #include "../../graficos/Proporcionador.h" 
 #include <fstream>
 #include <sstream>
+#include "Logger.h"
 /*
 void Servidor::copiarParaTiny(char nivel){
 	std::string nombre_nivel("niveles/nivel");
@@ -25,17 +26,23 @@ void Servidor::nueva(ChannelSocket* nuevo_channel){
 
 Servidor::Servidor():
 			aceptador(SJuego::preconf.port,4),
-			contenedor(new CallbackIniciarPartida(*this), new CallbackLimite(*this) ),
+			contenedor(new CallbackIniciarPartida(*this), new CallbackLimite(*this) )//,
 			//contenedor(NULL, NULL),
+			/*
 			nivel(0),
 			simulador(NULL),
 			nivelContinua(true),
 			continuarEjecucion(true),
-			mundo(NULL){
-				
+			mundo(NULL)
+			**/{
+				nivel = 0;
+				simulador = NULL;
+				nivelContinua = true;
+				continuarEjecucion = true;
+				mundo = NULL;
 				aceptador.agregarCallback(new CallbackAceptador(*this));
 				aceptador.start();
-				//sleep(10);
+				
 }
 
 bool Servidor::algunNivelSeleccionado(){
@@ -58,7 +65,7 @@ void Servidor::esperarFinNivel(){
 }
 
 void Servidor::alcanzadoLimiteJugadores(){
-	//aceptador.join();
+	aceptador.join();
 }
 void Servidor::liberarRecursos(){
 	//termino la simulacion
@@ -74,6 +81,8 @@ void Servidor::liberarRecursos(){
 	}
 }
 void Servidor::finalizarNivel(){
+	std::cout<<"Termina el nivel"<<std::endl;
+	serverLog.log("Termina el nivel");
 	//guardo las estadisticas
 	EstadisticasMundo& correctas = mundo->obtenerEstadisticas();
 	//estadisticas.copiarDe(correctas);
@@ -135,6 +144,7 @@ void Servidor::desconectarProxiesDeMegamanes(){
 	}
 }
 void Servidor::ejecutarNivel(char nivel){
+	alcanzadoLimiteJugadores();
 	nivelContinua = true;
 	
 	contenedor.enviarNivel(nivel);
@@ -157,6 +167,10 @@ void Servidor::ejecutarNivel(char nivel){
 
 
 void Servidor::iniciar(char nivel){
+	std::ostringstream oss;
+	oss<<"Se va a iniciar el nivel: "<<nivel;
+	std::cout<<oss.str()<<std::endl;
+	serverLog.log(oss.str());
 	alcanzadoLimiteJugadores();//basta de aceptar jugadores
 	{
 		Lock l(m_nivel);

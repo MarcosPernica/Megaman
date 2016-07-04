@@ -18,7 +18,15 @@ enum Evento{
 };
 class Servidor{
 	private:
-	bool continuarEjecucion;
+	/**
+	 * Socket aceptador
+	 * */
+	ThreadAceptador aceptador;
+	
+	ContenedorProxies contenedor;
+	
+	
+	
 	/**
 	 * Termina el nivel actual, limpia los recursos correspondientes y prepara la siguiente fase
 	 * */
@@ -43,7 +51,8 @@ class Servidor{
 	Mutex m_nivel;
 	char nivel;
 	
-	ContenedorProxies contenedor;
+	
+	bool continuarEjecucion;
 	/**
 	 * Un thread paralelo tocará este flag para señalizar que se dejen de esperar conexiones
 	 * */
@@ -52,10 +61,7 @@ class Servidor{
 	 * Colección con todos los proxies, que tienen un par de Threads
 	 * */
 	std::set<ProxyJugador*> proxies;//esto va a estar recontra protegido
-	/**
-	 * Socket aceptador
-	 * */
-	ThreadAceptador aceptador;
+	
 	/**
 	 * pide port
 	 * */
